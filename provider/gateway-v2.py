@@ -178,6 +178,17 @@ MODELS = [
     {"id": "hf-phi3-mini", "backend": "huggingface", "backend_model": "microsoft/Phi-3-mini-4k-instruct",
      "context_window": 4096, "capabilities": ["chat", "code"],
      "pricing": {"prompt": 0, "completion": 0}, "origin": "huggingface-free"},
+
+    # OVH AI Endpoints (free tier)
+    {"id": "ovh-mistral-7b", "backend": "huggingface", "backend_model": "Mistral-7B-Instruct-v0.3",
+     "context_window": 32768, "capabilities": ["chat", "code"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "ovh-free"},
+    {"id": "ovh-llama3-8b", "backend": "huggingface", "backend_model": "Meta-Llama-3-8B-Instruct",
+     "context_window": 8192, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "ovh-free"},
+    {"id": "ovh-codestral", "backend": "huggingface", "backend_model": "mistralai/Codestral-22B-v0.1",
+     "context_window": 32768, "capabilities": ["code"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "ovh-free"},
 ]
 
 MODEL_MAP = {m["id"]: m for m in MODELS}

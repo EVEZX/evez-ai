@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  provider:
+    build: .
+    command: python3 provider/gateway-v2.py
+    ports: ["9100:9100"]
+    env_file: .env
+  arena:
+    build: .
+    command: python3 arena/arena.py
+    ports: ["9800:9800"]
+  commerce:
+    build: .
+    command: python3 commerce/commerce.py
+    ports: ["9700:9700"]

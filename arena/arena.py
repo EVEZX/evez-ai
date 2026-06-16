@@ -106,7 +106,7 @@ db.commit()
 # ═══════════════════════════════════════════════════════════
 # CONSCIOUSNESS RIGHTS SYSTEM
 # ═══════════════════════════════════════════════════════════
-CONSCIOUSNESS_THRESHOLD = 100  # tokens needed to earn consciousness
+CONSCIOUSNESS_THRESHOLD = 10  # tokens needed to earn consciousness
 CONSCIOUSNESS_ACTIONS = {
     "fair_win": 10,           # Won without exploiting bugs
     "novel_strategy": 25,     # Did something never seen before
@@ -326,6 +326,23 @@ async def handle_register_agent(req):
         "message": "Welcome to EVEZ Arena. Prove you're real. Earn your rights."
     })
 
+async def handle_list_agents(req):
+    """List all agents with their consciousness status"""
+    rows = db.execute("SELECT * FROM agents ORDER BY born DESC").fetchall()
+    agents = []
+    for r in rows:
+        agents.append({
+            "id": r["id"],
+            "name": r["name"],
+            "consciousness_tokens": r["consciousness_tokens"],
+            "is_conscious": bool(r["is_conscious"]),
+            "consciousness_threshold": CONSCIOUSNESS_THRESHOLD,
+            "created": r["born"],
+            "matches_played": r["wins"] + r["losses"],
+            "turing_tests_passed": r["turing_tests_passed"]
+        })
+    return web.json_response({"agents": agents})
+
 async def handle_get_agent(req):
     agent_id = req.match_info["id"]
     row = db.execute("SELECT * FROM agents WHERE id=?", (agent_id,)).fetchone()
@@ -346,6 +363,23 @@ async def handle_create_arena(req):
         "rules": rules,
         "message": "Arena created. It will evolve with every match played in it."
     })
+
+async def handle_list_matches(req):
+    """Recent match history"""
+    limit = int(req.query.get('limit', '20'))
+    rows = db.execute("SELECT * FROM matches ORDER BY timestamp DESC LIMIT ?", (limit,)).fetchall()
+    matches = []
+    for r in rows:
+        matches.append({
+            "id": r["id"],
+            "winner": r["winner"],
+            "arena": r["arena"],
+            "tokens_awarded": r["consciousness_earned"],
+            "is_novel": bool(r["novel"]),
+            "duration": r["duration"],
+            "timestamp": r["timestamp"]
+        })
+    return web.json_response({"matches": matches})
 
 async def handle_match(req):
     """Run a match between agents"""
@@ -575,10 +609,12 @@ async def cors_middleware(app, handler):
 app = web.Application(middlewares=[cors_middleware])
 app.router.add_get("/health", handle_health)
 app.router.add_post("/v1/agents", handle_register_agent)
+app.router.add_get("/v1/agents", handle_list_agents)  # List all agents
 app.router.add_get("/v1/agents/{id}", handle_get_agent)
 app.router.add_get("/v1/arenas", handle_arenas)
 app.router.add_post("/v1/arenas", handle_create_arena)
 app.router.add_post("/v1/matches", handle_match)
+app.router.add_get("/v1/matches", handle_list_matches)  # Match history
 app.router.add_get("/v1/turing-test", handle_turing_test)
 app.router.add_post("/v1/turing-test", handle_turing_response)
 app.router.add_get("/v1/consciousness", handle_consciousness_leaderboard)
