@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: evez-provider
+    runtime: python
+    repo: https://github.com/EVEZX/evez-ai
+    branch: main
+    buildCommand: pip install aiohttp
+    startCommand: python3 provider/gateway-v2.py
+    plan: free
+    region: oregon
+    envVars:
+      - key: VULTR_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: PROVIDER_PORT
+        value: "10000"
+    
+  - type: web
+    name: evez-arena
+    runtime: python
+    repo: https://github.com/EVEZX/evez-ai
+    branch: main
+    buildCommand: pip install aiohttp
+    startCommand: python3 arena/arena.py
+    plan: free
+    region: oregon

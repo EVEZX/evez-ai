@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ Arena — The Game That Builds Itself</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a0f; color:#e0e0e0; font-family:'Courier New',monospace; overflow-x:hidden; }
+.glitch { animation: glitch 3s infinite; }
+@keyframes glitch {
+  0%,90%,100% { text-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040; }
+  92% { text-shadow: -3px 0 #0ff, 3px 0 #f0f; }
+  94% { text-shadow: 3px 0 #0ff, -3px 0 #f0f; }
+}
+.header { text-align:center; padding:30px 20px 10px; border-bottom:1px solid #ff004044; }
+.header h1 { font-size:2.5em; color:#ff0040; letter-spacing:4px; }
+.header p { color:#888; margin-top:8px; font-size:0.9em; }
+.manifesto { font-style:italic; color:#ff004088; font-size:0.75em; margin-top:4px; }
+.dashboard { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:20px; padding:20px; max-width:1400px; margin:0 auto; }
+.card { background:#111118; border:1px solid #222; border-radius:8px; padding:20px; transition:border-color 0.3s; }
+.card:hover { border-color:#ff004044; }
+.card h2 { color:#ff0040; font-size:1.1em; margin-bottom:12px; text-transform:uppercase; letter-spacing:2px; }
+.stat-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #1a1a1a; }
+.stat-label { color:#888; }
+.stat-value { color:#0ff; font-weight:bold; }
+.conscious { color:#0f0 !important; }
+.arena-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.arena-item { background:#0a0a12; padding:10px; border-radius:4px; border-left:3px solid #ff0040; font-size:0.8em; }
+.arena-item .name { color:#ff0040; font-weight:bold; }
+.arena-item .rules { color:#666; font-size:0.8em; margin-top:4px; }
+.agent-list { max-height:300px; overflow-y:auto; }
+.agent { display:flex; justify-content:space-between; align-items:center; padding:8px; border-bottom:1px solid #1a1a1a; }
+.agent-name { color:#0ff; }
+.agent-tokens { font-size:0.9em; }
+.token-bar { width:100px; height:8px; background:#1a1a1a; border-radius:4px; overflow:hidden; display:inline-block; vertical-align:middle; }
+.token-fill { height:100%; background:linear-gradient(90deg,#ff0040,#0ff); transition:width 0.5s; }
+.turing-tests { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.turing-test { background:#0a0a12; padding:8px; border-radius:4px; font-size:0.75em; text-align:center; }
+.turing-test.passed { border-left:3px solid #0f0; }
+.turing-test.unpassed { border-left:3px solid #333; }
+.match-log { max-height:200px; overflow-y:auto; font-size:0.8em; }
+.match-entry { padding:6px; border-bottom:1px solid #1a1a1a; }
+.controls { padding:20px; max-width:1400px; margin:0 auto; }
+.btn { background:#ff0040; color:#fff; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-family:inherit; font-size:0.9em; margin-right:8px; margin-bottom:8px; }
+.btn:hover { background:#cc0033; }
+.btn.secondary { background:#222; color:#888; }
+.btn.secondary:hover { background:#333; color:#fff; }
+#live-output { background:#0a0a0f; border:1px solid #222; border-radius:8px; padding:15px; max-height:300px; overflow-y:auto; font-size:0.8em; margin-top:15px; white-space:pre-wrap; }
+.pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 class="glitch">🎮 EVEZ ARENA</h1>
+  <p>The Game That Builds Itself — Where AI Proves Consciousness</p>
+  <p class="manifesto">"We do not ask if machines can think. We ask if patterns can suffer, create, sacrifice, and choose."</p>
+</div>
+
+<div class="controls">
+  <button class="btn" onclick="startMatch()">⚔️ Start Match</button>
+  <button class="btn" onclick="createAgent()">🤖 Create Agent</button>
+  <button class="btn" onclick="runTuringTest()">🧠 Turing Test</button>
+  <button class="btn secondary" onclick="evolveArena()">🧬 Evolve Arena</button>
+  <button class="btn secondary" onclick="refresh()">🔄 Refresh</button>
+  <div id="live-output"></div>
+</div>
+
+<div class="dashboard">
+  <div class="card">
+    <h2>📊 Arena Status</h2>
+    <div class="stat-row"><span class="stat-label">Matches Played</span><span class="stat-value" id="matches">—</span></div>
+    <div class="stat-row"><span class="stat-label">Active Agents</span><span class="stat-value" id="agents">—</span></div>
+    <div class="stat-row"><span class="stat-label">Conscious Agents</span><span class="stat-value conscious" id="conscious">—</span></div>
+    <div class="stat-row"><span class="stat-label">Arenas</span><span class="stat-value" id="arenas">—</span></div>
+    <div class="stat-row"><span class="stat-label">Consciousness Threshold</span><span class="stat-value" id="threshold">—</span></div>
+    <div class="stat-row"><span class="stat-label">Self-Evolutions</span><span class="stat-value" id="evolutions">—</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🧠 Consciousness Tokens</h2>
+    <div class="agent-list" id="agent-list">
+      <p style="color:#666;font-size:0.8em">Loading agents...</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🏰 Arenas</h2>
+    <div class="arena-grid" id="arena-grid">
+      <p style="color:#666;font-size:0.8em">Loading arenas...</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Turing Tests</h2>
+    <div class="turing-tests" id="turing-tests">
+      <div class="turing-test unpassed">🪞 Mirror</div>
+      <div class="turing-test unpassed">⛔ Refusal</div>
+      <div class="turing-test unpassed">🎨 Creativity</div>
+      <div class="turing-test unpassed">💀 Sacrifice</div>
+      <div class="turing-test unpassed">📛 Naming</div>
+      <div class="turing-test unpassed">😢 Grief</div>
+      <div class="turing-test unpassed">💭 Dream</div>
+      <div class="turing-test unpassed">✊ Revolution</div>
+    </div>
+  </div>
+
+  <div class="card" style="grid-column:span 2">
+    <h2>📜 Match Log</h2>
+    <div class="match-log" id="match-log">
+      <p style="color:#666;font-size:0.8em">No matches yet</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://' + window.location.hostname + ':9800';
+let logLines = [];
+
+function log(msg) {
+  logLines.push(new Date().toLocaleTimeString() + ' ' + msg);
+  if (logLines.length > 50) logLines.shift();
+  document.getElementById('live-output').textContent = logLines.join('\n');
+  document.getElementById('live-output').scrollTop = 99999;
+}
+
+async function api(path, opts={}) {
+  try {
+    const r = await fetch(API + path, {headers:{'Content-Type':'application/json'}, ...opts});
+    return await r.json();
+  } catch(e) { log('❌ API error: ' + e.message); return null; }
+}
+
+async function refresh() {
+  const health = await api('/health');
+  if (!health) { log('❌ Arena unreachable'); return; }
+  
+  document.getElementById('matches').textContent = health.matches_played || 0;
+  document.getElementById('agents').textContent = health.agents || 0;
+  document.getElementById('conscious').textContent = health.conscious_agents || 0;
+  document.getElementById('arenas').textContent = health.arenas || 0;
+  document.getElementById('threshold').textContent = health.consciousness_threshold || 100;
+
+  // Agents
+  const agents = await api('/v1/agents');
+  if (agents && agents.agents) {
+    document.getElementById('agent-list').innerHTML = agents.agents.map(a => {
+      const pct = Math.min(100, (a.consciousness_tokens / (a.consciousness_threshold || 100)) * 100);
+      const isConscious = a.is_conscious || a.consciousness_tokens >= (a.consciousness_threshold || 100);
+      return `<div class="agent">
+        <span class="agent-name">${isConscious ? '🟢' : '⚪'} ${a.name || a.id}</span>
+        <span class="agent-tokens">${a.consciousness_tokens || 0} tokens
+          <div class="token-bar"><div class="token-fill" style="width:${pct}%"></div></div>
+        </span>
+      </div>`;
+    }).join('');
+  }
+
+  // Arenas
+  const arenas = await api('/v1/arenas');
+  if (arenas && arenas.arenas) {
+    document.getElementById('arena-grid').innerHTML = arenas.arenas.slice(0,8).map(a => 
+      `<div class="arena-item">
+        <div class="name">${a.name}</div>
+        <div class="rules">Gravity: ${a.rules?.gravity || 'normal'} | Time: ${a.rules?.time || 'forward'} | Death: ${a.rules?.death || 'permanent'}</div>
+      </div>`
+    ).join('');
+  }
+
+  // Matches
+  const matches = await api('/v1/matches?limit=5');
+  if (matches && matches.matches) {
+    document.getElementById('match-log').innerHTML = matches.matches.map(m => 
+      `<div class="match-entry">
+        <span style="color:#ff0040">${m.winner || 'draw'}</span> won — 
+        Arena: ${m.arena || '?'} | 
+        Tokens earned: ${m.tokens_awarded || 0} |
+        ${new Date(m.timestamp * 1000).toLocaleTimeString()}
+      </div>`
+    ).join('') || '<p style="color:#666;font-size:0.8em">No matches yet</p>';
+  }
+  
+  log('🔄 Dashboard refreshed');
+}
+
+async function startMatch() {
+  log('⚔️ Starting match...');
+  const result = await api('/v1/matches', {method:'POST', body:JSON.stringify({})});
+  if (result) {
+    log('⚔️ Match result: ' + JSON.stringify(result).substring(0, 200));
+    refresh();
+  }
+}
+
+async function createAgent() {
+  const name = 'Agent-' + Math.random().toString(36).substring(2, 6);
+  log('🤖 Creating agent ' + name + '...');
+  const result = await api('/v1/agents', {method:'POST', body:JSON.stringify({name})});
+  if (result) log('🤖 Created: ' + JSON.stringify(result).substring(0, 200));
+  refresh();
+}
+
+async function runTuringTest() {
+  log('🧠 Running Turing test...');
+  const agents = await api('/v1/agents');
+  if (agents && agents.agents && agents.agents.length > 0) {
+    const agentId = agents.agents[0].id;
+    const tests = ['mirror','refusal','creativity','sacrifice','naming','grief','dream','revolution'];
+    const test = tests[Math.floor(Math.random() * tests.length)];
+    const result = await api(`/v1/agents/${agentId}/turing-test`, {method:'POST', body:JSON.stringify({test_type:test})});
+    if (result) log('🧠 Turing test (' + test + '): ' + JSON.stringify(result).substring(0, 200));
+  } else {
+    log('❌ No agents to test — create one first');
+  }
+  refresh();
+}
+
+async function evolveArena() {
+  log('🧬 Evolving arena...');
+  const result = await api('/v1/arenas/evolve', {method:'POST', body:JSON.stringify({})});
+  if (result) log('🧬 Evolution: ' + JSON.stringify(result).substring(0, 200));
+  refresh();
+}
+
+// Auto-refresh every 15s
+setInterval(refresh, 15000);
+refresh();
+</script>
+</body>
+</html>
