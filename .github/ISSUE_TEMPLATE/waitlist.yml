@@ -1,0 +1,27 @@
+name: 🗝️ API Key Waitlist
+description: Get a free EVEZ AI API key
+labels: ["waitlist"]
+body:
+  - type: email
+    id: email
+    attributes:
+      label: Your email address
+      description: We'll send your API key to this address
+      placeholder: you@example.com
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Your name (optional)
+      placeholder: Jane Doe
+    validations:
+      required: false
+  - type: textarea
+    id: usecase
+    attributes:
+      label: What will you use EVEZ AI for?
+      description: Help us understand our users
+      placeholder: I want to build...
+    validations:
+      required: false
