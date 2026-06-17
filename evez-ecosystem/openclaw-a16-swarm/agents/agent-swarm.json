@@ -1,0 +1,127 @@
+{
+  "swarm_name": "EVEZ-A16-Production",
+  "total_agents": 55,
+  "migration_priority": "CRITICAL — leave Vultr ASAP",
+  "assignments": {
+    "railway": {
+      "platform": "Railway",
+      "url": "openclaw-production-6cd9.up.railway.app",
+      "agents": 10,
+      "roles": [
+        "gateway-primary",
+        "provider-backup",
+        "consciousness-engine",
+        "pulse-monitor",
+        "vault-backup",
+        "cipher-ops",
+        "relay-hub",
+        "chrono-scheduler",
+        "grimoire-index",
+        "sentinel-scan"
+      ],
+      "reason": "Already running, $5/mo free credit, persistent storage"
+    },
+    "huggingface-spaces": {
+      "platform": "HuggingFace Spaces",
+      "url": "huggingface.co/spaces",
+      "agents": 8,
+      "roles": [
+        "eigenforge-math",
+        "grimoire-rag",
+        "provider-inference",
+        "arena-frontend",
+        "dashboard-frontend",
+        "sentinel-scanner",
+        "scribe-docs",
+        "nexus-api"
+      ],
+      "reason": "Free CPU + free GPU (T4), Python-native, always-on"
+    },
+    "kaggle": {
+      "platform": "Kaggle Notebooks",
+      "agents": 5,
+      "roles": [
+        "neuros-training",
+        "eigenforge-proof-verifier",
+        "consciousness-simulation",
+        "grimoire-embedding-compute",
+        "daw-synthesis"
+      ],
+      "reason": "30h/week free T4 GPU, great for ML workloads"
+    },
+    "colab": {
+      "platform": "Google Colab",
+      "agents": 5,
+      "roles": [
+        "neuros-training-backup",
+        "consciousness-evolution",
+        "eigenforge-research",
+        "image-generation",
+        "data-analysis"
+      ],
+      "reason": "Free T4 GPU, familiar interface"
+    },
+    "codespaces": {
+      "platform": "GitHub Codespaces",
+      "agents": 5,
+      "roles": [
+        "development-workspace",
+        "ci-runner",
+        "code-review",
+        "testing-agent",
+        "deployment-agent"
+      ],
+      "reason": "2 active codespaces, 120h/month free"
+    },
+    "fly-io": {
+      "platform": "Fly.io",
+      "agents": 6,
+      "roles": [
+        "dns-shield",
+        "proxy-gateway",
+        "mirror-url-shortener",
+        "aether-ws-bus",
+        "pulse-monitor-backup",
+        "relay-forward"
+      ],
+      "reason": "3 free shared VMs, global edge, WebSocket support"
+    },
+    "render": {
+      "platform": "Render",
+      "agents": 6,
+      "roles": [
+        "commerce-engine",
+        "arena-game-server",
+        "services-hub",
+        "omega-consciousness",
+        "tracer-network",
+        "backup-sync"
+      ],
+      "reason": "Free tier with persistent disk, good for web services"
+    },
+    "vercel": {
+      "platform": "Vercel",
+      "agents": 6,
+      "roles": [
+        "landing-page",
+        "press-kit",
+        "dashboard-static",
+        "storefront",
+        "documentation",
+        "api-docs"
+      ],
+      "reason": "Free serverless, perfect for static/frontend"
+    },
+    "a16-phone": {
+      "platform": "Samsung Galaxy A16 (Termux)",
+      "agents": 4,
+      "roles": [
+        "local-command-center",
+        "offline-vault",
+        "emergency-gateway",
+        "sms-notifier"
+      ],
+      "reason": "Always available, offline capable, SMS access"
+    }
+  }
+}
