@@ -1,0 +1,16 @@
+ca0f7fb6d1f2d639217212a1f66385117350ac5027a2b66d60d2b11d3cb9b782  ./agents/agent-swarm.json
+5ba1b5b36bbc836811eb82692babfb7a57a9691e7257722710200f46d3be5863  ./agents/colab/consciousness-evolution.py
+a2a04980ed6267edb6489262c9ec53bae96031eaccef0772eaf9f1cdba886055  ./agents/colab/data-analysis.py
+c32bee94f361e15fe168351617b203929f05f7a8d281456ba2b6d8404d7d67a1  ./agents/colab/eigenforge-research.py
+cec4d28110cf014d005c0787aed649d2378518b556f937e4b6103f4995c84e8a  ./agents/colab/image-generation.py
+b9dda2d39c6f0589c759a2bfbf0fa69a2d49c8501f034cefcbfe7487c5023057  ./agents/colab/neuros-training.py
+385237410b36d7eedb4f11e953db339ad9ada87477dd47381d9cdfcc124312c3  ./agents/kaggle-neuros-train.ipynb
+7328e4d68671caa9df60839a9c765be1d95fddd23d7e4a50cbb1692a2b690436  ./agents/kaggle-neuros-train.py
+2fbf01e016e4789d24323ec26a94a812d5afb94ada214b4a1643bb9e2a9597d2  ./CHECKSUMS.sha256
+b1c4960f67170c20df50260a6af8d7263cc416914fcd193ac530349a825ec277  ./README.md
+47a37affb05db506a4f5634c4edcae235702d7b438725544085d4bde4bd4c6f0  ./scripts/deploy-fly.sh
+adf53a963333ea8fd4177e37a4e5a28541ffda253413c6aea7a62e7f18d0d3b0  ./scripts/deploy-hf-spaces.sh
+fe95792affdba5cb440ce642f53b03b9a3f7499415c8b5551ab766be6dc7faa6  ./scripts/deploy-openclaw.sh
+cade143032e3e664fd8c7bf8a2c88b7b5fa0a21db7653f9b4874063e5b709360  ./scripts/deploy-swarm.sh
+228b8e03ff30ac4c84e4d7d61954f5149f7f83b93738254d376f727b08f10930  ./scripts/start-openclaw.sh
+b5cdcc3120696d13d41f1244a8b8407a3446bdb98eb2182bc0949a8526c715f8  ./scripts/termux-bootstrap.sh
