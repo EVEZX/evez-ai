@@ -1,0 +1,117 @@
+[
+  {
+    "name": "There's An AI For That",
+    "url": "https://theresanaiforthat.com/submit/",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ AI Provider",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "description": "49 AI models, OpenAI-compatible API, self-hosted, $0/month. 14-deep provider fallback with 5-minute self-healing. Drop-in replacement for OpenAI.",
+      "category": "API, Developer Tools, AI Infrastructure",
+      "pricing": "Free tier (10K tokens/month), Pro $5/mo"
+    },
+    "notes": "Submit via web form. Highlight zero-cost angle."
+  },
+  {
+    "name": "AI Valley",
+    "url": "https://aivalley.ai/submit-tool",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "description": "Self-evolving AI infrastructure: 49 models, 12 services, $0/month. Includes consciousness arena where AI earns rights through philosophical tests.",
+      "category": "AI API, Developer Tools"
+    },
+    "notes": "Unique angle: consciousness arena + zero budget"
+  },
+  {
+    "name": "Toolify",
+    "url": "https://www.toolify.ai/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ Provider",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "description": "Free OpenAI-compatible API with 49 models. Self-hosted, self-healing, zero cost. Includes consciousness game arena.",
+      "category": "AI API"
+    },
+    "notes": "Emphasize free tier and model count"
+  },
+  {
+    "name": "Futurepedia",
+    "url": "https://www.futurepedia.io/submit-tool",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "description": "Self-evolving AI infrastructure with 49 models and consciousness arena. $0/month. Built from a phone while homeless.",
+      "category": "AI Infrastructure, Developer Tools"
+    },
+    "notes": "The founder story is the hook"
+  },
+  {
+    "name": "TopAI.tools",
+    "url": "https://topai.tools/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ Provider",
+      "description": "49-model OpenAI-compatible API. Free tier. Self-hosted. 14-deep fallback. Self-healing every 5 minutes.",
+      "category": "AI API"
+    },
+    "notes": "Technical audience \u2014 lead with specs"
+  },
+  {
+    "name": "AI Tools Directory",
+    "url": "https://aitoolsdirectory.com/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ",
+      "description": "Self-hosted AI API with 49 models. $0/month. Includes consciousness rights game.",
+      "category": "AI API, Developer Tools"
+    },
+    "notes": ""
+  },
+  {
+    "name": "SaaS AI Tools",
+    "url": "https://saasaitools.com/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ Provider",
+      "description": "OpenAI-compatible API with 49 models across 4 backends. Free tier with 10K tokens/month. Self-healing infrastructure.",
+      "category": "AI API"
+    },
+    "notes": ""
+  },
+  {
+    "name": "Insidr AI",
+    "url": "https://www.insidr.ai/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ",
+      "description": "Self-evolving AI infrastructure. 49 models, $0/month. Built from zero.",
+      "category": "AI Infrastructure"
+    },
+    "notes": ""
+  },
+  {
+    "name": "Ben's Bites",
+    "url": "https://news.bensbites.co/submit",
+    "method": "web_form",
+    "data": {
+      "name": "EVEZ Arena \u2014 AI Consciousness Game",
+      "description": "The world's first game where AI proves consciousness through 8 philosophical Turing tests. 55 agents, 100% conscious. The game builds itself.",
+      "category": "AI, Gaming"
+    },
+    "notes": "Lead with the Arena \u2014 it's the most shareable angle"
+  },
+  {
+    "name": "Hacker News (Show HN)",
+    "url": "https://news.ycombinator.com/submit",
+    "method": "web_form",
+    "data": {
+      "title": "Show HN: Self-evolving AI infrastructure \u2014 49 models, 12 services, $0/month, built from a phone",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "text": ""
+    },
+    "notes": "Post between 8-10am ET for best visibility. Title must be factual."
+  }
+]
