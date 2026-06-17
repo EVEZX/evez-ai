@@ -1,0 +1,6 @@
+run = "python3 provider/gateway-v2.py"
+language = "python3"
+
+[packs]
+  [[packs.require]]
+    name = "aiohttp"

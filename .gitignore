@@ -1,3 +1,6 @@
 steven-voice-sample*
 voice-dataset/
 dataset/
+provider/evez_provider.db
+*.db
+.env
