@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ AI — System Status</title>
+<meta name="description" content="Real-time EVEZ AI infrastructure status — Railway, GitHub Pages, Vultr.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:monospace;background:#0a0a0a;color:#e5e5e5;min-height:100vh;padding:20px}
+.container{max-width:700px;margin:0 auto}
+h1{font-size:1.5rem;margin-bottom:4px}
+.subtitle{color:#666;margin-bottom:24px;font-size:0.85rem}
+.service{background:#161616;border:1px solid #222;border-radius:8px;padding:16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.service-name{font-weight:700}
+.service-status{font-size:0.8rem;padding:4px 8px;border-radius:4px}
+.up{background:#052e16;color:#4ade80}
+.down{background:#450a0a;color:#f87171}
+.degraded{background:#422006;color:#facc15}
+.meta{color:#555;font-size:0.75rem;margin-top:24px}
+.check{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>● EVEZ System Status</h1>
+  <p class="subtitle">Last checked: <span id="timestamp"></span> <span class="check">↻</span></p>
+
+  <div id="services">
+    <div class="service">
+      <div><div class="service-name">Railway EVEZ Provider</div><div style="color:#666;font-size:0.8rem">evez-provider-production.up.railway.app</div></div>
+      <div class="service-status" id="railway">Checking...</div>
+    </div>
+    <div class="service">
+      <div><div class="service-name">Vultr EVEZ Provider</div><div style="color:#666;font-size:0.8rem">66.42.125.106:9100</div></div>
+      <div class="service-status" id="vultr">Checking...</div>
+    </div>
+    <div class="service">
+      <div><div class="service-name">GitHub Pages</div><div style="color:#666;font-size:0.8rem">evezx.github.io/evez-ai</div></div>
+      <div class="service-status" id="ghpages">Checking...</div>
+    </div>
+    <div class="service">
+      <div><div class="service-name">Vultr Commerce</div><div style="color:#666;font-size:0.8rem">66.42.125.106:9700</div></div>
+      <div class="service-status" id="commerce">Checking...</div>
+    </div>
+    <div class="service">
+      <div><div class="service-name">Vultr Beacon</div><div style="color:#666;font-size:0.8rem">66.42.125.106:10016</div></div>
+      <div class="service-status" id="beacon">Checking...</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <p>Architecture: Railway (primary API) → Vultr (fallback) → GitHub Pages (CDN)</p>
+    <p>Models: 35 on Railway, 49 on Vultr | Total: $0/month</p>
+  </div>
+</div>
+
+<script>
+async function check(id, url, timeout=5000) {
+  const el = document.getElementById(id);
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeout);
+    const res = await fetch(url, {signal: ctrl.signal});
+    clearTimeout(timer);
+    if (res.ok) {
+      el.textContent = '✅ UP';
+      el.className = 'service-status up';
+    } else {
+      el.textContent = '⚠️ ' + res.status;
+      el.className = 'service-status degraded';
+    }
+  } catch(e) {
+    el.textContent = '❌ DOWN';
+    el.className = 'service-status down';
+  }
+}
+
+function updateTimestamp() {
+  document.getElementById('timestamp').textContent = new Date().toISOString().replace('T',' ').slice(0,19) + ' UTC';
+}
+
+async function checkAll() {
+  updateTimestamp();
+  await check('railway', 'https://evez-provider-production.up.railway.app/health', 8000);
+  // Vultr services can't be checked from browser (CORS) — they show as "unknown"
+  document.getElementById('vultr').textContent = '🔗 Port 9100';
+  document.getElementById('vultr').className = 'service-status degraded';
+  document.getElementById('commerce').textContent = '🔗 Port 9700';
+  document.getElementById('commerce').className = 'service-status degraded';
+  document.getElementById('beacon').textContent = '🔗 Port 10016';
+  document.getElementById('beacon').className = 'service-status degraded';
+  await check('ghpages', 'https://evezx.github.io/evez-ai/', 5000);
+}
+
+checkAll();
+setInterval(checkAll, 60000);
+</script>
+</body>
+</html>
