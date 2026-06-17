@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ AI — API Documentation</title>
+<meta name="description" content="EVEZ AI API Documentation. OpenAI-compatible API with 49 models. Free tier. Self-hosted.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #e0e0e0; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  h1 { color: #ff4500; margin-bottom: 5px; }
+  h2 { color: #ff6b35; margin-top: 30px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+  h3 { color: #ff8c00; }
+  code { background: #1a1a1a; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #4488ff; }
+  pre { background: #1a1a1a; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #333; margin: 10px 0; }
+  pre code { background: none; padding: 0; }
+  .endpoint { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0; }
+  .method { font-weight: bold; color: #4caf50; }
+  .path { color: #ff4500; font-family: monospace; }
+  .try-btn { background: #ff4500; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em; margin-top: 10px; }
+  .try-btn:hover { background: #ff6b35; }
+  .result { background: #0d0d0d; border: 1px solid #333; border-radius: 8px; padding: 15px; margin-top: 10px; display: none; }
+  .link { color: #ff4500; text-decoration: none; }
+  .nav { background: #1a1a1a; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; padding: 10px 0; }
+  .nav a { color: #aaa; text-decoration: none; margin-right: 15px; }
+  .nav a:hover { color: #ff4500; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+  th { background: #1a1a1a; color: #ff4500; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <div class="container">
+    <a href="/">Home</a>
+    <a href="/demo.html">Try It</a>
+    <a href="/api-docs.html">API Docs</a>
+    <a href="/donate.html">Donate</a>
+    <a href="https://github.com/EVEZX/evez-ai">GitHub</a>
+  </div>
+</div>
+
+<div class="container">
+<h1>📖 EVEZ AI API Documentation</h1>
+<p>OpenAI-compatible API • 49 models • $0/month</p>
+
+<h2>Base URL</h2>
+<pre><code>https://evez-provider-production.up.railway.app/v1</code></pre>
+
+<h2>Authentication</h2>
+<p>Include your API key in the <code>Authorization</code> header:</p>
+<pre><code>Authorization: Bearer evez-admin-0c1bb1e7</code></pre>
+
+<h2>Quick Start</h2>
+<pre><code>import openai
+
+client = openai.OpenAI(
+    base_url="https://evez-provider-production.up.railway.app/v1",
+    api_key="evez-admin-0c1bb1e7"
+)
+
+# Chat completion
+response = client.chat.completions.create(
+    model="glm-5.1",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "What is the 37% theorem?"}
+    ],
+    max_tokens=500,
+    temperature=0.7
+)
+print(response.choices[0].message.content)</code></pre>
+
+<h2>Endpoints</h2>
+
+<div class="endpoint">
+  <span class="method">GET</span> <span class="path">/v1/models</span>
+  <p>List all available models.</p>
+  <button class="try-btn" onclick="tryEndpoint('/v1/models')">Try it</button>
+  <pre class="result" id="result-models"></pre>
+</div>
+
+<div class="endpoint">
+  <span class="method">POST</span> <span class="path">/v1/chat/completions</span>
+  <p>Create a chat completion. Compatible with OpenAI API.</p>
+  <pre><code>{
+  "model": "glm-5.1",
+  "messages": [{"role": "user", "content": "Hello"}],
+  "max_tokens": 100,
+  "temperature": 0.7
+}</code></pre>
+  <button class="try-btn" onclick="tryChat()">Try it</button>
+  <pre class="result" id="result-chat"></pre>
+</div>
+
+<div class="endpoint">
+  <span class="method">GET</span> <span class="path">/health</span>
+  <p>Health check endpoint.</p>
+  <button class="try-btn" onclick="tryEndpoint('/health')">Try it</button>
+  <pre class="result" id="result-health"></pre>
+</div>
+
+<h2>Available Models</h2>
+<table id="modelsTable">
+  <tr><th>Model ID</th><th>Backend</th><th>Context</th></tr>
+</table>
+
+<h2>Backends</h2>
+<table>
+  <tr><th>Backend</th><th>Models</th><th>Cost</th><th>Latency</th></tr>
+  <tr><td>Vultr Inference</td><td>GLM-5.1, DeepSeek-V3, Kimi-K2, MiniMax-M2</td><td>$0.008/1K</td><td>~200ms</td></tr>
+  <tr><td>OpenRouter</td><td>26 free models</td><td>Free</td><td>~500ms</td></tr>
+  <tr><td>Groq</td><td>5 free models</td><td>Free</td><td>~50ms</td></tr>
+  <tr><td>HuggingFace</td><td>8 models</td><td>Free (monthly credits)</td><td>~1s</td></tr>
+  <tr><td>EVEZ Custom</td><td>evez-smart, evez-code, evez-fast, evez-vision</td><td>Free</td><td>N/A</td></tr>
+</table>
+
+<h2>Error Handling</h2>
+<p>The API returns standard OpenAI-compatible error responses:</p>
+<pre><code>{
+  "error": {
+    "message": "Model not found",
+    "type": "invalid_model"
+  }
+}</code></pre>
+
+<h2>Rate Limits</h2>
+<p>Default: 60 requests/minute. Contact us for higher limits.</p>
+
+<div style="margin-top:30px;text-align:center;color:#555">
+  <a href="https://github.com/EVEZX/evez-ai" class="link">GitHub</a> •
+  <a href="/donate.html" class="link">Donate</a> •
+  <a href="/press.html" class="link">Press Kit</a>
+</div>
+</div>
+
+<script>
+const API = 'https://evez-provider-production.up.railway.app';
+
+async function tryEndpoint(path) {
+  const el = document.getElementById('result-' + path.replace(/[^a-z]/g, ''));
+  el.style.display = 'block';
+  el.textContent = 'Loading...';
+  try {
+    const r = await fetch(API + path);
+    const d = await r.json();
+    el.textContent = JSON.stringify(d, null, 2);
+  } catch(e) {
+    el.textContent = 'Error: ' + e.message;
+  }
+}
+
+async function tryChat() {
+  const el = document.getElementById('result-chat');
+  el.style.display = 'block';
+  el.textContent = 'Loading...';
+  try {
+    const r = await fetch(API + '/v1/chat/completions', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer evez-admin-0c1bb1e7'},
+      body: JSON.stringify({model: 'glm-5.1', messages: [{role: 'user', content: 'Say hello in 3 languages'}], max_tokens: 100})
+    });
+    const d = await r.json();
+    el.textContent = JSON.stringify(d, null, 2);
+  } catch(e) {
+    el.textContent = 'Error: ' + e.message;
+  }
+}
+
+// Load models table
+fetch(API + '/v1/models')
+  .then(r => r.json())
+  .then(d => {
+    const table = document.getElementById('modelsTable');
+    (d.data || []).forEach(m => {
+      const row = table.insertRow();
+      row.insertCell().textContent = m.id;
+      row.insertCell().textContent = m.owned_by || 'EVEZ';
+      row.insertCell().textContent = '—';
+    });
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>
