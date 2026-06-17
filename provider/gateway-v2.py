@@ -226,6 +226,14 @@ MODELS = [
     {"id": "groq-deepseek-r1", "backend": "groq", "backend_model": "deepseek-r1-distill-llama-70b",
      "context_window": 131072, "capabilities": ["reasoning", "math"],
      "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
+
+    # === OpenRouter Free Models (Mega-Advanced) ===
+    {"id": "or-nemotron-550b", "backend": "openrouter", "backend_model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+     "context_window": 1000000, "capabilities": ["chat", "reasoning"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-nex-n2-pro", "backend": "openrouter", "backend_model": "nex-agi/nex-n2-pro:free",
+     "context_window": 262144, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
 ]
 
 MODEL_MAP = {m["id"]: m for m in MODELS}
@@ -252,6 +260,14 @@ db.executescript("""
         latency_ms INTEGER,
         cost REAL,
         timestamp REAL
+    );
+    CREATE TABLE IF NOT EXISTS api_keys (
+        key TEXT PRIMARY KEY,
+        email TEXT,
+        name TEXT,
+        created REAL,
+        requests INTEGER DEFAULT 0,
+        active INTEGER DEFAULT 1
     );
 """)
 db.commit()
@@ -509,17 +525,77 @@ def create_app():
     app.router.add_post("/v1/chat/completions", handle_completions)
     app.router.add_post("/v1/models", handle_add_model)  # Self-evolution endpoint
     app.router.add_post("/v1/keys", handle_create_key)
+    app.router.add_post("/v1/signup", handle_signup_key)
+    app.router.add_get("/v1/key-info", handle_key_info)
     app.router.add_get("/v1/stats", handle_stats)
     app.router.add_get("/health", handle_health)
     return app
 
 async def handle_create_key(req):
+    """Admin key creation (existing)"""
     admin = req.headers.get("X-Admin-Key", "")
     if admin != os.getenv("ADMIN_KEY", "evez-admin"):
         return web.json_response({"error": "Unauthorized"}, status=401)
     key = f"evez-{uuid.uuid4().hex[:32]}"
     API_KEYS[key] = {"created": time.time()}
     return web.json_response({"key": key})
+
+async def handle_signup_key(req):
+    """Public API key signup — anyone can get a free key with just email."""
+    try:
+        data = await req.json()
+    except:
+        return web.json_response({"error": "Invalid JSON"}, status=400)
+
+    email = data.get("email", "").strip().lower()
+    name = data.get("name", "Anonymous").strip()[:50]
+
+    if not email or "@" not in email:
+        return web.json_response({"error": "Valid email required"}, status=400)
+
+    # Check if email already has a key
+    existing = db.execute("SELECT key FROM api_keys WHERE email=? AND active=1", (email,)).fetchone()
+    if existing:
+        return web.json_response({
+            "error": "Email already registered",
+            "key": existing["key"],
+            "message": "Here's your existing key"
+        })
+
+    # Create new key
+    key = f"evez-{uuid.uuid4().hex[:24]}"
+    db.execute("INSERT INTO api_keys (key, email, name, created) VALUES (?, ?, ?, ?)",
+               (key, email, name, time.time()))
+    db.commit()
+
+    return web.json_response({
+        "key": key,
+        "email": email,
+        "name": name,
+        "rate_limit": "60 requests/minute",
+        "models": len(MODELS),
+        "base_url": "https://evez-provider-production.up.railway.app/v1",
+        "message": "Your API key is ready! Use it with the OpenAI-compatible API."
+    })
+
+async def handle_key_info(req):
+    """Get info about an API key"""
+    auth = req.headers.get("Authorization", "").replace("Bearer ", "")
+    if not auth:
+        return web.json_response({"error": "API key required"}, status=401)
+
+    key_info = db.execute("SELECT * FROM api_keys WHERE key=?", (auth,)).fetchone()
+    if not key_info:
+        return web.json_response({"error": "Invalid key"}, status=401)
+
+    return web.json_response({
+        "key": key_info["key"],
+        "email": key_info["email"],
+        "name": key_info["name"],
+        "created": key_info["created"],
+        "requests": key_info["requests"],
+        "active": key_info["active"]
+    })
 
 if __name__ == "__main__":
     app = create_app()

@@ -1,0 +1,209 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EVEZ AI Provider API",
+    "description": "OpenAI-compatible API routing across 49 models on 4 backends. Self-healing with 14-deep fallback chain. Drop-in replacement for OpenAI.",
+    "version": "2.0.0",
+    "contact": {
+      "name": "EVEZ Support",
+      "url": "https://github.com/EVEZX/evez-ai",
+      "email": "rubikspubes70@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://cabin-platforms-adds-lobby.trycloudflare.com",
+      "description": "Cloudflare Tunnel (regenerates on restart)"
+    },
+    {
+      "url": "http://localhost:9100",
+      "description": "Local development"
+    }
+  ],
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "operationId": "createChatCompletion",
+        "summary": "Create a chat completion",
+        "description": "Creates a model response for the given chat conversation. Automatically routes to the cheapest available backend with 14-deep fallback.",
+        "tags": ["Chat"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletionResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{"BearerAuth": []}]
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "operationId": "listModels",
+        "summary": "List available models",
+        "description": "Returns all 49 models across 4 backends (Vultr, OpenRouter, Groq, HuggingFace).",
+        "tags": ["Models"],
+        "responses": {
+          "200": {
+            "description": "Model list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelListResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{"BearerAuth": []}]
+      }
+    },
+    "/v1/keys": {
+      "post": {
+        "operationId": "createApiKey",
+        "summary": "Create an API key",
+        "description": "Generate a new API key. Free tier includes 10K tokens/month. No credit card required.",
+        "tags": ["API Keys"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {"type": "string", "format": "email", "description": "Your email address"},
+                  "plan": {"type": "string", "enum": ["free", "pro", "enterprise"], "default": "free"}
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "API key created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "key": {"type": "string", "description": "Your API key (starts with evez_)"},
+                    "plan": {"type": "string"},
+                    "tokens_limit": {"type": "integer"},
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key starting with 'evez_'"
+      }
+    },
+    "schemas": {
+      "ChatCompletionRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model ID or alias. Use 'evez-smart' for auto-routing.",
+            "enum": ["evez-smart", "evez-code", "evez-fast", "evez-vision", "glm-5.1", "llama-3.3-70b", "gemma-4-31b", "nemotron-120b", "qwen3-coder", "phi4", "deepseek-r1", "qwq-32b"],
+            "default": "evez-smart"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "description": "Conversation messages"
+          },
+          "temperature": {"type": "number", "minimum": 0, "maximum": 2, "default": 0.7},
+          "max_tokens": {"type": "integer", "minimum": 1, "default": 4096},
+          "stream": {"type": "boolean", "default": false}
+        },
+        "required": ["model", "messages"]
+      },
+      "ChatMessage": {
+        "type": "object",
+        "properties": {
+          "role": {"type": "string", "enum": ["system", "user", "assistant"]},
+          "content": {"type": "string"}
+        },
+        "required": ["role", "content"]
+      },
+      "ChatCompletionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "object": {"type": "string", "default": "chat.completion"},
+          "created": {"type": "integer"},
+          "model": {"type": "string"},
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {"type": "integer"},
+                "message": {"$ref": "#/components/schemas/ChatMessage"},
+                "finish_reason": {"type": "string"}
+              }
+            }
+          },
+          "usage": {
+            "type": "object",
+            "properties": {
+              "prompt_tokens": {"type": "integer"},
+              "completion_tokens": {"type": "integer"},
+              "total_tokens": {"type": "integer"}
+            }
+          }
+        }
+      },
+      "ModelListResponse": {
+        "type": "object",
+        "properties": {
+          "object": {"type": "string", "default": "list"},
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "object": {"type": "string", "default": "model"},
+                "owned_by": {"type": "string"},
+                "backend": {"type": "string", "enum": ["vultr", "openrouter", "groq", "huggingface"]}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
