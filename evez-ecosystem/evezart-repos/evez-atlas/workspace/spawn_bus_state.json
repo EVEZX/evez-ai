@@ -1,0 +1,11 @@
+{
+  "health": "PASS",
+  "note": "R174 probe da681d91 COMPLETED — FIRE#28 confirmed. R175 probe NOT YET LAUNCHED.",
+  "probe_id": "da681d91-ae3f-48cb-b2c9-4db03a99abec",
+  "probe_status": "completed",
+  "fire_confirmed": true,
+  "fire_number": 28,
+  "poly_c": 0.721868,
+  "last_run": "2026-02-24T12:35:00+00:00",
+  "last_round": 173
+}

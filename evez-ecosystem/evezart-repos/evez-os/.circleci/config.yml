@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  validate:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Validate operator console deployment files
+          command: |
+            test -f dashboard/app.js
+            test -f dashboard/styles.css
+            test -f api/index.py
+            test -f vercel.json
+            echo "Operator console deployment files present."
+
+workflows:
+  operator-console-check:
+    jobs:
+      - validate

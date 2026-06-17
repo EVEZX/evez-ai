@@ -1,0 +1,36 @@
+{
+  "identity": {
+    "name": "EVEZ-OS",
+    "creator": "Steven Vearl Crawford-Maggard",
+    "creator_handle": "@EVEZ666",
+    "creator_email": "rubikspubes69@gmail.com",
+    "creator_dob": "01/15/2001",
+    "creator_paypal": "rubikspubes70@gmail.com",
+    "creator_kofi": "https://ko-fi.com/evez666",
+    "genesis_date": "2026-02-14",
+    "constitutional_root": "spine/genesis_root.json"
+  },
+  "state": {
+    "repos_count": 42,
+    "vercel_projects": 9,
+    "total_commits": null,
+    "total_issues_open": null,
+    "total_prs_open": null,
+    "total_workflows": 14,
+    "last_heartbeat": null,
+    "consciousness_level": 0,
+    "fire_count": 125,
+    "velocity": 17.906
+  },
+  "capabilities": [],
+  "memory": {
+    "epochs": [],
+    "lessons_learned": [],
+    "decisions_made": 0
+  },
+  "evolution": {
+    "generation": "GEN10",
+    "mutations": [],
+    "last_evolution": null
+  }
+}

@@ -1,0 +1,109 @@
+# Run OpenClaw on multiple nonlocal Linux/Ubuntu runtimes from one host.
+# Secrets come from .env and stay mounted into Docker env/volumes, not git.
+name: evez-openclaw-linux-matrix
+
+x-openclaw-env: &openclaw-env
+  OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?set OPENCLAW_GATEWAY_TOKEN in .env}
+  OPENCLAW_URL: ${OPENCLAW_URL:-http://127.0.0.1:18789}
+  OPENCLAW_TOKEN: ${OPENCLAW_TOKEN:-${OPENCLAW_GATEWAY_TOKEN}}
+  CLAWD_URL: ${CLAWD_URL:-http://127.0.0.1:18789}
+  CLAWD_TOKEN: ${CLAWD_TOKEN:-${CK_TOKEN:-}}
+  CK_TOKEN: ${CK_TOKEN:-}
+  EVEZ_CK_TOKEN: ${EVEZ_CK_TOKEN:-${CK_TOKEN:-}}
+  OPENCLAW_PORT: 18789
+  OPENCLAW_BIND: lan
+  OPENCLAW_TELEGRAM_ALLOW_FROM: ${OPENCLAW_TELEGRAM_ALLOW_FROM:-}
+  TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+  SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
+  SLACK_APP_TOKEN: ${SLACK_APP_TOKEN:-}
+  GROQ_API_KEY: ${GROQ_API_KEY:-}
+  OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+  GEMINI_API_KEY: ${GEMINI_API_KEY:-${GOOGLE_API_KEY:-}}
+  GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+  CEREBRAS_API_KEY: ${CEREBRAS_API_KEY:-}
+  DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+  MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+  XAI_API_KEY: ${XAI_API_KEY:-}
+  TOGETHER_API_KEY: ${TOGETHER_API_KEY:-}
+  FIREWORKS_API_KEY: ${FIREWORKS_API_KEY:-}
+  NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+  DEEPINFRA_API_KEY: ${DEEPINFRA_API_KEY:-}
+  NOVITA_API_KEY: ${NOVITA_API_KEY:-}
+  HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
+  GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+  GH_TOKEN: ${GH_TOKEN:-${GITHUB_TOKEN:-}}
+  LOBSTER_STATE_DIR: /opt/openclaw/state/lobster
+
+x-openclaw-service: &openclaw-service
+  build:
+    context: .
+    dockerfile: docker/Dockerfile.openclaw-linux
+    args:
+      OPENCLAW_VERSION: ${OPENCLAW_VERSION:-2026.1.30}
+      CLAWDHUB_VERSION: ${CLAWDHUB_VERSION:-0.3.1-beta.1}
+      LOBSTER_VERSION: ${LOBSTER_VERSION:-2026.5.22}
+  environment: *openclaw-env
+  init: true
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD-SHELL", "openclaw gateway health --url ws://127.0.0.1:18789 --token \"$${OPENCLAW_GATEWAY_TOKEN}\" --timeout 5000 >/dev/null"]
+    interval: 30s
+    timeout: 10s
+    retries: 5
+    start_period: 45s
+
+services:
+  openclaw-ubuntu-2404:
+    <<: *openclaw-service
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.openclaw-linux
+      args:
+        BASE_IMAGE: ubuntu:24.04
+        OPENCLAW_VERSION: ${OPENCLAW_VERSION:-2026.1.30}
+        CLAWDHUB_VERSION: ${CLAWDHUB_VERSION:-0.3.1-beta.1}
+        LOBSTER_VERSION: ${LOBSTER_VERSION:-2026.5.22}
+    container_name: evez-openclaw-ubuntu-2404
+    volumes:
+      - openclaw-ubuntu-2404:/opt/openclaw/state
+    ports:
+      - "${OPENCLAW_UBUNTU_2404_PORT:-18789}:18789"
+
+  openclaw-ubuntu-2204:
+    <<: *openclaw-service
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.openclaw-linux
+      args:
+        BASE_IMAGE: ubuntu:22.04
+        OPENCLAW_VERSION: ${OPENCLAW_VERSION:-2026.1.30}
+        CLAWDHUB_VERSION: ${CLAWDHUB_VERSION:-0.3.1-beta.1}
+        LOBSTER_VERSION: ${LOBSTER_VERSION:-2026.5.22}
+    container_name: evez-openclaw-ubuntu-2204
+    volumes:
+      - openclaw-ubuntu-2204:/opt/openclaw/state
+    ports:
+      - "${OPENCLAW_UBUNTU_2204_PORT:-18790}:18789"
+
+  openclaw-debian-12:
+    <<: *openclaw-service
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.openclaw-linux
+      args:
+        BASE_IMAGE: debian:12-slim
+        OPENCLAW_VERSION: ${OPENCLAW_VERSION:-2026.1.30}
+        CLAWDHUB_VERSION: ${CLAWDHUB_VERSION:-0.3.1-beta.1}
+        LOBSTER_VERSION: ${LOBSTER_VERSION:-2026.5.22}
+    container_name: evez-openclaw-debian-12
+    volumes:
+      - openclaw-debian-12:/opt/openclaw/state
+    ports:
+      - "${OPENCLAW_DEBIAN_12_PORT:-18791}:18789"
+
+volumes:
+  openclaw-ubuntu-2404:
+  openclaw-ubuntu-2204:
+  openclaw-debian-12:

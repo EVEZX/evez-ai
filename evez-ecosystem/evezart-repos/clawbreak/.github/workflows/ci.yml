@@ -1,0 +1,31 @@
+name: ClawBreak CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install -r requirements.txt 2>/dev/null || pip install fastapi uvicorn httpx groq
+      - name: Syntax check
+        run: python3 -m py_compile server.py
+      - name: Health check import
+        run: python3 -c "from server import app; print('✅ ClawBreak imports OK')"
+
+  deploy-pages:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to GitHub Pages
+        run: echo "Static files in /static — serve via Cloudflare or Vercel"

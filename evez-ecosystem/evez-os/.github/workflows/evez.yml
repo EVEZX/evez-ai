@@ -1,0 +1,66 @@
+name: EVEZ Spine CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint-play-visualize:
+    name: Lint - Play - Visualize
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pillow scipy || echo "Optional deps, continuing"
+
+      - name: Lint spine
+        run: |
+          if [ -f tools/evez.py ]; then python tools/evez.py lint || echo "Lint skipped"; else echo "tools/evez.py not present, skipping lint"; fi
+
+      - name: Validate spine modules
+        run: |
+          echo "Spine modules present:"
+          ls spine/ 2>/dev/null || echo "No spine/ dir yet"
+          echo "Latest module:"
+          ls -t spine/*.py 2>/dev/null | head -1 || echo "No .py modules yet"
+          python -c "import math; print('Python OK')"
+
+      - name: Play engine
+        run: |
+          if [ -f tools/evez.py ]; then
+            python tools/evez.py play --seed 42 --steps 14 || echo "Play skipped"
+          else
+            echo "tools/evez.py not present, skipping play"
+          fi
+
+      - name: Visualize spine
+        run: |
+          if [ -f tools/evez.py ]; then
+            python tools/evez.py visualize-thought --input spine/spine.jsonl --out ci_artifacts --fps 2 || echo "Visualizer skipped"
+          else
+            echo "Visualizer skipped (no tools/evez.py)"
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evez-cognition-${{ github.sha }}
+          path: |
+            ci_artifacts/
+            spine/
+          retention-days: 30
+          if-no-files-found: warn

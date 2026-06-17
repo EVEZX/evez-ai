@@ -1,0 +1,76 @@
+{
+  "profile_version": "2026-03-30",
+  "creator": {
+    "display_name": "Steven Crawford-Maggard",
+    "operator_name": "Steven Crawford-Maggard (EVEZ)",
+    "aliases": ["EVEZ", "Evez666", "EvezArt"],
+    "email": "rubikspubes69@gmail.com"
+  },
+  "connected_identities": {
+    "github": {
+      "nickname": "EvezArt",
+      "display_name": "Evez666",
+      "account_id": "129563238"
+    },
+    "atlassian": {
+      "account_id": "712020:6d54c1a8-88e1-406d-9627-d14f0c31a61a",
+      "display_name": "Steven Crawford-Maggard (EVEZ)"
+    },
+    "asana": {
+      "user_gid": "1212997206218394",
+      "display_name": "Steven Crawford-Maggard (EVEZ)"
+    },
+    "netlify": {
+      "team_slug": "evezart",
+      "connected_github": "EvezArt"
+    },
+    "stripe": {
+      "account_id": "acct_1T4T9aPVAHoR0Amp",
+      "display_name": "Steven Crawford-Maggard"
+    }
+  },
+  "active_systems": {
+    "monitor_repo": {
+      "repo": "EvezArt/lord-evez",
+      "path": "public/lord-monitor/",
+      "status": "implemented"
+    },
+    "bridge_repo": {
+      "repo": "EvezArt/Evez666",
+      "path": "src/integrations/lord_bridge/",
+      "status": "implemented"
+    },
+    "deployment_target": {
+      "provider": "Netlify",
+      "site_name": "lord-evez-monitor",
+      "site_id": "5b27b68a-aeb9-4526-87ad-41a3e3f7fa88",
+      "status": "publish_pending"
+    }
+  },
+  "commercial_surfaces": {
+    "runtime_blueprint": {
+      "product": "prod_U7OphL23kRwWGG",
+      "price": "price_1T9A2XPVAHoR0Amp4N6ykUge",
+      "payment_link": "plink_1TGYLVPVAHoR0AmpnvTEGY8i"
+    },
+    "operator_tier": {
+      "product": "prod_U7OgdBcdYXySTR",
+      "price": "price_1T99tkPVAHoR0AmpaNWrsD2v",
+      "payment_link": "plink_1TGYMSPVAHoR0Ampmz5U2yCq"
+    },
+    "development_support": {
+      "product": "prod_U8wwxjUBS5eheO",
+      "price": "price_1TAf2yPVAHoR0Ampe2vXw85R",
+      "payment_link": "plink_1TGYOsPVAHoR0AmpcDSPPwWr"
+    }
+  },
+  "operational_truth": {
+    "task_registry": "Airtable DEV_CIRCUIT_TASKS",
+    "planning_surface": "Asana / EVEZ Connector Surfaces Continuation",
+    "runbook": "Confluence / EVEZ execution continuation — verification and publish retry"
+  },
+  "current_blockers": [
+    "Netlify direct publish command cannot be executed in this environment because the authenticated proxy command is blocked at execution time.",
+    "End-to-end browser-to-runtime verification remains pending fresh site publish."
+  ]
+}

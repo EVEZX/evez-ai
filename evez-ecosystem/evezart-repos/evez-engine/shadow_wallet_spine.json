@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "operator": "shadow-wallet-engine",
+    "eigenvalue_threshold": -0.358,
+    "poly_c_initial": 634.71,
+    "poly_c_max": 34862
+  },
+  "events": [
+    {
+      "eventId": "evez-000000",
+      "index": 0,
+      "timestamp": 1778277142.985417,
+      "timestamp_iso": "2026-05-08T21:52:22.000Z",
+      "type": "SHADOW_WALLET",
+      "domain": "security",
+      "data": {
+        "eigenvalue": -1.5643,
+        "bridge_type": [
+          "CASHOUT_WALLET \u2014 ransomware operator's cash-out wallet, likely passing through a mixer before reaching an exchange",
+          "PRIVACY_WHALE \u2014 high-net-worth individual using mixing services, wallet exists between mixer output and cold storage",
+          "SCAM_LAUNDER \u2014 wallet that receives scam proceeds and routes through mixers before exchange deposit"
+        ],
+        "cluster_a": [
+          [
+            "Whale-1",
+            "whale"
+          ],
+          [
+            "Whale-2",
+            "whale"
+          ],
+          [
+            "Whale-3",
+            "whale"
+          ],
+          [
+            "Mixer-Tornado",
+            "mixer"
+          ],
+          [
+            "Mixer-Wasabi",
+            "mixer"
+          ]
+        ],
+        "cluster_b": [
+          [
+            "Binance-1",
+            "exchange"
+          ],
+          [
+            "Coinbase-1",
+            "exchange"
+          ],
+          [
+            "Huobi-1",
+            "exchange"
+          ],
+          [
+            "Bitfinex-1",
+            "exchange"
+          ],
+          [
+            "Kraken-1",
+            "exchange"
+          ]
+        ],
+        "severity": "CRITICAL",
+        "investigation_priority": "The wallet(s) at this structural gap are the bridge between known and unknown. Finding them reveals the actors who are attempting to hide in the topology."
+      },
+      "predecessor": "f17ab460db76f6675f11c0ff62745688c0b346e2925e4e084895e33fd7567ecb",
+      "confidence": 0.75,
+      "status": "INVESTIGATING",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "LOG_ONLY",
+      "tags": [
+        "shadow_wallet",
+        "critical",
+        "blockchain_forensics"
+      ],
+      "operator": "shadow-wallet-engine",
+      "hash": "ae771d626808eebf5bb840514d440bd4228e6d5afd1d3105713c9fccfc50bca1"
+    },
+    {
+      "eventId": "evez-000001",
+      "index": 1,
+      "timestamp": 1778277142.9855146,
+      "timestamp_iso": "2026-05-08T21:52:22.000Z",
+      "type": "SHADOW_WALLET",
+      "domain": "security",
+      "data": {
+        "eigenvalue": -0.7565,
+        "bridge_type": [
+          "CASHOUT_WALLET \u2014 ransomware operator's cash-out wallet, likely passing through a mixer before reaching an exchange",
+          "STATE_PROXY_WALLET \u2014 intermediary wallet between nation-state actor and exchange, designed to break the on-chain link",
+          "VENDOR_CASHOUT \u2014 darknet market vendor's cash-out wallet, typically small amounts through multiple exchanges",
+          "PRIVACY_WHALE \u2014 high-net-worth individual using mixing services, wallet exists between mixer output and cold storage",
+          "SCAM_LAUNDER \u2014 wallet that receives scam proceeds and routes through mixers before exchange deposit"
+        ],
+        "cluster_a": [
+          [
+            "Whale-1",
+            "whale"
+          ],
+          [
+            "Whale-2",
+            "whale"
+          ],
+          [
+            "Whale-3",
+            "whale"
+          ],
+          [
+            "Mining-Pool-1",
+            "mining"
+          ],
+          [
+            "Mining-Pool-2",
+            "mining"
+          ]
+        ],
+        "cluster_b": [
+          [
+            "Binance-1",
+            "exchange"
+          ],
+          [
+            "Coinbase-1",
+            "exchange"
+          ],
+          [
+            "Huobi-1",
+            "exchange"
+          ],
+          [
+            "Bitfinex-1",
+            "exchange"
+          ],
+          [
+            "Kraken-1",
+            "exchange"
+          ]
+        ],
+        "severity": "CRITICAL",
+        "investigation_priority": "The wallet(s) at this structural gap are the bridge between known and unknown. Finding them reveals the actors who are attempting to hide in the topology."
+      },
+      "predecessor": "ae771d626808eebf5bb840514d440bd4228e6d5afd1d3105713c9fccfc50bca1",
+      "confidence": 0.75,
+      "status": "INVESTIGATING",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "LOG_ONLY",
+      "tags": [
+        "shadow_wallet",
+        "critical",
+        "blockchain_forensics"
+      ],
+      "operator": "shadow-wallet-engine",
+      "hash": "05b04c5dffb1a518c8a336e874f39217a6d26d751fd6eea59a6a7729cb36e33e"
+    }
+  ]
+}

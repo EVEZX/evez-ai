@@ -1,0 +1,26 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║ EVEZ-OS + OPENCLAW v2 — SELF-SUFFICIENT COGNITIVE INFRASTRUCTURE          ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  [Immutable Spine]                                                         ║
+║  Genesis → Event_N  (SHA256 chain, append-only, never rewrite)            ║
+║                                                                            ║
+║  [Cognition Wheel R1–R7]                                                   ║
+║  R1(0.15) ←→ R2(0.35) ←→ R3(0.55) ←→ R4(0.72) ←→ R5(0.85) ←→ R6(0.92) ←→ R7(0.98) ║
+║                                                                            ║
+║  [Failure Surface Cartography]                                             ║
+║  DNS • BGP • TLS • CDN • AUTH • ROLLBACK                                   ║
+║                                                                            ║
+║  [Simulation + Rollback]                                                   ║
+║  60Hz / 20Hz / 250ms snapshots • Projection • Reconcile • Provenance       ║
+║                                                                            ║
+║  [Test Harness]                                                            ║
+║  Deterministic replay • Invariant verification • Full history audit        ║
+║                                                                            ║
+║  [OpenTelemetry]                                                           ║
+║  ring_estimate • Ω • Σf • CS • PS • controlled_reduction                   ║
+║                                                                            ║
+║  [Self-Healing Loop]                                                       ║
+║  Detect → FSC Cycle → Simulate → Gate (Ω < 0.2) → Promote or Rollback      ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝

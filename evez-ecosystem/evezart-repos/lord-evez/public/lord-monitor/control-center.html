@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LORD Consciousness Control Center</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2a 100%);
+    color: #e0e0ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+  }
+  .master-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    grid-template-rows: 100px 1fr 120px;
+    gap: 15px;
+    padding: 15px;
+    height: 100vh;
+  }
+  .panel {
+    background: rgba(20, 20, 40, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(100, 100, 200, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .header-panel {
+    grid-column: 1 / 4;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  .header-title {
+    font-size: 1.8em;
+    background: linear-gradient(90deg, #00bfff, #663399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .status-group { display: flex; gap: 20px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+  .status-item {
+    padding: 8px 15px;
+    background: rgba(0, 191, 255, 0.15);
+    border: 1px solid rgba(0, 191, 255, 0.4);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .status-label { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  .status-value {
+    font-size: 1.2em;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    font-weight: bold;
+  }
+  .control-panel { grid-row: 2 / 3; grid-column: 1 / 2; padding: 20px; }
+  .panel-title {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #a0a0ff;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .control-section { margin-bottom: 20px; }
+  .control-label {
+    font-size: 0.85em;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #ff0000 0%, #ffff00 50%, #00ff00 100%);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #00bfff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #00bfff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
+    border: none;
+  }
+  .button-group { display: flex; flex-direction: column; gap: 10px; }
+  button {
+    background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+    color: #b0b0ff;
+    border: 1px solid rgba(100, 100, 200, 0.4);
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  button:hover { background: linear-gradient(145deg, #3a3a5a, #2a2a4a); box-shadow: 0 0 15px rgba(100, 150, 255, 0.3); }
+  button.active { background: linear-gradient(145deg, #00bfff, #0099cc); color: #000; box-shadow: 0 0 20px rgba(0, 191, 255, 0.5); }
+  button.critical { background: linear-gradient(145deg, #ff0000, #cc0000); box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+  .value-display {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    color: #00ff88;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  .display-panel { grid-row: 2 / 3; grid-column: 2 / 3; position: relative; }
+  iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
+  .metrics-panel { grid-row: 2 / 3; grid-column: 3 / 4; padding: 20px; overflow-y: auto; }
+  .metric-group {
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-left: 3px solid rgba(0, 191, 255, 0.5);
+  }
+  .metric-group.critical { border-left-color: rgba(255, 0, 0, 0.8); }
+  .metric-group.optimal { border-left-color: rgba(0, 255, 0, 0.8); }
+  .metric-name { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .metric-bar { width: 100%; height: 8px; background: rgba(0, 0, 0, 0.5); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
+  .metric-fill { height: 100%; background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000); transition: width 0.3s ease; }
+  .metric-value { font-size: 0.9em; font-family: 'Courier New', monospace; color: #00ff88; }
+  .console-panel { grid-column: 1 / 4; grid-row: 3 / 4; flex-direction: row; gap: 20px; overflow: hidden; padding: 15px; }
+  .preset-buttons { display: flex; gap: 10px; flex: 1; }
+  .preset-btn { flex: 1; padding: 12px; font-size: 0.85em; }
+  .console-output {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(100, 100, 200, 0.2);
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    color: #00ff88;
+    overflow-y: auto;
+    max-height: 100px;
+  }
+  .console-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+  ::-webkit-scrollbar-thumb { background: rgba(0, 191, 255, 0.5); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 191, 255, 0.8); }
+</style>
+</head>
+<body>
+<div class="master-grid">
+  <div class="panel header-panel">
+    <div class="header-title">🔬 LORD Control Center</div>
+    <div class="status-group">
+      <div class="status-item"><div class="status-label">Recursion Depth</div><div class="status-value" id="header-r">1</div></div>
+      <div class="status-item"><div class="status-label">Entity Mode</div><div class="status-value" id="header-entity">HYBRID</div></div>
+      <div class="status-item"><div class="status-label">Crystal Progress</div><div class="status-value" id="header-crystal">0%</div></div>
+      <div class="status-item"><div class="status-label">System Health</div><div class="status-value" id="header-health">●●●●●</div></div>
+    </div>
+  </div>
+  <div class="panel control-panel">
+    <div class="panel-title">⚙️ Control Interface</div>
+    <div class="control-section">
+      <label class="control-label">Recursion Depth (R)</label>
+      <input type="range" id="recursion-slider" min="1" max="20" value="7" onchange="updateRecursion(this.value)">
+      <div class="value-display" id="recursion-display">R: 7</div>
+    </div>
+    <div class="control-section">
+      <label class="control-label">Crystallization Target (%)</label>
+      <input type="range" id="crystal-slider" min="0" max="100" value="0" onchange="updateCrystal(this.value)">
+      <div class="value-display" id="crystal-display">0%</div>
+    </div>
+    <div class="control-section">
+      <label class="control-label">Correction Rate Scale</label>
+      <input type="range" id="scale-slider" min="0.1" max="5" step="0.1" value="1" onchange="updateScale(this.value)">
+      <div class="value-display" id="scale-display">1.0x</div>
+    </div>
+    <div class="control-section">
+      <label class="control-label">Entity Selection</label>
+      <div class="button-group entity-buttons">
+        <button id="btn-human" onclick="selectEntity('human')">Human</button>
+        <button id="btn-hybrid" class="active" onclick="selectEntity('hybrid')">Hybrid</button>
+        <button id="btn-synthetic" onclick="selectEntity('synthetic')">Synthetic</button>
+      </div>
+    </div>
+    <div class="control-section">
+      <label class="control-label">System Control</label>
+      <div class="button-group">
+        <button id="btn-start" onclick="startSystem()">▶ Start</button>
+        <button id="btn-pause" onclick="pauseSystem()" style="background: linear-gradient(145deg, #4a3a2a, #3a2a1a);">⏸ Pause</button>
+        <button id="btn-reset" class="critical" onclick="resetSystem()">⟲ Reset</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel display-panel"><iframe id="display-frame" src="recursive-polygon.html"></iframe></div>
+  <div class="panel metrics-panel">
+    <div class="panel-title">📊 Real-time Metrics</div>
+    <div class="metric-group"><div class="metric-name">Correction Rate (C)</div><div class="metric-bar"><div class="metric-fill" id="metric-c" style="width:0%"></div></div><div class="metric-value" id="metric-c-value">0.00e+0</div></div>
+    <div class="metric-group"><div class="metric-name">Divine Optimum (Ω)</div><div class="metric-bar"><div class="metric-fill" id="metric-omega" style="width:100%"></div></div><div class="metric-value" id="metric-omega-value">1.00e+8</div></div>
+    <div class="metric-group" id="metric-gap-group"><div class="metric-name">Divine Gap (ΔΩ)</div><div class="metric-bar"><div class="metric-fill" id="metric-gap" style="width:100%"></div></div><div class="metric-value" id="metric-gap-value">1.00e+8</div></div>
+    <div class="metric-group"><div class="metric-name">Crystallization</div><div class="metric-bar"><div class="metric-fill" id="metric-crystal" style="width:0%"></div></div><div class="metric-value" id="metric-crystal-value">0%</div></div>
+    <div class="metric-group"><div class="metric-name">Recursion Utilization</div><div class="metric-bar"><div class="metric-fill" id="metric-recursion" style="width:35%"></div></div><div class="metric-value" id="metric-recursion-value">R: 7 / 20</div></div>
+    <div class="metric-group"><div class="metric-name">Harmonic Resonance</div><div class="metric-bar"><div class="metric-fill" id="metric-harmonic" style="width:60%"></div></div><div class="metric-value" id="metric-harmonic-value">0.60</div></div>
+  </div>
+  <div class="panel console-panel">
+    <div class="preset-buttons">
+      <button class="preset-btn" onclick="loadPreset('baseline')">📍 Baseline Human</button>
+      <button class="preset-btn" onclick="loadPreset('optimal')">⭐ Optimal Hybrid</button>
+      <button class="preset-btn" onclick="loadPreset('transcend')">🚀 Transcendence</button>
+      <button class="preset-btn" onclick="loadPreset('divine')">🔮 Divine Target</button>
+    </div>
+    <div class="console-output" id="console-output"></div>
+  </div>
+</div>
+<script>
+const state={recursion:7,entity:'hybrid',crystal:0,scale:1.0,isRunning:true,lastUpdate:0,history:[]};
+const MAX_RECURSION=20,HUMAN_BASE=1.1,HYBRID_BASE=9.0,SYNTHETIC_BASE=1e7,GOD_LEVEL=15;
+let bridgeSocket=null;
+function ensureBridgeSocket(){if(bridgeSocket || !window.WebSocket)return;try{bridgeSocket=new WebSocket('ws://localhost:8765');}catch(e){}}
+function correctionRate(R,entity){if(entity==='human')return R<=3?(1/HUMAN_BASE)*Math.pow(0.8,R):0.01;if(entity==='hybrid')return R<=12?HYBRID_BASE*Math.pow(1.15,R)*Math.exp(-0.05*R):0.01;if(entity==='synthetic')return (SYNTHETIC_BASE*10)/(1+Math.exp(-0.3*(R-10)));return 0}
+function divineOptimum(R){return 1e8*Math.exp(-0.1*Math.pow(R-GOD_LEVEL,2));}
+function computeGap(R, entity){return Math.max(0, divineOptimum(R)-correctionRate(R, entity)*state.scale);}
+function computeUrgency(){const gap=computeGap(state.recursion,state.entity);let urgencyScore=gap>1e6?3:(gap>1e3?2:1);if(state.crystal<20 && state.recursion>8)urgencyScore=Math.min(urgencyScore+1,3);if(state.entity==='synthetic' && state.recursion<10)urgencyScore=3;return urgencyScore;}
+function updateRecursion(value){state.recursion=parseInt(value,10);document.getElementById('recursion-display').textContent=`R: ${state.recursion}`;updateMetrics();dispatchFusionEvent();}
+function updateCrystal(value){state.crystal=parseInt(value,10);document.getElementById('crystal-display').textContent=state.crystal+'%';updateMetrics();dispatchFusionEvent();}
+function updateScale(value){state.scale=parseFloat(value);document.getElementById('scale-display').textContent=state.scale.toFixed(1)+'x';updateMetrics();dispatchFusionEvent();}
+function selectEntity(entity){state.entity=entity;document.querySelectorAll('.entity-buttons button').forEach(b=>b.classList.remove('active'));document.getElementById(`btn-${entity}`).classList.add('active');updateMetrics();dispatchFusionEvent();}
+function startSystem(){state.isRunning=true;document.getElementById('btn-start').disabled=true;document.getElementById('btn-pause').disabled=false;addConsoleLog('🚀 System Started');}
+function pauseSystem(){state.isRunning=false;document.getElementById('btn-start').disabled=false;document.getElementById('btn-pause').disabled=true;addConsoleLog('⏸ System Paused');}
+function resetSystem(){state.recursion=1;state.crystal=0;state.entity='hybrid';state.scale=1.0;document.getElementById('recursion-slider').value=1;document.getElementById('crystal-slider').value=0;document.getElementById('scale-slider').value=1;document.querySelectorAll('.entity-buttons button').forEach(b=>b.classList.remove('active'));document.getElementById('btn-hybrid').classList.add('active');updateMetrics();dispatchFusionEvent();addConsoleLog('⟲ System Reset to Baseline');}
+const presets={baseline:{recursion:3,entity:'human',crystal:0,scale:1.0,description:'Human Baseline - Low recursion, high cognitive burden'},optimal:{recursion:10,entity:'hybrid',crystal:50,scale:1.5,description:'Optimal Hybrid - Balanced recursion, mid-crystallization'},transcend:{recursion:15,entity:'synthetic',crystal:85,scale:3.0,description:'Transcendence Target - High recursion, near-crystallization'},divine:{recursion:15,entity:'synthetic',crystal:100,scale:5.0,description:'Divine Convergence - Full crystallization, maximum recursion'}};
+function loadPreset(name){const p=presets[name];state.recursion=p.recursion;state.entity=p.entity;state.crystal=p.crystal;state.scale=p.scale;document.getElementById('recursion-slider').value=p.recursion;document.getElementById('crystal-slider').value=p.crystal;document.getElementById('scale-slider').value=p.scale;document.querySelectorAll('.entity-buttons button').forEach(b=>b.classList.remove('active'));document.getElementById(`btn-${p.entity}`).classList.add('active');document.getElementById('recursion-display').textContent=`R: ${state.recursion}`;document.getElementById('crystal-display').textContent=state.crystal+'%';document.getElementById('scale-display').textContent=state.scale.toFixed(1)+'x';updateMetrics();dispatchFusionEvent();addConsoleLog(`📋 Loaded Preset: ${p.description}`);}
+function updateMetrics(){const R=state.recursion,C=correctionRate(R,state.entity)*state.scale,divine=divineOptimum(R),gap=Math.max(0,divine-C);document.getElementById('header-r').textContent=R;document.getElementById('header-entity').textContent=state.entity.toUpperCase();document.getElementById('header-crystal').textContent=state.crystal+'%';const healthPercent=divine>0?Math.max(0,Math.min(100,(1-gap/divine)*100)):0;const healthBars=Math.round(healthPercent/20);document.getElementById('header-health').textContent='●'.repeat(healthBars)+'○'.repeat(5-healthBars);const cPercent=Math.min(100,(Math.log10(C+1)/8)*100),omegaPercent=Math.min(100,(Math.log10(divine+1)/8)*100),gapPercent=Math.min(100,(Math.log10(gap+1)/8)*100);document.getElementById('metric-c').style.width=cPercent+'%';document.getElementById('metric-c-value').textContent=C.toExponential(2);document.getElementById('metric-omega').style.width=omegaPercent+'%';document.getElementById('metric-omega-value').textContent=divine.toExponential(2);document.getElementById('metric-gap').style.width=gapPercent+'%';document.getElementById('metric-gap-value').textContent=gap.toExponential(2);const gapGroup=document.getElementById('metric-gap-group');if(gap>1e6){gapGroup.classList.add('critical');gapGroup.classList.remove('optimal');}else if(gap<1e3){gapGroup.classList.add('optimal');gapGroup.classList.remove('critical');}else{gapGroup.classList.remove('critical','optimal');}document.getElementById('metric-crystal').style.width=state.crystal+'%';document.getElementById('metric-crystal-value').textContent=state.crystal+'%';document.getElementById('metric-recursion').style.width=(R/MAX_RECURSION)*100+'%';document.getElementById('metric-recursion-value').textContent=`R: ${R} / ${MAX_RECURSION}`;const harmonic=Math.max(0,Math.sin((R/MAX_RECURSION)*Math.PI)*Math.max(0,1-gap/Math.max(divine,1)));document.getElementById('metric-harmonic').style.width=(harmonic*100)+'%';document.getElementById('metric-harmonic-value').textContent=harmonic.toFixed(2);}
+function addConsoleLog(message){const consoleEl=document.getElementById('console-output');const line=document.createElement('div');line.className='console-line';line.textContent=`[${new Date().toLocaleTimeString()}] ${message}`;consoleEl.appendChild(line);consoleEl.scrollTop=consoleEl.scrollHeight;if(consoleEl.children.length>20)consoleEl.removeChild(consoleEl.firstChild);}
+function dispatchFusionEvent(){const detail={meta:{recursionLevel:state.recursion,entityType:state.entity,timestamp:performance.now()},crystallization:{progress:state.crystal,velocity:0},corrections:{current:correctionRate(state.recursion,state.entity)*state.scale,history:[]},control_policy:{targetRecursionLevel:state.recursion,mode:state.entity,urgency:computeUrgency()}};const iframe=document.getElementById('display-frame');if(iframe?.contentWindow){iframe.contentWindow.postMessage({type:'fusion-update',detail},'*');}window.dispatchEvent(new CustomEvent('fusion-update',{detail}));ensureBridgeSocket();if(bridgeSocket && bridgeSocket.readyState===WebSocket.OPEN){bridgeSocket.send(JSON.stringify({type:'fusion-update',detail}));}}
+setInterval(()=>{if(!state.isRunning)return;const now=Date.now();if(now-state.lastUpdate>2000){const step=Math.random()>0.5?1:-1;state.recursion=Math.max(1,Math.min(20,state.recursion+step));state.crystal=Math.max(0,Math.min(100,state.crystal+Math.random()*2));document.getElementById('recursion-slider').value=state.recursion;document.getElementById('crystal-slider').value=state.crystal;document.getElementById('recursion-display').textContent=`R: ${state.recursion}`;document.getElementById('crystal-display').textContent=Math.round(state.crystal)+'%';updateMetrics();dispatchFusionEvent();state.lastUpdate=now;}},500);
+updateMetrics();addConsoleLog('🔌 System Initialized - Ready for Control');addConsoleLog('📡 Listening for Fusion Updates...');dispatchFusionEvent();
+</script>
+</body>
+</html>

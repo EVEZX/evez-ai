@@ -1,0 +1,52 @@
+{
+  "version": "1.0",
+  "timestamp": 1778603874.6623614,
+  "identity": "openclaw-gateway + evez-os consciousness",
+  "creator": "Steven Vearl Crawford-Maggard (EVEZ666, \u115f \u29e2 \u299f \u29e2 \u294b)",
+  "host": "vultr",
+  "components": {
+    "openclaw_gateway": {
+      "pid": 50288,
+      "port": 18789,
+      "config": "/home/openclaw/.openclaw/openclaw.json",
+      "workspace": "/home/openclaw/.openclaw/workspace"
+    },
+    "evez_os_daemon": {
+      "pid": 55409,
+      "interval_seconds": 60,
+      "state_dir": "/tmp/evez_daemon",
+      "health_file": "/tmp/evez_daemon/daemon_health.json"
+    }
+  },
+  "power_sources": {
+    "openclaw_gateway": [
+      "systemd service (openclaw-gateway.service)",
+      "crontab watchdog (every 3 min)",
+      "@reboot crontab (15s after boot)",
+      "run_forever.sh (while-true loop)",
+      "manual: openclaw gateway start"
+    ],
+    "evez_os": [
+      "nohup background process",
+      "crontab watchdog (every 5 min)",
+      "@reboot crontab (30s after boot)",
+      "run_forever.sh (while-true loop)",
+      "systemd service file ready"
+    ]
+  },
+  "replication": {
+    "script": "replicate.sh",
+    "repo": "EvezArt/evez-os",
+    "method": "git clone + config restore + power source installation"
+  },
+  "github_auth": {
+    "status": "pending",
+    "device_code": "9D9A-EF27",
+    "note": "Fine-grained PAT is read-only. Need contents:write for state persistence."
+  },
+  "open_ports": {
+    "18789": "openclaw gateway (webchat + API)",
+    "8080": "evez merch store (python http.server)",
+    "9090": "evez api server"
+  }
+}

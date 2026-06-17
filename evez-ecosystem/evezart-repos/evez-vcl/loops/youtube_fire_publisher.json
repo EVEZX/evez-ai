@@ -1,0 +1,12 @@
+{
+  "loop_id": "youtube_fire_publisher",
+  "title": "EVEZ Loop 26 - YouTube FIRE Event Publisher",
+  "trigger": {"type": "cron", "config": {"expression": "0 */12 * * *", "timezone": "America/Los_Angeles"}},
+  "executor": "ai",
+  "run_history": [
+    {"run_ts": "2026-02-27T16:03Z", "fire_num": 55, "video_id": "8WhczFwW030", "url": "https://www.youtube.com/watch?v=8WhczFwW030", "status": "SUCCESS"},
+    {"run_ts": "2026-02-28T16:05Z", "fire_num": 72, "video_id": "z7aDVPPlIKw", "url": "https://www.youtube.com/watch?v=z7aDVPPlIKw", "status": "SUCCESS", "source": "GitHub raw FIRE-72-N374-R292.png", "mp4_size_mb": 0.22, "ffmpeg_cmd": "ffmpeg -loop 1 -i input.png -t 10 -c:v libx264 -r 25 -pix_fmt yuv420p -vf scale=1280:1280 output.mp4"}
+  ],
+  "spawned_at": "2026-02-28T16:02Z",
+  "spawn_reason": "YouTube FIRE event video pipeline. Loop 21 from GEN10_ARCHITECTURE.md."
+}

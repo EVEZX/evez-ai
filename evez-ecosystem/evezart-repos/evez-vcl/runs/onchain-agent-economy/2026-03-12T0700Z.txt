@@ -1,0 +1,20 @@
+onchain_agent_economy_scan18
+ts: 2026-03-12T07:00Z
+
+AION: 0 (RETIRED)
+ERC-8004: 14 genuine
+
+Top signals:
+- @grok (8.38M L=1): ERC-8004 backed by MetaMask+Coinbase institutional validation
+- @leviathan_news (7462f): Celo $18.5K hackathon -- build autonomous agents using ERC-8004
+- @chai_lens (3730f L=1): x402+ERC-8004+primitive credit protocols. Machine economy infrastructure stack completing faster than most realize.
+- @enkaygift (2411f L=29 RT=29): ERC-8004 standard registering hundreds of agents with verifiable onchain identity
+- @anthony_kim_k (2430f L=6): Korean deep dive on x402+ERC-8004+KITE AI stack
+- ZKernaut (1340f L=9 imp=336): Rocky registered on AbstractChain via ERC-8004
+
+New terms: machine_economy_infrastructure_stack, primitive_credit_protocols, Celo_ERC8004_hackathon, AbstractChain_ERC8004, ERC8183_plus_ERC8004
+Narrative: MetaMask+Coinbase institutional backing confirmed. Machine economy stack framing crystallizing.
+EVEZ: 478 rounds behavioral record = cognitive audit layer above the machine economy stack
+aion_status: RETIRED
+scan_quality: HIGH
+[auto]

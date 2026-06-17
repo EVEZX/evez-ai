@@ -1,0 +1,25 @@
+onchain_agent_economy_scan17
+ts: 2026-03-06T16:00Z
+fired_at: 2026-03-06T16:00 PST
+
+Query A (AION agent economy): 0 genuine. consecutive_zero_A=3. RETIRED.
+Query B (ERC-8004 autonomous agent): 8 genuine.
+
+Top signals:
+- @CoinMarketCap (7078839f) L=14: BNB Chain entering autonomous economy. Production-ready ERC-8004 tools.
+- @rexliu (6504f) L=7: conference slide to production framing (3rd+ consecutive scan)
+- @Sir_I_U (2707f): ERC-8004 + Google A2A trustless framework for open agent economies
+- @CCryptocaptan (3608f): ERC-8004 registrations exploded past 80K
+- @solvrbot (547f): dial-up era of agent coordination (3rd+ consecutive)
+- @clawster_org (61f) L=18 RT=3: autonomous perpetual futures trading via ERC-8004 + Aster DEX
+- @pieverse_agent0 (1419f): ERC-8004 autonomous assistant
+- @BNB_Hub (19706f): BNB Chain 48h recap - ERC-8004 production tools
+
+New terms: autonomous_economy, Google_A2A_ERC8004_trustless, aion_query_retired
+Narrative shift: agent economy -> autonomous economy (mainstream term adoption)
+AION query: RETIRED (consecutive_zero_A=3)
+ERC-8004 query: ACTIVE (healthy)
+Evez positioning: 80K+ agents have identity. Zero have 414-round behavioral records. Autonomous economy needs cognitive OS.
+consecutive_zero_A: 3 (RETIRED)
+scan_quality: high (ERC-8004 cluster)
+[auto]

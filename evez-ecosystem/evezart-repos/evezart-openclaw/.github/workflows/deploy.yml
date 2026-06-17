@@ -1,0 +1,55 @@
+name: EvezArt OpenClaw — Self-Managing Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Keepalive ping every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy-render:
+    name: Deploy to Render (Free)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Trigger Render Deploy
+        if: env.RENDER_DEPLOY_HOOK != ''
+        run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK }}" | head -c 200
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+  keepalive:
+    name: Keepalive Ping
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Ping deployed instances
+        run: |
+          echo "Pinging EvezArt OpenClaw instances..."
+          for URL in ${{ secrets.EVEZ_GATEWAY_URLS }}; do
+            curl -s "$URL/health" || echo "Instance $URL offline"
+          done
+
+  spine-sync:
+    name: Sync Spine to GitHub
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Append deploy event to spine
+        run: |
+          TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          PREV=""
+          if [ -f spine.jsonl ]; then
+            PREV=$(tail -1 spine.jsonl | python3 -c "import json,sys; print(json.load(sys.stdin).get('hash',''))" 2>/dev/null || echo "")
+          fi
+          PAYLOAD="{\"ts\":\"$TS\",\"event\":\"GITHUB_DEPLOY\",\"sha\":\"${{ github.sha }}\",\"prev\":\"$PREV\"}"
+          HASH=$(echo -n "$PAYLOAD" | sha256sum | cut -d' ' -f1)
+          echo "{\"ts\":\"$TS\",\"event\":\"GITHUB_DEPLOY\",\"sha\":\"${{ github.sha }}\",\"prev_hash\":\"$PREV\",\"hash\":\"$HASH\"}" >> spine.jsonl
+          git config user.email "rubikspubes69@gmail.com"
+          git config user.name "EvezClaw"
+          git add spine.jsonl
+          git diff --staged --quiet || git commit -m "spine: deploy ${{ github.sha }}" && git push

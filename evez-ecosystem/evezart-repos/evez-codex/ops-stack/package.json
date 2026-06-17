@@ -1,0 +1,22 @@
+{
+  "name": "ops-stack",
+  "version": "1.0.0",
+  "description": "Ops stack with canonical hashing libraries for golden hash tests",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx ops-stack.ts",
+    "golden-hash-tests": "tsx ops-stack.ts"
+  },
+  "dependencies": {
+    "json-canonicalize": "^1.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.2",
+    "tsx": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

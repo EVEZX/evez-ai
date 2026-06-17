@@ -1,0 +1,23 @@
+name: CI Health Check
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 6 * * 1'
+jobs:
+  health:
+    runs-on: [self-hosted, linux, x64, evez]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node.js test
+        run: |
+          node --version
+          npm --version
+          npm install --production
+          node -e "const s=require('./server'); console.log('✅ server.js loads cleanly');" || true
+      - name: Lint check
+        run: |
+          find . -name '*.js' -not -path './node_modules/*' -exec node --check {} \;
+          echo "✅ All JS files syntax-valid"

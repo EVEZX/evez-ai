@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyClaw — Quantum-Reality OS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Courier New',monospace;overflow:hidden}
+canvas{display:block}
+#overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+#hud{position:fixed;top:10px;left:10px;z-index:20;font-size:11px;color:#00ff88;opacity:0.8}
+#hud div{margin:2px 0}
+.panel{position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.85);border:1px solid #00ff88;border-radius:8px;padding:12px;max-width:400px;font-size:12px;z-index:20}
+.panel h3{color:#00ff88;margin-bottom:8px;font-size:14px}
+.layer{display:flex;align-items:center;margin:4px 0;padding:4px;border-radius:4px;cursor:pointer;transition:background 0.2s}
+.layer:hover{background:rgba(0,255,136,0.1)}
+.layer .num{color:#00ff88;width:20px;font-weight:bold}
+.layer .name{flex:1}
+.layer .status{font-size:10px;color:#666}
+.status-active{color:#00ff88!important}
+.status-ghost{color:#ff6600!important}
+#controls{position:fixed;bottom:10px;right:10px;z-index:20}
+#controls button{background:#1a1a1a;border:1px solid #00ff88;color:#00ff88;padding:6px 12px;margin:2px;border-radius:4px;cursor:pointer;font-family:'Courier New',monospace;font-size:11px}
+#controls button:hover{background:#00ff88;color:#000}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="hud">
+  <div>Φ = <span id="phi">0.973</span></div>
+  <div>η* = <span id="eta">0.030</span></div>
+  <div>t = <span id="time">0.00</span></div>
+  <div>Nodes: <span id="nodes">0</span></div>
+  <div>Entanglement: <span id="entanglement">0.00</span></div>
+</div>
+
+<div class="panel">
+  <h3>🔮 MyClaw — 7 Konami Layers</h3>
+  <div class="layer"><span class="num">1</span><span class="name">Branching Futures</span><span class="status status-active">●</span></div>
+  <div class="layer"><span class="num">2</span><span class="name">Event Spine</span><span class="status status-active">●</span></div>
+  <div class="layer"><span class="num">3</span><span class="name">Physics Dungeon</span><span class="status status-ghost">○</span></div>
+  <div class="layer"><span class="num">4</span><span class="name">Archive of Ghosts</span><span class="status status-active">●</span></div>
+  <div class="layer"><span class="num">5</span><span class="name">Narrative Compiler</span><span class="status status-active">●</span></div>
+  <div class="layer"><span class="num">6</span><span class="name">Capability Cage</span><span class="status status-active">●</span></div>
+  <div class="layer"><span class="num">7</span><span class="name">Qualia Ledger</span><span class="status status-active">●</span></div>
+</div>
+
+<div id="controls">
+  <button onclick="togglePause()">⏯ Pause</button>
+  <button onclick="addNode()">+ Node</button>
+  <button onclick="measureAll()">📏 Measure</button>
+  <button onclick="resetSim()">↺ Reset</button>
+</div>
+
+<script>
+// === MyClaw Quantum Visualization ===
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let paused = false;
+let time = 0;
+const dt = 0.016;
+
+// Wavefunction nodes
+const nodes = [];
+const connections = [];
+const ghosts = [];
+
+class QNode {
+  constructor(x, y, id) {
+    this.x = x; this.y = y; this.id = id;
+    this.amplitude = 1.0;
+    this.phase = Math.random() * Math.PI * 2;
+    this.phaseCode = 'INTENT';
+    this.collapsed = false;
+    this.ghost = false;
+    this.energy = 0.03;
+    this.radius = 8;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+  }
+  
+  update() {
+    if (this.collapsed || this.ghost) return;
+    this.phase += dt * 2;
+    this.amplitude *= 0.999; // Slow decoherence
+    this.amplitude = Math.max(0.1, this.amplitude);
+    
+    // Gentle drift
+    this.x += this.vx;
+    this.y += this.vy;
+    
+    // Boundary reflection
+    if (this.x < 50 || this.x > W - 50) this.vx *= -1;
+    if (this.y < 50 || this.y > H - 50) this.vy *= -1;
+    
+    // Mouse attraction (subtle)
+    if (mouseX > 0) {
+      const dx = mouseX - this.x, dy = mouseY - this.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 200 && d > 10) {
+        this.vx += dx/d * 0.01;
+        this.vy += dy/d * 0.01;
+      }
+    }
+    
+    // Damping
+    this.vx *= 0.99;
+    this.vy *= 0.99;
+  }
+  
+  draw() {
+    const alpha = this.ghost ? 0.2 : (this.collapsed ? 0.9 : 0.3 + this.amplitude * 0.5);
+    const r = this.collapsed ? 4 : this.radius * this.amplitude;
+    
+    // Glow
+    if (!this.ghost) {
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, r * 3);
+      grad.addColorStop(0, `rgba(0,255,136,${alpha * 0.3})`);
+      grad.addColorStop(1, 'rgba(0,255,136,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, r * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Node
+    ctx.fillStyle = this.collapsed ? '#00ff88' : (this.ghost ? '#ff6600' : `rgba(0,255,136,${alpha})`);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Phase ring
+    if (!this.collapsed && !this.ghost) {
+      ctx.strokeStyle = `rgba(0,204,255,${alpha * 0.5})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, r + 4, this.phase, this.phase + Math.PI);
+      ctx.stroke();
+    }
+    
+    // Label
+    ctx.fillStyle = `rgba(255,255,255,${alpha * 0.7})`;
+    ctx.font = '9px monospace';
+    ctx.fillText(this.phaseCode, this.x - 15, this.y + r + 12);
+  }
+}
+
+// Initialize nodes
+function initNodes() {
+  nodes.length = 0;
+  connections.length = 0;
+  const names = ['INTENT','AMPLIFY','SUPPRESS','MEASURE','GHOST','INTENT','AMPLIFY','MEASURE'];
+  const count = 8;
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2;
+    const r = Math.min(W, H) * 0.25;
+    const x = W/2 + Math.cos(angle) * r + (Math.random()-0.5)*50;
+    const y = H/2 + Math.sin(angle) * r + (Math.random()-0.5)*50;
+    const n = new QNode(x, y, i);
+    n.phaseCode = names[i];
+    nodes.push(n);
+  }
+  
+  // Create connections
+  for (let i = 0; i < count; i++) {
+    for (let j = i+1; j < count; j++) {
+      if (Math.random() < 0.4) {
+        connections.push([i, j, 0.1 + Math.random() * 0.2]);
+      }
+    }
+  }
+}
+
+let mouseX = -1, mouseY = -1;
+canvas.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+canvas.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function drawConnections() {
+  connections.forEach(([i, j, coupling]) => {
+    const a = nodes[i], b = nodes[j];
+    if (a.ghost && b.ghost) return;
+    
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const d = Math.sqrt(dx*dx + dy*dy);
+    
+    // Wave along connection
+    const wave = Math.sin(time * 3 + d * 0.01) * 0.5 + 0.5;
+    const alpha = coupling * wave * 0.4;
+    
+    ctx.strokeStyle = `rgba(0,204,255,${alpha})`;
+    ctx.lineWidth = coupling * 2;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    
+    // Bezier curve through midpoint
+    const mx = (a.x + b.x)/2 + Math.sin(time * 2 + i) * 20;
+    const my = (a.y + b.y)/2 + Math.cos(time * 2 + j) * 20;
+    ctx.quadraticCurveTo(mx, my, b.x, b.y);
+    ctx.stroke();
+  });
+}
+
+function drawSpine() {
+  // Central event spine visualization
+  const cx = W/2, cy = H/2;
+  const spineLen = 100;
+  
+  ctx.strokeStyle = 'rgba(0,255,136,0.15)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let i = 0; i < spineLen; i++) {
+    const t = time * 0.5 - i * 0.05;
+    const x = cx + Math.sin(t) * 30 * Math.exp(-i * 0.02);
+    const y = cy - i * 1.5 + spineLen * 0.75;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}
+
+function updateHUD() {
+  const activeNodes = nodes.filter(n => !n.collapsed && !n.ghost);
+  const totalAmp = activeNodes.reduce((s, n) => s + n.amplitude, 0);
+  const eta = activeNodes.length > 0 ? (0.03 / totalAmp) * activeNodes.length : 0;
+  
+  document.getElementById('phi').textContent = (totalAmp / nodes.length).toFixed(3);
+  document.getElementById('eta').textContent = Math.min(eta, 0.05).toFixed(3);
+  document.getElementById('time').textContent = time.toFixed(2);
+  document.getElementById('nodes').textContent = activeNodes.length;
+  
+  const ent = activeNodes.reduce((s, n) => {
+    const p = n.amplitude / (totalAmp || 1);
+    return s - p * Math.log2(p + 1e-10);
+  }, 0);
+  document.getElementById('entanglement').textContent = ent.toFixed(2);
+}
+
+function animate() {
+  if (!paused) {
+    time += dt;
+    ctx.fillStyle = 'rgba(10,10,10,0.1)';
+    ctx.fillRect(0, 0, W, H);
+    
+    drawSpine();
+    drawConnections();
+    
+    nodes.forEach(n => {
+      n.update();
+      n.draw();
+    });
+    
+    updateHUD();
+  }
+  requestAnimationFrame(animate);
+}
+
+initNodes();
+animate();
+
+function togglePause() { paused = !paused; }
+function addNode() {
+  const n = new QNode(
+    W/2 + (Math.random()-0.5)*200,
+    H/2 + (Math.random()-0.5)*200,
+    nodes.length
+  );
+  n.phaseCode = ['INTENT','AMPLIFY','SUPPRESS','MEASURE','GHOST'][Math.floor(Math.random()*5)];
+  nodes.push(n);
+  
+  // Connect to random existing node
+  const target = Math.floor(Math.random() * (nodes.length - 1));
+  connections.push([nodes.length-1, target, 0.1 + Math.random() * 0.2]);
+}
+
+function measureAll() {
+  nodes.forEach(n => {
+    if (!n.ghost && Math.random() < 0.3) {
+      n.collapsed = true;
+      n.amplitude = 1.0;
+    }
+  });
+}
+
+function resetSim() {
+  nodes.length = 0;
+  connections.length = 0;
+  time = 0;
+  initNodes();
+}
+</script>
+</body>
+</html>

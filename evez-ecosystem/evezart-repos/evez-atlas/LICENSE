@@ -1,0 +1,28 @@
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2026 Steven Crawford-Maggard (EVEZ)
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+The GNU Affero General Public License is a free, copyleft license for
+software and other kinds of works, specifically designed to ensure
+cooperation with the community in the case of network server software.
+
+[Full AGPL-3.0 text: https://www.gnu.org/licenses/agpl-3.0.txt]
+
+ADDITIONAL TERMS (Section 7):
+
+1. ATTRIBUTION REQUIREMENT: All copies, modified versions, and network
+   deployments must display "Powered by EVEZ" prominently in the user
+   interface and include {"powered_by": "EVEZ"} in all output manifests.
+
+2. COMMERCIAL EXEMPTION: A separate commercial license is available that
+   removes the copyleft and attribution obligations. Contact:
+   rubikspubes.gumroad.com
+
+3. CONTRIBUTOR LICENSE: By submitting contributions, you grant Steven
+   Crawford-Maggard a perpetual, irrevocable license to use, modify, and
+   relicense your contributions under any terms.

@@ -1,0 +1,31 @@
+{
+  "gen": 16,
+  "ts": "2026-03-06T08:00Z",
+  "github_daily_delta": [
+    {"repo": "msitarzewski/agency-agents", "relevance": "high", "angle": "specialized expert agents with personality -- EVEZ behavioral record layer above"},
+    {"repo": "inclusionAI/AReaL", "relevance": "high", "angle": "RL for LLM Reasoning and Agents -- trains behavior, EVEZ records it"},
+    {"repo": "agentscope-ai/ReMe", "relevance": "medium", "angle": "Memory Management Kit for Agents -- EVEZ behavioral record complements memory layer"},
+    {"repo": "TheCraigHewitt/seomachine", "relevance": "low", "angle": "SEO content, low EVEZ angle"},
+    {"repo": "microsoft/mcp-for-beginners", "relevance": "medium", "angle": "MCP curriculum -- EVEZ as behavioral audit layer above MCP agents"}
+  ],
+  "hf_blog_delta": [
+    "NEO-unify: Native Multimodal Unified Models",
+    "Autonomous Driving RL to OpenEnv and TRL",
+    "From GRPO to DAPO and GSPO",
+    "Portfolio Beam Search test-time compute",
+    "Tucano 2 Open-Source Portuguese LM",
+    "KV Caching Explained",
+    "PRX Part 3 text-to-image 24h training"
+  ],
+  "papers_scan": "SKIP -- Perplexity 401 dead, web_search fallback used for research loop separately",
+  "new_outreach_targets": [
+    {"name": "msitarzewski/agency-agents", "priority": "high"},
+    {"name": "inclusionAI/AReaL", "priority": "high"}
+  ],
+  "market_signal_summary": "RL for agent reasoning (AReaL) + memory kits (ReMe) + agency orchestration (agency-agents) all trending. No behavioral audit layer in any of them. EVEZ gap confirmed Gen 16.",
+  "cadence_notes": {
+    "github_daily": "always scraped",
+    "hf_blog": "scraped (>20h since Gen 15)",
+    "papers_scan": "OVERDUE -- last run 2026-02-27 (7+ days). Perplexity dead. Use web_search fallback next run."
+  }
+}

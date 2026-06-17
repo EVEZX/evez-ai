@@ -1,0 +1,29 @@
+EVEZ Visual Cognition Layer
+Copyright (C) 2026 Steven Crawford-Maggard (EVEZ)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Additional Terms (Section 7):
+
+As permitted under Section 7(b) of the AGPL-3.0, all copies, modifications,
+and derivative works MUST prominently display "Powered by EVEZ" in:
+- Application about/help screens
+- CLI startup banners
+- Generated output manifests (manifest.json "powered_by" field)
+- Documentation and README files
+
+The default output watermark MUST NOT be removed in Community Edition deployments.
+
+For a commercial license that removes these restrictions, contact:
+rubikspubes69@gmail.com

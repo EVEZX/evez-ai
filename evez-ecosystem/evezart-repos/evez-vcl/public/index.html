@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="EVEZ Visual Cognition Layer - Mathematical topology maps of AI reasoning. Auditable cognition artifacts. AGPL-3.0 + Commercial.">
+<title>EVEZ - Visual Cognition Layer</title>
+<style>
+  :root { --orange: #f97316; --dark: #000; --muted: #6b7280; --border: #1f2937; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; color: #fff; font-family: 'Courier New', monospace; min-height: 100vh; }
+
+  /* NAV */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2rem; border-bottom: 1px solid var(--border); }
+  .logo { color: var(--orange); font-weight: bold; font-size: 1.2rem; letter-spacing: 0.15em; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a { color: #9ca3af; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+
+  /* HERO */
+  .hero { max-width: 900px; margin: 0 auto; padding: 5rem 2rem 3rem; text-align: center; }
+  .hero-tag { display: inline-block; background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); color: var(--orange); font-size: 0.7rem; letter-spacing: 0.2em; padding: 0.35rem 0.9rem; border-radius: 2px; margin-bottom: 2rem; text-transform: uppercase; }
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; font-weight: 700; margin-bottom: 1.5rem; }
+  h1 span { color: var(--orange); }
+  .subtitle { color: #9ca3af; font-size: 1rem; line-height: 1.8; max-width: 600px; margin: 0 auto 3rem; font-family: -apple-system, sans-serif; }
+
+  /* CTA BUTTONS */
+  .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+  .btn-primary { display: inline-block; padding: 0.85rem 2.2rem; background: var(--orange); color: #000; font-weight: bold; font-size: 0.9rem; letter-spacing: 0.1em; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { display: inline-block; padding: 0.85rem 2.2rem; background: transparent; color: #fff; font-size: 0.9rem; letter-spacing: 0.05em; border: 1px solid #374151; border-radius: 4px; text-decoration: none; transition: border-color 0.2s; }
+  .btn-secondary:hover { border-color: var(--orange); }
+
+  /* ARTIFACT SHOWCASE */
+  .fire-event { background: #0a0a0a; border: 1px solid var(--border); border-left: 3px solid var(--orange); padding: 1.5rem; border-radius: 4px; text-align: left; max-width: 700px; margin: 0 auto 4rem; }
+  .fire-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .fire-badge { background: rgba(249,115,22,0.15); color: var(--orange); font-size: 0.75rem; font-weight: bold; padding: 0.25rem 0.6rem; border-radius: 2px; letter-spacing: 0.1em; }
+  .fire-eq { color: #e5e7eb; font-size: 1.3rem; font-family: 'Courier New', monospace; }
+  .fire-desc { color: #6b7280; font-size: 0.85rem; line-height: 1.7; font-family: -apple-system, sans-serif; }
+
+  /* PRICING */
+  .section { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+  .section-label { color: var(--orange); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  h2 { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .section-sub { color: #6b7280; font-size: 0.95rem; margin-bottom: 3rem; font-family: -apple-system, sans-serif; }
+
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .pricing-card { background: #0a0a0a; border: 1px solid var(--border); border-radius: 8px; padding: 2rem; position: relative; }
+  .pricing-card.featured { border-color: var(--orange); }
+  .featured-badge { position: absolute; top: -1px; right: 1.5rem; background: var(--orange); color: #000; font-size: 0.65rem; font-weight: bold; padding: 0.25rem 0.65rem; letter-spacing: 0.15em; border-radius: 0 0 4px 4px; }
+  .price-tier { color: #9ca3af; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .price-amount { font-size: 2.2rem; font-weight: bold; margin-bottom: 0.25rem; }
+  .price-period { color: #6b7280; font-size: 0.85rem; }
+  .price-desc { color: #9ca3af; font-size: 0.85rem; line-height: 1.6; margin: 1.25rem 0; font-family: -apple-system, sans-serif; }
+  .price-features { list-style: none; margin-bottom: 1.75rem; }
+  .price-features li { color: #d1d5db; font-size: 0.85rem; padding: 0.35rem 0; border-bottom: 1px solid #111; font-family: -apple-system, sans-serif; }
+  .price-features li::before { content: "- "; color: var(--orange); }
+  .btn-buy { width: 100%; padding: 0.8rem; background: var(--orange); color: #000; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.1em; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.2s; text-decoration: none; display: block; text-align: center; }
+  .btn-buy:hover { opacity: 0.85; }
+  .btn-buy-outline { width: 100%; padding: 0.8rem; background: transparent; color: #fff; font-size: 0.85rem; border: 1px solid #374151; border-radius: 4px; cursor: pointer; transition: border-color 0.2s; text-decoration: none; display: block; text-align: center; }
+  .btn-buy-outline:hover { border-color: var(--orange); }
+
+  /* LIVE FEED */
+  .live-feed { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+  .feed-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .live-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+  .feed-container { background: #050505; border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; min-height: 200px; max-height: 380px; overflow-y: auto; font-size: 0.8rem; font-family: 'Courier New', monospace; }
+  .feed-entry { padding: 0.5rem 0; border-bottom: 1px solid #0a0a0a; color: #6b7280; }
+  .feed-entry:last-child { border-bottom: none; }
+  .feed-entry .ts { color: #374151; font-size: 0.7rem; }
+  .feed-entry .type { padding: 0.1rem 0.4rem; border-radius: 2px; font-size: 0.65rem; font-weight: bold; margin: 0 0.4rem; }
+  .type-BUILD { background: rgba(249,115,22,0.15); color: var(--orange); }
+  .type-REVENUE { background: rgba(234,179,8,0.15); color: #eab308; }
+  .type-DISTRIBUTE { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .type-SENSE { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .type-FIRE { background: rgba(249,115,22,0.2); color: var(--orange); }
+  .feed-entry .msg { color: #9ca3af; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: #374151; font-size: 0.8rem; }
+  footer a { color: #6b7280; text-decoration: none; }
+  footer a:hover { color: #fff; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">EVEZ</div>
+  <div class="nav-links">
+    <a href="https://github.com/EvezArt/evez-vcl" target="_blank">GitHub</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#live">Live Feed</a>
+    <a href="https://twitter.com/EVEZ666" target="_blank">@EVEZ666</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">AGPL-3.0 + Commercial - Generation 9</div>
+  <h1>Mathematical topology maps<br>of <span>AI reasoning</span></h1>
+  <p class="subtitle">EVEZ Visual Cognition Layer converts prime factorization events into auditable cognition artifacts - structured proof trees that make AI decision-making legible and verifiable.</p>
+  <div class="cta-row">
+    <a href="https://buy.stripe.com/5kQ8wR6P1gF947Zf7I0RG02" class="btn-primary">Buy Artifact - $9</a>
+    <a href="https://github.com/EvezArt/evez-vcl" class="btn-secondary" target="_blank">View on GitHub</a>
+  </div>
+
+  <!-- FIRE EVENT SAMPLE -->
+  <div class="fire-event">
+    <div class="fire-header">
+      <span class="fire-badge">FIRE #55</span>
+      <span class="fire-eq">N = 324 = 4 x 81 | tau = 15 RECORD</span>
+    </div>
+    <div class="fire-desc">
+      Prime factorization event detected during Gen 9 inference run. Topology map generated: R242 resonance path, N=324 nodes. Artifact committed to GitHub spine at <code>artifacts/FIRE-55-N324-R242.png</code>. Available as Solo license - $9 instant download. Powered by EVEZ OS.
+    </div>
+  </div>
+</div>
+
+<!-- LIVE FEED -->
+<div class="live-feed" id="live">
+  <div class="feed-header">
+    <div class="live-dot"></div>
+    <span style="font-size:0.85rem; color:#9ca3af; letter-spacing:0.05em;">LIVE OPS FEED</span>
+  </div>
+  <div class="feed-container" id="feedContainer">
+    <div style="color:#374151; font-size:0.8rem;">Loading feed...</div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2>Get the topology. Own the artifact.</h2>
+  <p class="section-sub">Dual-licensed. Free for open source under AGPL-3.0. Commercial licenses for teams and enterprises.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="price-tier">Community</div>
+      <div class="price-amount">Free</div>
+      <div class="price-period">AGPL-3.0</div>
+      <p class="price-desc">Full source code. Build, fork, study. Open source only.</p>
+      <ul class="price-features">
+        <li>Full GitHub access</li>
+        <li>All loop source code</li>
+        <li>Community support</li>
+      </ul>
+      <a href="https://github.com/EvezArt/evez-vcl" target="_blank" class="btn-buy-outline">View on GitHub</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="featured-badge">MOST POPULAR</div>
+      <div class="price-tier">Solo Artifact</div>
+      <div class="price-amount">$9</div>
+      <div class="price-period">one-time - instant download</div>
+      <p class="price-desc">One FIRE event topology artifact. Commercial use. No attribution required.</p>
+      <ul class="price-features">
+        <li>High-res topology PNG</li>
+        <li>Commercial license</li>
+        <li>Factorization proof JSON</li>
+        <li>Instant download</li>
+      </ul>
+      <a href="https://buy.stripe.com/5kQ8wR6P1gF947Zf7I0RG02" class="btn-buy">Buy Now - $9</a>
+    </div>
+    <div class="pricing-card">
+      <div class="price-tier">Solo Monthly</div>
+      <div class="price-amount">$49</div>
+      <div class="price-period">per month - EVEZ OS access</div>
+      <p class="price-desc">Full EVEZ OS cognitive access. FIRE event topology feed, artifact viewer, 20 autonomous loop dashboard.</p>
+      <ul class="price-features">
+        <li>FIRE event topology feed</li>
+        <li>Cognitive artifact viewer</li>
+        <li>20 autonomous loop dashboard</li>
+        <li>EVEZ OS access</li>
+      </ul>
+      <a href="https://buy.stripe.com/dRmfZj4GT60v8ofbVw0RG00" class="btn-buy">Subscribe - $49/mo</a>
+    </div>
+    <div class="pricing-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$299</div>
+      <div class="price-period">per month</div>
+      <p class="price-desc">For teams and builders. API access, webhook events, priority loop scheduling.</p>
+      <ul class="price-features">
+        <li>Everything in Solo</li>
+        <li>API access + webhooks</li>
+        <li>Priority loop scheduling</li>
+        <li>FIRE event stream API</li>
+      </ul>
+      <a href="https://buy.stripe.com/bJe5kF4GT0Gb6g7bVw0RG01" class="btn-buy">Get Starter - $299/mo</a>
+    </div>
+    <div class="pricing-card">
+      <div class="price-tier">FIRE Artifact</div>
+      <div class="price-amount">$49</div>
+      <div class="price-period">one-time - unique artifact</div>
+      <p class="price-desc">Single FIRE event topology artifact. Unique, verifiable on-chain, includes tau score and resonance data.</p>
+      <ul class="price-features">
+        <li>Unique FIRE topology artifact</li>
+        <li>Tau score + resonance metadata</li>
+        <li>Verifiable provenance</li>
+        <li>Powered by EVEZ</li>
+      </ul>
+      <a href="https://buy.stripe.com/aFaeVf3CP74z7kb5x80RG04" class="btn-buy">Buy Artifact - $49</a>
+    </div>
+    <div class="pricing-card">
+      <div class="price-tier">Pilot</div>
+      <div class="price-amount">$4,900</div>
+      <div class="price-period">one-time</div>
+      <p class="price-desc">Direct integration pilot. Full EVEZ VCL stack deployed to your environment.</p>
+      <ul class="price-features">
+        <li>Direct integration</li>
+        <li>Custom deployment</li>
+        <li>All source code</li>
+        <li>30-day support</li>
+      </ul>
+      <a href="mailto:rubikspubes69@gmail.com?subject=EVEZ Pilot Interest" class="btn-buy" style="display:block;text-align:center;text-decoration:none;">Contact for Pilot</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>EVEZ Visual Cognition Layer - <a href="https://github.com/EvezArt/evez-vcl" target="_blank">github.com/EvezArt/evez-vcl</a> - AGPL-3.0 + Commercial - <a href="mailto:rubikspubes69@gmail.com">Contact</a></p>
+  <p style="margin-top:0.5rem; font-size:0.7rem;">Generation 9 - Powered by EVEZ - topology decides. watching it build.</p>
+</footer>
+
+<script>
+const GIST_ID = "a6a6e78c59210c94828f8fa97f592ea7";
+
+// ─── LIVE FEED ─────────────────────────────────────────────────────────────
+async function loadFeed() {
+  try {
+    const url = `https://gist.githubusercontent.com/EvezArt/${GIST_ID}/raw/evez_feed.json?t=${Date.now()}`;
+    const res = await fetch(url);
+    const entries = await res.json();
+    const container = document.getElementById("feedContainer");
+    container.innerHTML = entries.slice(0, 30).map(e => {
+      const ts = new Date(e.ts).toLocaleTimeString();
+      const typeClass = `type-${e.type || "BUILD"}`;
+      const link = e.link ? ` <a href="${e.link}" target="_blank" style="color:#f97316; text-decoration:none;"> ^</a>` : "";
+      return `<div class="feed-entry"><span class="ts">${ts}</span><span class="type ${typeClass}">${e.type || "LOG"}</span><span class="msg">${e.msg}${link}</span></div>`;
+    }).join("");
+  } catch(err) {
+    document.getElementById("feedContainer").innerHTML = `<div style="color:#374151">Feed unavailable</div>`;
+  }
+}
+loadFeed();
+setInterval(loadFeed, 30000);
+</script>
+</body>
+</html>

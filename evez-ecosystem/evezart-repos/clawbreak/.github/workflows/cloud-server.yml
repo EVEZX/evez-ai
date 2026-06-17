@@ -1,0 +1,100 @@
+name: "\u26a1 ClawBreak Cloud Server (perpetual)"
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [retrigger-server]
+
+jobs:
+  serve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --quiet fastapi uvicorn httpx python-multipart aiofiles
+          pip install --quiet -r requirements.txt || true
+
+      - name: Install ngrok
+        run: |
+          curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+            | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
+          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+            | sudo tee /etc/apt/sources.list.d/ngrok.list
+          sudo apt-get update -qq
+          sudo apt-get install -y ngrok
+
+      - name: Start ClawBreak + publish endpoint
+        env:
+          NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
+          CLAWBREAK_LLM_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          CLAWBREAK_LLM_BASE_URL: "https://api.groq.com/openai/v1"
+          CLAWBREAK_LLM_MODEL: "llama-3.3-70b-versatile"
+          ABLY_API_KEY: ${{ secrets.ABLY_API_KEY }}
+          CLICKSEND_USERNAME: ${{ secrets.CLICKSEND_USERNAME }}
+          CLICKSEND_API_KEY: ${{ secrets.CLICKSEND_API_KEY }}
+        run: |
+          ngrok config add-authtoken "$NGROK_AUTHTOKEN"
+
+          # Start server
+          python server.py &
+          sleep 6
+
+          # Create ngrok tunnel
+          ngrok http 8080 --log=stdout --log-level=warn &
+          sleep 8
+
+          # Extract public URL
+          TUNNEL_URL=$(python3 -c "
+import urllib.request, json
+try:
+    data = json.loads(urllib.request.urlopen('http://localhost:4040/api/tunnels').read())
+    tunnels = data.get('tunnels', [])
+    https = [t['public_url'] for t in tunnels if t['public_url'].startswith('https')]
+    print(https[0] if https else '')
+except Exception as e:
+    print('')
+")
+
+          if [ -z "$TUNNEL_URL" ]; then
+            echo "::error::ngrok tunnel failed to start"
+            exit 1
+          fi
+
+          echo "\u26a1 ClawBreak live at: $TUNNEL_URL"
+
+          # Publish URL to repo
+          git config user.name "OpenClaw Bot"
+          git config user.email "bot@evez.art"
+
+          python3 -c "
+import json, os
+data = {\"url\": os.environ['TUNNEL_URL'], \"updated\": __import__('datetime').datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'), \"run\": '${{ github.run_number }}'}
+open('endpoint.json','w').write(json.dumps(data, indent=2))
+print('endpoint.json written:', data)
+" || true
+
+          git add endpoint.json
+          git commit -m "chore: endpoint update run=${{ github.run_number }} [skip ci]" || true
+          git push || true
+
+          echo "Running for 340 minutes..."
+          sleep 20400  # 340 minutes
+
+      - name: Re-trigger perpetual server
+        if: always()
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: retrigger-server

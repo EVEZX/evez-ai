@@ -1,0 +1,21 @@
+ABS Monitor Scan #10 -- 2026-03-06T08:00Z
+
+Primary: Agentic Behavioral Science OR AI agent behavior OR agent decision making bias -is:retweet lang:en
+Genuine signals: 8. scan_quality: high. consecutive_zero: 0.
+
+Genuine signals:
+- @KirkDBorne (483265f, L=17 RT=2): AI Agents in Action ManningBooks (3rd+ consecutive -- STABLE)
+- @LunarArchivist (21762f, L=1): philosophical Q on AI agent behavior prevailing interpretation
+- @rahulxf_ (1238f, L=5): Aflock -- cryptographically signed policies constraining AI agent behavior (3rd consecutive scan -- SPAWN TRIGGERED)
+- @JustinBullock14 (1431f): emergent collective AI agent behavior ongoing experiment
+- @0x_Timi (stable, recurring -- Agentic Behavioral Science purchases)
+- @kon39000 (stable, recurring -- yuragi AI behavioral science builder)
+- Gravitee Report 2026 IMP=7: AI agent behavior unpredictable, social engineering risk at runtime
+- IMP=128: vast ongoing experiment of emergent collective AI agent behavior
+
+New terms: Aflock_policy_constraints (SPAWN TRIGGERED), Gravitee_2026_unpredictable_agent_behavior
+
+SPAWN: agent_policy_constraints_monitor -- @rahulxf_ Aflock 3rd consecutive scan threshold met
+EVEZ angle: EVEZ 414 rounds IS the behavioral record that makes Aflock policies verifiable
+
+Standalone tweet: NOT posted this run (verifiable_ai scan #20 tweet covers the regulatory angle)

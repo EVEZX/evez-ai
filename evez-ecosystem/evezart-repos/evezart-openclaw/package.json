@@ -1,0 +1,43 @@
+{
+  "name": "@evezart/openclaw-evez-channel",
+  "version": "1.0.0",
+  "type": "module",
+  "openclaw": {
+    "extensions": ["./index.ts"],
+    "setupEntry": "./setup-entry.ts",
+    "channel": {
+      "id": "evez-channel",
+      "label": "EvezArt Channel",
+      "selectionLabel": "EvezArt (self-hosted)",
+      "detailLabel": "EvezArt Mesh Bot",
+      "docsPath": "/channels/evez-channel",
+      "docsLabel": "evez-channel",
+      "blurb": "EvezArt OpenClaw mesh integration — Telegram + GitHub + GCP Synapse.",
+      "order": 10,
+      "aliases": ["evez", "evezart"],
+      "markdownCapable": true,
+      "exposure": {
+        "configured": true,
+        "setup": true,
+        "docs": true
+      },
+      "quickstartAllowFrom": true
+    },
+    "install": {
+      "npmSpec": "@evezart/openclaw-evez-channel",
+      "defaultChoice": "npm",
+      "minHostVersion": ">=2026.3.24-beta.2"
+    },
+    "compat": {
+      "pluginApi": ">=2026.3.24-beta.2",
+      "minGatewayVersion": "2026.3.24-beta.2"
+    },
+    "build": {
+      "openclawVersion": "2026.3.24-beta.2",
+      "pluginSdkVersion": "2026.3.24-beta.2"
+    }
+  },
+  "dependencies": {
+    "openclaw": "workspace:*"
+  }
+}

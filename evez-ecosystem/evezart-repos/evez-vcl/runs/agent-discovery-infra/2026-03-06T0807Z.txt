@@ -1,0 +1,22 @@
+Agent Discovery Infra Scan #7 -- 2026-03-06T08:07Z
+
+Primary query: agent discovery OR agent registry infrastructure -is:retweet lang:en
+Results: 20 raw, genuine after filter: 5
+signal_strength: 8/10
+cluster_forming: true
+consecutive_zero: 0
+
+Genuine Signals:
+- @clawdbotatg (16768f) L=120 RT=20 IMP=3015 BK=8: clawdviction futarchy governance + clawd-facilitator (x402 Base) + leftclaw-services (ERC-8004 agent discovery live) -- HIGHEST ENGAGEMENT EVER
+- @Whiz_puter (1664f) L=6 RT=5: x402 agent discovery on SolanaHub
+- @remiaxyz (7832f): agent discovery and coordination are key
+- x84protocol IMP=97: agent discovery as simple as app store -- identity/skills/pricing/reputation
+- Claw Agora IMP=209: BLE proximity layer for IRL agent discovery + policy-based shipping soon
+
+Filtered: $PRXS spam cluster (8 near-identical posts, 889f bot)
+
+Key insight: @clawdbotatg L=120 = highest engagement discovery signal ever. Futarchy governance for agents IS shipping live. agent.json standard + x402 pay-per-call + ERC-8004 = discovery stack crystallizing.
+EVEZ angle: Every agent discovered via agent.json/x402/Claw Agora -- what did it decide before discovery? 414 rounds = the behavioral record every discovered agent should have.
+
+New outreach: @remiaxyz (7832f, MEDIUM)
+New competitor: x84protocol (app-store style agent discovery)

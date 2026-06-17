@@ -1,0 +1,1802 @@
+[
+  {
+    "timestamp": "2026-05-12T11:10:12.509594",
+    "model": "llama-4-maverick",
+    "input_tokens": 86,
+    "output_tokens": 257,
+    "task_type": "extraction",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509607",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 412,
+    "output_tokens": 2582,
+    "task_type": "summary",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509612",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 3794,
+    "output_tokens": 236,
+    "task_type": "classification",
+    "session_id": "sess_6",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509615",
+    "model": "deepseek-r1",
+    "input_tokens": 830,
+    "output_tokens": 1145,
+    "task_type": "creative",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509619",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 2598,
+    "output_tokens": 126,
+    "task_type": "extraction",
+    "session_id": "sess_3",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509623",
+    "model": "gpt-4o-mini",
+    "input_tokens": 3104,
+    "output_tokens": 1990,
+    "task_type": "creative",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509627",
+    "model": "deepseek-v3",
+    "input_tokens": 3763,
+    "output_tokens": 116,
+    "task_type": "extraction",
+    "session_id": "sess_11",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509631",
+    "model": "gpt-4o",
+    "input_tokens": 246,
+    "output_tokens": 118,
+    "task_type": "classification",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509634",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1234,
+    "output_tokens": 2433,
+    "task_type": "summary",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509637",
+    "model": "deepseek-v3",
+    "input_tokens": 168,
+    "output_tokens": 2461,
+    "task_type": "coding",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509640",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 843,
+    "output_tokens": 257,
+    "task_type": "extraction",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509690",
+    "model": "llama-4-maverick",
+    "input_tokens": 3115,
+    "output_tokens": 1762,
+    "task_type": "analysis",
+    "session_id": "sess_19",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509693",
+    "model": "deepseek-v3",
+    "input_tokens": 2736,
+    "output_tokens": 216,
+    "task_type": "extraction",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509696",
+    "model": "gpt-4.1",
+    "input_tokens": 3874,
+    "output_tokens": 149,
+    "task_type": "extraction",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509699",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3198,
+    "output_tokens": 2083,
+    "task_type": "general",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509702",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 896,
+    "output_tokens": 2191,
+    "task_type": "creative",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509705",
+    "model": "deepseek-r1",
+    "input_tokens": 2780,
+    "output_tokens": 1739,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509707",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 3105,
+    "output_tokens": 278,
+    "task_type": "analysis",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509710",
+    "model": "deepseek-r1",
+    "input_tokens": 3456,
+    "output_tokens": 125,
+    "task_type": "classification",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509738",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 220,
+    "output_tokens": 1577,
+    "task_type": "creative",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509742",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 415,
+    "output_tokens": 890,
+    "task_type": "analysis",
+    "session_id": "sess_3",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509744",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 1228,
+    "output_tokens": 1583,
+    "task_type": "summary",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509747",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 84,
+    "output_tokens": 2588,
+    "task_type": "summary",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509750",
+    "model": "deepseek-r1",
+    "input_tokens": 1177,
+    "output_tokens": 2456,
+    "task_type": "analysis",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509753",
+    "model": "llama-4-maverick",
+    "input_tokens": 2604,
+    "output_tokens": 238,
+    "task_type": "extraction",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509758",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2503,
+    "output_tokens": 254,
+    "task_type": "coding",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509763",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1254,
+    "output_tokens": 1956,
+    "task_type": "analysis",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509766",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 3519,
+    "output_tokens": 2626,
+    "task_type": "analysis",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509769",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 2232,
+    "output_tokens": 2902,
+    "task_type": "analysis",
+    "session_id": "sess_13",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509772",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2015,
+    "output_tokens": 2936,
+    "task_type": "coding",
+    "session_id": "sess_12",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509774",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 3866,
+    "output_tokens": 1773,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509777",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 1702,
+    "output_tokens": 624,
+    "task_type": "analysis",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509780",
+    "model": "gpt-4o",
+    "input_tokens": 1590,
+    "output_tokens": 1097,
+    "task_type": "creative",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509782",
+    "model": "gpt-4o",
+    "input_tokens": 1916,
+    "output_tokens": 197,
+    "task_type": "coding",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509798",
+    "model": "llama-4-maverick",
+    "input_tokens": 2277,
+    "output_tokens": 1835,
+    "task_type": "summary",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509810",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1473,
+    "output_tokens": 117,
+    "task_type": "extraction",
+    "session_id": "sess_13",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509813",
+    "model": "gpt-4o-mini",
+    "input_tokens": 3130,
+    "output_tokens": 2340,
+    "task_type": "creative",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509816",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 982,
+    "output_tokens": 112,
+    "task_type": "creative",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509850",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 920,
+    "output_tokens": 28,
+    "task_type": "creative",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509854",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2210,
+    "output_tokens": 45,
+    "task_type": "analysis",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509857",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 1688,
+    "output_tokens": 2507,
+    "task_type": "analysis",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509860",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2833,
+    "output_tokens": 1577,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509862",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2434,
+    "output_tokens": 961,
+    "task_type": "general",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509864",
+    "model": "deepseek-r1",
+    "input_tokens": 2316,
+    "output_tokens": 272,
+    "task_type": "classification",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509866",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 1978,
+    "output_tokens": 92,
+    "task_type": "extraction",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509869",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3313,
+    "output_tokens": 247,
+    "task_type": "extraction",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509872",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3148,
+    "output_tokens": 2018,
+    "task_type": "creative",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509873",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 705,
+    "output_tokens": 1503,
+    "task_type": "creative",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509875",
+    "model": "gpt-4.1",
+    "input_tokens": 3954,
+    "output_tokens": 109,
+    "task_type": "extraction",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509877",
+    "model": "deepseek-r1",
+    "input_tokens": 1818,
+    "output_tokens": 673,
+    "task_type": "analysis",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509879",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 2858,
+    "output_tokens": 285,
+    "task_type": "extraction",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509880",
+    "model": "deepseek-r1",
+    "input_tokens": 3747,
+    "output_tokens": 217,
+    "task_type": "classification",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509882",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 3277,
+    "output_tokens": 2918,
+    "task_type": "general",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509884",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 1781,
+    "output_tokens": 685,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509886",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 142,
+    "output_tokens": 61,
+    "task_type": "classification",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509888",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2712,
+    "output_tokens": 1297,
+    "task_type": "creative",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509890",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 3866,
+    "output_tokens": 149,
+    "task_type": "extraction",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509892",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1888,
+    "output_tokens": 272,
+    "task_type": "general",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509894",
+    "model": "gpt-4o",
+    "input_tokens": 647,
+    "output_tokens": 245,
+    "task_type": "extraction",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509895",
+    "model": "gpt-4o-mini",
+    "input_tokens": 2126,
+    "output_tokens": 1374,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509897",
+    "model": "gpt-4o",
+    "input_tokens": 1075,
+    "output_tokens": 1952,
+    "task_type": "analysis",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509899",
+    "model": "deepseek-r1",
+    "input_tokens": 2497,
+    "output_tokens": 293,
+    "task_type": "classification",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509901",
+    "model": "gpt-4.1",
+    "input_tokens": 737,
+    "output_tokens": 1863,
+    "task_type": "creative",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509902",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2199,
+    "output_tokens": 2019,
+    "task_type": "coding",
+    "session_id": "sess_5",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509904",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2928,
+    "output_tokens": 1252,
+    "task_type": "analysis",
+    "session_id": "sess_18",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509906",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2938,
+    "output_tokens": 370,
+    "task_type": "general",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509908",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 1273,
+    "output_tokens": 2830,
+    "task_type": "coding",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509910",
+    "model": "gpt-4o-mini",
+    "input_tokens": 1650,
+    "output_tokens": 2249,
+    "task_type": "summary",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509911",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 2829,
+    "output_tokens": 2936,
+    "task_type": "creative",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509913",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 622,
+    "output_tokens": 1229,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509915",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2882,
+    "output_tokens": 2220,
+    "task_type": "creative",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509924",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 3211,
+    "output_tokens": 2898,
+    "task_type": "summary",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509927",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 333,
+    "output_tokens": 1397,
+    "task_type": "coding",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509930",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 861,
+    "output_tokens": 2248,
+    "task_type": "general",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509932",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2058,
+    "output_tokens": 898,
+    "task_type": "analysis",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509935",
+    "model": "llama-4-maverick",
+    "input_tokens": 1950,
+    "output_tokens": 296,
+    "task_type": "classification",
+    "session_id": "sess_17",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509937",
+    "model": "gpt-4.1",
+    "input_tokens": 1986,
+    "output_tokens": 2514,
+    "task_type": "creative",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509940",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 234,
+    "output_tokens": 1855,
+    "task_type": "general",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509943",
+    "model": "gpt-4.1",
+    "input_tokens": 309,
+    "output_tokens": 1212,
+    "task_type": "analysis",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509946",
+    "model": "gpt-4o-mini",
+    "input_tokens": 3732,
+    "output_tokens": 158,
+    "task_type": "classification",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509948",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 3193,
+    "output_tokens": 122,
+    "task_type": "classification",
+    "session_id": "sess_13",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509951",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3155,
+    "output_tokens": 76,
+    "task_type": "classification",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509953",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 129,
+    "output_tokens": 1280,
+    "task_type": "summary",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509954",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 3094,
+    "output_tokens": 128,
+    "task_type": "extraction",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509956",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 2642,
+    "output_tokens": 1738,
+    "task_type": "coding",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509959",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 2988,
+    "output_tokens": 68,
+    "task_type": "classification",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509960",
+    "model": "gpt-4.1",
+    "input_tokens": 2128,
+    "output_tokens": 650,
+    "task_type": "summary",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509962",
+    "model": "gpt-4.1",
+    "input_tokens": 1288,
+    "output_tokens": 731,
+    "task_type": "summary",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509964",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2856,
+    "output_tokens": 2426,
+    "task_type": "creative",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509965",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 835,
+    "output_tokens": 2366,
+    "task_type": "creative",
+    "session_id": "sess_12",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509968",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 465,
+    "output_tokens": 216,
+    "task_type": "classification",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509978",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2902,
+    "output_tokens": 1605,
+    "task_type": "creative",
+    "session_id": "sess_9",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509979",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 97,
+    "output_tokens": 695,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509981",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 2923,
+    "output_tokens": 406,
+    "task_type": "analysis",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509983",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1538,
+    "output_tokens": 304,
+    "task_type": "general",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509992",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2871,
+    "output_tokens": 1940,
+    "task_type": "coding",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509994",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 1809,
+    "output_tokens": 2604,
+    "task_type": "summary",
+    "session_id": "sess_18",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509996",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 106,
+    "output_tokens": 72,
+    "task_type": "classification",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509998",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3925,
+    "output_tokens": 563,
+    "task_type": "general",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.509999",
+    "model": "llama-4-maverick",
+    "input_tokens": 776,
+    "output_tokens": 473,
+    "task_type": "creative",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510001",
+    "model": "gpt-4.1",
+    "input_tokens": 3349,
+    "output_tokens": 2957,
+    "task_type": "creative",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510003",
+    "model": "deepseek-v3",
+    "input_tokens": 3084,
+    "output_tokens": 142,
+    "task_type": "classification",
+    "session_id": "sess_15",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510005",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 3276,
+    "output_tokens": 72,
+    "task_type": "classification",
+    "session_id": "sess_14",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510006",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2851,
+    "output_tokens": 1410,
+    "task_type": "analysis",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510009",
+    "model": "llama-4-maverick",
+    "input_tokens": 1596,
+    "output_tokens": 2054,
+    "task_type": "coding",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510010",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2177,
+    "output_tokens": 2952,
+    "task_type": "creative",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510014",
+    "model": "deepseek-v3",
+    "input_tokens": 1249,
+    "output_tokens": 1518,
+    "task_type": "summary",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510016",
+    "model": "deepseek-v3",
+    "input_tokens": 1601,
+    "output_tokens": 1820,
+    "task_type": "creative",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510017",
+    "model": "llama-4-maverick",
+    "input_tokens": 2049,
+    "output_tokens": 47,
+    "task_type": "classification",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510019",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 1942,
+    "output_tokens": 2046,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510021",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2657,
+    "output_tokens": 2761,
+    "task_type": "coding",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510024",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 3554,
+    "output_tokens": 203,
+    "task_type": "extraction",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510025",
+    "model": "deepseek-r1",
+    "input_tokens": 3088,
+    "output_tokens": 1800,
+    "task_type": "general",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510027",
+    "model": "gpt-4o-mini",
+    "input_tokens": 2433,
+    "output_tokens": 2913,
+    "task_type": "general",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510029",
+    "model": "deepseek-v3",
+    "input_tokens": 695,
+    "output_tokens": 287,
+    "task_type": "classification",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510030",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2424,
+    "output_tokens": 148,
+    "task_type": "extraction",
+    "session_id": "sess_13",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510032",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 3459,
+    "output_tokens": 408,
+    "task_type": "creative",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510033",
+    "model": "gpt-4o",
+    "input_tokens": 2373,
+    "output_tokens": 160,
+    "task_type": "extraction",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510035",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3957,
+    "output_tokens": 2965,
+    "task_type": "coding",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510037",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 1804,
+    "output_tokens": 2856,
+    "task_type": "coding",
+    "session_id": "sess_3",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510039",
+    "model": "gpt-4.1",
+    "input_tokens": 2804,
+    "output_tokens": 282,
+    "task_type": "extraction",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510041",
+    "model": "deepseek-r1",
+    "input_tokens": 1469,
+    "output_tokens": 1353,
+    "task_type": "coding",
+    "session_id": "sess_12",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510043",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2127,
+    "output_tokens": 105,
+    "task_type": "classification",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510045",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 2692,
+    "output_tokens": 2208,
+    "task_type": "analysis",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510047",
+    "model": "gpt-4o-mini",
+    "input_tokens": 976,
+    "output_tokens": 1710,
+    "task_type": "coding",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510049",
+    "model": "deepseek-v3",
+    "input_tokens": 1471,
+    "output_tokens": 93,
+    "task_type": "coding",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510050",
+    "model": "gpt-4o-mini",
+    "input_tokens": 3427,
+    "output_tokens": 1554,
+    "task_type": "general",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510052",
+    "model": "deepseek-r1",
+    "input_tokens": 858,
+    "output_tokens": 1007,
+    "task_type": "coding",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510054",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1325,
+    "output_tokens": 1746,
+    "task_type": "general",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510056",
+    "model": "llama-4-maverick",
+    "input_tokens": 164,
+    "output_tokens": 2872,
+    "task_type": "summary",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510057",
+    "model": "gpt-4o",
+    "input_tokens": 2508,
+    "output_tokens": 1274,
+    "task_type": "general",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510059",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 257,
+    "output_tokens": 263,
+    "task_type": "classification",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510061",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 2738,
+    "output_tokens": 169,
+    "task_type": "classification",
+    "session_id": "sess_6",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510063",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2290,
+    "output_tokens": 186,
+    "task_type": "creative",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510064",
+    "model": "gpt-4o",
+    "input_tokens": 3511,
+    "output_tokens": 1798,
+    "task_type": "creative",
+    "session_id": "sess_3",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510066",
+    "model": "deepseek-v3",
+    "input_tokens": 2575,
+    "output_tokens": 48,
+    "task_type": "classification",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510068",
+    "model": "llama-4-maverick",
+    "input_tokens": 3393,
+    "output_tokens": 12,
+    "task_type": "extraction",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510069",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 594,
+    "output_tokens": 128,
+    "task_type": "classification",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510071",
+    "model": "gpt-4o",
+    "input_tokens": 3380,
+    "output_tokens": 812,
+    "task_type": "creative",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510073",
+    "model": "gpt-4o",
+    "input_tokens": 1432,
+    "output_tokens": 438,
+    "task_type": "general",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510074",
+    "model": "gpt-4o",
+    "input_tokens": 3675,
+    "output_tokens": 2855,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510076",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 1851,
+    "output_tokens": 1674,
+    "task_type": "summary",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510078",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1817,
+    "output_tokens": 2078,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510080",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 3417,
+    "output_tokens": 1385,
+    "task_type": "analysis",
+    "session_id": "sess_12",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510082",
+    "model": "deepseek-v3",
+    "input_tokens": 1632,
+    "output_tokens": 358,
+    "task_type": "coding",
+    "session_id": "sess_3",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510084",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 3853,
+    "output_tokens": 1606,
+    "task_type": "coding",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510085",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 3725,
+    "output_tokens": 2474,
+    "task_type": "analysis",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510087",
+    "model": "llama-4-maverick",
+    "input_tokens": 2479,
+    "output_tokens": 1834,
+    "task_type": "summary",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510089",
+    "model": "deepseek-v3",
+    "input_tokens": 3895,
+    "output_tokens": 220,
+    "task_type": "extraction",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510090",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 830,
+    "output_tokens": 1218,
+    "task_type": "summary",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510092",
+    "model": "gpt-4o-mini",
+    "input_tokens": 2572,
+    "output_tokens": 522,
+    "task_type": "creative",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510094",
+    "model": "deepseek-v3",
+    "input_tokens": 2487,
+    "output_tokens": 81,
+    "task_type": "classification",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510096",
+    "model": "deepseek-r1",
+    "input_tokens": 2777,
+    "output_tokens": 1680,
+    "task_type": "analysis",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510097",
+    "model": "gpt-4.1",
+    "input_tokens": 3687,
+    "output_tokens": 291,
+    "task_type": "extraction",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510100",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 1866,
+    "output_tokens": 285,
+    "task_type": "coding",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510101",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 1116,
+    "output_tokens": 197,
+    "task_type": "extraction",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510103",
+    "model": "gpt-4o-mini",
+    "input_tokens": 1630,
+    "output_tokens": 1822,
+    "task_type": "general",
+    "session_id": "sess_17",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510105",
+    "model": "llama-4-maverick",
+    "input_tokens": 84,
+    "output_tokens": 270,
+    "task_type": "extraction",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510107",
+    "model": "gpt-4.1-nano",
+    "input_tokens": 3628,
+    "output_tokens": 452,
+    "task_type": "creative",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510109",
+    "model": "deepseek-r1",
+    "input_tokens": 2340,
+    "output_tokens": 1501,
+    "task_type": "creative",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510111",
+    "model": "deepseek-r1",
+    "input_tokens": 3269,
+    "output_tokens": 78,
+    "task_type": "general",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510112",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 222,
+    "output_tokens": 2988,
+    "task_type": "coding",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510114",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 2610,
+    "output_tokens": 2880,
+    "task_type": "creative",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510116",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2310,
+    "output_tokens": 2437,
+    "task_type": "analysis",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510118",
+    "model": "llama-4-maverick",
+    "input_tokens": 2365,
+    "output_tokens": 947,
+    "task_type": "coding",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510120",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1559,
+    "output_tokens": 87,
+    "task_type": "extraction",
+    "session_id": "sess_7",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510121",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 3897,
+    "output_tokens": 273,
+    "task_type": "coding",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510123",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2413,
+    "output_tokens": 273,
+    "task_type": "extraction",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510125",
+    "model": "gpt-4o",
+    "input_tokens": 3645,
+    "output_tokens": 2287,
+    "task_type": "general",
+    "session_id": "sess_14",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510127",
+    "model": "gpt-4.1",
+    "input_tokens": 2231,
+    "output_tokens": 128,
+    "task_type": "classification",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510128",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 850,
+    "output_tokens": 1255,
+    "task_type": "general",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510130",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 1045,
+    "output_tokens": 2039,
+    "task_type": "analysis",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510131",
+    "model": "llama-4-maverick",
+    "input_tokens": 3074,
+    "output_tokens": 2303,
+    "task_type": "summary",
+    "session_id": "sess_5",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510133",
+    "model": "gpt-4o",
+    "input_tokens": 3548,
+    "output_tokens": 36,
+    "task_type": "extraction",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510135",
+    "model": "llama-4-maverick",
+    "input_tokens": 1657,
+    "output_tokens": 538,
+    "task_type": "summary",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510136",
+    "model": "llama-4-maverick",
+    "input_tokens": 2210,
+    "output_tokens": 1543,
+    "task_type": "creative",
+    "session_id": "sess_15",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510138",
+    "model": "deepseek-r1",
+    "input_tokens": 984,
+    "output_tokens": 77,
+    "task_type": "creative",
+    "session_id": "sess_18",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510140",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 3317,
+    "output_tokens": 1812,
+    "task_type": "summary",
+    "session_id": "sess_6",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510141",
+    "model": "deepseek-v3",
+    "input_tokens": 2641,
+    "output_tokens": 2200,
+    "task_type": "coding",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510143",
+    "model": "gpt-4o",
+    "input_tokens": 2330,
+    "output_tokens": 1410,
+    "task_type": "general",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510145",
+    "model": "deepseek-r1",
+    "input_tokens": 2752,
+    "output_tokens": 766,
+    "task_type": "creative",
+    "session_id": "sess_10",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510146",
+    "model": "deepseek-v3",
+    "input_tokens": 2630,
+    "output_tokens": 1047,
+    "task_type": "creative",
+    "session_id": "sess_16",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510149",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1498,
+    "output_tokens": 97,
+    "task_type": "extraction",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510151",
+    "model": "gpt-4o-mini",
+    "input_tokens": 477,
+    "output_tokens": 2999,
+    "task_type": "creative",
+    "session_id": "sess_8",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510152",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 1577,
+    "output_tokens": 423,
+    "task_type": "creative",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510154",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 1239,
+    "output_tokens": 37,
+    "task_type": "summary",
+    "session_id": "sess_16",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510156",
+    "model": "claude-haiku-3-5-20241022",
+    "input_tokens": 961,
+    "output_tokens": 23,
+    "task_type": "creative",
+    "session_id": "sess_19",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510157",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1570,
+    "output_tokens": 43,
+    "task_type": "extraction",
+    "session_id": "sess_15",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510159",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 2271,
+    "output_tokens": 1659,
+    "task_type": "analysis",
+    "session_id": "sess_20",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510161",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 2676,
+    "output_tokens": 2594,
+    "task_type": "coding",
+    "session_id": "sess_13",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510162",
+    "model": "deepseek-r1",
+    "input_tokens": 2941,
+    "output_tokens": 141,
+    "task_type": "analysis",
+    "session_id": "sess_16",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510164",
+    "model": "claude-sonnet-4-20250514",
+    "input_tokens": 1358,
+    "output_tokens": 829,
+    "task_type": "general",
+    "session_id": "sess_20",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510166",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 2952,
+    "output_tokens": 285,
+    "task_type": "coding",
+    "session_id": "sess_20",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510174",
+    "model": "deepseek-v3",
+    "input_tokens": 1037,
+    "output_tokens": 798,
+    "task_type": "creative",
+    "session_id": "sess_11",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510175",
+    "model": "gpt-4o-mini",
+    "input_tokens": 3874,
+    "output_tokens": 94,
+    "task_type": "creative",
+    "session_id": "sess_6",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510178",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 1309,
+    "output_tokens": 93,
+    "task_type": "extraction",
+    "session_id": "sess_9",
+    "cached": true
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510179",
+    "model": "gemini-2.5-pro",
+    "input_tokens": 3445,
+    "output_tokens": 1326,
+    "task_type": "creative",
+    "session_id": "sess_2",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510181",
+    "model": "gemini-2.5-flash",
+    "input_tokens": 274,
+    "output_tokens": 134,
+    "task_type": "coding",
+    "session_id": "sess_1",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510187",
+    "model": "deepseek-v3",
+    "input_tokens": 3035,
+    "output_tokens": 1652,
+    "task_type": "summary",
+    "session_id": "sess_4",
+    "cached": false
+  },
+  {
+    "timestamp": "2026-05-12T11:10:12.510189",
+    "model": "gpt-4.1",
+    "input_tokens": 3681,
+    "output_tokens": 238,
+    "task_type": "extraction",
+    "session_id": "sess_5",
+    "cached": false
+  }
+]

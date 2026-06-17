@@ -1,0 +1,7 @@
+# Policy allowlist
+#
+# Add workflow filenames here (one per line) if they require exceptions to policy-check.
+# Keep the list short and document why in the PR.
+#
+# Example:
+# external-posting.yml

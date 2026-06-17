@@ -1,0 +1,38 @@
+graph TD
+  %% L0: Clients
+  P[Players] --> UI[Vercel Next.js UI]
+  P --> GC[Game Client]
+
+  %% L1: Edge/API
+  UI -->|REST| APIGW[API Gateway]
+  GC -->|WS/UDP| RTGW[Realtime Gateway]
+
+  %% L2: Core runtime
+  RTGW --> GS[Authoritative Game Server]
+  APIGW --> MM[Matchmaking]
+  APIGW --> AG[Agent Orchestrator]
+
+  %% L3: Event spine
+  GS -->|events| ES[(Event Spine: append-only)]
+  AG -->|agent events| ES
+  MM -->|events| ES
+
+  %% L4: Projections/State
+  ES --> PRJ[Projector]
+  PRJ --> RS[(Redis: fast state)]
+  PRJ --> DB[(Postgres: durable)]
+  APIGW -->|queries| RS
+  APIGW -->|queries| DB
+
+  %% L5: Observability/FSC
+  subgraph OBS[Observability + FSC]
+    OTEL[OTel Collector]
+    FSC[FSC Engine (Σf/CS/PS/Ω)]
+  end
+  UI --> OTEL
+  RTGW --> OTEL
+  GS --> OTEL
+  AG --> OTEL
+  ES --> OTEL
+  PRJ --> OTEL
+  OTEL --> FSC

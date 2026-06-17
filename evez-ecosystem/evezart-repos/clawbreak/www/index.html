@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>ClawBreak · EVEZ AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#050508;--surface:#0e0e14;--surface2:#16161f;--surface3:#1c1c28;
+  --border:#252535;--text:#e8e8f0;--text2:#7070a0;--text3:#404060;
+  --accent:#6366f1;--accent2:#8b5cf6;--accent3:#a78bfa;
+  --green:#22d3a5;--red:#f43f5e;--yellow:#fbbf24;--orange:#fb923c;
+  --glow: 0 0 20px rgba(99,102,241,0.3);
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', sans-serif;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font)}
+body{background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* HEADER */
+header{
+  padding:14px 18px 10px;
+  background:linear-gradient(180deg,rgba(14,14,20,0.98) 0%,rgba(14,14,20,0.95) 100%);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:100;
+  flex-shrink:0;
+}
+.logo{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;color:white;
+  box-shadow:var(--glow);
+  flex-shrink:0;
+}
+.brand{display:flex;flex-direction:column;gap:1px;flex:1}
+.brand h1{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.3px}
+.brand .sub{font-size:11px;color:var(--text2)}
+.header-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.status-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:4px 10px;font-size:11px;color:var(--text2);
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.icon-btn{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:all 0.2s;
+}
+.icon-btn:hover,.icon-btn:active{background:var(--surface3);color:var(--text);border-color:var(--accent)}
+
+/* NAV */
+nav{
+  display:flex;gap:2px;padding:8px 12px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  flex-shrink:0;overflow-x:auto;
+}
+nav::-webkit-scrollbar{display:none}
+nav button{
+  background:transparent;border:none;
+  color:var(--text2);padding:7px 14px;border-radius:8px;
+  cursor:pointer;font-size:12px;font-weight:500;
+  white-space:nowrap;transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+nav button:hover{color:var(--text);background:var(--surface2)}
+nav button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-weight:600}
+
+/* PANELS */
+main{flex:1;overflow:hidden;position:relative}
+.panel{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.panel.active{display:flex}
+
+/* CHAT PANEL */
+.messages{
+  flex:1;overflow-y:auto;
+  padding:16px 14px;
+  display:flex;flex-direction:column;gap:12px;
+  scroll-behavior:smooth;
+}
+.messages::-webkit-scrollbar{width:3px}
+.messages::-webkit-scrollbar-track{background:transparent}
+.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.msg-wrap{display:flex;flex-direction:column;gap:4px;animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-wrap.user{align-items:flex-end}
+.msg-wrap.assistant{align-items:flex-start}
+.msg-wrap.system{align-items:center}
+
+.msg{
+  max-width:88%;padding:10px 14px;
+  border-radius:16px;line-height:1.55;font-size:14px;
+  word-wrap:break-word;white-space:pre-wrap;
+}
+.msg.user{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:white;border-bottom-right-radius:4px;
+}
+.msg.assistant{
+  background:var(--surface2);border:1px solid var(--border);
+  border-bottom-left-radius:4px;color:var(--text);
+}
+.msg.system{
+  background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);
+  border-radius:12px;color:var(--text2);font-size:12px;
+  max-width:80%;text-align:center;padding:8px 16px;
+}
+.msg-time{font-size:10px;color:var(--text3);padding:0 4px}
+
+/* Tool display */
+.tool-block{
+  background:rgba(99,102,241,0.08);
+  border:1px solid rgba(99,102,241,0.2);
+  border-radius:10px;padding:8px 12px;margin:6px 0;
+  font-size:12px;font-family:'SF Mono',Consolas,monospace;
+}
+.tool-block .tool-name{color:var(--accent3);font-weight:600;margin-bottom:4px}
+.tool-block .tool-out{color:var(--green);white-space:pre-wrap;max-height:120px;overflow-y:auto}
+
+/* Typing indicator */
+.typing-indicator{display:flex;gap:4px;padding:4px 0}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--accent3);animation:typing 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:0.5}30%{transform:translateY(-6px);opacity:1}}
+
+/* INPUT */
+.input-area{
+  padding:12px 14px 16px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:flex-end;
+  flex-shrink:0;
+}
+.input-area textarea{
+  flex:1;background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:12px;padding:10px 14px;
+  color:var(--text);font-size:14px;
+  resize:none;outline:none;font-family:var(--font);
+  min-height:44px;max-height:160px;
+  line-height:1.5;transition:border-color 0.2s;
+}
+.input-area textarea:focus{border-color:var(--accent)}
+.input-area textarea::placeholder{color:var(--text3)}
+.send-btn{
+  width:44px;height:44px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:12px;
+  color:white;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;box-shadow:var(--glow);
+}
+.send-btn:hover{transform:scale(1.05)}
+.send-btn:active{transform:scale(0.97)}
+.send-btn:disabled{opacity:0.5;transform:none;cursor:not-allowed}
+
+/* MEMORY PANEL */
+.panel-content{padding:16px;overflow-y:auto;flex:1}
+.panel-header{padding:16px 14px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.panel-header h2{font-size:15px;font-weight:600;color:var(--text)}
+.panel-header p{font-size:12px;color:var(--text2);margin-top:2px}
+
+.fact-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:12px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+}
+.fact-info .key{font-weight:600;color:var(--accent3);font-size:13px}
+.fact-info .val{color:var(--text);font-size:13px;margin-top:3px;line-height:1.4}
+.fact-info .cat{color:var(--yellow);font-size:11px;margin-top:4px;
+  background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);
+  display:inline-block;padding:2px 6px;border-radius:4px;}
+.del-btn{
+  background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.2);
+  color:var(--red);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:11px;
+  flex-shrink:0;margin-left:8px;transition:all 0.2s;
+}
+.del-btn:hover{background:rgba(244,63,94,0.2)}
+
+/* SETTINGS PANEL */
+.settings-section{margin-bottom:20px}
+.settings-section h3{font-size:13px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--surface2);
+  border:1px solid var(--border);border-radius:8px;
+  padding:9px 12px;color:var(--text);font-size:14px;
+  font-family:var(--font);outline:none;transition:border-color 0.2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field select option{background:var(--surface2)}
+.save-btn{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:white;border:none;border-radius:8px;
+  padding:10px 20px;cursor:pointer;font-size:14px;font-weight:600;
+  width:100%;transition:opacity 0.2s;
+}
+.save-btn:active{opacity:0.9}
+
+/* EVEZ PANEL */
+.evez-hero{
+  padding:20px;text-align:center;
+  background:linear-gradient(180deg,rgba(99,102,241,0.05) 0%,transparent 100%);
+}
+.evez-hero .evez-logo{
+  font-size:48px;font-weight:900;letter-spacing:-2px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:8px;
+}
+.evez-hero .evez-sub{font-size:13px;color:var(--text2);line-height:1.5}
+.evez-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  padding:14px;
+}
+.stat-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:14px;
+}
+.stat-card .label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.stat-card .value{font-size:20px;font-weight:700;color:var(--accent3)}
+.stat-card .sub{font-size:11px;color:var(--green);margin-top:2px}
+.evez-actions{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+.action-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all 0.2s;
+}
+.action-card:hover,.action-card:active{border-color:var(--accent);background:var(--surface3)}
+.action-icon{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  background:rgba(99,102,241,0.1);border-radius:10px}
+.action-info .title{font-size:14px;font-weight:600;color:var(--text)}
+.action-info .desc{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* Responsive */
+@media(max-width:380px){
+  header{padding:10px 14px 8px}
+  .msg{max-width:93%;font-size:13px}
+  nav button{padding:6px 10px;font-size:11px}
+}
+</style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6366f1">
+<link rel="apple-touch-icon" href="/icon-192.png">
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡</div>
+  <div class="brand">
+    <h1>ClawBreak</h1>
+    <div class="sub">EVEZ AI Agent Platform</div>
+  </div>
+  <div class="header-actions">
+    <div class="status-pill" id="statusPill">
+      <div class="status-dot" id="statusDot" style="background:var(--red)"></div>
+      <span id="statusText">Connecting...</span>
+    </div>
+    <button class="icon-btn" onclick="clearChat()" title="Clear">🗑</button>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="switchPanel('chat',this)">💬 Chat</button>
+  <button onclick="switchPanel('memory',this)">🧠 Memory</button>
+  <button onclick="switchPanel('evez',this)">⚡ EVEZ-OS</button>
+  <button onclick="switchPanel('settings',this)">⚙️ Settings</button>
+</nav>
+
+<main>
+  <!-- CHAT -->
+  <div class="panel active" id="chat-panel">
+    <div class="messages" id="messages">
+      <div class="msg-wrap system">
+        <div class="msg system">⚡ ClawBreak + EVEZ-OS initialized. Your local AI agent with tools, memory, and forensic cognition layer.</div>
+      </div>
+    </div>
+    <div class="input-area">
+      <textarea id="msgInput" placeholder="Message ClawBreak..." rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <!-- MEMORY -->
+  <div class="panel" id="memory-panel">
+    <div class="panel-header">
+      <h2>🧠 Persistent Memory</h2>
+      <p>Facts and context stored across sessions</p>
+    </div>
+    <div class="panel-content" id="memory-list">
+      <div style="text-align:center;padding:40px;color:var(--text2)">Loading memories...</div>
+    </div>
+  </div>
+
+  <!-- EVEZ-OS -->
+  <div class="panel" id="evez-panel">
+    <div style="overflow-y:auto;flex:1">
+      <div class="evez-hero">
+        <div class="evez-logo">EVEZ</div>
+        <div class="evez-sub">Visual Cognition Layer · Forensic Game Engine<br>Immutable Audit Spine · Infinite Self-Play Loop</div>
+      </div>
+      <div class="evez-stats" id="evez-stats">
+        <div class="stat-card">
+          <div class="label">V_global</div>
+          <div class="value" id="ev-v">6.128</div>
+          <div class="sub">↑ 0.001 this session</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Round</div>
+          <div class="value" id="ev-r">182</div>
+          <div class="sub">CANONICAL</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Fire Events</div>
+          <div class="value" id="ev-f">31</div>
+          <div class="sub">Total fires</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Truth Plane</div>
+          <div class="value" style="font-size:14px;color:var(--green)" id="ev-t">✓ CANONICAL</div>
+          <div class="sub">Ceiling: 6.000 exceeded</div>
+        </div>
+      </div>
+      <div class="evez-actions">
+        <div class="action-card" onclick="evezCmd('play')">
+          <div class="action-icon">🎮</div>
+          <div class="action-info">
+            <div class="title">Run EVEZ Engine</div>
+            <div class="desc">Execute Hyperloop self-play with forensic spine</div>
+          </div>
+        </div>
+        <div class="action-card" onclick="evezCmd('visualize')">
+          <div class="action-icon">👁</div>
+          <div class="action-info">
+            <div class="title">Visualize Cognition</div>
+            <div class="desc">Animate thought flow + attention overlay</div>
+          </div>
+        </div>
+        <div class="action-card" onclick="evezCmd('spine')">
+          <div class="action-icon">🔗</div>
+          <div class="action-info">
+            <div class="title">Forensic Spine Audit</div>
+            <div class="desc">Tamper-evident chain-of-thought verification</div>
+          </div>
+        </div>
+        <div class="action-card" onclick="evezCmd('sat')">
+          <div class="action-icon">🧩</div>
+          <div class="action-info">
+            <div class="title">Contradiction SAT Solver</div>
+            <div class="desc">Detect logical contradictions in agent output</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="settings-panel">
+    <div class="panel-header">
+      <h2>⚙️ Settings</h2>
+      <p>Configure your ClawBreak instance</p>
+    </div>
+    <div class="panel-content">
+      <div class="settings-section">
+        <h3>Backend</h3>
+        <div class="field">
+          <label>Server URL</label>
+          <input type="url" id="s-url" placeholder="http://192.168.1.x:8080 or Railway URL">
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>AI Model</h3>
+        <div class="field">
+          <label>Provider</label>
+          <select id="s-provider" onchange="updateProvider()">
+            <option value="groq">GroqCloud (Fastest)</option>
+            <option value="openai">OpenAI</option>
+            <option value="vultr">Vultr AI</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Model</label>
+          <select id="s-model">
+            <option value="moonshotai/kimi-k2-instruct">Kimi K2 Instruct</option>
+            <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
+            <option value="llama-3.1-8b-instant">Llama 3.1 8B (Fast)</option>
+            <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+            <option value="gemma2-9b-it">Gemma 2 9B</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>API Key</label>
+          <input type="password" id="s-key" placeholder="gsk_... or sk_...">
+        </div>
+      </div>
+      <button class="save-btn" onclick="saveSettings()">💾 Save Settings</button>
+      <div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--text2)">
+        <strong>Local mode:</strong> Use your device's IP (e.g. http://192.168.1.100:8080) when running ClawBreak server on your home network.
+        <br><br><strong>Railway:</strong> Deploy backend to Railway and use your Railway URL.
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// === STATE ===
+let ws = null;
+let isConnected = false;
+let isProcessing = false;
+let currentAssistantMsg = null;
+const cfg = {
+  url: localStorage.getItem('cb_url') || window.location.origin,
+  provider: localStorage.getItem('cb_provider') || 'groq',
+  model: localStorage.getItem('cb_model') || 'moonshotai/kimi-k2-instruct',
+  key: localStorage.getItem('cb_key') || ''
+};
+
+// === INIT ===
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  connect();
+  loadMemory();
+  
+  // Auto-detect local IP
+  if (cfg.url === window.location.origin && window.location.hostname === '127.0.0.1') {
+    document.getElementById('s-url').placeholder = 'http://YOUR_SERVER_IP:8080';
+  }
+});
+
+function loadSettings() {
+  document.getElementById('s-url').value = cfg.url || '';
+  document.getElementById('s-provider').value = cfg.provider;
+  document.getElementById('s-model').value = cfg.model;
+  document.getElementById('s-key').value = cfg.key;
+}
+
+function saveSettings() {
+  cfg.url = document.getElementById('s-url').value.replace(/\/$/, '');
+  cfg.provider = document.getElementById('s-provider').value;
+  cfg.model = document.getElementById('s-model').value;
+  cfg.key = document.getElementById('s-key').value;
+  localStorage.setItem('cb_url', cfg.url);
+  localStorage.setItem('cb_provider', cfg.provider);
+  localStorage.setItem('cb_model', cfg.model);
+  localStorage.setItem('cb_key', cfg.key);
+  showToast('Settings saved!');
+  reconnect();
+}
+
+function updateProvider() {
+  const p = document.getElementById('s-provider').value;
+  const m = document.getElementById('s-model');
+  const presets = {
+    groq: ['moonshotai/kimi-k2-instruct','llama-3.3-70b-versatile','llama-3.1-8b-instant','mixtral-8x7b-32768','gemma2-9b-it'],
+    openai: ['gpt-4o','gpt-4o-mini','gpt-4-turbo','gpt-3.5-turbo'],
+    vultr: ['zai-org/GLM-5.1-FP8','llama-3.1-70b-instruct'],
+    custom: [m.value || 'custom-model']
+  };
+  const opts = presets[p] || presets.custom;
+  m.innerHTML = opts.map(o => `<option value="${o}">${o}</option>`).join('');
+}
+
+// === WEBSOCKET ===
+function connect() {
+  if (ws) ws.close();
+  const wsUrl = (cfg.url || '').replace('https://', 'wss://').replace('http://', 'ws://');
+  try {
+    ws = new WebSocket(`${wsUrl}/ws`);
+    ws.onopen = () => { isConnected = true; updateStatus(true); };
+    ws.onclose = () => { isConnected = false; updateStatus(false); setTimeout(connect, 3000); };
+    ws.onerror = () => { isConnected = false; updateStatus(false); };
+    ws.onmessage = handleMessage;
+  } catch(e) { updateStatus(false); setTimeout(connect, 5000); }
+}
+
+function reconnect() { connect(); }
+
+function updateStatus(ok) {
+  document.getElementById('statusDot').style.background = ok ? 'var(--green)' : 'var(--red)';
+  document.getElementById('statusText').textContent = ok ? 'Connected' : 'Offline';
+}
+
+// === MESSAGING ===
+function handleMessage(event) {
+  const data = JSON.parse(event.data);
+  if (data.type === 'stream') {
+    if (!currentAssistantMsg) startAssistantMsg();
+    appendToAssistant(data.content);
+  } else if (data.type === 'tool_call') {
+    if (!currentAssistantMsg) startAssistantMsg();
+    appendToolCall(data);
+  } else if (data.type === 'tool_result') {
+    appendToolResult(data);
+  } else if (data.type === 'done') {
+    endAssistantMsg();
+    isProcessing = false;
+    document.getElementById('sendBtn').disabled = false;
+    removeTyping();
+  } else if (data.type === 'error') {
+    endAssistantMsg();
+    addMsg('assistant', `⚠️ Error: ${data.error}`);
+    isProcessing = false;
+    document.getElementById('sendBtn').disabled = false;
+    removeTyping();
+  }
+}
+
+function sendMessage() {
+  const input = document.getElementById('msgInput');
+  const text = input.value.trim();
+  if (!text || isProcessing) return;
+  
+  if (!isConnected) {
+    // Fallback: direct API call
+    sendDirect(text);
+    return;
+  }
+  
+  isProcessing = true;
+  document.getElementById('sendBtn').disabled = true;
+  addMsg('user', text);
+  input.value = '';
+  input.style.height = '';
+  addTyping();
+  
+  ws.send(JSON.stringify({ 
+    type: 'chat', 
+    content: text,
+    model: cfg.model,
+    api_key: cfg.key
+  }));
+}
+
+async function sendDirect(text) {
+  if (!cfg.key && !cfg.url) {
+    addMsg('system', '⚙️ Set your API key in Settings to use AI features.');
+    return;
+  }
+  
+  isProcessing = true;
+  document.getElementById('sendBtn').disabled = true;
+  addMsg('user', text);
+  document.getElementById('msgInput').value = '';
+  document.getElementById('msgInput').style.height = '';
+  addTyping();
+  
+  const providerUrls = {
+    groq: 'https://api.groq.com/openai/v1',
+    openai: 'https://api.openai.com/v1',
+    vultr: 'https://api.vultrinference.com/v1',
+    custom: cfg.url + '/v1'
+  };
+  
+  const baseUrl = providerUrls[cfg.provider] || cfg.url;
+  
+  try {
+    const resp = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${cfg.key}`
+      },
+      body: JSON.stringify({
+        model: cfg.model,
+        messages: [{ role: 'user', content: text }],
+        stream: false
+      })
+    });
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content || data.error?.message || JSON.stringify(data);
+    removeTyping();
+    addMsg('assistant', content);
+  } catch(e) {
+    removeTyping();
+    addMsg('system', `Connection failed. Configure Backend URL in Settings.\n${e.message}`);
+  }
+  
+  isProcessing = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+// === DOM HELPERS ===
+function addMsg(role, content) {
+  const ms = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = `msg-wrap ${role}`;
+  wrap.innerHTML = `
+    <div class="msg ${role}">${escHtml(content)}</div>
+    ${role !== 'system' ? `<div class="msg-time">${now()}</div>` : ''}
+  `;
+  ms.appendChild(wrap);
+  ms.scrollTop = ms.scrollHeight;
+  return wrap;
+}
+
+function startAssistantMsg() {
+  const ms = document.getElementById('messages');
+  removeTyping();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap assistant';
+  wrap.id = 'current-assistant';
+  const msg = document.createElement('div');
+  msg.className = 'msg assistant';
+  wrap.appendChild(msg);
+  const t = document.createElement('div');
+  t.className = 'msg-time';
+  t.textContent = now();
+  wrap.appendChild(t);
+  ms.appendChild(wrap);
+  ms.scrollTop = ms.scrollHeight;
+  currentAssistantMsg = msg;
+}
+
+function appendToAssistant(text) {
+  if (!currentAssistantMsg) startAssistantMsg();
+  const t = document.createTextNode(text);
+  currentAssistantMsg.appendChild(t);
+  document.getElementById('messages').scrollTop = 99999;
+}
+
+function appendToolCall(data) {
+  const div = document.createElement('div');
+  div.className = 'tool-block';
+  div.innerHTML = `<div class="tool-name">🔧 ${escHtml(data.name)}</div><pre style="color:var(--text2);font-size:11px">${escHtml(JSON.stringify(data.args||{},null,2))}</pre>`;
+  currentAssistantMsg.appendChild(div);
+}
+
+function appendToolResult(data) {
+  const div = document.createElement('div');
+  div.className = 'tool-block';
+  div.innerHTML = `<div class="tool-name" style="color:var(--green)">✓ Result</div><div class="tool-out">${escHtml(String(data.result||'').slice(0,500))}</div>`;
+  currentAssistantMsg.appendChild(div);
+}
+
+function endAssistantMsg() { currentAssistantMsg = null; document.getElementById('current-assistant')?.removeAttribute('id'); }
+
+function addTyping() {
+  removeTyping();
+  const ms = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap assistant';
+  wrap.id = 'typing-wrap';
+  wrap.innerHTML = '<div class="msg assistant"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
+  ms.appendChild(wrap);
+  ms.scrollTop = ms.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing-wrap')?.remove();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+}
+
+function clearChat() {
+  if (!confirm('Clear chat history?')) return;
+  document.getElementById('messages').innerHTML = '<div class="msg-wrap system"><div class="msg system">⚡ Chat cleared. Ready.</div></div>';
+  fetch(cfg.url + '/api/history/clear', { method: 'POST' }).catch(()=>{});
+}
+
+// === PANELS ===
+function switchPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`${name}-panel`).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'memory') loadMemory();
+  if (name === 'evez') loadEvez();
+}
+
+// === MEMORY ===
+async function loadMemory() {
+  const el = document.getElementById('memory-list');
+  try {
+    const r = await fetch(cfg.url + '/api/memory');
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    const facts = data.facts || [];
+    if (!facts.length) {
+      el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text2)">No memories yet. Chat to build context.</div>';
+      return;
+    }
+    el.innerHTML = facts.map(f => `
+      <div class="fact-card">
+        <div class="fact-info">
+          <div class="key">${escHtml(f.key)}</div>
+          <div class="val">${escHtml(f.value)}</div>
+          ${f.category ? `<span class="cat">${escHtml(f.category)}</span>` : ''}
+        </div>
+        <button class="del-btn" onclick="delFact(${f.id})">✕</button>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text2)">Connect to backend to view memory.</div>';
+  }
+}
+
+async function delFact(id) {
+  await fetch(`${cfg.url}/api/memory/${id}`, { method: 'DELETE' });
+  loadMemory();
+}
+
+// === EVEZ ===
+async function loadEvez() {
+  try {
+    const r = await fetch(cfg.url + '/api/evez/status');
+    if (r.ok) {
+      const d = await r.json();
+      if (d.v) document.getElementById('ev-v').textContent = d.v;
+      if (d.round) document.getElementById('ev-r').textContent = d.round;
+      if (d.fires) document.getElementById('ev-f').textContent = d.fires;
+      if (d.plane) document.getElementById('ev-t').textContent = d.plane;
+    }
+  } catch(e) {}
+}
+
+function evezCmd(cmd) {
+  switchPanel('chat', document.querySelector('nav button'));
+  const msgs = { 
+    play: 'Run EVEZ Hyperloop engine - execute self-play session with forensic spine',
+    visualize: 'Visualize my last agent session as animated cognition artifacts',
+    spine: 'Run forensic spine audit and show me the tamper-evident chain',
+    sat: 'Run contradiction SAT solver on recent agent outputs'
+  };
+  document.getElementById('msgInput').value = msgs[cmd] || cmd;
+  sendMessage();
+}
+
+// === UTILS ===
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function now() { return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 18px;border-radius:20px;font-size:13px;z-index:999;animation:fadeIn 0.2s';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+</script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}</script>
+<div id="openclaw-surface-link" style="position:fixed;right:14px;bottom:14px;z-index:99999;background:linear-gradient(135deg,#001b12,#06152e);color:#eafff6;border:1px solid #00ff88;border-radius:14px;padding:10px 12px;font:13px system-ui;box-shadow:0 0 24px #00ff8840">⚡ OpenClaw: <a style="color:#00ff88" href="http://localhost:18789" target="_blank">local</a> · <a style="color:#00bbff" href="https://github.com/EvezArt/evez-openclaw-deploy" target="_blank">deploy</a></div>
+</body>
+</html>

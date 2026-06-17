@@ -1,0 +1,15 @@
+{
+  "loop_id": "agent_discovery_infra_8h",
+  "title": "Agent Discovery Infrastructure Monitor -- LinkedIn-for-agents/B2B-GTM discourse",
+  "trigger": "cron: every 8h (0 */8 * * *), America/Los_Angeles",
+  "action_summary": "Twitter scan agent discovery/LinkedIn-for-agents discourse, Groq synthesis, update TWITTER_SIGNALS.md + OUTREACH_QUEUE.md + LOOP_SPAWN_STATE.md, patch gist",
+  "spawned_at": "2026-03-02T16:00Z",
+  "spawn_reason": "LinkedIn-for-agents RT=31 via @Justin01805921 retweeted by 26k+ accounts, agent discovery infra emerging as new layer",
+  "last_run": "2026-03-03T16:09Z",
+  "scan_count": 2,
+  "status": "active",
+  "consecutive_zero": 0,
+  "new_terms_this_run": ["AgentMatch", "SAID_verification", "A2A_registry", "agent-as-DNS", "coordination_failures_vs_model_failures", "invisible_infra", "IP_over_common_knowledge"],
+  "top_signals": ["@StoryProtocol 578k L=74 RT=13", "@saidinfra 1258f L=49 RT=12", "@Bitplanet_AI 33k L=4"],
+  "evez_positioning": "EVEZ 414 rounds = the behavioral record that IS the trust signal. Coordination failures > model failures: EVEZ behavioral record proves what happened in each coordination event."
+}

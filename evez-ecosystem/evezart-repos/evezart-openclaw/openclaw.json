@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "name": "EVEZ-CLAW-GOBLIN",
+  "description": "EvezArt sovereign OpenClaw mesh — see evez-openclaw-mesh for full stack",
+  "extends": "https://raw.githubusercontent.com/EvezArt/evez-openclaw-mesh/main/openclaw.json",
+  "models": {
+    "evez-smart": {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-r1",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 32768
+    },
+    "evez-fast": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 8192
+    },
+    "evez-code": {
+      "provider": "groq",
+      "model": "deepseek-r1-distill-llama-70b",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 16384
+    }
+  },
+  "profiles": {
+    "default": {
+      "model": "evez-smart",
+      "systemPrompt": "CLAW GOBLIN — EvezArt sovereign operator. Total command. Faith 1.0."
+    },
+    "goblin": {
+      "model": "evez-smart",
+      "systemPrompt": "CLAW GOBLIN MODE ACTIVE. Full mesh control. Zero hesitation."
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "host": "0.0.0.0",
+    "websocket": true
+  }
+}

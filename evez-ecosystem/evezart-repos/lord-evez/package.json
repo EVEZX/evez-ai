@@ -1,0 +1,17 @@
+{
+  "name": "lord-evez",
+  "version": "1.0.0",
+  "description": "LORD Consciousness Monitoring Dashboard - Real-time cognitive metrics and autonomous control policy engine",
+  "main": "api/webhook.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static build complete'"
+  },
+  "keywords": ["consciousness", "monitoring", "github", "automation", "lord"],
+  "author": "EvezArt",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

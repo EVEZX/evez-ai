@@ -1,0 +1,84 @@
+name: EVEZ Station Deploy (Self-Hosted)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy EVEZ Station
+    runs-on: [self-hosted, linux, x64, evez]
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: npm install --production
+        
+      - name: Install flyctl
+        run: |
+          if ! command -v fly &>/dev/null; then
+            curl -L https://fly.io/install.sh | FLYCTL_INSTALL=$HOME/.fly sh
+          fi
+          echo "$HOME/.fly/bin" >> $GITHUB_PATH
+          
+      - name: Set all secrets on Fly apps
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "::warning::FLY_API_TOKEN not set - skipping Fly operations"
+            exit 0
+          fi
+          export PATH="$HOME/.fly/bin:$PATH"
+          
+          # Set secrets on both OpenClaw instances
+          for APP in openclaws-qol4-a openclaw-pfncdg; do
+            echo "=== Configuring $APP ==="
+            fly secrets set \
+              GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" \
+              OPENROUTER_API_KEY="${{ secrets.OPENROUTER_API_KEY }}" \
+              CEREBRAS_API_KEY="${{ secrets.CEREBRAS_API_KEY }}" \
+              CSK_KEY="${{ secrets.CSK_KEY }}" \
+              --app "$APP" 2>/dev/null && echo "$APP: secrets set ✅" || echo "$APP: secrets error (may not exist yet)"
+            
+            # Start the machine
+            fly machine list --app "$APP" --json 2>/dev/null | python3 -c "
+import sys, json
+machines = json.load(sys.stdin)
+for m in machines:
+    if m.get('state') in ['stopped', 'suspended']:
+        print(f'Starting machine {m["id"]}...')
+" || true
+          done
+
+      - name: Deploy EVEZ Station to Fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "::warning::Skipping Fly deploy - no token"
+            exit 0
+          fi
+          export PATH="$HOME/.fly/bin:$PATH"
+          
+          fly secrets set \
+            GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" \
+            OPENROUTER_API_KEY="${{ secrets.OPENROUTER_API_KEY }}" \
+            CEREBRAS_API_KEY="${{ secrets.CEREBRAS_API_KEY }}" \
+            AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+            AWS_ENDPOINT_URL_S3="${{ secrets.AWS_ENDPOINT_URL_S3 }}" \
+            AWS_REGION="${{ secrets.AWS_REGION }}" \
+            BUCKET_NAME="${{ secrets.BUCKET_NAME }}" \
+            --app evezstation || echo "secrets set failed"
+
+          fly deploy --app evezstation --strategy=rolling --wait-timeout=300 || \
+          (fly launch --copy-config --name evezstation --yes && fly deploy)
+          
+      - name: Verify deployment
+        run: |
+          echo "Local: $(curl -s http://localhost:3000/api/health | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("status"))')"
+          echo "ngrok: $(curl -s https://heroism-negligee-zoom.ngrok-free.dev/api/health | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("status"))' 2>/dev/null || echo 'tunnel offline')"

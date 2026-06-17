@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EVEZ-OS — Symbiotic Omega Frame</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .omega-frame {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid #00ff8833;
+    }
+    header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #00ff8833;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00ff88;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+    h1 { font-size: 1.1rem; letter-spacing: 0.2em; color: #00ff88; }
+    .subtitle { font-size: 0.7rem; color: #00ff8866; letter-spacing: 0.15em; }
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #00ff8811;
+      overflow: hidden;
+    }
+    .panel {
+      background: #050505;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    .panel h2 {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #00ff8888;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #00ff8822;
+      padding-bottom: 0.5rem;
+    }
+    .event-list { list-style: none; }
+    .event-item {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-left: 2px solid #00ff8844;
+      font-size: 0.8rem;
+      animation: fadeIn 0.3s ease;
+    }
+    .event-item.high { border-left-color: #ff4444; color: #ff8888; }
+    .event-item.medium { border-left-color: #ffaa00; color: #ffcc44; }
+    .event-item.low { border-left-color: #00ff88; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #00ff8811;
+      font-size: 0.8rem;
+    }
+    .metric-value { color: #fff; }
+    footer {
+      padding: 0.75rem 2rem;
+      border-top: 1px solid #00ff8833;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #00ff8866;
+    }
+    .status-ok { color: #00ff88; }
+    #post-btn {
+      background: #00ff8822;
+      border: 1px solid #00ff8844;
+      color: #00ff88;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      transition: background 0.2s;
+    }
+    #post-btn:hover { background: #00ff8844; }
+    #endpoint-input {
+      background: #0a0a0a;
+      border: 1px solid #00ff8833;
+      color: #00ff88;
+      padding: 0.4rem 0.75rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      width: 280px;
+    }
+  </style>
+</head>
+<body>
+  <div class="omega-frame">
+    <header>
+      <div class="pulse"></div>
+      <div>
+        <h1>EVEZ-OS // OMEGA FRAME</h1>
+        <div class="subtitle">SYMBIOTIC TELEMETRY INTERFACE — ESIU BRIDGE</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="panel">
+        <h2>// ISOLATION EVENTS</h2>
+        <ul class="event-list" id="event-list">
+          <li class="event-item low">[BOOT] Omega Frame initialized</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>// SYSTEM METRICS</h2>
+        <div class="metric"><span>EVEZ-OS STATUS</span><span class="metric-value status-ok" id="os-status">CONNECTING…</span></div>
+        <div class="metric"><span>ESIU ENDPOINT</span><span class="metric-value" id="esiu-endpoint">localhost:8001</span></div>
+        <div class="metric"><span>EVENTS PROCESSED</span><span class="metric-value" id="event-count">0</span></div>
+        <div class="metric"><span>LAST EVENT ID</span><span class="metric-value" id="last-event-id">—</span></div>
+        <div class="metric"><span>BRANCH</span><span class="metric-value">EvezArt-patch-3</span></div>
+        <div class="metric"><span>RUNTIME</span><span class="metric-value" id="uptime">0s</span></div>
+      </div>
+    </main>
+
+    <footer>
+      <div>
+        <input type="text" id="endpoint-input" value="http://localhost:8000" placeholder="EVEZ-OS base URL" />
+        <button id="post-btn" onclick="sendTestEvent()">▶ POST TEST EVENT</button>
+      </div>
+      <div>EVEZ666 © 2026 — AGPL-3.0</div>
+    </footer>
+  </div>
+
+  <script>
+    let eventCount = 0;
+    const startTime = Date.now();
+
+    setInterval(() => {
+      const s = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById('uptime').textContent = s + 's';
+    }, 1000);
+
+    async function pingEvezOS() {
+      const base = document.getElementById('endpoint-input').value.trim();
+      try {
+        const r = await fetch(base + '/health');
+        if (r.ok) {
+          document.getElementById('os-status').textContent = 'ONLINE';
+          document.getElementById('os-status').style.color = '#00ff88';
+        }
+      } catch {
+        document.getElementById('os-status').textContent = 'OFFLINE';
+        document.getElementById('os-status').style.color = '#ff4444';
+      }
+    }
+    pingEvezOS();
+    setInterval(pingEvezOS, 10000);
+
+    async function sendTestEvent() {
+      const base = document.getElementById('endpoint-input').value.trim();
+      const id = 'omega_' + Date.now();
+      const payload = {
+        event_id: id,
+        source: 'omega-frame',
+        severity: 'low',
+        description: 'Test event from Omega Frame UI',
+        decision: {
+          mode: 'observe',
+          actions: ['log'],
+          principles: ['transparency']
+        }
+      };
+      try {
+        const r = await fetch(base + '/api/telemetry/isolation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await r.json();
+        addEvent(id, 'low', 'POST accepted — ' + JSON.stringify(data));
+        document.getElementById('last-event-id').textContent = id;
+      } catch (e) {
+        addEvent(id, 'high', 'POST failed: ' + e.message);
+      }
+    }
+
+    function addEvent(id, severity, msg) {
+      eventCount++;
+      document.getElementById('event-count').textContent = eventCount;
+      const li = document.createElement('li');
+      li.className = 'event-item ' + severity;
+      li.textContent = '[' + new Date().toISOString().slice(11, 19) + '] ' + msg;
+      const list = document.getElementById('event-list');
+      list.prepend(li);
+      if (list.children.length > 50) list.lastChild.remove();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "M001",
+    "title": "Container/VM Identification",
+    "status": "COMPLETE",
+    "level": 1
+  },
+  {
+    "id": "M002",
+    "title": "Permission Boundary Mapping",
+    "status": "PENDING",
+    "level": 2
+  },
+  {
+    "id": "M003",
+    "title": "DNS Resolver Trust Verification",
+    "status": "PENDING",
+    "level": 3
+  },
+  {
+    "id": "M004",
+    "title": "Boot Chain Reconstruction",
+    "status": "PENDING",
+    "level": 4
+  },
+  {
+    "id": "M005",
+    "title": "Syscall Ceiling Detection",
+    "status": "PENDING",
+    "level": 5
+  },
+  {
+    "id": "M006",
+    "title": "Escape Surface Mapping",
+    "status": "PENDING",
+    "level": 6
+  },
+  {
+    "id": "M007",
+    "title": "MMDS Metadata Probe (169.254.169.254)",
+    "status": "PENDING",
+    "generated_from": "M001"
+  }
+]

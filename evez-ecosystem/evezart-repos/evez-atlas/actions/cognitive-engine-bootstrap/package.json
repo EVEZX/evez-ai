@@ -1,0 +1,29 @@
+{
+  "name": "cognitive-engine-bootstrap",
+  "version": "1.0.0",
+  "description": "Cognitive Engine Bootstrap - Complete LORD × EKF × GitHub/Copilot integration",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && ncc build dist/index.js -o dist --source-map --license licenses.txt",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "github-actions",
+    "cognitive-engine",
+    "lord",
+    "ekf",
+    "automation"
+  ],
+  "author": "EvezArt",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vercel/ncc": "^0.38.4",
+    "typescript": "^5.5.0"
+  }
+}

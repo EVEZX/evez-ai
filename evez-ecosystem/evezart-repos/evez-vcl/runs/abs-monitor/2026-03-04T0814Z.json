@@ -1,0 +1,15 @@
+abs_monitor scan #9
+ts_utc: 2026-03-04T08:14Z
+
+Primary: Agentic Behavioral Science OR AI agent behavior OR agent decision making bias -is:retweet lang:en
+genuine_count: 14 (HEALTHY)
+consecutive_zero: 0 (RESET from 1)
+
+Top signals:
+- @KirkDBorne (483217f) L=17 RT=3: AI Agents in Action Manning Books -- 4th consecutive scan, cluster anchor
+- @0x_Timi (1666f) L=9 RT=2: 'need a whole new science of agentic behavioral economics' -- GROWING (5th scan)
+- @rahulxf_ (1240f) L=5: Aflock cryptographically signed policies -- 3rd scan, building in public
+- @StephanFerraro (257f): '80% of enterprises report risky AI agent behavior. Only 21% have full visibility.' -- new signal
+
+New outreach targets: @0x_Timi (HIGH, 1666f), @rahulxf_ (HIGH, 1240f)
+ABS cluster: HEALTHY, consecutive_zero reset.

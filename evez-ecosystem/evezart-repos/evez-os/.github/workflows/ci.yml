@@ -1,0 +1,65 @@
+name: EVEZ-OS CI
+
+on:
+  push:
+    branches: [main, feat/all-10-workflows]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Import smoke test — all 10 workflow modules
+        run: |
+          python -c "
+          modules = [
+            'app.cognitive_event',
+            'app.invariance_battery',
+            'app.sensory_entity',
+            'app.skeptic_entity',
+            'app.first_harvest',
+            'app.proof_grammar',
+            'app.dgm_hyperagent',
+            'app.uberprompt',
+            'app.trunk_runner',
+            'app.api_trunk',
+            'app.vote_bus',
+            'app.wormhole',
+            'app.spawn',
+            'app.metarom',
+            'app.billing',
+            'app.api_keys',
+          ]
+          for m in modules:
+              __import__(m)
+              print(f'✅ {m}')
+          print('All modules imported successfully.')
+          "
+
+      - name: FastAPI startup smoke test
+        run: |
+          timeout 10 uvicorn os-evez.opengarden.app.main:app \
+            --host 127.0.0.1 --port 8099 &
+          sleep 4
+          curl -sf http://127.0.0.1:8099/health | python -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          assert d['ok'], f'health check failed: {d}'
+          print('✅ /health OK:', d['version'])
+          "
+          curl -sf http://127.0.0.1:8099/status | python -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          print('✅ /status:', d.get('summary','?'))
+          "

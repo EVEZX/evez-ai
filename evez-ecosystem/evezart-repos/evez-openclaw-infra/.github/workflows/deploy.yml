@@ -1,0 +1,36 @@
+name: EVEZ-OS Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: 'Target VPS IP/hostname'
+        required: true
+      user:
+        description: 'SSH user'
+        required: true
+        default: 'root'
+      provider:
+        description: 'Cloud provider'
+        type: choice
+        options:
+          - gcloud
+          - oracle
+          - hetzner
+          - digitalocean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ inputs.host }}
+          username: ${{ inputs.user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            curl -fsSL https://raw.githubusercontent.com/openclaw/openclaw/main/install.sh | bash
+            cd /tmp && git clone https://github.com/EVEZX/evez-openclaw-infra.git
+            cd evez-openclaw-infra && bash migrate-local.sh
+            echo "✅ EVEZ-OS deployed on ${{ inputs.provider }}"

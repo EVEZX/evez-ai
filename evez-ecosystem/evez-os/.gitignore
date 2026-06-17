@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+*.swp
+*.swo
+autoplay.log
+boot.log
+node_modules/
+__pycache__/
+*.pyc
+.env
+state/
+*.db
+.env

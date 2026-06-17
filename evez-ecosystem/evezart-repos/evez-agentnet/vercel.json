@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "name": "evez-naughty-list",
+  "functions": {
+    "api/naughty_list.js": {
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/naughty-list",
+      "dest": "/api/naughty_list.js"
+    },
+    {
+      "src": "/api/naughty-list",
+      "dest": "/api/naughty_list.js"
+    }
+  ],
+  "env": {
+    "ABLY_API_KEY": "@ably_api_key"
+  }
+}

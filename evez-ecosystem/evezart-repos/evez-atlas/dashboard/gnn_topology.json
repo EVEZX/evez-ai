@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {"id": "memory"},
+    {"id": "consciousness"},
+    {"id": "identity"},
+    {"id": "survival"},
+    {"id": "latency"},
+    {"id": "temporal"}
+  ],
+  "edges": [],
+  "updated_at": null
+}

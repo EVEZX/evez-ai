@@ -1,0 +1,198 @@
+{
+  "system": "glass-internet x game-agent-infra",
+  "truth_planes": [
+    "perception",
+    "pending",
+    "final",
+    "canon"
+  ],
+  "invariants": [
+    "event_spine_immutable",
+    "projections_mutable_with_provenance",
+    "pending_vs_final_explicit",
+    "bias_distribution_bounded_drift",
+    "falsifier_required_for_claims"
+  ],
+  "layers": [
+    "public_internet",
+    "backend",
+    "event_spine",
+    "observability",
+    "fsc",
+    "governance"
+  ],
+  "nodes": [
+    {
+      "id": "players",
+      "layer": "public_internet"
+    },
+    {
+      "id": "client",
+      "layer": "public_internet"
+    },
+    {
+      "id": "edge_cdn",
+      "layer": "public_internet"
+    },
+    {
+      "id": "dns",
+      "layer": "public_internet"
+    },
+    {
+      "id": "bgp",
+      "layer": "public_internet"
+    },
+    {
+      "id": "origin_apigw",
+      "layer": "public_internet"
+    },
+    {
+      "id": "auth_identity",
+      "layer": "public_internet"
+    },
+    {
+      "id": "ws_gateway",
+      "layer": "backend"
+    },
+    {
+      "id": "game_server",
+      "layer": "backend"
+    },
+    {
+      "id": "matchmaking_econ_anticheat",
+      "layer": "backend"
+    },
+    {
+      "id": "event_spine",
+      "layer": "event_spine",
+      "immutable": true
+    },
+    {
+      "id": "projection_store",
+      "layer": "event_spine"
+    },
+    {
+      "id": "otel",
+      "layer": "observability"
+    },
+    {
+      "id": "fsc_engine",
+      "layer": "fsc"
+    },
+    {
+      "id": "agent_orchestrator",
+      "layer": "fsc"
+    },
+    {
+      "id": "bias_constitution",
+      "layer": "governance"
+    }
+  ],
+  "edges": [
+    {
+      "src": "players",
+      "dst": "client",
+      "type": "interaction"
+    },
+    {
+      "src": "client",
+      "dst": "edge_cdn",
+      "type": "http_ws"
+    },
+    {
+      "src": "edge_cdn",
+      "dst": "dns",
+      "type": "naming"
+    },
+    {
+      "src": "dns",
+      "dst": "bgp",
+      "type": "reachability"
+    },
+    {
+      "src": "bgp",
+      "dst": "origin_apigw",
+      "type": "routing"
+    },
+    {
+      "src": "origin_apigw",
+      "dst": "auth_identity",
+      "type": "authn_authz"
+    },
+    {
+      "src": "client",
+      "dst": "ws_gateway",
+      "type": "realtime"
+    },
+    {
+      "src": "ws_gateway",
+      "dst": "game_server",
+      "type": "authoritative"
+    },
+    {
+      "src": "game_server",
+      "dst": "matchmaking_econ_anticheat",
+      "type": "services"
+    },
+    {
+      "src": "ws_gateway",
+      "dst": "event_spine",
+      "type": "events"
+    },
+    {
+      "src": "event_spine",
+      "dst": "projection_store",
+      "type": "projection"
+    },
+    {
+      "src": "event_spine",
+      "dst": "fsc_engine",
+      "type": "telemetry"
+    },
+    {
+      "src": "fsc_engine",
+      "dst": "agent_orchestrator",
+      "type": "analysis"
+    },
+    {
+      "src": "agent_orchestrator",
+      "dst": "origin_apigw",
+      "type": "actions"
+    },
+    {
+      "src": "bias_constitution",
+      "dst": "agent_orchestrator",
+      "type": "constraints"
+    },
+    {
+      "src": "bias_constitution",
+      "dst": "ws_gateway",
+      "type": "constraints"
+    }
+  ],
+  "retrocausal_loop": {
+    "name": "prediction_reconcile_event_sourcing_projection_rebuild",
+    "pending_vs_final": true,
+    "rewrite_mechanisms": [
+      "rollback",
+      "replay",
+      "projection_rebuild"
+    ],
+    "safety_guards": [
+      "immutable_event_spine",
+      "explicit_pending_state",
+      "compensation_events",
+      "provenance_tags"
+    ]
+  },
+  "metrics": {
+    "finality_lag_ms_p95": null,
+    "rollback_rate_per_min": null,
+    "reorg_like_rate": null,
+    "projection_rebuild_ms_p95": null,
+    "stale_view_rate": null,
+    "calibration_brier": null,
+    "probe_dominance": null,
+    "kl_drift": null
+  }
+}

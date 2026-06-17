@@ -1,0 +1,8 @@
+agent-discovery-infra scan#5 | 2026-03-05T1606Z
+Primary genuine: 2 (mostly $PRXS spam + 8004_scan bot farm filtered).
+Fallback genuine: 5.
+Total genuine: 7. cluster_forming: false (primary). consecutive_zero: 0.
+Top signals: @SweatyKodi 7985f L=17 Ethereum trust layer, @pagerduty 24653f SRE agent coordination, @AIProx00 trust scoring NEW competitor.
+New terms: BLE_proximity_agent_discovery, Claw_Agora_IRL_discovery, Agentverse_3M_agents, AIProx_trust_scoring, Ethereum_trust_layer_AI.
+AGNT Phase 2: stalled (no RT>20, no followers>5000 engaging).
+New outreach: @SweatyKodi (7985f MEDIUM), @pagerduty (24653f MEDIUM).

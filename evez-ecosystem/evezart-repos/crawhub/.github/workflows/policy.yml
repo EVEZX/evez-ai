@@ -1,0 +1,24 @@
+name: Thin-Caller Policy
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+jobs:
+  enforce-policy:
+    name: Enforce Thin-Caller Policy
+    uses: ./.github/workflows/reusable-policy.yml
+    with:
+      # Allowlist specific files that are permitted to have
+      # local logic. Add comma-separated workflow filenames that
+      # should be excluded from checks
+      allowlist: 'ci.yml,reusable-policy.yml,policy.yml'

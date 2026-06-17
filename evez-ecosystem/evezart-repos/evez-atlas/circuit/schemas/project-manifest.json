@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas Project Manifest",
+  "type": "object",
+  "properties": {
+    "repos": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "required_env": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Global invariants e.g. 'coverage>0.8', 'no_console_log'"
+    }
+  },
+  "required": ["repos", "invariants"]
+}

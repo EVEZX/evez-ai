@@ -1,0 +1,49 @@
+llm:
+  base_url: "https://api.vultrinference.com/v1"
+  api_key: "YOUR_VULTR_API_KEY"
+  model: "zai-org/GLM-5.1-FP8"
+  max_tokens: 4096
+  temperature: 0.7
+  providers:
+    - name: "vultr-deepseek"
+      base_url: "https://api.vultrinference.com/v1"
+      api_key: "YOUR_VULTR_API_KEY"
+      model: "nvidia/DeepSeek-V3.2-NVFP4"
+      auth: "bearer"
+    - name: "vultr-kimi"
+      base_url: "https://api.vultrinference.com/v1"
+      api_key: "YOUR_VULTR_API_KEY"
+      model: "moonshotai/Kimi-K2.5"
+      auth: "bearer"
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+memory:
+  db_path: "data/clawbreak.db"
+  max_context_messages: 20
+
+tools:
+  shell_timeout: 30
+  searxng_url: "http://127.0.0.1:8888"
+
+github:
+  token: "YOUR_GITHUB_TOKEN"
+
+mcp:
+  servers:
+    composio:
+      transport:
+        type: "http"
+        url: "https://connect.composio.dev/mcp"
+        headers:
+          x-consumer-api-key: "YOUR_COMPOSIO_KEY"
+
+channels:
+  telegram:
+    enabled: false
+  discord:
+    enabled: false
+
+crons: []

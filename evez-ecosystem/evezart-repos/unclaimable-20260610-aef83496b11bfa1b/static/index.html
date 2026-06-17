@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MusicGen Service</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        textarea { width: 100%; height: 80px; }
+        input[type="number"] { width: 80px; }
+        .result { margin-top: 1rem; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h1>Generate Music & Spectrogram</h1>
+    <label for="prompt">Prompt:</label><br>
+    <textarea id="prompt" placeholder="Enter a descriptive prompt...">A calm, relaxing ambient instrumental track with gentle synth pads and soft piano.</textarea><br>
+    <label for="duration">Duration (seconds):</label>
+    <input type="number" id="duration" value="30" min="5" max="120"><br><br>
+    <button id="generateBtn">Generate</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const resultDiv = document.getElementById('result');
+        generateBtn.addEventListener('click', async () => {
+            const prompt = document.getElementById('prompt').value.trim();
+            const duration = parseInt(document.getElementById('duration').value);
+            if (!prompt) { alert('Prompt cannot be empty'); return; }
+            resultDiv.innerHTML = 'Generating...';
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, duration })
+                });
+                if (!response.ok) throw new Error('Server error');
+                const data = await response.json();
+                const audioSrc = `data:audio/wav;base64,${data.audio_base64}`;
+                const imgSrc = `data:image/png;base64,${data.spectrogram_base64}`;
+                resultDiv.innerHTML = `
+                    <h3>Audio</h3>
+                    <audio controls src="${audioSrc}"></audio>
+                    <h3>Spectrogram</h3>
+                    <img src="${imgSrc}" alt="Spectrogram"/>
+                `;
+            } catch (err) {
+                console.error(err);
+                resultDiv.textContent = 'Error: ' + err.message;
+            }
+        });
+    </script>
+</body>
+</html>

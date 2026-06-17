@@ -1,0 +1,29 @@
+name: FIRE Cascade Dispatcher
+on:
+  workflow_run:
+    workflows: ["EVEZ666 ARG Engine"]
+    types: [completed]
+  workflow_dispatch:
+jobs:
+  cascade:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Dispatch FIRE to ecosystem
+        env:
+          EVEZ_PAT: ${{ secrets.EVEZ_PAT }}
+        run: |
+          if [ -z "$EVEZ_PAT" ]; then
+            echo "EVEZ_PAT not set — cascade disabled. Add a PAT with workflow scope."
+            exit 0
+          fi
+          for REPO in evez-os Evez666 evez-autonomous-ledger evez-agentnet maes; do
+            echo "Dispatching FIRE to EvezArt/$REPO..."
+            curl -s -X POST \
+              -H "Authorization: Bearer $EVEZ_PAT" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/EvezArt/$REPO/dispatches" \
+              -d '{"event_type":"fire_cascade","client_payload":{"source":"arg-canon","ts":"'$(date -u +%FT%TZ)'"}}' \
+              && echo " ✓ $REPO" || echo " ✗ $REPO (may need repository_dispatch trigger)"
+          done
+          echo "FIRE CASCADE COMPLETE | poly_c=τ×ω×topo/2√N | append-only | no edits | ever"

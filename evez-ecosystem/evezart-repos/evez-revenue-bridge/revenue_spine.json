@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "operator": "viktor",
+    "eigenvalue_threshold": -0.358,
+    "poly_c_initial": 634.71,
+    "poly_c_max": 34862
+  },
+  "events": [
+    {
+      "eventId": "evez-000000",
+      "index": 0,
+      "timestamp": 1778273585.8326633,
+      "timestamp_iso": "2026-05-08T20:53:05.000Z",
+      "type": "REVENUE_EVENT",
+      "domain": "revenue",
+      "data": {
+        "amount_usd": 49.0,
+        "description": "CTF-001 via evezstation",
+        "source": "stripe",
+        "revenue_total": 49.0,
+        "eigenvalue_progress": 0.49,
+        "eigenvalue_target": -0.358,
+        "poly_c_delta": 0.5
+      },
+      "predecessor": "f17ab460db76f6675f11c0ff62745688c0b346e2925e4e084895e33fd7567ecb",
+      "confidence": 1.0,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "BROADCAST",
+      "tags": [
+        "eigenvalue_bridge"
+      ],
+      "operator": "viktor",
+      "hash": "ad52043511790e049049302bd9660ba1a71aba7ddb6ecf13addb509bb5b5cf71"
+    }
+  ]
+}

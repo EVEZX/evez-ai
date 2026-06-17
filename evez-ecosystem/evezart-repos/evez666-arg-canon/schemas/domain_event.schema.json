@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.synaptic.atlas/v4/DomainEvent.json",
+  "title": "DomainEvent",
+  "type": "object",
+  "required": ["event_id", "timestamp_ms", "domain", "kind", "payload", "trace"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "timestamp_ms": {"type": "integer", "minimum": 0},
+    "domain": {
+      "type": "string",
+      "enum": ["kernel", "repo", "ci", "deploy", "obs", "agent", "net", "incentive", "quantum", "cognition", "game", "governance"]
+    },
+    "kind": {"type": "string", "minLength": 3},
+    "actor": {
+      "type": "object",
+      "required": ["type", "name"],
+      "properties": {
+        "type": {"type": "string", "enum": ["human", "builder", "verifier", "applier", "system", "service", "provider"]},
+        "name": {"type": "string"}
+      }
+    },
+    "payload": {"type": "object", "additionalProperties": true},
+    "trace": {
+      "type": "object",
+      "required": ["trace_id", "span_id", "causal_vector"],
+      "properties": {
+        "trace_id": {"type": "string"},
+        "span_id": {"type": "string"},
+        "parent_span_id": {"type": ["string", "null"]},
+        "causal_vector": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "fire_event": {
+      "description": "EVEZ-OS FIRE event augmentation - present when domain=game and kind=FIRE_EVENT",
+      "type": "object",
+      "properties": {
+        "round": {"type": "integer"},
+        "tau": {"type": "integer"},
+        "fire_type": {"type": "string", "enum": ["FIRE", "HIGH_FIRE", "EXTREME_FIRE"]},
+        "spine_hash": {"type": "string"},
+        "p_fire": {"type": "number", "minimum": 0, "maximum": 1},
+        "v_accumulator": {"type": "number"},
+        "puzzle_lock": {"type": "string"},
+        "chapter_unlocked": {"type": ["integer", "null"]}
+      }
+    }
+  }
+}

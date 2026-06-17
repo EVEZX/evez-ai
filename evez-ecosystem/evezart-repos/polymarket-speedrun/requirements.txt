@@ -1,0 +1,11 @@
+# Polymarket Speed-Run Bot Dependencies
+python-dotenv>=1.0.0
+requests>=2.31.0
+websockets>=12.0
+web3>=6.0.0
+eth-account>=0.10.0
+py-clob-client>=0.17.0
+numpy>=1.24.0
+rich>=13.0.0
+schedule>=1.2.0
+aiohttp>=3.9.0

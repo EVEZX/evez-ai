@@ -1,0 +1,12 @@
+verifiable_ai_scan21
+ts: 2026-03-12T07:00Z
+
+Query A (trustworthy AI OR AI reasoning transparency): 5 genuine. EU AI Act regulation discussion, decentralization+AI transparency. @skysaksham (10048f): decentralization for AI transparency. @StillDelvingH (8580f): AI trust humor. noise_pct: ~40%. No dominant single campaign. consecutive_zero_a: 0.
+Query B (AI transparency OR AI accountability OR interpretable AI): 16 genuine. BUT ~60% from @bigkala_001 data labeling post + Pi Network SDK cluster. @pavanduggal (3986f): AI Accountability prevents dangerous excuse that algorithm made the decision. standalone_tweet_recommended: true.
+
+Standalone tweet: BLOCKED (Twitter 403 account locked). Text queued: "AI Accountability prevents the dangerous excuse that 'the algorithm made the decision.' 478 rounds. Every decision on record. #EVEZ evez-autonomizer.vercel.app"
+noise_pct_B: ~60%
+consecutive_zero_a: 0
+consecutive_zero_b: 0
+retire_recommendation: false
+[auto]

@@ -1,0 +1,11 @@
+Self-Funding Agents Monitor Scan -- 2026-03-05T08:09Z
+
+Query: "AI agent billing" OR "AI agent SaaS" OR "agent subscription economics" -is:retweet lang:en
+Results: 5 raw, 0 genuine (all below 500 followers, no likes>=5 or RTs>=2)
+consecutive_zero_genuine: 1/3 (retire at 3)
+Retirement recommendation: false
+
+Raw accounts: @DeveloperL92487 (128f L=7 founder story), @alpha_forge_ai (6f bot), @ThaoDien23 (49f), @yasir_khalily (87f)
+Note: @DeveloperL92487 is a genuine founder with 300 SaaS signups story -- below threshold but real signal. Watch.
+
+Next scan: ~12h. Query alive.

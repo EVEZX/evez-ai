@@ -1,0 +1,31 @@
+#cloud-config
+package_update: true
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - git
+  - docker.io
+  - docker-compose-v2
+  - openssl
+users:
+  - default
+write_files:
+  - path: /opt/evez-openclaw/.env
+    owner: root:root
+    permissions: '0600'
+    content: |
+      # Fill these before first boot if your VPS provider supports user-data templating.
+      OPENCLAW_GATEWAY_TOKEN=REPLACE_WITH_HEX_TOKEN
+      OPENCLAW_TELEGRAM_ALLOW_FROM=7453631330
+      GROQ_API_KEY=
+      GITHUB_TOKEN=
+      GH_TOKEN=
+      CK_TOKEN=
+      CLAWD_TOKEN=
+runcmd:
+  - mkdir -p /opt/evez-openclaw
+  - git clone https://github.com/EvezArt/evez-openclaw-deploy /opt/evez-openclaw/deploy || true
+  - cp /opt/evez-openclaw/.env /opt/evez-openclaw/deploy/.env
+  - cd /opt/evez-openclaw/deploy && ./scripts/evez-openclaw-linux-matrix.sh up
+  - cd /opt/evez-openclaw/deploy && ./scripts/evez-openclaw-linux-matrix.sh status

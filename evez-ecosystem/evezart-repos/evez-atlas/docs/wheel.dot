@@ -1,0 +1,18 @@
+digraph wheel {
+  rankdir=LR;
+  node [shape=circle, style="filled", fillcolor="#fefefe", color="#aaaaaa"];
+  R1 [label="R1\nSensorimotor"];
+  R2 [label="R2\nEgocentric"];
+  R3 [label="R3\nConformist"];
+  R4 [label="R4\nSystemic"];
+  R5 [label="R5\nPluralistic"];
+  R6 [label="R6\nIntegral"];
+  R7 [label="R7\nHolistic"];
+  R1 -> R2 [label="object permanence"];
+  R2 -> R3 [label="rule recognition"];
+  R3 -> R4 [label="role mirroring"];
+  R4 -> R5 [label="abstract classification"];
+  R5 -> R6 [label="perspective coordination"];
+  R6 -> R7 [label="system-of-systems"];
+  R7 -> R1 [style=dashed, label="collapse"];
+}

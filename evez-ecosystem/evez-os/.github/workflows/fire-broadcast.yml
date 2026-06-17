@@ -1,0 +1,36 @@
+name: FIRE Broadcast
+on:
+  repository_dispatch:
+    types: [fire_event]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Compute latest FIRE state
+        run: |
+          # Pull the latest fire round data
+          python3 -c "
+          import json, math
+          # Latest known round parameters
+          V_v2 = 1.911309
+          V_global = 1.657871
+          N = 41
+          cv = 43
+          narr_c = 1 - abs(V_v2 - V_global) / max(V_v2, V_global)
+          print(f'FIRE State: N={N} cv={cv} narr_c={narr_c:.4f}')
+          print(f'V_v2={V_v2} V_global={V_global}')
+          "
+      
+      - name: Signal lord-evez666
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EvezArt/lord-evez666/dispatches \
+            -d '{"event_type":"revenue_bridge_signal","client_payload":{"source":"fire_broadcast","timestamp":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'"}}'
+          echo "Signal dispatched to lord-evez666"

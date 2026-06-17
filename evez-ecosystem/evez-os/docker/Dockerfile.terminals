@@ -1,0 +1,13 @@
+# evez-os-terminals — Discord, AgentMail, SMS, WhatsApp, Memory, Identity
+FROM node:20-alpine AS terminals-base
+WORKDIR /app
+COPY terminals/package*.json ./
+RUN npm ci --only=production
+COPY terminals/ .
+COPY memory/ ./memory/
+COPY identity/ ./identity/
+EXPOSE 3004
+ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD wget -qO- http://localhost:3004/health || exit 1
+CMD ["node", "index.mjs"]

@@ -1,0 +1,13 @@
+{
+  "health": "PASS",
+  "N_int": 124,
+  "round": 172,
+  "poly_c_stored": 0.519900,
+  "poly_c_recalc": 0.519980,
+  "delta": 0.00008,
+  "probe_match": true,
+  "all_pass": true,
+  "note": "N=124=2^2x31. poly_c delta=0.000080. FIRE#27 probe d424015c confirmed.",
+  "last_run": "2026-02-24T12:35:00+00:00",
+  "last_round": 173
+}

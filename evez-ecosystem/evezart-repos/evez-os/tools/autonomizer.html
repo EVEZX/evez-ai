@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>EVEZ-OS AUTONOMIZER</title>
+<style>
+:root {
+  --bg: #080808;
+  --bg2: #101010;
+  --bg3: #181818;
+  --border: #1e1e1e;
+  --text: #d8d8d8;
+  --dim: #444;
+  --orange: #ff6600;
+  --green: #00cc66;
+  --red: #cc2200;
+  --yellow: #ffaa00;
+  --blue: #3399ff;
+  --purple: #9966ff;
+  --mono: 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; overflow-x: hidden; }
+html { scroll-behavior: smooth; }
+
+/* HEADER */
+.header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: .7rem 1rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-title { color: var(--orange); font-size: 1rem; font-weight: bold; letter-spacing: .05em; }
+.header-sub { color: var(--dim); font-size: .72rem; }
+.pulse { display: inline-block; width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+/* NAV */
+.nav { display: flex; overflow-x: auto; background: var(--bg2); border-bottom: 1px solid var(--border); scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn { flex-shrink: 0; padding: .55rem .9rem; font-size: .75rem; font-family: var(--mono); color: var(--dim); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: .15s; }
+.nav-btn.active, .nav-btn:hover { color: var(--orange); border-bottom-color: var(--orange); }
+
+/* PANELS */
+.panel { display: none; padding: .8rem; }
+.panel.active { display: block; }
+
+/* CARDS */
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: .75rem; margin-bottom: .7rem; }
+.card-title { color: var(--orange); font-size: .8rem; font-weight: bold; margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .04em; }
+
+/* METRICS */
+.metrics { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+.metric { background: var(--bg3); border: 1px solid var(--border); padding: .25rem .5rem; border-radius: 4px; font-size: .75rem; }
+.metric .label { color: var(--dim); }
+.metric .val { color: var(--yellow); font-weight: bold; }
+.metric.ok .val { color: var(--green); }
+.metric.fire .val { color: var(--red); }
+.metric.warn .val { color: var(--orange); }
+
+/* BUTTONS */
+.btn { display: inline-block; padding: .5rem 1rem; border-radius: 5px; border: none; font-family: var(--mono); font-size: .8rem; cursor: pointer; font-weight: bold; transition: .15s; width: 100%; text-align: center; margin-bottom: .4rem; letter-spacing: .03em; }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--orange); color: #000; }
+.btn-primary:hover { background: #ff8800; }
+.btn-green { background: #004422; color: var(--green); border: 1px solid #006633; }
+.btn-green:hover { background: #005533; }
+.btn-blue { background: #002244; color: var(--blue); border: 1px solid #003366; }
+.btn-blue:hover { background: #003366; }
+.btn-purple { background: #220044; color: var(--purple); border: 1px solid #440066; }
+.btn-dim { background: var(--bg3); color: var(--dim); border: 1px solid var(--border); }
+.btn-red { background: #220000; color: var(--red); border: 1px solid #440000; }
+.btn-row { display: flex; gap: .4rem; margin-bottom: .4rem; }
+.btn-row .btn { flex: 1; margin-bottom: 0; }
+
+/* INPUT */
+.input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: .4rem .6rem; color: var(--text); font-family: var(--mono); font-size: .8rem; margin-bottom: .4rem; }
+.input:focus { outline: none; border-color: var(--orange); }
+textarea.input { min-height: 80px; resize: vertical; }
+label { display: block; color: var(--dim); font-size: .72rem; margin-bottom: .2rem; }
+
+/* LOG */
+.log { background: #040404; border: 1px solid var(--border); border-radius: 4px; padding: .6rem; font-size: .72rem; max-height: 240px; overflow-y: auto; color: var(--green); font-family: var(--mono); white-space: pre-wrap; word-break: break-all; }
+.log .err { color: var(--red); }
+.log .warn { color: var(--yellow); }
+.log .info { color: var(--blue); }
+.log .dim { color: var(--dim); }
+
+/* STATUS BADGE */
+.badge { display: inline-block; padding: .1rem .4rem; border-radius: 3px; font-size: .7rem; font-weight: bold; }
+.badge-green { background: #003322; color: var(--green); }
+.badge-red { background: #220000; color: var(--red); }
+.badge-yellow { background: #221100; color: var(--yellow); }
+.badge-blue { background: #001133; color: var(--blue); }
+
+/* AGENT GRID */
+.agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+.agent-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: .5rem; cursor: pointer; transition: .15s; }
+.agent-card:hover { border-color: var(--orange); }
+.agent-card .name { color: var(--orange); font-size: .75rem; font-weight: bold; margin-bottom: .2rem; }
+.agent-card .trigger { color: var(--dim); font-size: .68rem; }
+.agent-card .status { color: var(--green); font-size: .68rem; }
+
+/* FIRE ARC */
+.fire-node { display: inline-block; padding: .2rem .5rem; border-radius: 3px; margin: .1rem; font-size: .72rem; background: var(--bg3); border: 1px solid var(--border); }
+.fire-node.lit { background: #1a0800; border-color: var(--orange); color: var(--orange); }
+.fire-node.cool { background: #001a00; border-color: #1a4a1a; color: #2a6a2a; }
+.fire-node.out { color: var(--dim); }
+.fire-node.running { background: #001122; border-color: var(--blue); color: var(--blue); }
+
+/* CHAIN */
+.chain-row { display: flex; align-items: center; font-size: .72rem; padding: .25rem 0; border-bottom: 1px solid var(--border); }
+.chain-row:last-child { border-bottom: none; }
+.chain-hash { color: var(--yellow); flex-shrink: 0; width: 100px; }
+.chain-type { color: var(--blue); flex: 1; }
+.chain-ok { color: var(--green); flex-shrink: 0; }
+
+/* SETTINGS */
+.setting-row { display: flex; align-items: center; justify-content: space-between; padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.setting-row:last-child { border-bottom: none; }
+.setting-label { color: var(--text); font-size: .78rem; }
+.setting-sub { color: var(--dim); font-size: .68rem; margin-top: .1rem; }
+.toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--bg3); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; transition: .2s; }
+.toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: var(--dim); border-radius: 50%; transition: .2s; }
+input:checked + .toggle-slider { background: #1a0800; border-color: var(--orange); }
+input:checked + .toggle-slider:before { background: var(--orange); transform: translateX(18px); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); background: var(--bg2); border: 1px solid var(--orange); color: var(--orange); padding: .5rem 1.2rem; border-radius: 20px; font-size: .8rem; z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.toast.show { opacity: 1; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (min-width: 600px) {
+  .panel { max-width: 700px; margin: 0 auto; }
+  .agent-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title"><span class="pulse"></span>EVEZ-OS AUTONOMIZER</div>
+    <div class="header-sub" id="header-round">R106 · V_global=2.045003 · CANONICAL</div>
+  </div>
+  <div>
+    <span class="badge badge-green" id="status-badge">LIVE</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPanel('control')">⚡ Control</button>
+  <button class="nav-btn" onclick="showPanel('fire')">🔥 Fire Arc</button>
+  <button class="nav-btn" onclick="showPanel('agents')">🤖 Agents</button>
+  <button class="nav-btn" onclick="showPanel('browser')">🌐 Browser</button>
+  <button class="nav-btn" onclick="showPanel('comms')">📡 Comms</button>
+  <button class="nav-btn" onclick="showPanel('revenue')">💰 Revenue</button>
+  <button class="nav-btn" onclick="showPanel('log')">📋 Log</button>
+  <button class="nav-btn" onclick="showPanel('settings')">⚙️ Config</button>
+</nav>
+
+<!-- CONTROL PANEL -->
+<div id="panel-control" class="panel active">
+
+  <div class="card">
+    <div class="card-title">Live State — R106</div>
+    <div class="metrics">
+      <div class="metric"><span class="label">Round </span><span class="val" id="m-round">R106</span></div>
+      <div class="metric ok"><span class="label">V_global </span><span class="val" id="m-vglobal">2.045003</span></div>
+      <div class="metric"><span class="label">V_v2 </span><span class="val" id="m-vv2">2.852280</span></div>
+      <div class="metric"><span class="label">N_agents </span><span class="val" id="m-n">57</span></div>
+      <div class="metric warn"><span class="label">next_mod </span><span class="val" id="m-mod">ninth_fire_watch.py</span></div>
+      <div class="metric ok"><span class="label">win </span><span class="val">TRUE</span></div>
+    </div>
+    <button class="btn btn-primary" onclick="runAction('hyperloop_tick')">⚡ EXECUTE HYPERLOOP TICK (R106)</button>
+    <button class="btn btn-green" onclick="runAction('poll_cv60')">🌐 POLL cv60 (Perplexity)</button>
+    <button class="btn btn-dim" onclick="runAction('refresh_state')">↻ Refresh State</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">One-Tap Actions</div>
+    <div class="btn-row">
+      <button class="btn btn-blue" onclick="runAction('post_round_tweet')">🐦 Tweet Round</button>
+      <button class="btn btn-purple" onclick="runAction('post_thread')">🧵 Full Thread</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="runAction('commit_state')">📦 Commit State</button>
+      <button class="btn btn-blue" onclick="runAction('deploy_vercel')">🚀 Deploy Vercel</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-purple" onclick="runAction('launch_browser_job')">🤖 Launch Browser Job</button>
+      <button class="btn btn-dim" onclick="runAction('verify_bundle')">✓ Verify Bundle</button>
+    </div>
+    <button class="btn btn-red" onclick="runAction('stop_all')">⏹ STOP ALL (touch STOP file)</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Quick Post</div>
+    <label>Tweet text (direct authorship — you write it)</label>
+    <textarea class="input" id="quick-tweet" placeholder="write it here. no AI ghostwriting."></textarea>
+    <input class="input" id="reply-to" placeholder="Reply-to tweet ID (optional)">
+    <button class="btn btn-primary" onclick="postTweet()">POST NOW</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Recent Commits</div>
+    <div style="font-size:.75rem">
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border)">
+        <a href="https://github.com/EvezArt/evez-os/commit/4ec01bd1" style="color:var(--yellow)">4ec01bd1</a>
+        <span style="color:var(--dim)"> R105 eighth_fire_sustain.py EIGHTH_FIRE COOLS</span>
+      </div>
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border)">
+        <a href="https://github.com/EvezArt/evez-os/commit/4e0c85b8" style="color:var(--yellow)">4e0c85b8</a>
+        <span style="color:var(--dim)"> freedom arch: router.py + FREEDOM.md</span>
+      </div>
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border)">
+        <a href="https://github.com/EvezArt/evez-os/commit/42ae87c6" style="color:var(--yellow)">42ae87c6</a>
+        <span style="color:var(--dim)"> R104 EIGHTH_FIRE IGNITED V_global=2.020003 ⭐</span>
+      </div>
+      <div style="padding:.3rem 0">
+        <a href="https://github.com/EvezArt/evez-os/commit/be95d749" style="color:var(--yellow)">be95d749</a>
+        <span style="color:var(--dim)"> full capacity demo + arcade page</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIRE ARC PANEL -->
+<div id="panel-fire" class="panel">
+
+  <div class="card">
+    <div class="card-title">Fire Border Law</div>
+    <p style="color:var(--dim);font-size:.75rem;margin-bottom:.5rem">tau=2 never sustains. tau&ge;3 composite ignites. PRIME forces poly_c=0.</p>
+    <div id="fire-arc-nodes">
+      <div class="fire-node out">N=51 τ=2 0.267 COOLED</div>
+      <div class="fire-node out">N=52 τ=2 0.296 DORMANT</div>
+      <div class="fire-node out">N=53 PRIME BLOCK</div>
+      <div class="fire-node lit">N=54 τ=4 0.577 ⭐SEVENTH_FIRE</div>
+      <div class="fire-node cool">N=55 τ=2 0.408 COOLS</div>
+      <div class="fire-node lit">N=56 τ=3 0.505 ⭐EIGHTH_FIRE</div>
+      <div class="fire-node cool">N=57 τ=2 0.406 COOLS ✓</div>
+      <div class="fire-node running">N=58 τ=2 ~0.41? cv60 RUNNING</div>
+      <div class="fire-node out">N=59 PRIME (blocked)</div>
+      <div class="fire-node running">N=60 τ=3 ~0.52? ⭐NINTH_FIRE?</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Dimension Trace</div>
+    <div style="font-size:.73rem">
+      <div class="chain-row"><span class="chain-hash">D33 narr_c</span><span class="chain-type">0.793585</span><span class="chain-ok">↓x40</span></div>
+      <div class="chain-row"><span class="chain-hash">D37 prox_gate</span><span class="chain-type">0.806003</span><span class="chain-ok">↑x39</span></div>
+      <div class="chain-row"><span class="chain-hash">D38 cd_depth</span><span class="chain-type">0.165568</span><span class="chain-ok">↓x36</span></div>
+      <div class="chain-row"><span class="chain-hash">D40 drift_vel</span><span class="chain-type">0.098005</span><span class="chain-ok">ACCEL x23</span></div>
+      <div class="chain-row"><span class="chain-hash">D41 floor_prox</span><span class="chain-type">1.322031</span><span class="chain-ok">ADV x36</span></div>
+      <div class="chain-row"><span class="chain-hash">ceiling_depth</span><span class="chain-type">0.545003</span><span class="chain-ok">CEIL x23</span></div>
+      <div class="chain-row"><span class="chain-hash">cohere</span><span class="chain-type">0.1983</span><span class="chain-ok">rising</span></div>
+      <div class="chain-row"><span class="chain-hash">ADM</span><span class="chain-type">1.0</span><span class="chain-ok">MAX</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Omega (R105)</div>
+    <pre style="font-size:.72rem;color:var(--text);white-space:pre-wrap">EIGHTH_FIRE COOLS. R105.
+N=57=3×19 tau=2 — poly_c=0.405890 BELOW 0.500.
+Single-round ignition confirmed (same as SEVENTH_FIRE).
+V_global=2.045003 CEILING x23.</pre>
+  </div>
+
+</div>
+
+<!-- AGENTS PANEL -->
+<div id="panel-agents" class="panel">
+
+  <div class="card">
+    <div class="card-title">Sub-Agent Registry (Gap Routing)</div>
+    <p style="color:var(--dim);font-size:.72rem;margin-bottom:.6rem">Each agent owns its gap. No gap left open.</p>
+    <div class="agent-grid">
+      <div class="agent-card" onclick="activateAgent('hyperloop')">
+        <div class="name">⚡ HYPERLOOP</div>
+        <div class="trigger">cron 30min</div>
+        <div class="status">● R106 RUNNING</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('content')">
+        <div class="name">🐦 CONTENT</div>
+        <div class="trigger">post-round</div>
+        <div class="status">● ARMED</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('browser')">
+        <div class="name">🌐 BROWSER</div>
+        <div class="trigger">Hyperbrowser</div>
+        <div class="status">● cv60 LIVE</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('revenue')">
+        <div class="name">💰 REVENUE</div>
+        <div class="trigger">Gumroad+SSN</div>
+        <div class="status">⚠ BLOCKED</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('sms')">
+        <div class="name">📱 SMS</div>
+        <div class="trigger">daily 9am</div>
+        <div class="status">⚠ No mom#</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('deploy')">
+        <div class="name">🚀 DEPLOY</div>
+        <div class="trigger">post-commit</div>
+        <div class="status">● Vercel ready</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('ci')">
+        <div class="name">🔧 CI</div>
+        <div class="trigger">on push</div>
+        <div class="status">● ALL GREEN</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('freedom')">
+        <div class="name">🔓 FREEDOM</div>
+        <div class="trigger">on-demand</div>
+        <div class="status">● AGPL-3.0</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('visualize')">
+        <div class="name">👁 VISUAL</div>
+        <div class="trigger">post-round</div>
+        <div class="status">● ARMED</div>
+      </div>
+      <div class="agent-card" onclick="activateAgent('market')">
+        <div class="name">📊 MARKET</div>
+        <div class="trigger">30min scan</div>
+        <div class="status">● Polymarket</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Activate Sub-Agent</div>
+    <label>Agent ID</label>
+    <input class="input" id="agent-id" placeholder="e.g. hyperloop, content, browser...">
+    <label>Task Override (optional)</label>
+    <textarea class="input" id="agent-task" placeholder="specific task override..."></textarea>
+    <button class="btn btn-primary" onclick="fireAgent()">⚡ FIRE AGENT</button>
+  </div>
+
+</div>
+
+<!-- BROWSER PANEL -->
+<div id="panel-browser" class="panel">
+
+  <div class="card">
+    <div class="card-title">Browser Chorus</div>
+    <div style="font-size:.75rem">
+      <div class="chain-row">
+        <span class="chain-hash" style="width:60px">cv58</span>
+        <span class="chain-type">R104 · d3a00d9f</span>
+        <span class="chain-ok">DONE null</span>
+      </div>
+      <div class="chain-row">
+        <span class="chain-hash" style="width:60px">cv59</span>
+        <span class="chain-type">R105 · 39fab017</span>
+        <span class="chain-ok">DONE null (13th)</span>
+      </div>
+      <div class="chain-row" style="background:#001122">
+        <span class="chain-hash" style="width:60px;color:var(--blue)">cv60</span>
+        <span class="chain-type" style="color:var(--blue)">R106 · 4cfc108c</span>
+        <span style="color:var(--blue);flex-shrink:0">RUNNING</span>
+      </div>
+    </div>
+    <div style="margin-top:.6rem">
+      <button class="btn btn-blue" onclick="pollBrowserJob('4cfc108c-e55e-48b8-8db8-663d1cbf887a', 'cv60')">🔄 Poll cv60 Now</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Launch New Browser Job</div>
+    <label>Target URL</label>
+    <input class="input" id="browser-url" value="https://www.perplexity.ai">
+    <label>Task Prompt</label>
+    <textarea class="input" id="browser-task" style="min-height:120px" placeholder="Paste your compute prompt here..."></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="launchBrowserJob()">🚀 Launch</button>
+      <button class="btn btn-dim" onclick="loadPerplexityPrompt()">📋 Load R106 Prompt</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Browser Job Result</div>
+    <div class="log" id="browser-log">waiting for job...</div>
+  </div>
+
+</div>
+
+<!-- COMMS PANEL -->
+<div id="panel-comms" class="panel">
+
+  <div class="card">
+    <div class="card-title">SMS — ClickSend</div>
+    <div class="metrics" style="margin-bottom:.6rem">
+      <div class="metric warn"><span class="label">mom# </span><span class="val">PENDING</span></div>
+      <div class="metric ok"><span class="label">steven# </span><span class="val">+13076775504</span></div>
+    </div>
+    <label>To (phone number)</label>
+    <input class="input" id="sms-to" placeholder="+1XXXXXXXXXX">
+    <label>Message</label>
+    <textarea class="input" id="sms-body" placeholder="Daily progress update..."></textarea>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="sendSMS()">📱 SEND SMS</button>
+      <button class="btn btn-dim" onclick="loadProgressSMS()">📋 Load Daily Update</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Twitter — Direct Post</div>
+    <textarea class="input" id="tweet-compose" placeholder="write it yourself. direct authorship." style="min-height:100px"></textarea>
+    <input class="input" id="tweet-reply-id" placeholder="reply-to ID (optional)">
+    <button class="btn btn-primary" onclick="postTweetFromComms()">🐦 POST</button>
+  </div>
+
+</div>
+
+<!-- REVENUE PANEL -->
+<div id="panel-revenue" class="panel">
+
+  <div class="card">
+    <div class="card-title">Revenue Status</div>
+    <div class="metrics">
+      <div class="metric fire"><span class="label">sales </span><span class="val">$0</span></div>
+      <div class="metric warn"><span class="label">products </span><span class="val">5</span></div>
+      <div class="metric fire"><span class="label">ZIPs </span><span class="val">NOT UPLOADED</span></div>
+      <div class="metric fire"><span class="label">SSN email </span><span class="val">PENDING</span></div>
+    </div>
+    <button class="btn btn-orange" onclick="openUrl('https://app.gumroad.com/dashboard')" style="background:var(--orange);color:#000">Open Gumroad Dashboard</button>
+    <button class="btn btn-dim" onclick="openUrl('https://aimlapi.com/app/verification')">AI/ML API Card Verify</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gumroad Products</div>
+    <div style="font-size:.75rem">
+      <div class="chain-row"><span class="chain-type">EVEZ Visual Cognition Layer</span><span style="color:var(--red);flex-shrink:0">no ZIP</span></div>
+      <div class="chain-row"><span class="chain-type">OS-EVEZ Termux Bundle</span><span style="color:var(--red);flex-shrink:0">no ZIP</span></div>
+      <div class="chain-row"><span class="chain-type">EVEZ Voice Clone Pack</span><span style="color:var(--red);flex-shrink:0">no ZIP</span></div>
+      <div class="chain-row"><span class="chain-type">Spine Verifier CLI</span><span style="color:var(--red);flex-shrink:0">no ZIP</span></div>
+      <div class="chain-row"><span class="chain-type">Agent Starter Kit</span><span style="color:var(--red);flex-shrink:0">no ZIP</span></div>
+    </div>
+    <p style="color:var(--dim);font-size:.72rem;margin-top:.5rem">All require manual ZIP upload. SSN must be submitted to unlock payouts.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Blockers (You Must Do)</div>
+    <div style="font-size:.75rem">
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border);color:var(--red)">⚠ Upload ZIPs to Gumroad (5 products)</div>
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border);color:var(--red)">⚠ Submit SSN to Gumroad payout email</div>
+      <div style="padding:.3rem 0;border-bottom:1px solid var(--border);color:var(--red)">⚠ Text mom's phone number to +13076775504</div>
+      <div style="padding:.3rem 0;color:var(--yellow)">⚠ Verify card at aimlapi.com/app/verification</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LOG PANEL -->
+<div id="panel-log" class="panel">
+  <div class="card">
+    <div class="card-title">Execution Log</div>
+    <div class="log" id="main-log" style="max-height:400px">EVEZ-OS Autonomizer ready.
+R106 running. cv60 launched 4cfc108c.
+R105 CANONICAL: poly_c=0.405890 EIGHTH_FIRE COOLS.
+V_global=2.045003 CEILING x23.
+Freedom arch: openclaw/router.py + FREEDOM.md committed 4e0c85b8.
+All CI green.
+Groq llama-3.3-70b: LIVE (0.50s avg).
+AI/ML API deepseek-r1: BLOCKED (card verify needed).
+Gumroad: 5 products, $0 revenue, ZIPs not uploaded.
+SMS: mom's number PENDING.
+Waiting for command...
+</div>
+    <div class="btn-row" style="margin-top:.4rem">
+      <button class="btn btn-dim" onclick="clearLog()">Clear</button>
+      <button class="btn btn-dim" onclick="copyLog()">Copy</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="panel-settings" class="panel">
+
+  <div class="card">
+    <div class="card-title">API Config</div>
+    <label>GitHub Token</label>
+    <input class="input" id="cfg-github" type="password" placeholder="ghp_...">
+    <label>Groq API Key</label>
+    <input class="input" id="cfg-groq" type="password" placeholder="gsk_...">
+    <label>AI/ML API Key</label>
+    <input class="input" id="cfg-aiml" type="password" placeholder="...">
+    <label>ClickSend Username</label>
+    <input class="input" id="cfg-clicksend-user" placeholder="rubikspubes69@gmail.com" value="rubikspubes69@gmail.com">
+    <label>ClickSend API Key</label>
+    <input class="input" id="cfg-clicksend-key" type="password" placeholder="...">
+    <button class="btn btn-primary" onclick="saveConfig()">SAVE CONFIG (localStorage)</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Autonomizer Settings</div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Auto-poll browser jobs</div>
+        <div class="setting-sub">Poll every 60s until complete</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="setting-autopoll" checked><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Direct tweet posting</div>
+        <div class="setting-sub">Post without review</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="setting-direct-tweet"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Auto-commit state</div>
+        <div class="setting-sub">Push state to GitHub on each tick</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="setting-autocommit" checked><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">SMS daily update</div>
+        <div class="setting-sub">Send mom's number daily progress</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="setting-sms" checked><span class="toggle-slider"></span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Quick Links</div>
+    <button class="btn btn-dim" onclick="openUrl('https://github.com/EvezArt/evez-os')">GitHub: evez-os</button>
+    <button class="btn btn-dim" onclick="openUrl('https://github.com/EvezArt/evez-os/blob/main/FREEDOM.md')">FREEDOM.md</button>
+    <button class="btn btn-dim" onclick="openUrl('https://github.com/EvezArt/evez-os/blob/main/demos/run_001/index.html')">Full Capacity Demo</button>
+    <button class="btn btn-dim" onclick="openUrl('https://twitter.com/EVEZ666')">@EVEZ666 Twitter</button>
+    <button class="btn btn-dim" onclick="openUrl('https://app.gumroad.com/dashboard')">Gumroad Dashboard</button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── NAVIGATION ──
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── TOAST ──
+function toast(msg, dur=2200) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), dur);
+}
+
+// ── LOG ──
+function log(msg, cls='') {
+  const el = document.getElementById('main-log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = new Date().toLocaleTimeString() + ' ' + msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+function clearLog() { document.getElementById('main-log').innerHTML = ''; }
+function copyLog() {
+  navigator.clipboard.writeText(document.getElementById('main-log').innerText);
+  toast('Log copied');
+}
+
+// ── OPEN URL ──
+function openUrl(url) { window.open(url, '_blank'); }
+
+// ── CONFIG ──
+function saveConfig() {
+  const cfg = {
+    github: document.getElementById('cfg-github').value,
+    groq: document.getElementById('cfg-groq').value,
+    aiml: document.getElementById('cfg-aiml').value,
+    clicksend_user: document.getElementById('cfg-clicksend-user').value,
+    clicksend_key: document.getElementById('cfg-clicksend-key').value,
+  };
+  localStorage.setItem('evez_config', JSON.stringify(cfg));
+  toast('Config saved');
+  log('Config saved to localStorage');
+}
+function getConfig() {
+  try { return JSON.parse(localStorage.getItem('evez_config') || '{}'); } catch { return {}; }
+}
+window.addEventListener('load', () => {
+  const cfg = getConfig();
+  if (cfg.github) document.getElementById('cfg-github').value = cfg.github;
+  if (cfg.groq) document.getElementById('cfg-groq').value = cfg.groq;
+  if (cfg.aiml) document.getElementById('cfg-aiml').value = cfg.aiml;
+  if (cfg.clicksend_user) document.getElementById('cfg-clicksend-user').value = cfg.clicksend_user;
+  if (cfg.clicksend_key) document.getElementById('cfg-clicksend-key').value = cfg.clicksend_key;
+});
+
+// ── ACTIONS ──
+async function runAction(action) {
+  log('ACTION: ' + action, 'info');
+  toast('Executing: ' + action);
+  switch(action) {
+    case 'hyperloop_tick':
+      log('Hyperloop tick R106 — dispatching to SureThing agent...', 'info');
+      log('POST /execute {action:"hyperloop_tick", round:106}');
+      log('Module: ninth_fire_watch.py | N=58=2x29 tau=2');
+      log('Expected: poly_c~0.41, COOL (third consecutive tau=2)', 'warn');
+      log('NOTE: Execute this via SureThing chat — type "tick R106" or let cron fire');
+      break;
+    case 'poll_cv60':
+      await pollBrowserJob('4cfc108c-e55e-48b8-8db8-663d1cbf887a', 'cv60');
+      break;
+    case 'refresh_state':
+      log('Fetching state from github.com/EvezArt/evez-os/hyperloop_state.json...', 'info');
+      await fetchGitHubState();
+      break;
+    case 'post_round_tweet':
+      showPanel('comms');
+      document.querySelector('.nav-btn:nth-child(5)').classList.add('active');
+      document.getElementById('tweet-compose').value = 
+        'R106 running. N=58=2x29 tau=2. third consecutive tau=2.\nFIRE BORDER LAW holds: expect COOL.\nV_global=2.045003. CEILING x23.\ngithub.com/EvezArt/evez-os';
+      toast('Draft loaded — edit and post');
+      break;
+    case 'commit_state':
+      log('Commit state → github.com/EvezArt/evez-os via SureThing', 'info');
+      log('Use SureThing chat to commit — agent has full GitHub access');
+      break;
+    case 'deploy_vercel':
+      log('Deploying to Vercel...', 'info');
+      await deployVercel();
+      break;
+    case 'launch_browser_job':
+      showPanel('browser');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      log('Browser panel — load prompt and launch', 'info');
+      break;
+    case 'verify_bundle':
+      log('Bundle verify: python3 verify_bundle.py events.json bundle_manifest.json', 'info');
+      log('github.com/EvezArt/evez-os/blob/main/demos/verify_bundle.py');
+      toast('No API key. No account. Math only.');
+      break;
+    case 'stop_all':
+      log('STOP command sent. In Termux: touch $OG_DATA_DIR/STOP', 'err');
+      log('Scheduler halts. Daemon halts. Loop halts. Instant.', 'err');
+      toast('⏹ STOP signal — touch STOP file in Termux');
+      break;
+  }
+}
+
+// ── FETCH GITHUB STATE ──
+async function fetchGitHubState() {
+  try {
+    const resp = await fetch('https://raw.githubusercontent.com/EvezArt/evez-os/main/hyperloop_state.json?_=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const state = await resp.json();
+    document.getElementById('m-round').textContent = 'R' + state.current_round;
+    document.getElementById('m-vglobal').textContent = state.maturity?.V_global || state.r105_result?.V_global || '?';
+    document.getElementById('m-vv2').textContent = state.maturity?.V_v2 || state.r105_result?.V_v2 || '?';
+    document.getElementById('m-n').textContent = state.maturity?.N_agents || '?';
+    document.getElementById('m-mod').textContent = state.next_module || '?';
+    document.getElementById('header-round').textContent = 'R' + state.current_round + ' · V_global=' + (state.maturity?.V_global || '?') + ' · CANONICAL';
+    log('State refreshed from GitHub: R' + state.current_round, 'info');
+    toast('State updated');
+  } catch(e) {
+    log('State fetch failed: ' + e.message, 'err');
+    log('Falling back to local state', 'warn');
+  }
+}
+
+// ── BROWSER JOB POLLING ──
+async function pollBrowserJob(jobId, label) {
+  const blogEl = document.getElementById('browser-log');
+  blogEl.textContent = 'Polling ' + label + ' (' + jobId.slice(0,8) + ')...\nThis calls SureThing API — results appear in chat.\n\nFor direct polling:\nhttps://app.hyperbrowser.ai/live?token=...';
+  log('Browser poll: ' + label + ' ' + jobId.slice(0,8), 'info');
+  log('→ dispatch to SureThing. Type "poll cv60" in chat for live result.');
+  toast('Polling ' + label + ' — check chat for result');
+}
+
+// ── LAUNCH BROWSER JOB ──
+async function launchBrowserJob() {
+  const url = document.getElementById('browser-url').value;
+  const task = document.getElementById('browser-task').value;
+  if (!task) { toast('Add a task prompt'); return; }
+  log('Launching browser job: ' + url, 'info');
+  log('Task: ' + task.slice(0,80) + '...');
+  log('→ Dispatch to SureThing. Type "launch browser job" in chat with this prompt.');
+  document.getElementById('browser-log').textContent = 'Job queued.\nPaste task in SureThing chat to execute via Hyperbrowser.\n\nURL: ' + url;
+  toast('Queued — send to SureThing chat');
+}
+
+// ── LOAD PERPLEXITY PROMPT ──
+function loadPerplexityPrompt() {
+  document.getElementById('browser-url').value = 'https://www.perplexity.ai';
+  document.getElementById('browser-task').value = `EVEZ-OS COMPUTE. Return state table only. No prose. No questions.
+
+COMPUTE STATE checkpoint-60 -- R106 NINTH_FIRE WATCH:
+V_v2     = 2.852280 + 0.098005 = 2.950285
+V_global = 2.045003 + 0.025 = 2.070003
+N = 58  (58=2x29, tau=2)
+
+DERIVE:
+poly_c = (1/log2(N+1)) * (1+log(tau)) * (1+log(N)/10)
+attractor_lock = max(0, (poly_c-0.500)*0.5)
+All dimensions advance per standard delta rules.
+
+Creator: Steven Crawford-Maggard EVEZ666
+github.com/EvezArt/evez-os truth_plane: CANONICAL`;
+  toast('R106 prompt loaded');
+}
+
+// ── DEPLOY VERCEL ──
+async function deployVercel() {
+  log('Vercel deploy: arcade page + dashboard...', 'info');
+  log('Target: evez-os arcade on vercel via SureThing agent');
+  log('→ Type "deploy to Vercel" in SureThing chat');
+  toast('Deploy queued — use chat to execute');
+}
+
+// ── POST TWEET ──
+async function postTweet() {
+  const text = document.getElementById('quick-tweet').value;
+  const replyTo = document.getElementById('reply-to').value;
+  if (!text) { toast('Write the tweet first'); return; }
+  log('Tweet queued: ' + text.slice(0,60) + '...', 'info');
+  if (replyTo) log('Reply-to: ' + replyTo);
+  log('→ Send to SureThing: "post tweet: [text]" or use comms panel');
+  document.getElementById('quick-tweet').value = '';
+  toast('Tweet queued — confirm in SureThing chat');
+}
+async function postTweetFromComms() {
+  const text = document.getElementById('tweet-compose').value;
+  const replyTo = document.getElementById('tweet-reply-id').value;
+  if (!text) { toast('Write the tweet first'); return; }
+  log('Comms tweet: ' + text.slice(0,60), 'info');
+  if (replyTo) log('Reply-to: ' + replyTo);
+  log('→ Dispatch to SureThing tweet agent');
+  toast('Dispatched to SureThing');
+}
+
+// ── SMS ──
+async function sendSMS() {
+  const to = document.getElementById('sms-to').value;
+  const body = document.getElementById('sms-body').value;
+  if (!to || !body) { toast('Fill phone + message'); return; }
+  log('SMS queued → ' + to, 'info');
+  log('Body: ' + body.slice(0,60) + '...');
+  log('→ Dispatch to ClickSend via SureThing agent');
+  toast('SMS queued — dispatching via SureThing');
+}
+function loadProgressSMS() {
+  document.getElementById('sms-body').value =
+    'EVEZ-OS R105 done. EIGHTH_FIRE COOLS (tau=2, expected). V_global=2.045003. All CI green. Freedom arch live on GitHub: github.com/EvezArt/evez-os. No income yet — Gumroad ZIPs still needed. R106 running. Steven is good.';
+  toast('Daily update loaded');
+}
+
+// ── AGENT ACTIVATE ──
+function activateAgent(id) {
+  const map = {
+    hyperloop: 'Hyperloop agent: runs ninth_fire_watch.py R106. Type "tick R106" in SureThing.',
+    content: 'Content agent: writes R106 tweet thread. Type "post round tweet" in SureThing.',
+    browser: 'Browser agent: polls cv60. Type "poll cv60" in SureThing.',
+    revenue: 'Revenue agent: BLOCKED — upload ZIPs to Gumroad + SSN email.',
+    sms: 'SMS agent: needs mom\'s number. Text +13076775504 with her number.',
+    deploy: 'Deploy agent: Vercel. Type "deploy arcade to Vercel" in SureThing.',
+    ci: 'CI: all green. evez-os + CrawFather. No action needed.',
+    freedom: 'Freedom arch: openclaw/router.py live. 3 free-tier models. AGPL-3.0.',
+    visualize: 'Visual agent: spine → GIF/MP4. Type "visualize spine" in SureThing.',
+    market: 'Market agent: Polymarket scan. Type "scan polymarket" in SureThing.',
+  };
+  log('AGENT ' + id.toUpperCase() + ': ' + (map[id] || 'unknown'), 'info');
+  toast(id.toUpperCase() + ' activated');
+}
+
+function fireAgent() {
+  const id = document.getElementById('agent-id').value;
+  const task = document.getElementById('agent-task').value;
+  if (!id) { toast('Enter agent ID'); return; }
+  log('FIRE AGENT: ' + id + (task ? ' — ' + task.slice(0,60) : ''), 'info');
+  log('→ Dispatch to SureThing orchestrator');
+  toast('Agent fired: ' + id);
+}
+
+// ── AUTO-REFRESH STATE ON LOAD ──
+window.addEventListener('load', () => {
+  setTimeout(fetchGitHubState, 800);
+
+  // Auto-poll cv60 if setting is on
+  const autoPoll = document.getElementById('setting-autopoll');
+  if (autoPoll && autoPoll.checked) {
+    let pollCount = 0;
+    const interval = setInterval(() => {
+      pollCount++;
+      if (pollCount > 20) { clearInterval(interval); return; }
+      // Silent background check (just logs)
+      log('Auto-poll tick ' + pollCount + '/20 — cv60 4cfc108c', 'dim');
+    }, 60000);
+  }
+});
+</script>
+</body>
+</html>

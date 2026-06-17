@@ -1,0 +1,22 @@
+name: registry-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate sources
+        run: python scripts/validate_registry_sources.py
+      - name: Rebuild registry
+        run: python scripts/sync_registry.py
+      - name: Validate registry
+        run: python scripts/validate_registry.py

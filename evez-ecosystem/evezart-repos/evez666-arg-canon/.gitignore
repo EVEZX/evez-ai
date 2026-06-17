@@ -1,0 +1,7 @@
+.env
+*.pyc
+__pycache__/
+wallets/portfolio.json
+arg_state.json
+engagement_state.json
+pending_tweets.json

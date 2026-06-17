@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvezArt — AI Tools & Infrastructure</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e0e0e0;line-height:1.6}
+.hero{text-align:center;padding:80px 20px 40px;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 100%)}
+.hero h1{font-size:3rem;background:linear-gradient(90deg,#00d4ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero p{font-size:1.2rem;color:#888;max-width:600px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:40px;margin-top:30px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .num{font-size:2rem;font-weight:bold;color:#00d4ff}
+.stat .label{font-size:0.85rem;color:#666}
+.section{max-width:1000px;margin:0 auto;padding:40px 20px}
+.section h2{font-size:1.5rem;margin-bottom:20px;color:#fff;border-bottom:1px solid #222;padding-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.card{background:#111;border:1px solid #222;border-radius:12px;padding:20px;transition:border-color .2s}
+.card:hover{border-color:#00d4ff}
+.card h3{color:#00d4ff;margin-bottom:8px;font-size:1.1rem}
+.card p{color:#888;font-size:0.9rem;margin-bottom:12px}
+.card .tag{display:inline-block;background:#1a1a2e;color:#7b2ff7;padding:2px 8px;border-radius:4px;font-size:0.75rem;margin-right:4px}
+.card a{color:#00d4ff;text-decoration:none;font-size:0.85rem}
+footer{text-align:center;padding:40px;color:#444;font-size:0.85rem}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>EvezArt</h1>
+<p>AI infrastructure, agent frameworks, and developer tools. Building the future of autonomous systems.</p>
+<div class="stats">
+<div class="stat"><div class="num">15+</div><div class="label">Open Source Repos</div></div>
+<div class="stat"><div class="num">7</div><div class="label">ClawHub Skills</div></div>
+<div class="stat"><div class="num">4</div><div class="label">AI Models</div></div>
+<div class="stat"><div class="num">$0</div><div class="label">Cost to Start</div></div>
+</div>
+</div>
+
+<div class="section">
+<h2>🧠 EVEZ AI API</h2>
+<div class="grid">
+<div class="card">
+<h3>OpenAI-Compatible API</h3>
+<p>99% cheaper than GPT-4. Drop-in replacement. Free tier with 100K tokens/month.</p>
+<span class="tag">evez-smart</span><span class="tag">evez-code</span><span class="tag">evez-fast</span><span class="tag">evez-vision</span>
+<br><br><a href="https://evez-api2.fly.dev/signup">Get Free API Key →</a>
+</div>
+<div class="card">
+<h3>Pricing</h3>
+<p><strong>Free:</strong> 100K tokens/month — no credit card<br>
+<strong>Pro:</strong> $5/month — unlimited tokens<br>
+<strong>Business:</strong> $25/month — team + SLA</p>
+<span class="tag">$6/1M output</span><span class="tag">vs $17.50 GPT-4o</span>
+<br><br><a href="https://github.com/EvezArt/evez-api">View on GitHub →</a>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📦 ClawHub Skills</h2>
+<div class="grid">
+<div class="card"><h3>llm-cost-optimizer</h3><p>Analyze LLM API usage and reduce costs by 50%+. Model downgrade suggestions, caching detection, prompt compression.</p><span class="tag">cost</span><span class="tag">optimization</span></div>
+<div class="card"><h3>mcp-dev-toolkit</h3><p>Build MCP servers for developer workflows. Database, file, and API tool patterns. Python + TypeScript scaffolding.</p><span class="tag">MCP</span><span class="tag">tools</span></div>
+<div class="card"><h3>agent-safety-monitor</h3><p>Real-time agent monitoring, anomaly detection, rate limits, budget caps, scope enforcement.</p><span class="tag">safety</span><span class="tag">monitoring</span></div>
+<div class="card"><h3>agent-memory-layer</h3><p>Three-tier memory: short-term (Redis), long-term (vectors), episodic (timeline). Decay and consolidation.</p><span class="tag">memory</span><span class="tag">persistence</span></div>
+<div class="card"><h3>workflow-orchestrator</h3><p>DAG-based multi-agent execution. Parallel steps, conditional branching, retry with backoff.</p><span class="tag">workflow</span><span class="tag">DAG</span></div>
+<div class="card"><h3>semantic-code-search</h3><p>Find code by meaning, not text. AST parsing, intent search, similarity search, duplicate detection.</p><span class="tag">search</span><span class="tag">AST</span></div>
+<div class="card"><h3>multi-agent-debate</h3><p>Multiple agents debate to reach better conclusions. Judge evaluation, argument scoring, convergence.</p><span class="tag">debate</span><span class="tag">multi-agent</span></div>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Projects</h2>
+<div class="grid">
+<div class="card"><h3>clawbreak</h3><p>Free AI Agent Platform — lightweight, self-hosted, zero Node.js. Runs on 256MB RAM.</p><a href="https://github.com/EvezArt/clawbreak">GitHub →</a></div>
+<div class="card"><h3>evez-bot</h3><p>Free AI Discord bot. Uses EVEZ API. /ask, /models, mentions.</p><a href="https://github.com/EvezArt/evez-bot">GitHub →</a></div>
+<div class="card"><h3>evez-cli</h3><p>Chat with AI from your terminal. npx evez-cli.</p><a href="https://github.com/EvezArt/evez-cli">GitHub →</a></div>
+<div class="card"><h3>agent-bridge</h3><p>Inter-agent coordination infrastructure for dual-agent EVEZ stack.</p><a href="https://github.com/EvezArt/agent-bridge">GitHub →</a></div>
+</div>
+</div>
+
+<footer>
+Built by <a href="https://github.com/EvezArt" style="color:#00d4ff">EvezArt</a> · Powered by free infrastructure
+</footer>
+</body>
+</html>

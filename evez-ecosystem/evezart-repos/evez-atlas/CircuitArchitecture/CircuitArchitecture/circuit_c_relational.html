@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit C: Relational Brain</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #f0f; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #f0f;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            z-index: 100;
+        }
+        .btn {
+            background: rgba(255,0,255,0.2);
+            border: 1px solid #f0f;
+            color: #f0f;
+            padding: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        .btn:active { background: rgba(255,0,255,0.5); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="hud">
+        <div style="font-weight:bold;">CIRCUIT C: RELATIONAL BRAIN</div>
+        <div id="path-info">Path: <span id="current-path">C1</span></div>
+        <div id="graph-info"></div>
+    </div>
+    <div id="controls">
+        <button class="btn" onclick="prevPath()">◄ PREV PATH</button>
+        <button class="btn" onclick="nextPath()">NEXT PATH ►</button>
+        <button class="btn" onclick="goToNavigator()">☰ NAVIGATOR</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        let width, height;
+
+        const sensors = {
+            accel: { x: [], y: [], z: [], mag: [] },
+            gyro: { alpha: [], beta: [], gamma: [] },
+            derived: { heading: [], pitch: [], roll: [], entropy: [] }
+        };
+
+        const BUFFER_SIZE = 100;
+        let currentPathIndex = 0;
+        const paths = ['C1_CORRELATION_GRAPH', 'C2_STATE_MANIFOLD', 'C3_CIRCUIT_TRACE'];
+
+        let scene, camera, renderer;
+        let nodes = [], edges = [];
+        let stateCloud = [];
+
+        const featureNames = ['ax', 'ay', 'az', '|a|', 'α', 'β', 'γ', 'head', 'pitch', 'roll', 'H'];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            if (renderer) {
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 0, 15);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setClearColor(0x000000, 1);
+
+            const ambient = new THREE.AmbientLight(0x404040);
+            scene.add(ambient);
+            const light = new THREE.DirectionalLight(0xff00ff, 0.8);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+        }
+
+        function initSensors() {
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', (e) => {
+                    if (e.accelerationIncludingGravity) {
+                        const ax = e.accelerationIncludingGravity.x || 0;
+                        const ay = e.accelerationIncludingGravity.y || 0;
+                        const az = e.accelerationIncludingGravity.z || 0;
+                        const mag = Math.sqrt(ax*ax + ay*ay + az*az);
+
+                        sensors.accel.x.push(ax);
+                        sensors.accel.y.push(ay);
+                        sensors.accel.z.push(az);
+                        sensors.accel.mag.push(mag);
+
+                        if (sensors.accel.x.length > BUFFER_SIZE) {
+                            sensors.accel.x.shift();
+                            sensors.accel.y.shift();
+                            sensors.accel.z.shift();
+                            sensors.accel.mag.shift();
+                        }
+
+                        // Derive entropy
+                        const entropy = -Math.log2(Math.abs(ax) / 20 + 0.01) * 0.1;
+                        sensors.derived.entropy.push(entropy);
+                        if (sensors.derived.entropy.length > BUFFER_SIZE) {
+                            sensors.derived.entropy.shift();
+                        }
+                    }
+                });
+            }
+
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    sensors.gyro.alpha.push(e.alpha || 0);
+                    sensors.gyro.beta.push(e.beta || 0);
+                    sensors.gyro.gamma.push(e.gamma || 0);
+
+                    sensors.derived.heading.push(e.alpha || 0);
+                    sensors.derived.pitch.push(e.beta || 0);
+                    sensors.derived.roll.push(e.gamma || 0);
+
+                    if (sensors.gyro.alpha.length > BUFFER_SIZE) {
+                        sensors.gyro.alpha.shift();
+                        sensors.gyro.beta.shift();
+                        sensors.gyro.gamma.shift();
+                        sensors.derived.heading.shift();
+                        sensors.derived.pitch.shift();
+                        sensors.derived.roll.shift();
+                    }
+                });
+            }
+        }
+
+        function correlation(arr1, arr2) {
+            if (arr1.length < 10 || arr2.length < 10) return 0;
+            const n = Math.min(arr1.length, arr2.length);
+            let sum1 = 0, sum2 = 0, sum1Sq = 0, sum2Sq = 0, pSum = 0;
+
+            for (let i = 0; i < n; i++) {
+                sum1 += arr1[i];
+                sum2 += arr2[i];
+                sum1Sq += arr1[i] * arr1[i];
+                sum2Sq += arr2[i] * arr2[i];
+                pSum += arr1[i] * arr2[i];
+            }
+
+            const num = pSum - (sum1 * sum2 / n);
+            const den = Math.sqrt((sum1Sq - sum1*sum1/n) * (sum2Sq - sum2*sum2/n));
+            return den === 0 ? 0 : num / den;
+        }
+
+        // PATH C1: CORRELATION GRAPH
+        function renderCorrelationGraph() {
+            if (!nodes.length) buildGraph();
+
+            const allFeatures = [
+                sensors.accel.x,
+                sensors.accel.y,
+                sensors.accel.z,
+                sensors.accel.mag,
+                sensors.gyro.alpha,
+                sensors.gyro.beta,
+                sensors.gyro.gamma,
+                sensors.derived.heading,
+                sensors.derived.pitch,
+                sensors.derived.roll,
+                sensors.derived.entropy
+            ];
+
+            // Update edge opacities based on correlations
+            let edgeIdx = 0;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const corr = Math.abs(correlation(allFeatures[i], allFeatures[j]));
+                    if (edges[edgeIdx]) {
+                        edges[edgeIdx].material.opacity = corr * 0.8;
+                        edges[edgeIdx].material.color.setHSL(corr, 1, 0.5);
+                    }
+                    edgeIdx++;
+                }
+            }
+
+            // Force-directed layout
+            nodes.forEach(node => {
+                const centerForce = new THREE.Vector3(0, 0, 0).sub(node.position).multiplyScalar(0.01);
+                node.position.add(centerForce);
+                node.rotation.y += 0.02;
+            });
+
+            // Gyro camera control
+            if (sensors.gyro.beta.length > 0 && sensors.gyro.gamma.length > 0) {
+                const beta = sensors.gyro.beta[sensors.gyro.beta.length - 1];
+                const gamma = sensors.gyro.gamma[sensors.gyro.gamma.length - 1];
+                camera.position.x = Math.sin(gamma * 0.02) * 15;
+                camera.position.y = Math.sin(beta * 0.02) * 10;
+                camera.lookAt(0, 0, 0);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function buildGraph() {
+            // Create nodes for each feature
+            for (let i = 0; i < featureNames.length; i++) {
+                const geometry = new THREE.SphereGeometry(0.5, 16, 16);
+                const material = new THREE.MeshPhongMaterial({
+                    color: new THREE.Color().setHSL(i / featureNames.length, 1, 0.5),
+                    emissive: new THREE.Color().setHSL(i / featureNames.length, 1, 0.3)
+                });
+                const node = new THREE.Mesh(geometry, material);
+
+                const angle = (i / featureNames.length) * Math.PI * 2;
+                node.position.x = Math.cos(angle) * 5;
+                node.position.y = Math.sin(angle) * 5;
+                node.position.z = (Math.random() - 0.5) * 3;
+
+                scene.add(node);
+                nodes.push(node);
+            }
+
+            // Create edges between all pairs
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const geometry = new THREE.BufferGeometry().setFromPoints([
+                        nodes[i].position,
+                        nodes[j].position
+                    ]);
+                    const material = new THREE.LineBasicMaterial({
+                        color: 0xff00ff,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    const edge = new THREE.Line(geometry, material);
+                    scene.add(edge);
+                    edges.push(edge);
+                }
+            }
+        }
+
+        // PATH C2: STATE MANIFOLD CLOUD
+        function renderStateManifold() {
+            if (!nodes.length) buildGraph();
+
+            // Create state vector from current sensors
+            const state = [
+                sensors.accel.x.length ? sensors.accel.x[sensors.accel.x.length-1] : 0,
+                sensors.accel.y.length ? sensors.accel.y[sensors.accel.y.length-1] : 0,
+                sensors.accel.z.length ? sensors.accel.z[sensors.accel.z.length-1] : 0
+            ];
+
+            // Simple 3D projection (PCA-like)
+            const x = state[0] * 0.5;
+            const y = state[1] * 0.5;
+            const z = state[2] * 0.5;
+
+            // Add point to cloud
+            const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xff00ff,
+                transparent: true,
+                opacity: 0.8
+            });
+            const point = new THREE.Mesh(geometry, material);
+            point.position.set(x, y, z);
+            scene.add(point);
+            stateCloud.push(point);
+
+            // Limit cloud size
+            if (stateCloud.length > 200) {
+                scene.remove(stateCloud.shift());
+            }
+
+            // Fade old points
+            stateCloud.forEach((p, i) => {
+                p.material.opacity = (i / stateCloud.length) * 0.8;
+            });
+
+            camera.position.x = Math.sin(Date.now() * 0.001) * 10;
+            camera.position.z = Math.cos(Date.now() * 0.001) * 10;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        // PATH C3: CIRCUIT TRACE (simplified: show node connections)
+        function renderCircuitTrace() {
+            if (!nodes.length) buildGraph();
+
+            // Highlight nodes in sequence
+            const highlightIdx = Math.floor(Date.now() * 0.002) % nodes.length;
+            nodes.forEach((node, i) => {
+                if (i === highlightIdx) {
+                    node.scale.set(1.5, 1.5, 1.5);
+                    node.material.emissive.setHex(0xffffff);
+                } else {
+                    node.scale.set(1, 1, 1);
+                    const baseColor = new THREE.Color().setHSL(i / featureNames.length, 1, 0.3);
+                    node.material.emissive = baseColor;
+                }
+            });
+
+            camera.position.y = 5 + Math.sin(Date.now() * 0.001) * 3;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function render() {
+            const path = paths[currentPathIndex];
+
+            if (!renderer) initThree();
+
+            if (path === 'C1_CORRELATION_GRAPH') {
+                renderCorrelationGraph();
+            } else if (path === 'C2_STATE_MANIFOLD') {
+                renderStateManifold();
+            } else if (path === 'C3_CIRCUIT_TRACE') {
+                renderCircuitTrace();
+            }
+
+            updateHUD();
+            requestAnimationFrame(render);
+        }
+
+        function updateHUD() {
+            document.getElementById('current-path').textContent = paths[currentPathIndex];
+            document.getElementById('graph-info').innerHTML = `
+                Nodes: ${nodes.length} | Edges: ${edges.length} | State Cloud: ${stateCloud.length}
+            `;
+        }
+
+        function nextPath() {
+            currentPathIndex = (currentPathIndex + 1) % paths.length;
+        }
+
+        function prevPath() {
+            currentPathIndex = (currentPathIndex - 1 + paths.length) % paths.length;
+        }
+
+        function goToNavigator() {
+            window.location.href = 'circuit_navigator.html';
+        }
+
+        window.addEventListener('load', () => {
+            resize();
+            initSensors();
+            render();
+        });
+        window.addEventListener('resize', resize);
+
+        document.addEventListener('click', () => {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission();
+            }
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

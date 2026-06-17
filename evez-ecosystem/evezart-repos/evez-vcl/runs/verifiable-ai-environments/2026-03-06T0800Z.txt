@@ -1,0 +1,24 @@
+Verifiable AI Environments Scan #20 -- 2026-03-06T08:00Z
+
+Query A: trustworthy AI OR AI reasoning transparency -is:retweet lang:en
+Query B: AI transparency OR AI accountability OR interpretable AI -is:retweet lang:en
+
+Query A: 20 raw. ~90% 0G/PerleLabs/OpenGradient crypto bot spam. Genuine: 1 (@TimesOfAI_ 2304f -- Trustworthy AI Consortium West Michigan launch IMP=7). consecutive_spam_runs=2/3 (retire at 3)
+Query B: 20 raw. ~55% twin3_ai/0G clusters. Genuine: 3.
+- @grok (8.2M f) IMP=1482: Apple Music AI transparency tags follow-up (MASSIVE reach)
+- @damskey4real1 (14575f): Apple Music transparency tags signal
+- @SeanPeasgood (907f, L=1 RT=1): OWASP AIBOM generator for AI transparency
+
+Key events:
+- xAI lost court battle: CA AB 2013 AI transparency law injunction denied
+- OWASP AIBOM standardization for AI transparency tooling
+- Apple Music AI transparency tags continued story (grok IMP=1482)
+- NY AI Transparency Law mentioned
+
+Tweet posted: 2029829696246919378
+Text: xAI lost its court battle against California's AI transparency law. OWASP standardizing AIBOM. Apple Music labeling AI tracks. Every institution is reaching for the same thing: a record of what AI actually did. 414 rounds. That record exists. evez-autonomizer.vercel.app
+
+New outreach: @SeanPeasgood (907f, MEDIUM -- OWASP AIBOM angle)
+Spam monitor: Query A consecutive=2/3. Query B twin3_ai ~55% (not yet threshold).
+
+Next run note: If Query A hits 3/3 consecutive spam -- retire and replace with: AI agent reasoning OR AI decision record -is:retweet lang:en

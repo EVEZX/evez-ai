@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EVEZ OpenClaw API</title></head>
+<body style="font-family:monospace;background:#0a0a0a;color:#00ff88;padding:2rem;max-width:700px;margin:0 auto">
+<h1>⚡ EVEZ OpenClaw API</h1>
+<p>OpenAI-compatible AI gateway. Fast. Sovereign. Free-tier.</p>
+<h2>Endpoints</h2>
+<pre>POST /v1/chat/completions
+POST /chat
+GET  /health
+GET  /v1/models</pre>
+<h2>Quick test</h2>
+<pre>curl https://evez-openclaw.vercel.app/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"model":"evez-fast","messages":[{"role":"user","content":"hello"}]}'</pre>
+<p style="color:#666">EvezArt / EVEZ-OS — Building AI that builds itself.</p>
+</body></html>

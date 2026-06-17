@@ -1,0 +1,8 @@
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+torch==2.2.0
+transformers==4.41.2
+librosa==0.10.2.post1
+matplotlib==3.8.3
+pillow==10.3.0
+soundfile==0.12.1

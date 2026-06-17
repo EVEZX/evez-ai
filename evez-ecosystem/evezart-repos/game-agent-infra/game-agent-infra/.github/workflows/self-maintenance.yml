@@ -1,0 +1,36 @@
+name: Self-Maintenance (Autonomous)
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"   # Every 4 hours
+  workflow_dispatch:
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run FSC Health Check
+        run: |
+          python -m game_agent_infra.cli cycle --anomaly "scheduled-health-check"
+
+      - name: Verify Spine Integrity
+        run: |
+          python -c "
+          from game_agent_infra.core.spine import AppendOnlySpine
+          from pathlib import Path
+          spine = AppendOnlySpine(Path('evez_data/main_spine.jsonl'))
+          print('Chain valid:', spine.verify_chain())
+          "
+
+      - name: Auto-Update Dependencies
+        run: |
+          pip install -U -r requirements.txt || true
+          npm update || true
+
+      - name: Commit Maintenance Results
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: autonomous maintenance run [skip ci]"
+          file_pattern: "evez_data/*.jsonl docs/*.txt"

@@ -1,0 +1,35 @@
+name: Honeypot NPC Classifier — Witness Registry
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+    inputs:
+      honeypot_file:
+        description: 'Path to NDJSON honeypot log'
+        default: ''
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Run classifier
+        env:
+          BIG_DATA_CLOUD_KEY: ${{ secrets.BIG_DATA_CLOUD_KEY }}
+          PDL_API_KEY: ${{ secrets.PDL_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.PAGES_GITHUB_TOKEN }}
+        run: |
+          INPUT=""
+          [ -n "${{ github.event.inputs.honeypot_file }}" ] && INPUT="--input-file ${{ github.event.inputs.honeypot_file }}"
+          python scripts/honeypot_npc.py $INPUT --publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: witness-registry-${{ github.run_number }}
+          path: output/witness-registry/
+          retention-days: 7

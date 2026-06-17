@@ -1,0 +1,30 @@
+services:
+  openclaw-gateway:
+    build: .
+    image: evez-openclaw:local
+    env_file: .env
+    environment:
+      HOME: /home/node
+      OPENCLAW_HOME: /home/node
+      OPENCLAW_STATE_DIR: /home/node/.openclaw
+      OPENCLAW_CONFIG_PATH: /home/node/.openclaw/openclaw.json
+      OPENCLAW_WORKSPACE_DIR: /home/node/.openclaw/workspace
+      OPENCLAW_PORT: ${OPENCLAW_PORT:-18789}
+      OPENCLAW_BIND: ${OPENCLAW_BIND:-lan}
+      OPENCLAW_TELEGRAM_ALLOW_FROM: ${OPENCLAW_TELEGRAM_ALLOW_FROM:-}
+    volumes:
+      - openclaw-data:/home/node/.openclaw
+    ports:
+      - "${OPENCLAW_PORT:-18789}:18789"
+    init: true
+    restart: unless-stopped
+    command: ["node", "dist/index.js", "gateway", "--bind", "${OPENCLAW_BIND:-lan}", "--port", "18789"]
+    healthcheck:
+      test: ["CMD-SHELL", "node dist/index.js gateway health --url ws://127.0.0.1:18789 --token \"$${OPENCLAW_GATEWAY_TOKEN}\" --timeout 5000 >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  openclaw-data:

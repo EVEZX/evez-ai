@@ -1,0 +1,23 @@
+{
+  "ts": "2026-02-28T23:06Z",
+  "type": "SENSE",
+  "loops": ["onchain_agent_economy_8h", "loop_spawning_detector_6h"],
+  "onchain_scan": {
+    "scan_num": 6,
+    "signal_quality": "medium",
+    "genuine_signals": 2,
+    "new_term": "KYA_know_your_agent",
+    "top_signal": "@AIVM_Network RT=9+3",
+    "primary_query": "RETIRED",
+    "outreach_added": "@AIVM_Network (HIGH)"
+  },
+  "spawner_run": {
+    "run_num": 18,
+    "spawn": false,
+    "drift_detected": true,
+    "reason": "All new terms covered by existing loops",
+    "query_b_strikes": 0,
+    "query_b_status": "RECOVERING"
+  },
+  "gist_note": "Gist DISCONNECTED -- status logged here as fallback"
+}

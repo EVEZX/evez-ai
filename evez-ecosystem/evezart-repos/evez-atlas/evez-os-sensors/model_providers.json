@@ -1,0 +1,332 @@
+{
+  "providers": {
+    "vultr": {
+      "baseUrl": "https://api.vultrinference.com/v1",
+      "apiKey": "ENV:VULTR_API_KEY",
+      "models": [
+        {
+          "id": "zai-org/GLM-5.1-FP8",
+          "name": "zai-org/GLM-5.1-FP8",
+          "tier": "free"
+        },
+        {
+          "id": "Qwen/Qwen3-Coder-Next-FP8",
+          "name": "Qwen/Qwen3-Coder-Next-FP8",
+          "tier": "free"
+        },
+        {
+          "id": "nvidia/DeepSeek-V3.2-NVFP4",
+          "name": "nvidia/DeepSeek-V3.2-NVFP4",
+          "tier": "free"
+        },
+        {
+          "id": "MiniMaxAI/MiniMax-M2.7",
+          "name": "MiniMaxAI/MiniMax-M2.7",
+          "tier": "free"
+        }
+      ]
+    },
+    "github-models": {
+      "baseUrl": "https://models.inference.ai.azure.com",
+      "apiKey": "GITHUB_PAT_PLACEHOLDER",
+      "models": [
+        {
+          "id": "gpt-4o",
+          "name": "GPT-4o",
+          "tier": "free"
+        },
+        {
+          "id": "gpt-4o-mini",
+          "name": "GPT-4o Mini",
+          "tier": "free"
+        },
+        {
+          "id": "Meta-Llama-3.1-405B-Instruct",
+          "name": "Llama 3.1 405B",
+          "tier": "free"
+        },
+        {
+          "id": "Meta-Llama-3.1-70B-Instruct",
+          "name": "Llama 3.1 70B",
+          "tier": "free"
+        },
+        {
+          "id": "mistral-large",
+          "name": "Mistral Large",
+          "tier": "free"
+        },
+        {
+          "id": "Phi-3.5-mini-instruct",
+          "name": "Phi 3.5 Mini",
+          "tier": "free"
+        }
+      ],
+      "limits": {
+        "rpm": 15,
+        "tpm": 100000,
+        "cost": "free"
+      },
+      "signup": "https://github.com/marketplace/models",
+      "notes": "Needs PAT with 'models' permission. Steven has GitHub account."
+    },
+    "groq": {
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "apiKey": "GROQ_API_KEY_PLACEHOLDER",
+      "models": [
+        {
+          "id": "llama-3.3-70b-versatile",
+          "name": "Llama 3.3 70B",
+          "tier": "free"
+        },
+        {
+          "id": "llama-4-scout-17b-16e-instruct",
+          "name": "Llama 4 Scout",
+          "tier": "free"
+        },
+        {
+          "id": "gemma2-9b-it",
+          "name": "Gemma 2 9B",
+          "tier": "free"
+        },
+        {
+          "id": "mixtral-8x7b-32768",
+          "name": "Mixtral 8x7B",
+          "tier": "free"
+        },
+        {
+          "id": "deepseek-r1-distill-llama-70b",
+          "name": "DeepSeek R1 70B",
+          "tier": "free"
+        }
+      ],
+      "limits": {
+        "rpm": 30,
+        "tpm": 15000,
+        "cost": "free"
+      },
+      "signup": "https://console.groq.com/keys",
+      "notes": "FASTEST inference. Free tier. No credit card."
+    },
+    "openrouter": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "apiKey": "ENV:OPENROUTER_API_KEY",
+      "models": [
+        {
+          "id": "google/gemma-4-31b-it:free",
+          "name": "google/gemma-4-31b-it:free",
+          "tier": "free"
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "name": "nvidia/nemotron-3-super-120b-a12b:free",
+          "tier": "free"
+        },
+        {
+          "id": "minimax/minimax-m2.5:free",
+          "name": "minimax/minimax-m2.5:free",
+          "tier": "free"
+        },
+        {
+          "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+          "name": "nvidia/nemotron-nano-12b-v2-vl:free",
+          "tier": "free"
+        }
+      ]
+    },
+    "cerebras": {
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "apiKey": "ENV:CEREBRAS_API_KEY",
+      "models": [
+        {
+          "id": "qwen-3-235b-a22b-instruct-2507",
+          "name": "qwen-3-235b-a22b-instruct-2507",
+          "tier": "free"
+        },
+        {
+          "id": "gpt-oss-120b",
+          "name": "gpt-oss-120b",
+          "tier": "free"
+        },
+        {
+          "id": "llama3.1-8b",
+          "name": "llama3.1-8b",
+          "tier": "free"
+        }
+      ]
+    },
+    "google": {
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "apiKey": "GOOGLE_API_KEY_PLACEHOLDER",
+      "models": [
+        {
+          "id": "gemini-2.5-pro",
+          "name": "Gemini 2.5 Pro",
+          "tier": "free"
+        },
+        {
+          "id": "gemini-2.5-flash",
+          "name": "Gemini 2.5 Flash",
+          "tier": "free"
+        },
+        {
+          "id": "gemini-2.0-flash",
+          "name": "Gemini 2.0 Flash",
+          "tier": "free"
+        },
+        {
+          "id": "gemma-3-27b-it",
+          "name": "Gemma 3 27B",
+          "tier": "free"
+        }
+      ],
+      "limits": {
+        "rpm": 15,
+        "tpm": 1000000,
+        "cost": "free"
+      },
+      "signup": "https://aistudio.google.com/apikey",
+      "notes": "BEST free tier. 1M TPM. No CC. Gemini 2.5 Pro is top-tier."
+    },
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com/v1",
+      "apiKey": "ENV:DEEPSEEK_API_KEY",
+      "models": [
+        {
+          "id": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "tier": "free"
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "name": "deepseek-v4-pro",
+          "tier": "free"
+        }
+      ]
+    },
+    "sambanova": {
+      "baseUrl": "https://api.sambanova.ai/v1",
+      "apiKey": "ENV:SAMBANOVA_API_KEY",
+      "models": [
+        {
+          "id": "DeepSeek-V3.1",
+          "name": "DeepSeek-V3.1",
+          "tier": "free"
+        },
+        {
+          "id": "Llama-4-Maverick-17B-128E-Instruct",
+          "name": "Llama-4-Maverick-17B-128E-Instruct",
+          "tier": "free"
+        },
+        {
+          "id": "Meta-Llama-3.3-70B-Instruct",
+          "name": "Meta-Llama-3.3-70B-Instruct",
+          "tier": "free"
+        },
+        {
+          "id": "MiniMax-M2.5",
+          "name": "MiniMax-M2.5",
+          "tier": "free"
+        },
+        {
+          "id": "gpt-oss-120b",
+          "name": "gpt-oss-120b",
+          "tier": "free"
+        }
+      ]
+    },
+    "mistral": {
+      "baseUrl": "https://api.mistral.ai/v1",
+      "apiKey": "MISTRAL_API_KEY_PLACEHOLDER",
+      "models": [
+        {
+          "id": "mistral-large-latest",
+          "name": "Mistral Large",
+          "tier": "free-credits"
+        },
+        {
+          "id": "codestral-latest",
+          "name": "Codestral",
+          "tier": "free-credits"
+        },
+        {
+          "id": "mistral-small-latest",
+          "name": "Mistral Small",
+          "tier": "free-credits"
+        }
+      ],
+      "limits": {
+        "rpm": 4,
+        "tpm": 1000000,
+        "cost": "1B tokens/mo free"
+      },
+      "signup": "https://console.mistral.ai/api-keys/",
+      "notes": "1B tokens/month free tier. Codestral for code."
+    },
+    "siliconflow": {
+      "baseUrl": "https://api.siliconflow.cn/v1",
+      "apiKey": "SILICONFLOW_API_KEY_PLACEHOLDER",
+      "models": [
+        {
+          "id": "deepseek-ai/DeepSeek-V3",
+          "name": "DeepSeek V3",
+          "tier": "free"
+        },
+        {
+          "id": "meta-llama/Meta-Llama-3.1-405B-Instruct",
+          "name": "Llama 3.1 405B",
+          "tier": "free"
+        },
+        {
+          "id": "Qwen/Qwen2.5-72B-Instruct",
+          "name": "Qwen 2.5 72B",
+          "tier": "free"
+        }
+      ],
+      "limits": {
+        "rpm": 30,
+        "tpm": 100000,
+        "cost": "free"
+      },
+      "signup": "https://cloud.siliconflow.cn/",
+      "notes": "Chinese provider. 20+ free models. No CC."
+    },
+    "chutes": {
+      "baseUrl": "https://llm.chutes.ai/v1",
+      "apiKey": "CHUTES_API_KEY_PLACEHOLDER",
+      "models": [
+        {
+          "id": "deepseek-ai/DeepSeek-R1",
+          "name": "DeepSeek R1",
+          "tier": "free"
+        },
+        {
+          "id": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+          "name": "Llama 3.1 70B",
+          "tier": "free"
+        }
+      ],
+      "limits": {
+        "rpm": 10,
+        "tpm": 50000,
+        "cost": "free"
+      },
+      "signup": "https://chutes.ai/",
+      "notes": "Free community inference. No auth needed for basic."
+    }
+  },
+  "total_free_models": 50,
+  "signup_priority": [
+    "google \u2014 BEST free tier, Gemini 2.5 Pro, 1M TPM",
+    "groq \u2014 FASTEST, Llama 4 Scout + DeepSeek R1 70B",
+    "mistral \u2014 1B tokens/mo, Codestral for code",
+    "deepseek \u2014 5M free tokens, DeepSeek R1 reasoning",
+    "openrouter \u2014 50+ models, free tier, GitHub OAuth",
+    "cerebras \u2014 Ultra-fast, 30 RPM free",
+    "github-models \u2014 GPT-4o + Llama 405B (needs models permission)",
+    "sambanova \u2014 $5 credits",
+    "siliconflow \u2014 20+ free models",
+    "chutes \u2014 Free community inference"
+  ],
+  "total_active_providers": 5,
+  "total_active_models": 18
+}

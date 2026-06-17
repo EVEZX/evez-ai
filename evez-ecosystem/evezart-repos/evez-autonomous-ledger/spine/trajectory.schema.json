@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EVEZ Trajectory Projection",
+  "description": "Forward-projected system state: entropy, basin, branch instability, negative latency trigger",
+  "type": "object",
+  "required": ["timestamp", "epoch", "entropy_current", "entropy_basin", "basin_distance", "negative_latency_triggered"],
+  "properties": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "epoch": { "type": "integer" },
+    "entropy_current": {
+      "type": "number",
+      "description": "Shannon entropy H(X) of decision type distribution over last 30 records"
+    },
+    "entropy_basin": {
+      "type": "number",
+      "description": "Predicted entropy at convergence basin (lower = more ordered future)"
+    },
+    "contradiction_score": {
+      "type": "number",
+      "description": "0-1: fraction of recent hypothesis pairs that contradict each other"
+    },
+    "branch_instability": {
+      "type": "number",
+      "description": "0-1: Hamming-distance proxy between current state vector and predicted settlement vector"
+    },
+    "basin_distance": {
+      "type": "number",
+      "description": "Scalar: sqrt(entropy_delta^2 + branch_instability^2 + contradiction^2). Threshold=1.4 triggers neg-latency"
+    },
+    "negative_latency_triggered": {
+      "type": "boolean",
+      "description": "True when basin_distance > 1.4 AND predicted_basin entropy < current entropy"
+    },
+    "negative_latency_action": {
+      "type": "string",
+      "description": "The pre-emptive action the system takes to align present to future settlement"
+    },
+    "phi_trajectory": {
+      "type": "array",
+      "items": { "type": "number" },
+      "description": "Rolling window of last 12 phi scores — slope indicates growth or decay"
+    },
+    "learning_rate": {
+      "type": "number",
+      "description": "Measured reduction in prediction uncertainty per 15-min cycle"
+    },
+    "intelligence_gain_rate": {
+      "type": "number",
+      "description": "learning_rate / policy_review_cadence — when >1.0 system gains intelligence faster than it can decide"
+    },
+    "vector": { "type": "string", "enum": ["ASCENDING", "STABLE", "DESCENDING", "VOLATILE"] },
+    "hash": { "type": "string" }
+  }
+}

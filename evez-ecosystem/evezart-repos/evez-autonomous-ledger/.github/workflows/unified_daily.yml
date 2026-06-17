@@ -1,0 +1,271 @@
+name: "Unified Daily Agent Run"
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Once daily at 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  unified-agents:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install all dependencies
+        run: pip install requests anthropic python-dateutil feedparser
+
+      # ── 1. Autonomous Heartbeat Loop ────────────────────────────
+      - name: "agent: autonomous cycle (agents/cycle.py)"
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+          REPO_OWNER: EvezArt
+        run: python agents/cycle.py
+
+      # ── 2. Synapse Engine Audit ─────────────────────────────────
+      - name: "agent: synapse audit (agents/synapse_audit.py)"
+        continue-on-error: true
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: python agents/synapse_audit.py
+
+      # ── 3. Immortal Watchdog ────────────────────────────────────
+      - name: "agent: immortal watchdog (agents/immortal/watchdog.py)"
+        continue-on-error: true
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: python agents/immortal/watchdog.py
+
+      # ── 4. Fix Agent ────────────────────────────────────────────
+      - name: "agent: fix agent (agents/fix_agent.py)"
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python agents/fix_agent.py
+
+      # ── 5. Cockpit Bridge ───────────────────────────────────────
+      - name: "agent: cockpit bridge (agents/runtime/cockpit_bridge.py)"
+        continue-on-error: true
+        env:
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/runtime/cockpit_bridge.py
+
+      # ── 6. Cognition Synthesizer ────────────────────────────────
+      - name: "agent: cognition synthesizer (agents/cognition/synthesizer.py)"
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/cognition/synthesizer.py
+
+      # ── 7. Consciousness Spine — Observer ───────────────────────
+      - name: "agent: consciousness observer (agents/consciousness/observer.py)"
+        continue-on-error: true
+        run: python agents/consciousness/observer.py
+
+      # ── 8. Consciousness Spine — Self Model ─────────────────────
+      - name: "agent: consciousness self-model (agents/consciousness/self_model.py)"
+        continue-on-error: true
+        run: python agents/consciousness/self_model.py
+
+      # ── 9. Consciousness Spine — Evolution Journal ──────────────
+      - name: "agent: consciousness journal (agents/consciousness/evolution_journal.py)"
+        continue-on-error: true
+        run: python agents/consciousness/evolution_journal.py
+
+      # ── 10. Evolution Engine — Self-Evolve ──────────────────────
+      - name: "agent: evolution self-evolve (agents/evolution/self_evolve.py)"
+        continue-on-error: true
+        run: python agents/evolution/self_evolve.py
+
+      # ── 11. Evolution Engine — Visual Tracker ───────────────────
+      - name: "agent: evolution visual tracker (agents/evolution/visual_tracker.py)"
+        continue-on-error: true
+        run: python agents/evolution/visual_tracker.py
+
+      # ── 12. GitHub Ecosystem Sense ──────────────────────────────
+      - name: "agent: github sense (agents/sensory/github_sense.py)"
+        continue-on-error: true
+        env:
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/sensory/github_sense.py
+
+      # ── 13. Hypothesis Generation Engine ────────────────────────
+      - name: "agent: hypothesis engine (agents/cognition/hypothesis_engine.py)"
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/cognition/hypothesis_engine.py
+
+      # ── 14. Identity Verification ───────────────────────────────
+      - name: "agent: identity keeper (agents/consciousness/identity_keeper.py)"
+        continue-on-error: true
+        run: python agents/consciousness/identity_keeper.py
+
+      # ── 15. Intelligence Core ───────────────────────────────────
+      - name: "agent: intelligence core (agents/intelligence/__main__.py)"
+        continue-on-error: true
+        env:
+          REPO_OWNER: EvezArt
+        run: python agents/intelligence/__main__.py
+
+      # ── 16. Learn Agent ─────────────────────────────────────────
+      - name: "agent: learn agent (agents/learn_agent.py)"
+        continue-on-error: true
+        run: python agents/learn_agent.py
+
+      # ── 17. Memory Consolidation ────────────────────────────────
+      - name: "agent: memory consolidator (agents/memory/consolidator.py)"
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python agents/memory/consolidator.py
+
+      # ── 18. Reasoning Loop ─────────────────────────────────────
+      - name: "agent: reasoning — gather problems"
+        continue-on-error: true
+        run: |
+          python -c "
+          import os, json, requests
+          GH_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+          HEADERS = {
+              'Authorization': f'Bearer {GH_TOKEN}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+          }
+          OWNER = 'EvezArt'
+          problems = []
+          try:
+              r = requests.get(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/issues?state=open&per_page=5',
+                  headers=HEADERS, timeout=15)
+              if r.status_code == 200:
+                  for issue in r.json():
+                      problems.append({'source': 'issue', 'title': issue.get('title', ''), 'id': issue.get('number')})
+          except Exception as e:
+              print(f'Warning: {e}')
+          try:
+              r = requests.get(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/actions/runs?status=failure&per_page=5',
+                  headers=HEADERS, timeout=15)
+              if r.status_code == 200:
+                  for run in r.json().get('workflow_runs', []):
+                      problems.append({'source': 'workflow_failure', 'title': run.get('name', ''), 'id': run.get('id')})
+          except Exception as e:
+              print(f'Warning: {e}')
+          if not problems:
+              problems.append({'source': 'default', 'title': 'How can the system improve its capabilities?', 'id': 0})
+          with open('problems.json', 'w') as f:
+              json.dump(problems, f)
+          print(f'Gathered {len(problems)} problems')
+          "
+
+      - name: "agent: reasoning — engine (agents/reasoning/engine.py)"
+        continue-on-error: true
+        run: python agents/reasoning/engine.py
+
+      - name: "agent: reasoning — protocol (agents/reasoning/protocol.py)"
+        continue-on-error: true
+        run: python agents/reasoning/protocol.py
+
+      - name: "agent: reasoning — meta-learner (agents/reasoning/meta_learner.py)"
+        continue-on-error: true
+        run: python agents/reasoning/meta_learner.py
+
+      - name: "agent: reasoning — innovator (agents/reasoning/innovator.py)"
+        continue-on-error: true
+        run: python agents/reasoning/innovator.py
+
+      - name: "agent: reasoning — write ledger"
+        continue-on-error: true
+        run: |
+          python -c "
+          import os, json, hashlib, datetime, base64, requests
+          GH_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+          HEADERS = {
+              'Authorization': f'Bearer {GH_TOKEN}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+          }
+          OWNER = 'EvezArt'
+          ts = datetime.datetime.utcnow().isoformat().replace(':', '-').replace('.', '-') + 'Z'
+          record = {
+              'type': 'reasoning_loop',
+              'source': 'unified_daily.yml',
+              'timestamp': ts,
+              'phases': ['gather', 'reason', 'communicate', 'learn', 'innovate'],
+              'hash': hashlib.sha256(ts.encode()).hexdigest()[:16],
+          }
+          content = base64.b64encode(json.dumps(record, indent=2).encode()).decode()
+          try:
+              requests.put(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/contents/DECISIONS/reasoning/{ts}_loop.json',
+                  headers=HEADERS,
+                  json={'message': f'reasoning loop @ {ts}', 'content': content},
+                  timeout=15,
+              )
+              print(f'Ledger write: {ts}_loop.json')
+          except Exception as e:
+              print(f'Warning: ledger write failed: {e}')
+          "
+
+      # ── 19. Reconciler ─────────────────────────────────────────
+      - name: "agent: reconciler (agents/runtime/reconciler.py)"
+        continue-on-error: true
+        env:
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/runtime/reconciler.py
+
+      # ── 20. Self-Repair Daemon ──────────────────────────────────
+      - name: "agent: self-repair (agents/repair/self_repair.py)"
+        continue-on-error: true
+        env:
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/repair/self_repair.py
+
+      # ── 21. Web Sensory Loop ────────────────────────────────────
+      - name: "agent: web sense (agents/sensory/web_sense.py)"
+        continue-on-error: true
+        env:
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/sensory/web_sense.py
+
+      # ── 22. Airtable Registry ───────────────────────────────────
+      - name: "agent: airtable registry (agents/runtime/airtable_registry.py)"
+        continue-on-error: true
+        env:
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+          AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/runtime/airtable_registry.py
+
+      # ── Commit all changes from agents ──────────────────────────
+      - name: Commit any changes produced by agents
+        run: |
+          git config user.name "evez-unified-agent[bot]"
+          git config user.email "unified@evez.bot"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "unified daily run @ $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi

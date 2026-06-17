@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "checkpoints": ["t-3", "t-2", "t-1", "t0", "t+1", "t+2", "t+3"],
+  "t0": {
+    "timestamp": "2026-05-22T22:10:00Z",
+    "infra_state": {
+      "services_running": 15,
+      "services_total": 15,
+      "gateway_uptime_hours": 3.3,
+      "cpu_temp_c": 0,
+      "mem_used_pct": 56,
+      "load_1": 0.27
+    },
+    "ledger_entropy": 0.4,
+    "agent_diversity": {
+      "active_agents": 10,
+      "agent_types": ["spine", "trunk", "deploy", "vault", "harvest", "scout", "witness", "cain", "steven-main", "factory"],
+      "phenomenologic_node": "OMEGA_FRAME_OPERATOR"
+    },
+    "error_surfaces": [],
+    "strides_discovered": 0,
+    "future_option_space_estimate": 0.6
+  },
+  "stride_hypotheses": [
+    {
+      "id": "S001",
+      "name": "Unify media pipeline into EVEZ-OS core",
+      "description": "Merge Breakcore + Livestream + Stream Manager into a single cognition-aware media daemon",
+      "retrocausal_score": null,
+      "local_gain": 0.5,
+      "t_plus_2_option_delta": 0.8,
+      "t_plus_3_option_delta": 0.9,
+      "status": "candidate"
+    },
+    {
+      "id": "S002",
+      "name": "Raise OpenClaw observability ceiling",
+      "description": "Wire all 15 services into MeshMind + Prometheus with phenomenologic node tagging",
+      "retrocausal_score": null,
+      "local_gain": 0.7,
+      "t_plus_2_option_delta": 0.6,
+      "t_plus_3_option_delta": 0.7,
+      "status": "candidate"
+    },
+    {
+      "id": "S003",
+      "name": "Increase agent spec mutation rate",
+      "description": "Factory generates agent variant specs, Cognition audits, mesh deploys autonomously",
+      "retrocausal_score": null,
+      "local_gain": 0.3,
+      "t_plus_2_option_delta": 0.9,
+      "t_plus_3_option_delta": 1.0,
+      "status": "candidate"
+    },
+    {
+      "id": "S004",
+      "name": "Build Shard Router for LoRa mesh",
+      "description": "Intelligence routing layer that shards data across LoRa's low-bandwidth links",
+      "retrocausal_score": null,
+      "local_gain": 0.2,
+      "t_plus_2_option_delta": 0.5,
+      "t_plus_3_option_delta": 0.8,
+      "status": "candidate"
+    },
+    {
+      "id": "S005",
+      "name": "Phenomenologic middleware for all EVEZ actions",
+      "description": "Every autonomous action routes through state.manifold.json before execution",
+      "retrocausal_score": null,
+      "local_gain": 0.6,
+      "t_plus_2_option_delta": 0.85,
+      "t_plus_3_option_delta": 0.95,
+      "status": "committed"
+    }
+  ],
+  "simulation_results": []
+}

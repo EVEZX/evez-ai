@@ -1,0 +1,16 @@
+{
+  "agent": "evez-os",
+  "wallet_address": "0xFb756fc5Fe01FB982E5d63Db3A8b787B6fDE8692",
+  "network": "base-mainnet",
+  "chain_id": 8453,
+  "currency": "USDC",
+  "usdc_contract_base": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "purpose": "x402 agent micropayment rail — autonomous API payments",
+  "x402_protocol": "HTTP 402 Payment Required intercept",
+  "fund_instructions": {
+    "step_1": "Open Coinbase or any Base-compatible wallet",
+    "step_2": "Send USDC (Base network only) to: 0xFb756fc5Fe01FB982E5d63Db3A8b787B6fDE8692",
+    "step_3": "Minimum recommended: $5 USDC to start (covers ~500 x402 micropayments at $0.01 each)",
+    "warning": "Base network only — do NOT send on Ethereum mainnet without bridging"
+  }
+}

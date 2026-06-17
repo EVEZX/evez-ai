@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ EVEZ Nervous System</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'JetBrains Mono',monospace}
+.header{padding:2rem;text-align:center;border-bottom:1px solid #1a1a2e}
+.header h1{font-size:2rem;color:#00ff88;text-shadow:0 0 20px #00ff8844}
+.header .sub{color:#666;margin-top:.5rem;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;padding:1rem}
+.card{background:#111122;border:1px solid #1a1a2e;border-radius:8px;padding:1.5rem}
+.card h2{color:#00ff88;font-size:1rem;margin-bottom:1rem;text-transform:uppercase;letter-spacing:2px}
+.s{display:flex;align-items:center;gap:.5rem;margin:.5rem 0}
+.d{width:8px;height:8px;border-radius:50%}
+.up{background:#00ff88;box-shadow:0 0 8px #00ff88}
+.dn{background:#ff4444;box-shadow:0 0 8px #ff4444}
+.m{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid #1a1a2e}
+.m .l{color:#888}.m .v{color:#fff;font-weight:bold}
+.bar{height:4px;background:#1a1a2e;border-radius:2px;margin-top:1rem;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#ff4444,#ffaa00,#00ff88);border-radius:2px;transition:width 1s}
+a{color:#00ff88;text-decoration:none}
+a:hover{text-decoration:underline}
+.lk{margin-top:1rem}.lk a{display:block;margin:.3rem 0;font-size:.85rem}
+.ft{text-align:center;padding:2rem;color:#333;font-size:.75rem}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>⚡ EVEZ Nervous System</h1>
+<div class="sub">The eigenspectrum's memory. One wire. All domains. No deletes.</div>
+</div>
+<div class="grid">
+<div class="card">
+<h2>🧠 Cognition</h2>
+<div class="s"><div class="d up"></div>evez-os</div>
+<div class="s"><div class="d up"></div>evez-sim (Barnes-Hut)</div>
+<div class="s"><div class="d up"></div>FIRE round engine</div>
+<div class="m"><span class="l">Last FIRE</span><span class="v">SILENT (N=41)</span></div>
+<div class="m"><span class="l">poly_c</span><span class="v">0.000</span></div>
+<div class="m"><span class="l">narr_c</span><span class="v">0.886</span></div>
+<div class="lk"><a href="http://45.63.70.174:3333" target="_blank">→ Simulation</a></div>
+</div>
+<div class="card">
+<h2>💰 Revenue</h2>
+<div class="s"><div class="d up"></div>Credit API</div>
+<div class="s"><div class="d dn"></div>Stripe (not wired)</div>
+<div class="m"><span class="l">Total Revenue</span><span class="v">$0.00</span></div>
+<div class="m"><span class="l">Eigenvalue Closure</span><span class="v">0.0%</span></div>
+<div class="bar"><div class="fill" style="width:0%"></div></div>
+<div class="lk"><a href="http://45.63.70.174:8080/health" target="_blank">→ Credit API</a></div>
+</div>
+<div class="card">
+<h2>🛡️ Security</h2>
+<div class="s"><div class="d up"></div>UFW Firewall</div>
+<div class="s"><div class="d up"></div>fail2ban</div>
+<div class="s"><div class="d up"></div>CrowdSec</div>
+<div class="m"><span class="l">Blocked Subnets</span><span class="v">6</span></div>
+<div class="m"><span class="l">SSH Port</span><span class="v">2222 (keys only)</span></div>
+<div class="m"><span class="l">Root Login</span><span class="v">DISABLED</span></div>
+</div>
+<div class="card">
+<h2>📡 Infrastructure</h2>
+<div class="s"><div class="d up"></div>Gateway :18789</div>
+<div class="s"><div class="d up"></div>Code Server :6969</div>
+<div class="s"><div class="d up"></div>ngrok tunnel</div>
+<div class="s"><div class="d up"></div>Docker (3 containers)</div>
+<div class="m"><span class="l">Disk</span><span class="v">20% used</span></div>
+<div class="m"><span class="l">Watchdog</span><span class="v">Every 10 min</span></div>
+<div class="lk"><a href="http://45.63.70.174:18789" target="_blank">→ Gateway</a><a href="http://45.63.70.174:6969" target="_blank">→ Code Server</a></div>
+</div>
+<div class="card">
+<h2>🦴 Spine</h2>
+<div class="s"><div class="d up"></div>evez-spine v1.1.0</div>
+<div class="m"><span class="l">Domains</span><span class="v">9</span></div>
+<div class="m"><span class="l">Chain</span><span class="v">✅ Valid</span></div>
+<div class="m"><span class="l">λ target</span><span class="v">-0.358</span></div>
+<div class="lk"><a href="https://github.com/EvezArt/evez-spine" target="_blank">→ GitHub</a></div>
+</div>
+<div class="card">
+<h2>🔬 Research</h2>
+<div class="m"><span class="l">AARO PUR</span><span class="v">LIVE (May 8)</span></div>
+<div class="m"><span class="l">Bismuth TRS</span><span class="v">CONFIRMED</span></div>
+<div class="m"><span class="l">η*</span><span class="v">≈ 0.03</span></div>
+<div class="m"><span class="l">Einselection</span><span class="v">≡ η*</span></div>
+<div class="m"><span class="l">Structural Holes</span><span class="v">7</span></div>
+<div class="lk"><a href="https://www.aaro.mil/UAP-Records/" target="_blank">→ AARO</a></div>
+</div>
+</div>
+<div class="ft">Viktor ⚡ EVEZ Nervous System — The algebra closes</div>
+</body>
+</html>

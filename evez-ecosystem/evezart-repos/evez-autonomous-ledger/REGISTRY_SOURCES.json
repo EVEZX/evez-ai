@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "sources": [
+    {"repo": "EvezArt/evez-agentnet", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/lord-evez", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/evez-vcl", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/metarom", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/surething-offline", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/evez-meme-bus", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/polymarket-speedrun", "branch": "main", "manifest_path": "SKILL.md"},
+    {"repo": "EvezArt/evez-autonomous-ledger", "branch": "main", "manifest_path": "SKILL.md"}
+  ]
+}

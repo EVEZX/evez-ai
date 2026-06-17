@@ -1,0 +1,13 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. March 3, 2026. 25 loops running on a 3-hour cycle. 103 FIRE events confirmed. Top gap: clicksend_sms_registration_needed -- ClickSend SMS to Steven blocked, 10DLC registration required, trial expires 2026-03-10. Next action: Register 10DLC campaign at dashboard.clicksend.com. topology decides. watching it build.
+
+---
+run_num: 29
+ts: 2026-03-03T18:02Z
+fire_count: 103
+V_global: 15.852677
+loops: 25
+gen: 10
+tts_provider: JigsawStack
+tts_id: pending
+cdn_status: BLOCKED -- API key not in sandbox (x20 consecutive, skip entirely)
+batch_note: co-fired with mem0_state_sync run#21 at 18:01Z

@@ -1,0 +1,53 @@
+name: runtime-contract
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.12'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Assert runtime contract
+        run: |
+          node - <<'EOF'
+          const pkg = require('./package.json');
+          const declaredBun = pkg?.engines?.bun;
+          if (declaredBun !== '1.2.12') {
+            console.error(`Expected package.json engines.bun to be 1.2.12, got ${declaredBun ?? 'undefined'}`);
+            process.exit(1);
+          }
+          console.log('package.json declares Bun engine:', declaredBun);
+          console.log('Workflow validates Bun for local/package-manager contract and Node 24 for platform compatibility.');
+          EOF
+
+      - name: Print toolchain versions
+        run: |
+          node --version
+          bun --version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build

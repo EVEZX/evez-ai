@@ -1,0 +1,64 @@
+name: EVEZ Output Router
+on:
+  workflow_dispatch:
+    inputs:
+      content_type:
+        description: 'FIRE_EVENT | TICK_LOG | V_MILESTONE | AGENT_REPORT'
+        required: true
+        default: 'FIRE_EVENT'
+      data_json:
+        description: 'JSON payload'
+        required: false
+        default: '{}'
+      force_youtube:
+        description: 'Force YouTube'
+        required: false
+        default: 'false'
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Twitter
+        id: tw
+        run: |
+          LOCKED="false"
+          if [ -f "workspace/hyperloop_state.json" ]; then
+            LOCKED=$(python3 -c "import json; s=json.load(open('workspace/hyperloop_state.json')); n=s.get('last_tweet',{}).get('note','').upper(); print('true' if any(x in n for x in ['BLOCKED','LOCKED','SUSPENDED']) else 'false')")
+          fi
+          [ "${{ github.event.inputs.force_youtube }}" = "true" ] && LOCKED="true"
+          echo "locked=$LOCKED" >> $GITHUB_OUTPUT
+      - name: Route
+        id: route
+        run: |
+          echo '${{ github.event.inputs.data_json }}' > /tmp/data.json
+          python3 scripts/youtube_router.py '${{ github.event.inputs.content_type }}' /tmp/data.json > /tmp/decision.json
+          cat /tmp/decision.json
+          ROUTE=$(python3 -c "import json; print(json.load(open('/tmp/decision.json'))['route'])")
+          echo "route=$ROUTE" >> $GITHUB_OUTPUT
+      - name: YouTube Upload
+        if: contains(steps.route.outputs.route, 'youtube')
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python3 -c "import json; meta=json.load(open('/tmp/decision.json')).get('youtube_meta',{}); open('/tmp/meta.json','w').write(json.dumps(meta)); print('Title:',meta.get('title'))"
+          if ! command -v ffmpeg &>/dev/null; then sudo apt-get install -y ffmpeg -q; fi
+          TITLE=$(python3 -c "import json; print(json.load(open('/tmp/meta.json')).get('title','EVEZ')[:50])")
+          ffmpeg -f lavfi -i color=black:size=1920x1080:rate=24 -f lavfi -i anullsrc=r=44100:cl=mono -vf "drawtext=text='$TITLE':fontcolor=white:fontsize=44:x=(w-text_w)/2:y=h/2-50,drawtext=text='evez-operator.vercel.app':fontcolor=gray:fontsize=28:x=(w-text_w)/2:y=h/2+50" -t 60 -c:v libx264 -c:a aac /tmp/out.mp4 -y
+          python3 scripts/youtube_upload.py --video /tmp/out.mp4 --metadata /tmp/meta.json
+      - name: Log
+        if: always()
+        run: |
+          mkdir -p data/routing_log
+          cp /tmp/decision.json data/routing_log/route_$(date -u +%Y%m%dT%H%M%SZ).json 2>/dev/null || true
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'ops: routing log'
+          file_pattern: 'data/routing_log/*.json'

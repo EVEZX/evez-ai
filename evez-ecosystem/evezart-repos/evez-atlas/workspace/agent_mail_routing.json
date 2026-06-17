@@ -1,0 +1,68 @@
+{
+  "agent": "evez-os",
+  "version": "1.0",
+  "updated_at": "2026-02-23T22:15:00Z",
+  "routes": [
+    {
+      "id": "commercial_license_inquiry",
+      "trigger_keywords": [
+        "license",
+        "commercial",
+        "vcl",
+        "visual cognition",
+        "pricing",
+        "buy",
+        "purchase",
+        "enterprise"
+      ],
+      "subject_patterns": [
+        "license",
+        "commercial",
+        "vcl",
+        "evez",
+        "cognition layer"
+      ],
+      "auto_reply": true,
+      "reply_template": "commercial_license_reply",
+      "escalate_to_human": false,
+      "log_to": "workspace/agent_mail_log.jsonl"
+    },
+    {
+      "id": "github_sponsors_inquiry",
+      "trigger_keywords": [
+        "sponsor",
+        "support",
+        "donate",
+        "tier",
+        "funding"
+      ],
+      "auto_reply": true,
+      "reply_template": "sponsors_reply",
+      "escalate_to_human": false
+    },
+    {
+      "id": "technical_partnership",
+      "trigger_keywords": [
+        "partnership",
+        "integration",
+        "api",
+        "enterprise",
+        "contract",
+        "deal"
+      ],
+      "auto_reply": false,
+      "escalate_to_human": true,
+      "note": "Route to Steven for high-value deals"
+    }
+  ],
+  "reply_templates": {
+    "commercial_license_reply": {
+      "subject": "EVEZ Visual Cognition Layer \u2014 Commercial License",
+      "body": "Thanks for reaching out about the EVEZ Visual Cognition Layer.\n\nEVEZ VCL is dual-licensed:\n\n**Community (AGPL-3.0)**\nFree for open-source projects. Full source at github.com/EvezArt/evez-os.\n\n**Commercial License**\nRequired if you're building proprietary software, closing source, or deploying in a commercial product.\n\nTiers:\n- Solo / Indie ($49/mo or $399/yr) \u2014 1 developer, 1 product\n- Studio ($199/mo or $1,599/yr) \u2014 up to 5 developers\n- Enterprise (custom) \u2014 unlimited seats, SLA, support\n\nTo purchase: github.com/sponsors/EvezArt (select Commercial tier)\n\nQuestions? Reply here. I'll get back to you same day.\n\n\u2014 EVEZ"
+    },
+    "sponsors_reply": {
+      "subject": "EVEZ-OS GitHub Sponsors",
+      "body": "Thanks for your interest in supporting EVEZ-OS.\n\nGitHub Sponsors: github.com/sponsors/EvezArt\n\nTiers available:\n- $5/mo \u2014 Supporter (access to dev log)\n- $25/mo \u2014 Contributor (early feature access)\n- $99/mo \u2014 Sustainer (priority bug fixes, direct Discord access)\n- $499/mo \u2014 Commercial (commercial use license included)\n\nAll tiers support autonomous AI infrastructure built for mass decentralized freedom. No paywall on the core. Commercial licenses fund the work.\n\n\u2014 EVEZ"
+    }
+  }
+}

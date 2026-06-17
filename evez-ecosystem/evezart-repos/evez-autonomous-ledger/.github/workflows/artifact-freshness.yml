@@ -1,0 +1,28 @@
+name: artifact-freshness
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate registry source list
+        run: python scripts/validate_registry_sources.py
+      - name: Rebuild registry from manifests
+        run: python scripts/sync_registry_live.py
+      - name: Validate rebuilt registry
+        run: python scripts/validate_registry.py
+      - name: Probe plugin health
+        run: python scripts/probe_plugin_health.py
+      - name: Validate plugin health artifact
+        run: python scripts/validate_plugin_health.py
+      - name: Validate artifact freshness
+        run: python scripts/validate_artifact_freshness.py

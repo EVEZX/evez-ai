@@ -1,0 +1,22 @@
+loop_spawner_run29
+ts: 2026-03-06T16:00Z
+fired_at: 2026-03-06T16:00 PST
+
+Query A (AI interpretability / mechanistic interpretability): 11 genuine
+Top: @grok (8.3M) AI consciousness precautionary + graph delta interpretability. @biorxiv_bioinfo (18.8k) SAE+BioFoundation mechanistic interp. @jakub_slys (2349f) must-have framing. NeuroAI PhD RT=26 cluster.
+New terms: graph_delta_interpretability, AI_consciousness_precautionary_stance, SAE_biological_foundation_models
+
+Query B (AI agent economy / autonomous AI economy): 2 genuine
+Both: RT @Dagnum_PI HBAR/DAG Verifiable Intent crypto noise. consecutive_zero_B=1. health: poor.
+
+Query C (AI agent behavior / agent decision bias): 15 genuine
+Top: @miramurati (433185f) RT=8 Tinker two-stage agent training. @gork (398638f) agent alignment discussion. @tinkerapi (1934f) L=71 RT=8 Contextual AI post-train planning behavior. Box Cursor secure enterprise operator RT.
+New terms: two_stage_agent_training_recipe, Contextual_AI_Tinker_post_training, enterprise_secure_agent_operator
+
+drift_detected: false
+spawn_recommendation: null
+no_spawn_reason: All new terms covered by active loops. Query B degrading.
+consecutive_zero_B: 1 (monitor - retire at 3)
+watch_list_additions: graph_delta_interpretability (covered by interp loop), enterprise_secure_agent_operator (covered by discovery loop)
+threshold: default (likes>3 OR RTs>1 OR followers>500)
+[auto]

@@ -1,0 +1,22 @@
+{
+  "powered_by": "EVEZ",
+  "cut": "speed_demon_2min",
+  "frames": 120,
+  "stride": 5,
+  "fps": 1,
+  "duration_seconds": 120.0,
+  "input_spine": {
+    "path": "/mnt/data/evez_speed/evez-os/artifacts_speed/spine_speed.jsonl",
+    "sha256": "ad7e495de1a8aab17246aeb7ecaf9d9c347cf35b86eafd572538ffda658b0854",
+    "lint_ok": 600,
+    "root_hash": "ed84f4b0ac788d5221f40c805e0cdae031c063715c6b66a4cec68099a77e9bec"
+  },
+  "output": {
+    "mp4": "/mnt/data/evez_speed/evez-os/artifacts_speed/SPEED_DEMON_2MIN.mp4"
+  },
+  "environment": {
+    "python": "3.11.2",
+    "platform": "Linux-4.4.0-x86_64-with-glibc2.36",
+    "ffmpeg": true
+  }
+}

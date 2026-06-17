@@ -1,0 +1,34 @@
+{
+  "proof_cycle_id": "B1-0001",
+  "proof_type": "canonical_reproducibility",
+  "status": "PASS",
+  "cases": [
+    {
+      "input": "/tmp/a.json",
+      "hashes": {
+        "python": "sha256:1da06016289bd76a5ada4f52fc805ae0c394612f17ec6d0f0c29b636473c8a9d",
+        "node": "sha256:1da06016289bd76a5ada4f52fc805ae0c394612f17ec6d0f0c29b636473c8a9d",
+        "go": "sha256:1da06016289bd76a5ada4f52fc805ae0c394612f17ec6d0f0c29b636473c8a9d"
+      },
+      "all_equal": true,
+      "full_witness": true,
+      "passed": true
+    },
+    {
+      "input": "/tmp/b.json",
+      "hashes": {
+        "python": "sha256:1681e707f93a2655bfe62a7e86ef9a01c4928fcd2d79ee6d8ef2218e658b95ad",
+        "node": "sha256:1681e707f93a2655bfe62a7e86ef9a01c4928fcd2d79ee6d8ef2218e658b95ad",
+        "go": "sha256:1681e707f93a2655bfe62a7e86ef9a01c4928fcd2d79ee6d8ef2218e658b95ad"
+      },
+      "all_equal": true,
+      "full_witness": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total_cases": 2,
+    "passed_cases": 2,
+    "all_fully_witnessed": true
+  }
+}

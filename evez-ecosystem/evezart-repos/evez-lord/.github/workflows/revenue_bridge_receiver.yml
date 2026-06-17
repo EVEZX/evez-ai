@@ -1,0 +1,46 @@
+name: Revenue Bridge Receiver
+
+on:
+  repository_dispatch:
+    types: [revenue_bridge_signal]
+
+jobs:
+  append-spine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Append to revenue spine
+        run: |
+          mkdir -p spine/revenue
+
+          # Parse the incoming payload
+          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          TIMESTAMP=$(echo "$PAYLOAD" | jq -r '.timestamp // now')
+          HASH_PAYLOAD="${TIMESTAMP}-${{ github.sha }}-$$"
+
+          # Compute SHA-256 hash chain
+          PREV_HASH="genesis"
+          if [ -f spine/revenue/spine.jsonl ]; then
+            PREV_HASH=$(tail -1 spine/revenue/spine.jsonl | jq -r '.hash // "genesis"')
+          fi
+
+          NEW_HASH=$(echo -n "${PREV_HASH}${HASH_PAYLOAD}" | sha256sum | awk '{print $1}')
+
+          # Build the spine entry
+          ENTRY=$(echo "$PAYLOAD" | jq -c \
+            --arg hash "$NEW_HASH" \
+            --arg prev_hash "$PREV_HASH" \
+            --arg gh_sha "${{ github.sha }}" \
+            '. + {hash: $hash, prev_hash: $prev_hash, gh_sha: $gh_sha}')
+
+          # Append (never modify existing entries)
+          echo "$ENTRY" >> spine/revenue/spine.jsonl
+
+      - name: Commit spine entry
+        run: |
+          git config user.name "evez-revenue-bridge[bot]"
+          git config user.email "bot@evez.art"
+          git add spine/revenue/spine.jsonl
+          git commit -m "spine: revenue bridge entry $(date -u +%Y%m%d%H%M%S)" || true
+          git push

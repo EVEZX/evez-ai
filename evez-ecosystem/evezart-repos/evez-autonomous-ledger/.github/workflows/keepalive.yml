@@ -1,0 +1,31 @@
+name: Replit Keepalive Ping
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Replit Instance
+        run: |
+          echo "Pinging Replit at $(date -u)"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://863bb68a-4869-4874-a2d8-0841ccc07b4d-00-3m8xgncrv90tw.worf.replit.dev/health" \
+            --connect-timeout 10 --max-time 30)
+          echo "HTTP Status: $STATUS"
+          if [ "$STATUS" = "200" ] || [ "$STATUS" = "401" ] || [ "$STATUS" = "403" ]; then
+            echo "✅ Replit instance is alive"
+          else
+            echo "⚠️ Replit returned $STATUS — may be sleeping"
+          fi
+      
+      - name: Ping HF Space
+        run: |
+          echo "Pinging HuggingFace Space..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://evez420-evezart-openclaw.hf.space/" \
+            --connect-timeout 15 --max-time 45)
+          echo "HF Space HTTP: $STATUS"

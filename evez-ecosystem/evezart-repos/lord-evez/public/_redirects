@@ -1,0 +1,2 @@
+/lord-monitor /lord-monitor/index.html 200
+/lord-monitor/* /lord-monitor/:splat 200

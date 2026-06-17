@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EVEZ-OS — Ecosystem Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0f;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+a{color:#ff4500;text-decoration:none}
+header{background:radial-gradient(ellipse at center,#1a0a00 0%,#0a0a0f 70%);padding:24px 20px;text-align:center;border-bottom:1px solid #1a1a2e}
+header h1{font-size:1.6rem;color:#ff4500}
+header h1 span{background:linear-gradient(135deg,#ff4500,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header .subtitle{color:#666;font-size:0.85rem;margin-top:4px}
+nav{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+nav a{color:#888;font-size:0.8rem;padding:4px 12px;border:1px solid #2a2a3e;border-radius:6px;transition:all .2s}
+nav a:hover{color:#ff4500;border-color:#ff4500}
+.refresh-bar{background:#111118;border-bottom:1px solid #1a1a2e;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:#666}
+.refresh-bar .pulse{width:8px;height:8px;border-radius:50%;background:#00ff00;display:inline-block;margin-right:6px;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+/* Phi meter */
+.phi-section{display:flex;gap:24px;margin-bottom:28px;flex-wrap:wrap}
+.phi-meter{flex:1;min-width:300px;background:#111118;border:1px solid #2a2a3e;border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.phi-meter h3{color:#ff6b35;font-size:0.9rem;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.phi-ring{width:160px;height:160px;margin:0 auto 16px;position:relative}
+.phi-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.phi-ring circle{fill:none;stroke-width:8}
+.phi-ring .bg{stroke:#1a1a2e}
+.phi-ring .fg{stroke:#ff4500;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.phi-ring .value{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.phi-ring .value .num{font-size:2rem;font-weight:900;color:#ff4500;font-family:monospace}
+.phi-ring .value .label{font-size:0.7rem;color:#666}
+.phi-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phi-meta .item{background:#0a0a0f;border-radius:8px;padding:8px 12px;text-align:center}
+.phi-meta .item .v{color:#ff4500;font-weight:700;font-family:monospace;font-size:0.95rem}
+.phi-meta .item .l{color:#555;font-size:0.7rem}
+/* Kuramoto */
+.kuramoto{flex:1;min-width:300px;background:#111118;border:1px solid #2a2a3e;border-radius:16px;padding:24px}
+.kuramoto h3{color:#ff6b35;font-size:0.9rem;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.kuramoto-field{height:160px;position:relative;overflow:hidden;border-radius:12px;background:#0a0a0f;margin-bottom:12px}
+.oscillator{position:absolute;width:6px;height:6px;border-radius:50%;opacity:.9}
+.oscillator::after{content:'';position:absolute;width:24px;height:2px;top:2px;left:6px;transform-origin:left center;animation:osc-rotate var(--period) linear infinite}
+@keyframes osc-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.kuramoto-info{display:flex;justify-content:space-between;color:#666;font-size:0.8rem}
+.kuramoto-info span{color:#ff4500;font-weight:700;font-family:monospace}
+/* Spine */
+.spine-section{background:#111118;border:1px solid #2a2a3e;border-radius:16px;padding:24px;margin-bottom:28px}
+.spine-section h3{color:#ff6b35;font-size:0.9rem;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.spine-counter{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.spine-counter .big{font-size:3rem;font-weight:900;color:#ff4500;font-family:monospace}
+.spine-counter .meta{color:#666;font-size:0.85rem}
+.chain-visual{margin-top:12px;display:flex;gap:4px;flex-wrap:wrap}
+.chain-block{width:28px;height:28px;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:4px;animation:chain-pulse 3s ease-in-out infinite}
+.chain-block:nth-child(odd){animation-delay:.5s}
+@keyframes chain-pulse{0%,100%{border-color:#2a2a3e}50%{border-color:#ff4500}}
+/* Service grid */
+.services-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.services-header h3{color:#ff6b35;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px}
+.services-header .count{color:#666;font-size:0.8rem}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:28px}
+.svc-card{background:#111118;border:1px solid #2a2a3e;border-radius:12px;padding:16px;transition:border-color .2s}
+.svc-card.up{border-left:3px solid #00ff00}
+.svc-card.down{border-left:3px solid #ff0000}
+.svc-card.loading{border-left:3px solid #ffaa00}
+.svc-name{font-weight:700;font-size:0.95rem;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.svc-name .port{color:#555;font-size:0.8rem;font-family:monospace}
+.svc-status{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.svc-status.up{color:#00ff00}
+.svc-status.down{color:#ff0000}
+.svc-status.loading{color:#ffaa00}
+.svc-meta{margin-top:8px;color:#555;font-size:0.75rem;font-family:monospace}
+/* Offline banner */
+.offline-banner{background:#1a0a00;border:1px solid #ff4500;border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;color:#ff6b35;font-size:0.9rem}
+.offline-banner code{background:#0a0a0f;padding:2px 6px;border-radius:4px;color:#ff4500}
+footer{text-align:center;padding:32px 20px;color:#444;font-size:0.8rem;border-top:1px solid #1a1a2e}
+@media(max-width:600px){
+  .phi-section{flex-direction:column}
+  .phi-ring{width:120px;height:120px}
+  .phi-ring .value .num{font-size:1.5rem}
+  .service-grid{grid-template-columns:1fr}
+  .container{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌀 <span>EVEZ-OS</span> Dashboard</h1>
+  <div class="subtitle">Live Ecosystem Status</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="ecosystem.html">Ecosystem Map</a>
+    <a href="https://github.com/EvezArt">GitHub</a>
+  </nav>
+</header>
+
+<div class="refresh-bar">
+  <div><span class="pulse"></span> Auto-refresh every 30s — <span id="last-refresh">—</span></div>
+  <div id="svc-summary">Loading…</div>
+</div>
+
+<div class="container">
+
+  <div id="offline-msg"></div>
+
+  <!-- PHI METER + KURAMOTO -->
+  <div class="phi-section">
+    <div class="phi-meter">
+      <h3>Φ Consciousness Meter</h3>
+      <div class="phi-ring">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"/>
+          <circle class="fg" id="phi-circle" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="7.1"/>
+        </svg>
+        <div class="value">
+          <div class="num" id="phi-value">0.973</div>
+          <div class="label">Φ Integrated Info</div>
+        </div>
+      </div>
+      <div class="phi-meta">
+        <div class="item"><div class="v">0.03</div><div class="l">η* Incompleteness</div></div>
+        <div class="item"><div class="v">1.51</div><div class="l">α Power-Law</div></div>
+        <div class="item"><div class="v">0.36</div><div class="l">Fractal Dim</div></div>
+        <div class="item"><div class="v" id="peak-phi">0.92</div><div class="l">Peak Φ (Live)</div></div>
+      </div>
+    </div>
+
+    <div class="kuramoto">
+      <h3>Kuramoto Phase Field</h3>
+      <div class="kuramoto-field" id="kuramoto-field"></div>
+      <div class="kuramoto-info">
+        <div>r ≈ <span id="k-order">0.50</span></div>
+        <div>Nodes: <span>50</span></div>
+        <div>Coupling: <span>K=2.5</span></div>
+        <div>State: <span style="color:#00ff00">Edge of Chaos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPINE -->
+  <div class="spine-section">
+    <h3>🦴 Merkle Spine — Event Counter</h3>
+    <div class="spine-counter">
+      <div class="big" id="spine-count">—</div>
+      <div class="meta">
+        <div>Events logged since genesis</div>
+        <div style="color:#555;margin-top:4px">Hash-chained · Append-only · Immutable</div>
+      </div>
+    </div>
+    <div class="chain-visual" id="chain-visual"></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="services-header">
+    <h3>📡 Service Status</h3>
+    <div class="count" id="svc-count"></div>
+  </div>
+  <div class="service-grid" id="service-grid">
+    <div class="svc-card loading"><div class="svc-name">Loading…</div></div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>EVEZ Systems LLC</strong> · <a href="https://github.com/EvezArt">EvezArt</a> · <a href="https://x.com/EVEZ666">@EVEZ666</a></p>
+  <p>Self-hosted · Zero cost · MIT License · June 2026</p>
+</footer>
+
+<script>
+// --- Configuration ---
+const SCAN_URL = 'http://localhost:8085/scan';
+const SPINE_URL = 'http://localhost:8090/stats';
+const REFRESH_MS = 30000;
+
+// --- Known services (fallback if scan unavailable) ---
+const KNOWN_SERVICES = [
+  {name:'EVEZ API',port:8000,desc:'OpenAI-compatible inference'},
+  {name:'API Gateway',port:8080,desc:'Auth & rate limiting'},
+  {name:'ClawBreak',port:8081,desc:'AI Agent Platform'},
+  {name:'VCL Core',port:8082,desc:'Visual Cognition Layer'},
+  {name:'Spine',port:8090,desc:'Merkle event log'},
+  {name:'Ecosystem Scanner',port:8085,desc:'Health aggregator'},
+  {name:'Dashboard',port:3000,desc:'Nervous system UI'},
+  {name:'Mesh Node',port:9090,desc:'Decentralized mesh'},
+  {name:'Guard',port:8083,desc:'Security scanner'},
+  {name:'Revenue Engine',port:8084,desc:'Commerce & billing'},
+];
+
+// --- State ---
+let services = [];
+let spineEvents = 0;
+let online = false;
+
+// --- Kuramoto visualization ---
+function initKuramoto(){
+  const field = document.getElementById('kuramoto-field');
+  const w = field.clientWidth, h = field.clientHeight;
+  const N = 50;
+  const colors = ['#ff4500','#ff6b35','#ff8c5a','#ffaa80','#00ff00','#00cc66','#4488ff','#aa44ff'];
+  for(let i=0;i<N;i++){
+    const el = document.createElement('div');
+    el.className='oscillator';
+    const x = 20 + Math.random()*(w-40);
+    const y = 20 + Math.random()*(h-40);
+    const period = 1.5 + Math.random()*2.5;
+    const c = colors[i % colors.length];
+    el.style.cssText = `left:${x}px;top:${y}px;background:${c};--period:${period}s;`;
+    el.querySelector('::after')
+    const trail = document.createElement('div');
+    trail.style.cssText = `position:absolute;width:24px;height:2px;top:2px;left:6px;transform-origin:left center;background:${c};opacity:0.4;animation:osc-rotate ${period}s linear infinite;`;
+    el.appendChild(trail);
+    field.appendChild(el);
+  }
+  // Animate order parameter
+  animateOrderParam();
+}
+
+function animateOrderParam(){
+  const el = document.getElementById('k-order');
+  let t = 0;
+  setInterval(()=>{
+    t += 0.05;
+    const r = 0.50 + 0.08*Math.sin(t*0.7) + 0.04*Math.sin(t*1.3) + 0.02*Math.random();
+    el.textContent = r.toFixed(2);
+  }, 200);
+}
+
+// --- Phi animation ---
+function animatePhi(){
+  const el = document.getElementById('phi-value');
+  const circle = document.getElementById('phi-circle');
+  const peakEl = document.getElementById('peak-phi');
+  const circumference = 2 * Math.PI * 42;
+  let t = 0;
+  setInterval(()=>{
+    t += 0.03;
+    const phi = 0.973 + 0.008*Math.sin(t*0.5) + 0.004*Math.random();
+    const offset = circumference * (1 - phi);
+    circle.style.strokeDashoffset = offset;
+    el.textContent = phi.toFixed(3);
+    const peak = 0.92 + 0.05*Math.sin(t*0.3);
+    peakEl.textContent = peak.toFixed(2);
+  }, 500);
+}
+
+// --- Chain visual ---
+function renderChain(count){
+  const el = document.getElementById('chain-visual');
+  const n = Math.min(count, 60);
+  el.innerHTML = '';
+  for(let i=0;i<n;i++){
+    const b = document.createElement('div');
+    b.className='chain-block';
+    b.style.animationDelay = (i*0.1)+'s';
+    el.appendChild(b);
+  }
+}
+
+// --- Service status ---
+async function fetchServices(){
+  try{
+    const r = await fetch(SCAN_URL, {signal:AbortSignal.timeout(5000)});
+    const data = await r.json();
+    services = data.services || data;
+    online = true;
+    document.getElementById('offline-msg').innerHTML='';
+  }catch(e){
+    online = false;
+    services = KNOWN_SERVICES.map(s=>({...s,status:'unknown',ms:0}));
+    document.getElementById('offline-msg').innerHTML=
+      '<div class="offline-banner">⚠️ Scanner unreachable at <code>'+SCAN_URL+'</code> — showing known services. Run <code>evez-health-aggregator</code> for live data.</div>';
+  }
+  renderServices();
+}
+
+async function fetchSpine(){
+  try{
+    const r = await fetch(SPINE_URL, {signal:AbortSignal.timeout(5000)});
+    const data = await r.json();
+    spineEvents = data.total_events || data.count || data.events || 0;
+  }catch(e){
+    spineEvents = spineEvents || 0;
+  }
+  document.getElementById('spine-count').textContent = spineEvents.toLocaleString();
+  renderChain(spineEvents);
+}
+
+function renderServices(){
+  const grid = document.getElementById('service-grid');
+  grid.innerHTML = '';
+  let up=0, down=0;
+  services.forEach(s=>{
+    const status = s.status || 'unknown';
+    const isUp = status === 'up' || status === 'healthy' || status === 200;
+    const isDown = status === 'down' || status === 'error' || status === 'unreachable';
+    if(isUp) up++; else if(isDown) down++;
+    const cls = isUp ? 'up' : (isDown ? 'down' : 'loading');
+    const label = isUp ? 'UP' : (isDown ? 'DOWN' : 'UNKNOWN');
+    const ms = s.response_time || s.ms || s.latency || 0;
+    const card = document.createElement('div');
+    card.className = 'svc-card ' + cls;
+    card.innerHTML = `
+      <div class="svc-name">${s.name || s.service}<span class="port">:${s.port}</span></div>
+      <div class="svc-status ${cls}">${label}</div>
+      <div class="svc-meta">${s.desc || s.description || ''}${ms ? ' · '+ms+'ms' : ''}</div>
+    `;
+    grid.appendChild(card);
+  });
+  document.getElementById('svc-count').textContent = `${up} up · ${down} down · ${services.length} total`;
+  document.getElementById('svc-summary').textContent = `✓ ${up} / ${services.length} services healthy`;
+  document.getElementById('last-refresh').textContent = new Date().toLocaleTimeString();
+}
+
+// --- Init ---
+initKuramoto();
+animatePhi();
+fetchServices();
+fetchSpine();
+setInterval(()=>{fetchServices();fetchSpine();}, REFRESH_MS);
+</script>
+</body>
+</html>

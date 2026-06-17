@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "queue": [
+    {
+      "title": "Auto-discover: Review 27 new model mentions",
+      "description": "Auto-discovery scan #1 found potential new models: openrouter/owl-alpha, nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free, poolside/laguna-xs.2:free, poolside/laguna-m.1:free, deepseek/deepseek-v4-flash:free, z-ai/glm-5.1, google/gemma-4-26b-a4b-it:free, google/gemma-4-31b-it:free, arcee-ai/trinity-large-thinking:free, google/lyria-3-pro-preview, google/lyria-3-clip-preview, nvidia/nemotron-3-super-120b-a12b:free, minimax/minimax-m2.5:free, liquid/lfm-2.5-1.2b-thinking:free, liquid/lfm-2.5-1.2b-instruct:free, nvidia/nemotron-3-nano-30b-a3b:free, nvidia/nemotron-nano-12b-v2-vl:free, qwen/qwen3-next-80b-a3b-instruct:free, nvidia/nemotron-nano-9b-v2:free, openai/gpt-oss-120b:free, openai/gpt-oss-20b:free, z-ai/glm-4.5-air:free, qwen/qwen3-coder:free, cognitivecomputations/dolphin-mistral-24b-venice-edition:free, meta-llama/llama-3.3-70b-instruct:free, meta-llama/llama-3.2-3b-instruct:free, nousresearch/hermes-3-llama-3.1-405b:free. Research which are actually new free-tier models and add to FREE_MODELS.md and the UI selector.",
+      "priority": "medium",
+      "id": "evq-1779258572184",
+      "addedAt": "2026-05-20",
+      "addedBy": "auto-discover",
+      "status": "pending"
+    }
+  ],
+  "completed": [],
+  "updatedAt": "2026-05-20"
+}

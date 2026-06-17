@@ -1,0 +1,39 @@
+digraph G {
+  rankdir=LR;
+  node [shape=box];
+  P[label="Players"];
+  UI[label="Vercel Next.js UI"];
+  GC[label="Game Client"];
+  APIGW[label="API Gateway"];
+  RTGW[label="Realtime Gateway"];
+  GS[label="Authoritative Game Server"];
+  MM[label="Matchmaking"];
+  AG[label="Agent Orchestrator"];
+  ES[label="Event Spine (append-only)", shape=cylinder];
+  PRJ[label="Projector"];
+  RS[label="Redis", shape=cylinder];
+  DB[label="Postgres", shape=cylinder];
+  OTEL[label="OTel Collector"];
+  FSC[label="FSC Engine Σf/CS/PS/Ω"];
+
+  P -> UI;
+  P -> GC;
+  UI -> APIGW [label="REST"];
+  GC -> RTGW [label="WS/UDP"];
+  RTGW -> GS;
+  APIGW -> MM;
+  APIGW -> AG;
+  GS -> ES [label="events"];
+  AG -> ES [label="agent events"];
+  MM -> ES;
+  ES -> PRJ;
+  PRJ -> RS;
+  PRJ -> DB;
+  UI -> OTEL;
+  RTGW -> OTEL;
+  GS -> OTEL;
+  AG -> OTEL;
+  ES -> OTEL;
+  PRJ -> OTEL;
+  OTEL -> FSC;
+}

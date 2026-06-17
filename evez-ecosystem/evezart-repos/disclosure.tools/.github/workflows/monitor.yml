@@ -1,0 +1,70 @@
+name: Health Monitor
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # every 30 minutes
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    name: EVEZ Uptime Check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run health probe
+        run: |
+          python - <<'EOF'
+          import json, datetime, requests, os, sys
+
+          endpoints = [
+            {"name": "disclosure.tools repo", "url": "https://api.github.com/repos/EvezArt/disclosure.tools"},
+            {"name": "ClawBreak checkout", "url": "https://buy.stripe.com/4gMeVf1uHbkPbArbVw0RG0y"},
+          ]
+
+          results = []
+          all_ok = True
+          for ep in endpoints:
+            try:
+              r = requests.get(ep["url"], timeout=15)
+              ok = r.status_code < 500
+            except Exception as e:
+              ok = False
+            status = "UP" if ok else "DOWN"
+            if not ok:
+              all_ok = False
+            results.append({"name": ep["name"], "status": status, "checked_at": datetime.datetime.utcnow().isoformat()})
+            print(f"{status}: {ep['name']}")
+
+          # Write status badge data
+          import os
+          os.makedirs("docs", exist_ok=True)
+          badge = {"schemaVersion": 1, "label": "status", "message": "all systems go" if all_ok else "degraded", "color": "brightgreen" if all_ok else "red"}
+          with open("docs/status.json", "w") as f:
+            json.dump(badge, f)
+
+          with open("docs/health.json", "w") as f:
+            json.dump({"results": results, "overall": "ok" if all_ok else "degraded", "ts": datetime.datetime.utcnow().isoformat()}, f, indent=2)
+
+          print(json.dumps(badge))
+          if not all_ok:
+            print("::warning::One or more endpoints degraded")
+          EOF
+
+      - name: Commit status artifacts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: health check [skip ci]'
+          file_pattern: 'docs/status.json docs/health.json'
+          commit_user_name: 'evez-monitor'
+          commit_user_email: 'monitor@disclosure.tools'

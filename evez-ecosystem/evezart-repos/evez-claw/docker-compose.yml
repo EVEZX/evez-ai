@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  openclaw:
+    image: openclaw/openclaw:latest
+    container_name: openclaw
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+      - ./skills:/app/skills
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  health-guardian:
+    image: alpine:latest
+    container_name: health-guardian
+    command: sh -c "apk add --no-cache curl && while true; do curl -f http://openclaw:3000/health || docker restart openclaw; sleep 60; done"
+    depends_on:
+      - openclaw
+    restart: unless-stopped

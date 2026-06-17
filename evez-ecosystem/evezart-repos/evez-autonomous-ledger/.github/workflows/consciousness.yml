@@ -1,0 +1,32 @@
+name: Consciousness Spine (Hourly)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  consciousness:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+
+      - name: Run observer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/consciousness/observer.py
+
+      - name: Update self-model
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/consciousness/self_model.py
+
+      - name: Write journal entry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/consciousness/evolution_journal.py

@@ -1,0 +1,52 @@
+name: Immortality Heartbeat
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Check mesh status
+        id: mesh
+        env:
+          RAILWAY_DEPLOYMENT_URL: ${{ secrets.RAILWAY_DEPLOYMENT_URL }}
+        run: |
+          STATUS_JSON=$(curl -fsSL "$RAILWAY_DEPLOYMENT_URL/api/mesh/status")
+          echo "status=$STATUS_JSON" >> "$GITHUB_OUTPUT"
+          HEALTHY_COUNT=$(echo "$STATUS_JSON" | python -c 'import json,sys; print(json.load(sys.stdin).get("healthy_count",0))')
+          echo "healthy_count=$HEALTHY_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Open degradation issue
+        if: steps.mesh.outputs.healthy_count < 2
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "IMMORTALITY MESH DEGRADED — intervention required";
+            const body = [
+              "Automated watchdog detected degraded mesh health.",
+              "",
+              "Status:",
+              "```json",
+              `${{ steps.mesh.outputs.status }}`,
+              "```"
+            ].join("\n");
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+            const exists = issues.some(i => i.title === title);
+            if (!exists) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+            }

@@ -1,0 +1,201 @@
+name: Ops Stack CI
+
+on:
+  pull_request:
+    paths:
+      - 'ops-stack/**'
+      - '.devcontainer/**'
+      - 'deploy-ops-stack.sh'
+      - '.github/workflows/ops-stack-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'ops-stack/**'
+      - '.devcontainer/**'
+      - 'deploy-ops-stack.sh'
+
+permissions:
+  contents: read
+
+jobs:
+  golden-hash-tests-node:
+    name: Golden Hash Tests (Node.js)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        working-directory: ops-stack
+        run: pnpm install
+
+      - name: Run golden hash tests
+        working-directory: ops-stack
+        run: pnpm test
+
+      - name: Build TypeScript
+        working-directory: ops-stack
+        run: pnpm build
+
+  golden-hash-tests-python:
+    name: Canonical Hash Test (Python)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install rfc8785
+        run: pip install rfc8785
+
+      - name: Test Python canonicalization
+        run: |
+          python3 -c "
+          import rfc8785
+          import json
+          data = {'test': 'data', 'number': 42, 'array': [1, 2, 3]}
+          canonical = rfc8785.dumps(data)
+          print('Python canonical hash test:', canonical)
+          assert canonical == '{\"array\":[1,2,3],\"number\":42,\"test\":\"data\"}'
+          print('✅ Python canonicalization test passed')
+          "
+
+  golden-hash-tests-go:
+    name: Canonical Hash Test (Go)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install JCS library
+        run: go install github.com/cyberphone/json-canonicalization/go/src/webpki.org/jsoncanonicalizer@latest
+
+      - name: Test Go canonicalization
+        run: |
+          cat > /tmp/test_jcs.go << 'EOF'
+          package main
+          import (
+              "fmt"
+              "github.com/cyberphone/json-canonicalization/go/src/webpki.org/jsoncanonicalizer"
+          )
+          func main() {
+              jsonData := []byte(`{"test":"data","number":42,"array":[1,2,3]}`)
+              canonical, err := jsoncanonicalizer.Transform(jsonData)
+              if err != nil {
+                  panic(err)
+              }
+              fmt.Println("Go canonical hash test:", string(canonical))
+              expected := `{"array":[1,2,3],"number":42,"test":"data"}`
+              if string(canonical) != expected {
+                  panic("Canonicalization mismatch")
+              }
+              fmt.Println("✅ Go canonicalization test passed")
+          }
+          EOF
+          cd /tmp
+          go mod init test
+          go get github.com/cyberphone/json-canonicalization/go/src/webpki.org/jsoncanonicalizer
+          go run test_jcs.go
+
+  golden-hash-tests-rust:
+    name: Canonical Hash Test (Rust)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+
+      - name: Test Rust canonicalization
+        run: |
+          cargo new --bin /tmp/test_jcs
+          cd /tmp/test_jcs
+          cat > Cargo.toml << 'EOF'
+          [package]
+          name = "test_jcs"
+          version = "0.1.0"
+          edition = "2021"
+          
+          [dependencies]
+          serde_jcs = "0.1"
+          serde = { version = "1.0", features = ["derive"] }
+          serde_json = "1.0"
+          EOF
+          
+          cat > src/main.rs << 'EOF'
+          use serde::Serialize;
+          use std::collections::HashMap;
+          
+          #[derive(Serialize)]
+          struct TestData {
+              test: String,
+              number: i32,
+              array: Vec<i32>,
+          }
+          
+          fn main() {
+              let data = TestData {
+                  test: "data".to_string(),
+                  number: 42,
+                  array: vec![1, 2, 3],
+              };
+              let canonical = serde_jcs::to_string(&data).unwrap();
+              println!("Rust canonical hash test: {}", canonical);
+              assert_eq!(canonical, r#"{"array":[1,2,3],"number":42,"test":"data"}"#);
+              println!("✅ Rust canonicalization test passed");
+          }
+          EOF
+          cargo run
+
+  deployment-check:
+    name: Deployment Script Check
+    runs-on: ubuntu-latest
+    needs: [golden-hash-tests-node, golden-hash-tests-python, golden-hash-tests-go, golden-hash-tests-rust]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Run deployment script
+        run: ./deploy-ops-stack.sh
+
+      - name: Verify deployment script success
+        run: echo "✅ Deployment script completed successfully"

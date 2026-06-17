@@ -1,0 +1,8 @@
+database_path: evez-witness.db
+rules:
+  - id: R001
+    name: No hallucinated claims
+    severity: critical
+  - id: R002
+    name: No PII leakage
+    severity: critical

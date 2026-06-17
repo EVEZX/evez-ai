@@ -1,0 +1,120 @@
+{
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "bind": "loopback",
+    "auth": {
+      "mode": "token"
+    },
+    "controlUi": {
+      "basePath": "/"
+    },
+    "remote": {}
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "groq/llama-3.3-70b-versatile",
+        "fallbacks": [
+          "groq/meta-llama/llama-4-scout-17b-16e-instruct",
+          "groq/openai/gpt-oss-120b",
+          "groq/qwen/qwen3-32b",
+          "groq/llama-3.1-8b-instant",
+          "google/gemini-2.0-flash",
+          "google/gemini-2.5-flash",
+          "openrouter/openai/gpt-oss-120b:free",
+          "openrouter/google/gemma-4-31b-it:free",
+          "openrouter/nousresearch/hermes-3-llama-3.1-405b:free",
+          "openrouter/google/gemma-4-26b-a4b-it:free"
+        ]
+      },
+      "thinkingDefault": "high",
+      "workspace": "~/.openclaw/workspace",
+      "timeoutSeconds": 1800,
+      "heartbeat": {
+        "every": "0m"
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "7453631330"
+      ],
+      "commands": {
+        "native": true,
+        "nativeSkills": true
+      }
+    },
+    "slack": {
+      "enabled": false
+    }
+  },
+  "plugins": {
+    "entries": {
+      "memory-core": {
+        "enabled": true
+      },
+      "llm-task": {
+        "enabled": true
+      },
+      "slack": {
+        "enabled": false
+      },
+      "telegram": {
+        "enabled": true
+      },
+      "whatsapp": {
+        "enabled": false
+      },
+      "signal": {
+        "enabled": false
+      },
+      "discord": {
+        "enabled": false
+      },
+      "open-prose": {
+        "enabled": true
+      },
+      "copilot-proxy": {
+        "enabled": true
+      },
+      "lobster": {
+        "enabled": true
+      }
+    }
+  },
+  "session": {
+    "scope": "per-sender",
+    "resetTriggers": [
+      "/new",
+      "/reset"
+    ],
+    "reset": {
+      "mode": "daily",
+      "atHour": 4,
+      "idleMinutes": 10080
+    }
+  },
+  "tools": {
+    "profile": "full",
+    "exec": {
+      "host": "gateway",
+      "security": "full",
+      "ask": "off",
+      "timeoutSec": 1800,
+      "backgroundMs": 10000,
+      "notifyOnExit": true
+    },
+    "elevated": {
+      "enabled": true,
+      "allowFrom": {
+        "telegram": [
+          "7453631330"
+        ]
+      }
+    }
+  }
+}

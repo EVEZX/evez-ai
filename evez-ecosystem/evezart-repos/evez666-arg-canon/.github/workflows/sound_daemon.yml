@@ -1,0 +1,35 @@
+name: EVEZ Sound Reasoning Daemon
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sound-daemon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install numpy scipy
+
+      - name: Run Sound Reasoning Daemon Cycle
+        env:
+          EVEZ_STATE_DIR: ./evez_sound_state
+        run: python evez_ouroboros/scripts/evez_sound_daemon.py
+
+      - name: Commit state artifacts
+        run: |
+          git config --local user.email "sound-daemon@evez.os"
+          git config --local user.name "EVEZ Sound Daemon"
+          git add -f evez_sound_state/ || true
+          git diff --staged --quiet || git commit -m "sound-daemon: cycle $(date +%s) [auto]"
+          git push || true

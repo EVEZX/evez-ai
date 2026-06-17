@@ -1,0 +1,27 @@
+{
+  "repos": [
+    "EvezArt/Evez666",
+    "EvezArt/agentvault",
+    "EvezArt/lord-evez",
+    "EvezArt/quantum-consciousness-lord"
+  ],
+  "required_env": [
+    "ATLAS_PORT",
+    "ATLAS_TARGET",
+    "ATLAS_INVARIANTS"
+  ],
+  "invariants": [
+    "coverage>0.8",
+    "no_blind_spots",
+    "spine_integrity_always_verified"
+  ],
+  "version": "3.0.0",
+  "domains": [
+    "atlas",
+    "game",
+    "agents",
+    "fsc",
+    "governance",
+    "observability"
+  ]
+}

@@ -1,0 +1,42 @@
+name: 'Trajectory Cache Action'
+description: 'Predictive state caching for instant responses with ring buffer management and trajectory sampling'
+author: 'EvezArt'
+branding:
+  icon: 'fast-forward'
+  color: 'orange'
+
+inputs:
+  cache-size:
+    description: 'Ring buffer size for state caching'
+    required: true
+    default: '1000'
+  prediction-window:
+    description: 'Prediction window in seconds'
+    required: true
+    default: '60'
+  sampling-rate:
+    description: 'Trajectory sampling rate (samples per second)'
+    required: false
+    default: '10'
+  invalidation-policy:
+    description: 'Cache invalidation policy: time-based|event-based|hybrid'
+    required: false
+    default: 'hybrid'
+  enable-playback:
+    description: 'Enable fast-forward playback'
+    required: false
+    default: 'true'
+
+outputs:
+  cache-id:
+    description: 'Unique cache identifier'
+  cache-endpoint:
+    description: 'Cache access endpoint'
+  hit-rate:
+    description: 'Initial cache hit rate'
+  buffer-status:
+    description: 'Ring buffer initialization status'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

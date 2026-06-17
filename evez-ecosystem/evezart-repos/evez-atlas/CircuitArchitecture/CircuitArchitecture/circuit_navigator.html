@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit Navigator - Data Manifold Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+
+        #header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #001100 0%, #000 100%);
+            border-bottom: 2px solid #0f0;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        #subtitle {
+            font-size: 11px;
+            color: #0f0;
+            opacity: 0.7;
+        }
+
+        #circuits {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .circuit-card {
+            background: rgba(0, 255, 0, 0.05);
+            border: 2px solid #0f0;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .circuit-card:active {
+            background: rgba(0, 255, 0, 0.2);
+            transform: scale(0.98);
+        }
+
+        .circuit-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #0f0;
+        }
+
+        .circuit-desc {
+            font-size: 11px;
+            color: #0f0;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .pathways {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .pathway-badge {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #0f0;
+            padding: 4px 8px;
+            font-size: 9px;
+            border-radius: 2px;
+        }
+
+        #coverage-matrix {
+            margin: 20px;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #0f0;
+        }
+
+        #coverage-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .coverage-row {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 10px;
+        }
+
+        .data-field {
+            width: 120px;
+            color: #0f0;
+        }
+
+        .coverage-indicator {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #0f0;
+            margin: 0 3px;
+            display: inline-block;
+        }
+
+        .covered {
+            background: #0f0;
+        }
+
+        #stats {
+            margin: 20px;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #0f0;
+            font-size: 11px;
+        }
+
+        .stat-line {
+            margin: 5px 0;
+        }
+
+        #footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>⚡ CIRCUIT NAVIGATOR ⚡</h1>
+        <div id="subtitle">Data Manifold Architecture: Every Datum Becomes a Path</div>
+    </div>
+
+    <div id="circuits">
+        <div class="circuit-card" onclick="goToCircuit('circuit_a_temporal.html')">
+            <div class="circuit-title">CIRCUIT A: TEMPORAL BODY</div>
+            <div class="circuit-desc">
+                Navigate sensor data as TIME-STRUCTURED forms. Raw buffers → ribbons → event markers.
+            </div>
+            <div class="pathways">
+                <span class="pathway-badge">A1: Time Wall</span>
+                <span class="pathway-badge">A2: Ribbon Tunnel</span>
+                <span class="pathway-badge">A3: Event Glyphs</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                Coverage: accel(x,y,z), gyro(α,β,γ), touch, time → 6 axes as stacked strips, 3D flight, spike detection
+            </div>
+        </div>
+
+        <div class="circuit-card" onclick="goToCircuit('circuit_b_spectral.html')">
+            <div class="circuit-title">CIRCUIT B: SPECTRAL BODY</div>
+            <div class="circuit-desc">
+                Treat all sensors as OSCILLATORS. FFT → frequency bars → cylindrical spectra → polar radar.
+            </div>
+            <div class="pathways">
+                <span class="pathway-badge">B1: Spectrum Forest</span>
+                <span class="pathway-badge">B2: Cylinder Spectrum</span>
+                <span class="pathway-badge">B3: Harmonic Radar</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                Coverage: FFT(all axes) → 3D bar forest, rotating cylinders, polar plots
+            </div>
+        </div>
+
+        <div class="circuit-card" onclick="goToCircuit('circuit_c_relational.html')">
+            <div class="circuit-title">CIRCUIT C: RELATIONAL BRAIN</div>
+            <div class="circuit-desc">
+                Use GRAPHS to show relationships. Features as nodes, correlations as edges, state cloud projection.
+            </div>
+            <div class="pathways">
+                <span class="pathway-badge">C1: Correlation Graph</span>
+                <span class="pathway-badge">C2: State Manifold</span>
+                <span class="pathway-badge">C3: Circuit Trace</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                Coverage: 11 features, correlation matrix → 3D graph, PCA projection, sequential highlighting
+            </div>
+        </div>
+
+        <div class="circuit-card" onclick="goToCircuit('circuit_d_spatial.html')">
+            <div class="circuit-title">CIRCUIT D: SPACE & LOCALITY</div>
+            <div class="circuit-desc">
+                Environment as main manifold. Locality grid → 3D bars → radar shell → trajectory lattice.
+            </div>
+            <div class="pathways">
+                <span class="pathway-badge">D1: Heatmap 3D</span>
+                <span class="pathway-badge">D2: Radar Shell</span>
+                <span class="pathway-badge">D3: Trajectory Lattice</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                Coverage: touch grid, heading, trajectory → extruded bars, compass radar, multi-layer paths
+            </div>
+        </div>
+
+        <div class="circuit-card" onclick="goToCircuit('circuit_e_metapipeline.html')">
+            <div class="circuit-title">CIRCUIT E: META-PIPELINE</div>
+            <div class="circuit-desc">
+                Visualize the ARCHITECTURE itself. Pipeline DAG with flowing packets → data structure lattice.
+            </div>
+            <div class="pathways">
+                <span class="pathway-badge">E1: Pipeline DAG</span>
+                <span class="pathway-badge">E2: Data Lattice</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                Coverage: 6 stages, latency, throughput → 3D graph with packets, secondary structure nodes
+            </div>
+        </div>
+    </div>
+
+    <div id="coverage-matrix">
+        <div id="coverage-title">📊 COVERAGE MATRIX</div>
+        <div style="font-size: 10px; margin-bottom: 10px; opacity: 0.7;">
+            Each data field visualized across multiple pathways:
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">accel.x</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="A2"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+            <span class="coverage-indicator covered" title="C2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">accel.y</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="A2"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+            <span class="coverage-indicator covered" title="C2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">accel.z</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="A2"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+            <span class="coverage-indicator covered" title="C2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">accel.mag</span>
+            <span class="coverage-indicator covered" title="A3"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+            <span class="coverage-indicator covered" title="C2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">gyro.α</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">gyro.β</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">gyro.γ</span>
+            <span class="coverage-indicator covered" title="A1"></span>
+            <span class="coverage-indicator covered" title="B1"></span>
+            <span class="coverage-indicator covered" title="B2"></span>
+            <span class="coverage-indicator covered" title="C1"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">touch.position</span>
+            <span class="coverage-indicator covered" title="A3"></span>
+            <span class="coverage-indicator covered" title="D1"></span>
+            <span class="coverage-indicator covered" title="D2"></span>
+            <span class="coverage-indicator covered" title="D3"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">touch.trajectory</span>
+            <span class="coverage-indicator covered" title="D1"></span>
+            <span class="coverage-indicator covered" title="D2"></span>
+            <span class="coverage-indicator covered" title="D3"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">heading</span>
+            <span class="coverage-indicator covered" title="C1"></span>
+            <span class="coverage-indicator covered" title="D2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">locality.grid</span>
+            <span class="coverage-indicator covered" title="D1"></span>
+            <span class="coverage-indicator covered" title="D2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">pipeline.latency</span>
+            <span class="coverage-indicator covered" title="E1"></span>
+            <span class="coverage-indicator covered" title="E2"></span>
+        </div>
+        <div class="coverage-row">
+            <span class="data-field">pipeline.throughput</span>
+            <span class="coverage-indicator covered" title="E1"></span>
+            <span class="coverage-indicator covered" title="E2"></span>
+        </div>
+    </div>
+
+    <div id="stats">
+        <div style="font-weight: bold; margin-bottom: 10px;">📈 ARCHITECTURE STATISTICS</div>
+        <div class="stat-line">Total Circuits: <strong>5</strong></div>
+        <div class="stat-line">Total Pathways: <strong>14</strong></div>
+        <div class="stat-line">Data Fields Tracked: <strong>13</strong></div>
+        <div class="stat-line">Coverage Rate: <strong>100%</strong> (every field in ≥2 pathways)</div>
+        <div class="stat-line">Visualization Modes: <strong>2D Canvas + WebGL 3D</strong></div>
+        <div class="stat-line">Sensor Inputs: <strong>Accel + Gyro + Touch + Time</strong></div>
+        <div class="stat-line">Derived Metrics: <strong>FFT, Correlation, PCA, Density, Entropy</strong></div>
+        <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #0f0;">
+            <div style="font-size: 10px; opacity: 0.8;">
+                <strong>Emergent Data:</strong> When you traverse circuits, new local measurement data emerges:
+                cluster IDs, state region labels, frequency peaks, trajectory segments, correlation strengths.
+                These derived labels feed back into spatial grids, graph nodes, and radar targets, creating
+                recursive enrichment loops that generate "once unobtainable" measurements.
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div>Data Manifold Architecture v1.0</div>
+        <div>Every datum becomes a path. Every path generates new measurements.</div>
+        <div style="margin-top: 10px;">Select a circuit above to begin navigation.</div>
+    </div>
+
+    <script>
+        function goToCircuit(filename) {
+            window.location.href = filename;
+        }
+
+        // Add visual feedback
+        document.querySelectorAll('.circuit-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

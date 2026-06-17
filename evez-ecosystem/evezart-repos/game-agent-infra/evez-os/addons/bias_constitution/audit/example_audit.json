@@ -1,0 +1,81 @@
+{
+  "audit_id": "BA-R-0001-R-0200",
+  "window": {
+    "rounds": 200,
+    "from_round": "R-0001",
+    "to_round": "R-0200"
+  },
+  "empirical": {
+    "dominant_layer": {
+      "dns": 0.16,
+      "bgp": 0.14,
+      "tls": 0.12,
+      "cdn_cache": 0.18,
+      "origin_app": 0.14,
+      "ws_transport": 0.16,
+      "auth_state": 0.1
+    },
+    "chain_complexity": {
+      "single": 0.56,
+      "dual": 0.34,
+      "triple": 0.1
+    },
+    "temporal_behavior": {
+      "stable": 0.54,
+      "pending_final": 0.25,
+      "projection_rewrite": 0.16,
+      "reorg_like": 0.05
+    }
+  },
+  "target": {
+    "dominant_layer": {
+      "dns": 0.17,
+      "bgp": 0.13,
+      "tls": 0.13,
+      "cdn_cache": 0.17,
+      "origin_app": 0.15,
+      "ws_transport": 0.15,
+      "auth_state": 0.1
+    },
+    "chain_complexity": {
+      "single": 0.55,
+      "dual": 0.35,
+      "triple": 0.1
+    },
+    "geo_class": {
+      "na": 0.18,
+      "sa": 0.1,
+      "eu": 0.18,
+      "af": 0.08,
+      "apac": 0.18,
+      "me": 0.08,
+      "global": 0.2
+    },
+    "vantage_class": {
+      "mobile_carrier": 0.22,
+      "residential_isp": 0.3,
+      "enterprise_nat": 0.16,
+      "cloud_vm": 0.2,
+      "public_probe": 0.12
+    },
+    "temporal_behavior": {
+      "stable": 0.55,
+      "pending_final": 0.25,
+      "projection_rewrite": 0.15,
+      "reorg_like": 0.05
+    },
+    "noise_profile": {
+      "clean": 0.35,
+      "noisy": 0.35,
+      "rate_limited": 0.15,
+      "partial_visibility": 0.15
+    }
+  },
+  "divergence": {
+    "kl": 0.021,
+    "tv": 0.049,
+    "per_axis": {}
+  },
+  "violations": [],
+  "recommendations": []
+}

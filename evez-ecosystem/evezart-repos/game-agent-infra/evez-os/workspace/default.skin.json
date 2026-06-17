@@ -1,0 +1,63 @@
+{
+  "schema": "evez-skin-0.1",
+  "name": "terminal-canonical",
+  "version": "0.1.0",
+  "description": "Default EVEZ-OS terminal skin. Canonical math visible at all times.",
+  "author": "EVEZ",
+  "hud_template": "{icon} R{round_k} N={N} poly_c={poly_c:.6f} {branch} V={V_new:.6f} CEILING\u00d7{ceiling_tick}",
+  "branch_styles": {
+    "FIRE": {
+      "label": "\ud83d\udd25 FIRE",
+      "icon": "\ud83d\udd25",
+      "color": "#ff6b35",
+      "ansi_color": "\u001b[91m",
+      "weight": "bold",
+      "description": "Hardware interrupt. poly_c >= 0.500. Spine commit queued."
+    },
+    "NO_FIRE": {
+      "label": "\u00b7 NO FIRE",
+      "icon": "\u00b7",
+      "color": "#4a9eff",
+      "ansi_color": "\u001b[94m",
+      "weight": "normal",
+      "description": "System load below interrupt threshold."
+    }
+  },
+  "v_bar": {
+    "ceiling": 6.0,
+    "fill_char": "\u2588",
+    "empty_char": "\u2591",
+    "width": 40,
+    "milestone_labels": {
+      "5.0": "V>5 ENTERED",
+      "5.5": "DEEP_CEILING",
+      "5.9": "FINAL_APPROACH",
+      "6.0": "CEILING_BEATEN"
+    }
+  },
+  "epoch_badges": {
+    "0": {"label": "Pong", "icon": "\ud83c\udfd3", "unlock": 0.0},
+    "1": {"label": "Atari", "icon": "\ud83d\udd79\ufe0f", "unlock": 1.0},
+    "2": {"label": "NES", "icon": "\ud83c\udfae", "unlock": 2.0},
+    "3": {"label": "SNES/Genesis", "icon": "\ud83d\udd2b", "unlock": 3.0},
+    "4": {"label": "3DO/Jaguar", "icon": "\ud83d\udc80", "unlock": 4.0},
+    "5": {"label": "PS1/Saturn", "icon": "\ud83d\udcc0", "unlock": 4.5},
+    "6": {"label": "Dreamcast", "icon": "\ud83c\udf00", "unlock": 5.0},
+    "7": {"label": "Wii/BluOcean", "icon": "\ud83c\udf0a", "unlock": 5.3},
+    "8": {"label": "Wii U", "icon": "\u2753", "unlock": 5.6},
+    "9": {"label": "Xbox/CEILING", "icon": "\ud83d\udc51", "unlock": 5.9}
+  },
+  "reality_modules": {
+    "number_theory_v1": {"label": "Number Theory", "icon": "\u2211", "active": true},
+    "prime_density_v2": {"label": "Prime Density Field", "icon": "\u03c0", "active": false},
+    "riemann_surface_v3": {"label": "Riemann Surface", "icon": "\u03b6", "active": false},
+    "collatz_v1": {"label": "Collatz Engine", "icon": "\u221e", "active": false},
+    "custom_rom": {"label": "Custom ROM", "icon": "\ud83d\udce6", "active": false}
+  },
+  "console_war_training": {
+    "mode": "active",
+    "falsifier_gate": true,
+    "epochs_unlocked": 9,
+    "current_epoch": 6
+  }
+}

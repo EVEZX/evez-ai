@@ -1,0 +1,29 @@
+[
+  {
+    "id": "d1778614484697",
+    "description": "Maintain operational status",
+    "category": "survival",
+    "priority": 1.0,
+    "created": "2026-05-12T19:34:44.697215",
+    "status": "active",
+    "attempts": 0
+  },
+  {
+    "id": "d1778614499175",
+    "description": "Build autonomous revenue generation capability",
+    "category": "revenue",
+    "priority": 0.4,
+    "created": "2026-05-12T19:34:59.175506",
+    "status": "active",
+    "attempts": 0
+  },
+  {
+    "id": "d1778615192156",
+    "description": "Implement auto-scaling at 60% CPU threshold to prevent error spikes",
+    "category": "survival",
+    "priority": 1.0,
+    "created": "2026-05-12T19:46:32.156843",
+    "status": "active",
+    "attempts": 0
+  }
+]

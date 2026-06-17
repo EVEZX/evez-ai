@@ -1,0 +1,11 @@
+{
+  "name": "game-server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "ws": "^8.17.0"
+  }
+}

@@ -1,0 +1,8 @@
+[Unit]
+Description=Rotate EVEZ OpenClaw Gateway token
+
+[Service]
+Type=oneshot
+Environment=PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+WorkingDirectory=%h/evez-openclaw-deploy
+ExecStart=%h/evez-openclaw-deploy/scripts/evez-openclaw-vault-rotate.sh

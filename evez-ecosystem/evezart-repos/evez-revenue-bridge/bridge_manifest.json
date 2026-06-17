@@ -1,0 +1,111 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-06-13T08:20:00Z",
+  "spectral": {
+    "phi": 0.9696,
+    "eta_star": 0.0304,
+    "omega": 741455.2,
+    "lambda_min_before": -24.69,
+    "lambda_min_after_projection": -18.3,
+    "phi_projection": 0.9816,
+    "gap_score": 0.79,
+    "regime": "AUTONOMOUS"
+  },
+  "this_repo": {
+    "name": "evez-revenue-bridge",
+    "role": "cognition_to_market_bridge",
+    "eigenvalue_target": -0.358,
+    "poly_c_initial": 634.71,
+    "poly_c_max": 34862,
+    "first_revenue_event": {
+      "amount_usd": 49.0,
+      "description": "CTF-001 via evezstation",
+      "timestamp": "2026-05-08T20:53:05.000Z"
+    }
+  },
+  "hub_connections": [
+    {
+      "repo": "evez-agentnet",
+      "url": "https://github.com/EvezArt/evez-agentnet",
+      "role": "agent_orchestration",
+      "signal": "revenue_analysis_trigger",
+      "api_endpoint": "/api/revenue-signal",
+      "degree": 134
+    },
+    {
+      "repo": "evezstation",
+      "url": "https://github.com/EvezArt/evezstation",
+      "role": "workstation_hub",
+      "signal": "eigenvalue_progress",
+      "api_endpoint": "/api/handshake",
+      "degree": 134
+    },
+    {
+      "repo": "evez-engine",
+      "url": "https://github.com/EvezArt/evez-engine",
+      "role": "core_engine",
+      "signal": "poly_c_delta",
+      "api_endpoint": "/api/poly-update",
+      "degree": 134
+    },
+    {
+      "repo": "nexus",
+      "url": "https://github.com/EvezArt/nexus",
+      "role": "central_hub",
+      "signal": "spectral_state",
+      "api_endpoint": "/api/mesh-state",
+      "degree": 134
+    },
+    {
+      "repo": "evez-platform",
+      "url": "https://github.com/EvezArt/evez-platform",
+      "role": "billing_surface",
+      "signal": "billing_event",
+      "api_endpoint": "/api/billing",
+      "degree": 134
+    },
+    {
+      "repo": "evez-skills",
+      "url": "https://github.com/EvezArt/evez-skills",
+      "role": "skills_registry",
+      "signal": "revenue_aware_dispatch",
+      "api_endpoint": "/api/skills",
+      "degree": 134
+    },
+    {
+      "repo": "omega-conductor",
+      "url": "https://github.com/EvezArt/omega-conductor",
+      "role": "mesh_orchestrator",
+      "signal": "mesh_cycle_log",
+      "api_endpoint": "/api/mesh-cycle",
+      "degree": 134
+    }
+  ],
+  "openrouter_config": {
+    "models": [
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "qwen/qwen3-coder:free",
+      "deepseek/deepseek-r1-distill-qwen-7b:free",
+      "mistralai/mistral-7b-instruct:free",
+      "google/gemma-3-27b-it:free"
+    ],
+    "use_case": "revenue_signal_analysis",
+    "rotation_strategy": "try_in_order_on_429"
+  },
+  "supabase": {
+    "project_ref": "vziaqxquzohqskesuxgz",
+    "tables": ["mesh_intelligence", "mesh_actions", "platform_health"],
+    "revenue_table": "revenue_events"
+  },
+  "deployment": {
+    "platforms": ["vercel", "northflank", "a16_local"],
+    "entrypoint": "app.py",
+    "port": 8080
+  },
+  "mesh_topology": {
+    "this_node_degree_before": 0,
+    "this_node_degree_target": 7,
+    "topology_change": "isolated → hub_connected",
+    "structural_gap_status": "CLOSING"
+  }
+}

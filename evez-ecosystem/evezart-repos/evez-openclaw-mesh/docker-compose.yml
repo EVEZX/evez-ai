@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  openclaw-gateway:
+    build: .
+    container_name: evez-openclaw-gateway
+    ports:
+      - "18789:18789"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GITHUB_PAT=${GITHUB_PAT}
+      - VERCEL_TOKEN=${VERCEL_TOKEN}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
+      - FLY_API_TOKEN=${FLY_API_TOKEN}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - MEM0_API_KEY=${MEM0_API_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+      - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN}
+      - MEM0_API_KEY=${MEM0_API_KEY}
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+      - ./workspace:/workspace
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  ngrok-tunnel:
+    image: ngrok/ngrok:latest
+    container_name: evez-ngrok
+    command: http evez-openclaw-gateway:18789 --log=stdout
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    ports:
+      - "4040:4040"
+    depends_on:
+      - openclaw-gateway
+    restart: unless-stopped
+
+  telegram-bot:
+    image: python:3.11-slim
+    container_name: evez-telegram-cortex
+    working_dir: /app
+    volumes:
+      - ./tele_mesh_cortex.py:/app/tele_mesh_cortex.py
+      - ./nomad_vault.py:/app/nomad_vault.py
+      - ./data:/app/data
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - OPENCLAW_GATEWAY_URL=http://evez-openclaw-gateway:18789
+    command: sh -c "pip install python-telegram-bot requests && python tele_mesh_cortex.py"
+    depends_on:
+      - openclaw-gateway
+    restart: unless-stopped

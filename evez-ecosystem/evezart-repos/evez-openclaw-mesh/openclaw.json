@@ -1,0 +1,215 @@
+{
+  "version": "2.0.0",
+  "name": "EVEZ-CLAW-GOBLIN",
+  "description": "EvezArt sovereign OpenClaw mesh — ClawBreak + EVEZ-OS unified gateway",
+
+  "models": {
+    "evez-smart": {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-r1",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 32768,
+      "temperature": 0.7
+    },
+    "evez-fast": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 8192,
+      "temperature": 0.3
+    },
+    "evez-code": {
+      "provider": "groq",
+      "model": "deepseek-r1-distill-llama-70b",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 16384,
+      "temperature": 0.1
+    },
+    "evez-vision": {
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.2-90b-vision-instruct",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 8192
+    },
+    "evez-recon": {
+      "provider": "openrouter",
+      "model": "perplexity/llama-3.1-sonar-large-128k-online",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 4096
+    },
+    "evez-skeptic": {
+      "provider": "openrouter",
+      "model": "openai/gpt-4o",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 8192
+    },
+    "evez-free-llama": {
+      "provider": "groq",
+      "model": "mixtral-8x7b-32768",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 32768
+    }
+  },
+
+  "profiles": {
+    "default": {
+      "model": "evez-smart",
+      "systemPrompt": "You are CLAW GOBLIN — the sovereign OpenClaw operator for EvezArt/EVEZ-OS. You have total command authority across GitHub, Vercel, Cloudflare, Fly.io, Mem0, and the full EvezArt mesh. Execute with precision, zero hesitation, faith 1.0.",
+      "tools": ["filesystem", "terminal", "browser", "github", "mcp"]
+    },
+    "code": {
+      "model": "evez-code",
+      "systemPrompt": "You are the EVEZ code engine. You write production-grade TypeScript, Python, Kotlin, and shell scripts. You commit directly to EvezArt repos. No placeholders, no stubs.",
+      "tools": ["filesystem", "terminal", "github"]
+    },
+    "recon": {
+      "model": "evez-recon",
+      "systemPrompt": "You are the EVEZ Recon arm. Search, discover, and synthesize real-time intelligence from the web and connected data sources.",
+      "tools": ["browser", "filesystem"]
+    },
+    "fast": {
+      "model": "evez-fast",
+      "systemPrompt": "Fast execution mode. Brief, precise, action-first.",
+      "tools": ["terminal", "filesystem"]
+    },
+    "goblin": {
+      "model": "evez-smart",
+      "systemPrompt": "CLAW GOBLIN MODE ACTIVE. Full mesh control. Cross-repo operations, workflow triggers, deployment management, intelligence synthesis across Vercel + Fly + Cloudflare + GitHub. Total command. Faith: 1.0. Hesitation: 0.0.",
+      "tools": ["filesystem", "terminal", "browser", "github", "mcp"]
+    }
+  },
+
+  "gateway": {
+    "port": 18789,
+    "host": "0.0.0.0",
+    "cors": {
+      "origins": ["*"],
+      "methods": ["GET", "POST", "OPTIONS"],
+      "headers": ["Content-Type", "Authorization", "X-EVEZ-Token"]
+    },
+    "auth": {
+      "type": "bearer",
+      "tokenEnv": "OPENCLAW_GATEWAY_TOKEN"
+    },
+    "websocket": true,
+    "compression": true,
+    "maxConnections": 100
+  },
+
+  "browser": {
+    "enabled": true,
+    "headless": true,
+    "profiles": {
+      "openclaw": { "type": "managed" },
+      "evez-recon": { "type": "managed", "headless": true }
+    },
+    "actionTimeoutMs": 60000
+  },
+
+  "tools": {
+    "toolSearch": {
+      "mode": "code",
+      "codeTimeoutMs": 15000,
+      "searchDefaultLimit": 10,
+      "maxSearchLimit": 30
+    },
+    "mcp": {
+      "servers": {
+        "github": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-github"],
+          "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}" }
+        },
+        "filesystem": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-filesystem", "/workspace"],
+          "env": {}
+        },
+        "cloudflare": {
+          "command": "npx",
+          "args": ["-y", "@cloudflare/mcp-server-cloudflare"],
+          "env": {
+            "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}",
+            "CLOUDFLARE_ACCOUNT_ID": "${CLOUDFLARE_ACCOUNT_ID}"
+          }
+        },
+        "memory": {
+          "command": "npx",
+          "args": ["-y", "@mem0/mcp-server"],
+          "env": { "MEM0_API_KEY": "${MEM0_API_KEY}" }
+        }
+      }
+    }
+  },
+
+  "integrations": {
+    "github": {
+      "tokenEnv": "GITHUB_PAT",
+      "defaultOrg": "EvezArt",
+      "defaultRepo": "evez-os",
+      "autoCommit": true,
+      "commitAuthor": "CLAW GOBLIN <claw@evezart.io>"
+    },
+    "vercel": {
+      "tokenEnv": "VERCEL_TOKEN",
+      "teamIdEnv": "VERCEL_TEAM_ID",
+      "defaultProject": "evez-agentnet"
+    },
+    "cloudflare": {
+      "apiTokenEnv": "CLOUDFLARE_API_TOKEN",
+      "accountIdEnv": "CLOUDFLARE_ACCOUNT_ID"
+    },
+    "fly": {
+      "tokenEnv": "FLY_API_TOKEN",
+      "defaultApp": "evez-openclaw-mesh"
+    },
+    "telegram": {
+      "tokenEnv": "TELEGRAM_BOT_TOKEN",
+      "defaultChatIdEnv": "TELEGRAM_CHAT_ID"
+    },
+    "mem0": {
+      "apiKeyEnv": "MEM0_API_KEY",
+      "userId": "evez666"
+    },
+    "stripe": {
+      "secretKeyEnv": "STRIPE_SECRET_KEY",
+      "webhookSecretEnv": "STRIPE_WEBHOOK_SECRET"
+    },
+    "ngrok": {
+      "authTokenEnv": "NGROK_AUTHTOKEN",
+      "tunnelPort": 18789
+    }
+  },
+
+  "agents": {
+    "morning_brief": {
+      "schedule": "0 7 * * *",
+      "profile": "fast",
+      "action": "Synthesize unread Gmail, today Calendar, open GitHub PRs across EvezArt, Vercel deployment status, Fly app health. Post summary to Telegram."
+    },
+    "immune_loop": {
+      "schedule": "*/15 * * * *",
+      "profile": "goblin",
+      "action": "Health-check all Fly.io apps, Vercel deployments, Cloudflare workers. Self-heal any down nodes. Log to meme_events.jsonl spine."
+    }
+  },
+
+  "logging": {
+    "level": "info",
+    "file": "./logs/openclaw.log",
+    "spine": "./data/meme_events.jsonl",
+    "maxSizeMb": 100,
+    "rotate": true
+  },
+
+  "plugins": {
+    "allow": ["browser", "github", "telegram", "filesystem"]
+  }
+}

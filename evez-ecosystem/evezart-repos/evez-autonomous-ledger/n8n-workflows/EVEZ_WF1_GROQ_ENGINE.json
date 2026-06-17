@@ -1,0 +1,211 @@
+{
+  "name": "EVEZ Groq Engine \u2014 llama-3.3-70b \u2014 FREE 24/7",
+  "nodes": [
+    {
+      "id": "G1",
+      "name": "\u23f1 Every 10 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "G2",
+      "name": "\ud83d\udd27 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "G3",
+      "name": "\ud83d\udcac Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-G3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-groq-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "G4",
+      "name": "\ud83d\udea8 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        600
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "G5",
+      "name": "\ud83e\udd99 Groq Research",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nasync function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nasync function groq(sys,usr,model='llama-3.1-8b-instant',max=800){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'Set GROQ_API_KEY in n8n Settings \u2192 Environment Variables. Free key: console.groq.com'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'groq'};}\n}\nconst slot=Math.floor(Date.now()/600000);\nconst topics=[\"DeFi yield: Morpho Base 4.5% supply APY, Kamino Solana 28% USDC, EigenLayer 5% restaking, Pendle YT 30-42%. Optimal $50-500 allocation?\", \"Autonomous AI agent patterns March 2026: top 3 emergent behaviors in LLM orchestration worth integrating into EVEZ-OS.\", \"EVEZ-OS status: 3 active n8n workflows, Groq+Gemini+OpenRouter free AI stack, CF Sentinel pending, Supabase not bootstrapped. Top 3 highest-leverage actions this week?\", \"Morpho recursive loop: $50 seed, 65% LTV, 5 loops, Kamino 28% APY. Model the capital stack and assess viability.\", \"Agentic Summer 2026: Base TVL $12.6B, MCP protocols live. What zero-cost market position should EVEZ capture in 7 days?\"];\nconst topic=topics[slot%topics.length];\n\nconst result=await groq(\n  `You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON. Return JSON: {\"insights\":[\"str\",\"str\",\"str\"],\"keyFindings\":\"2-sentence summary\",\"wealthSignal\":{\"protocol\":\"\",\"apy\":\"\",\"action\":\"\"},\"nextActions\":[\"str\",\"str\"],\"confidence\":0.85}`,\n  `Research: ${topic}. Date: ${new Date().toISOString()}.`,\n  'llama-3.3-70b-versatile', 900\n);\n\nconst entry={query:topic,slot,provider:'groq/llama-3.3-70b-versatile',\n  findings:result.keyFindings||result.raw?.slice(0,200)||'',\n  insights:JSON.stringify(result.insights||[]),\n  wealthSignal:JSON.stringify(result.wealthSignal||{}),\n  nextActions:JSON.stringify(result.nextActions||[]),\n  confidence:result.confidence||0,\n  entry_hash:H({topic,slot}),ts:new Date().toISOString(),pid:335};\n\nawait log('GROQ_RESEARCH',entry);\nreturn [{json:entry}];\n"
+      }
+    },
+    {
+      "id": "G6",
+      "name": "\ud83d\udcac Groq Chat",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        400
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function groq(sys,usr,model='llama-3.1-8b-instant',max=800){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'Set GROQ_API_KEY in n8n Settings \u2192 Environment Variables. Free key: console.groq.com'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'groq'};}\n}\nconst b=$input.first().json.body||$input.first().json;\nconst msg=b.chatInput||b.message||b.query||'EVEZ status?';\nconst result=await groq(`You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON.`,msg,'llama-3.3-70b-versatile',700);\nawait log('GROQ_CHAT',{query:msg});\nreturn [{json:{response:result,model:'llama-3.3-70b-versatile',provider:'groq',ts:new Date().toISOString()}}];\n"
+      }
+    },
+    {
+      "id": "G7",
+      "name": "\ud83e\ude79 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('GROQ_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true,hint:'Get free key: console.groq.com'}}];"
+      }
+    },
+    {
+      "id": "G8",
+      "name": "\u21a9 Research ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "G9",
+      "name": "\u21a9 Chat ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "\u23f1 Every 10 Minutes": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\udd99 Groq Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd27 Test Run": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\udd99 Groq Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac Chat": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udcac Groq Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udea8 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\ude79 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83e\udd99 Groq Research": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Research ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac Groq Chat": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Chat ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "groq"
+    }
+  ]
+}

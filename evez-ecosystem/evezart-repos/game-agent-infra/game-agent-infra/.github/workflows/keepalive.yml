@@ -1,0 +1,125 @@
+# .github/workflows/keepalive.yml
+# Drop this into EVERY repo under EvezArt that has workflows.
+# Prevents GitHub from killing scheduled workflows after 60 days.
+# Also dispatches FIRE events to connected repos.
+
+name: EVEZ KEEPALIVE + FIRE CASCADE
+
+on:
+  schedule:
+    # Runs every Sunday at 00:00 UTC — keeps workflows alive
+    - cron: '0 0 * * 0'
+
+    # Runs every 2.92 days (closest cron approximation: every 70 hours)
+    # Aligns with your measured 2.92-day creation oscillator
+    - cron: '0 */70 * * *'
+
+  # Allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Why are you triggering this manually?'
+        required: false
+        default: 'manual fire'
+
+  # Receive FIRE events from other repos
+  repository_dispatch:
+    types: [FIRE_CASCADE, EVEZ_HEARTBEAT]
+
+jobs:
+
+  # ── KEEPALIVE ───────────────────────────────────────────────
+  keepalive:
+    name: Keepalive Commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.EVEZ_PAT }}
+
+      - name: Write heartbeat
+        run: |
+          mkdir -p .evez
+          echo "{\"ts\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\", \"repo\": \"${{ github.repository }}\", \"run\": ${{ github.run_number }}}" > .evez/heartbeat.json
+
+      - name: Commit heartbeat
+        run: |
+          git config user.name  "EVEZ-OS"
+          git config user.email "evez-os@users.noreply.github.com"
+          git add .evez/heartbeat.json
+          # Only commit if something changed
+          git diff --staged --quiet || git commit -m "⧢ EVEZ heartbeat $(date -u +%Y-%m-%d)"
+          git push || true
+
+  # ── FIRE CASCADE ────────────────────────────────────────────
+  fire-cascade:
+    name: Dispatch FIRE to Connected Repos
+    runs-on: ubuntu-latest
+    needs: keepalive
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Fire → evez-autonomous-ledger
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.EVEZ_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EvezArt/evez-autonomous-ledger/dispatches \
+            -d '{"event_type":"FIRE_CASCADE","client_payload":{"source":"${{ github.repository }}","ts":"${{ github.event.head_commit.timestamp }}"}}'
+
+      - name: Fire → evez-agentnet
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.EVEZ_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EvezArt/evez-agentnet/dispatches \
+            -d '{"event_type":"FIRE_CASCADE","client_payload":{"source":"${{ github.repository }}"}}'
+
+      - name: Fire → evez666-arg-canon
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.EVEZ_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EvezArt/evez666-arg-canon/dispatches \
+            -d '{"event_type":"FIRE_CASCADE","client_payload":{"source":"${{ github.repository }}"}}'
+
+      - name: Fire → Evez666
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.EVEZ_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EvezArt/Evez666/dispatches \
+            -d '{"event_type":"FIRE_CASCADE","client_payload":{"source":"${{ github.repository }}"}}'
+
+      - name: Log cascade
+        run: |
+          echo "⧢ FIRE cascaded from ${{ github.repository }} at $(date -u)"
+
+  # ── AGENT LOOP TRIGGER ─────────────────────────────────────
+  agent-loop:
+    name: Trigger Agent Loop
+    runs-on: ubuntu-latest
+    needs: fire-cascade
+    steps:
+      - name: Ping evezstation health
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://evezstation.vercel.app/api/health)
+          echo "evezstation status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "⚠ evezstation returned $STATUS — check Vercel"
+          fi
+
+      - name: Trigger forge check
+        run: |
+          curl -s -X POST https://evezstation.vercel.app/api/train/forges \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.EVEZ_INTERNAL_TOKEN }}" \
+            -d '{"trigger":"scheduled_cascade","source":"github_actions"}' \
+            || echo "Forge trigger failed — may need EVEZ_INTERNAL_TOKEN set"
+
+      - name: Post to Slack
+        run: |
+          curl -s -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"⧢ EVEZ heartbeat complete · ${{ github.repository }} · run #${{ github.run_number }}\"}" \
+            ${{ secrets.SLACK_WEBHOOK_URL }} \
+            || echo "Slack webhook not set — skipping"

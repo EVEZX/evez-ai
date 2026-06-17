@@ -1,0 +1,144 @@
+{
+  "cycle": 0,
+  "desires": [
+    {
+      "id": "DES-0",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 40%. Investigate.",
+      "intensity": 0.6,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-0",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-2",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 50%. Investigate.",
+      "intensity": 0.5,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-2",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-4",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 60%. Investigate.",
+      "intensity": 0.3999999999999999,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-5",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 40%. Investigate.",
+      "intensity": 0.6,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-5",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-7",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 50%. Investigate.",
+      "intensity": 0.5,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-7",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-9",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 60%. Investigate.",
+      "intensity": 0.3999999999999999,
+      "urgency": 0.3,
+      "fulfilled": false
+    }
+  ],
+  "rules": [
+    {
+      "cause": "RESOLVE_CONTRADICTIONS",
+      "effect": "executed_RESOLVE_CONTRADICTIONS_cycle_1",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "UPDATE_BELIEFS",
+      "effect": "executed_UPDATE_BELIEFS_cycle_1",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "INVESTIGATE_SENSORS",
+      "effect": "executed_INVESTIGATE_SENSORS_cycle_2",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "CLASSIFY_FINDINGS",
+      "effect": "executed_CLASSIFY_FINDINGS_cycle_2",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "RECORD_KNOWLEDGE",
+      "effect": "executed_RECORD_KNOWLEDGE_cycle_2",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "INVESTIGATE_SENSORS",
+      "effect": "executed_INVESTIGATE_SENSORS_cycle_3",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "CLASSIFY_FINDINGS",
+      "effect": "executed_CLASSIFY_FINDINGS_cycle_3",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    },
+    {
+      "cause": "RECORD_KNOWLEDGE",
+      "effect": "executed_RECORD_KNOWLEDGE_cycle_3",
+      "conf": 0.6,
+      "obs": 2,
+      "fals": 0
+    }
+  ],
+  "last_hash": "40f0a06cdbfc1feeec60973a"
+}

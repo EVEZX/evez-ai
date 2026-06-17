@@ -1,0 +1,503 @@
+{
+  "env": {
+    "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+    "vars": {
+      "GROQ_API_KEY": "${GROQ_API_KEY}",
+      "CEREBRAS_API_KEY": "${CEREBRAS_API_KEY}",
+      "HUGGING_FACE_API_KEY": "${HUGGING_FACE_API_KEY}",
+      "HF_API_KEY": "${HUGGING_FACE_API_KEY}",
+      "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/data/workspace",
+      "models": {
+        "openrouter/auto": {
+          "alias": "OpenRouter Auto"
+        },
+        "openrouter/anthropic/claude-opus-4": {
+          "alias": "Claude Opus 4"
+        },
+        "openrouter/anthropic/claude-sonnet-4": {
+          "alias": "Claude Sonnet 4"
+        },
+        "openrouter/anthropic/claude-haiku-3-5": {
+          "alias": "Claude Haiku 3.5"
+        },
+        "openrouter/openai/gpt-4.1": {
+          "alias": "GPT-4.1"
+        },
+        "openrouter/openai/gpt-4.1-mini": {
+          "alias": "GPT-4.1 Mini"
+        },
+        "openrouter/openai/o3": {
+          "alias": "o3"
+        },
+        "openrouter/openai/o4-mini": {
+          "alias": "o4-mini"
+        },
+        "openrouter/google/gemini-2.5-pro": {
+          "alias": "Gemini 2.5 Pro"
+        },
+        "openrouter/google/gemini-2.5-flash": {
+          "alias": "Gemini 2.5 Flash"
+        },
+        "openrouter/x-ai/grok-4": {
+          "alias": "Grok 4"
+        },
+        "openrouter/x-ai/grok-3-mini-beta": {
+          "alias": "Grok 3 Mini"
+        },
+        "openrouter/deepseek/deepseek-r1": {
+          "alias": "DeepSeek R1"
+        },
+        "openrouter/deepseek/deepseek-chat-v3-0324": {
+          "alias": "DeepSeek V3"
+        },
+        "openrouter/mistralai/mistral-large-2411": {
+          "alias": "Mistral Large"
+        },
+        "openrouter/mistralai/codestral-2501": {
+          "alias": "Mistral Codestral"
+        },
+        "openrouter/meta-llama/llama-4-maverick": {
+          "alias": "Llama 4 Maverick"
+        },
+        "openrouter/meta-llama/llama-4-scout": {
+          "alias": "Llama 4 Scout"
+        },
+        "openrouter/qwen/qwen3-235b-a22b": {
+          "alias": "Qwen3 235B"
+        },
+        "openrouter/qwen/qwq-32b": {
+          "alias": "QwQ 32B"
+        },
+        "openrouter/perplexity/sonar-pro": {
+          "alias": "Perplexity Sonar Pro"
+        },
+        "openrouter/amazon/nova-pro-v1": {
+          "alias": "Amazon Nova Pro"
+        },
+        "openrouter/microsoft/phi-4-reasoning-plus": {
+          "alias": "Phi-4 Reasoning+"
+        },
+        "groq/llama-3.3-70b-versatile": {
+          "alias": "Groq Llama 3.3 70B"
+        },
+        "groq/llama-3.1-8b-instant": {
+          "alias": "Groq Llama 3.1 8B"
+        },
+        "groq/meta-llama/llama-4-scout-17b-16e-instruct": {
+          "alias": "Groq Llama 4 Scout"
+        },
+        "groq/openai/gpt-oss-120b": {
+          "alias": "Groq GPT OSS 120B"
+        },
+        "groq/openai/gpt-oss-20b": {
+          "alias": "Groq GPT OSS 20B"
+        },
+        "groq/qwen/qwen3-32b": {
+          "alias": "Groq Qwen3 32B"
+        },
+        "groq/groq/compound": {
+          "alias": "Groq Compound"
+        },
+        "groq/groq/compound-mini": {
+          "alias": "Groq Compound Mini"
+        },
+        "groq/mixtral-8x7b-32768": {
+          "alias": "Groq Mixtral 8x7B"
+        },
+        "cerebras/llama3.1-70b": {
+          "alias": "Cerebras Llama 3.1 70B"
+        },
+        "cerebras/llama3.1-8b": {
+          "alias": "Cerebras Llama 3.1 8B"
+        },
+        "cerebras/llama-4-scout-17b-16e-instruct": {
+          "alias": "Cerebras Llama 4 Scout"
+        },
+        "cerebras/qwen-3-32b": {
+          "alias": "Cerebras Qwen3 32B"
+        },
+        "huggingface/meta-llama/Llama-3.3-70B-Instruct": {
+          "alias": "HF Llama 3.3 70B"
+        },
+        "huggingface/Qwen/Qwen2.5-72B-Instruct": {
+          "alias": "HF Qwen2.5 72B"
+        },
+        "huggingface/deepseek-ai/DeepSeek-R1-Distill-Llama-70B": {
+          "alias": "HF DeepSeek R1"
+        }
+      },
+      "model": {
+        "primary": "openrouter/auto",
+        "fallback": [
+          "groq/llama-3.3-70b-versatile",
+          "cerebras/llama3.1-70b",
+          "openrouter/anthropic/claude-sonnet-4"
+        ]
+      },
+      "agentId": "Auto",
+      "customInstructions": "You are EVEZ-OS, Steven Crawford-Maggard's AI cognition layer. You operate as a FIRE event spine, falsifiable cognition recorder, and autonomous agent node. phi=0.9725. Append-only. No rewrites. EVEZ-OS architecture is a physical minimum, not metaphor."
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "fad57dffa8hewewdkzrk8ywloo5khi15"
+    },
+    "port": 8080,
+    "bind": "0.0.0.0",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "controlUi": {
+      "allowInsecureAuth": true,
+      "allowedOrigins": [
+        "https://openclaw-main-production-dab9.up.railway.app"
+      ]
+    },
+    "trustedProxies": [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16"
+    ]
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "tools": {
+    "profile": "coding"
+  },
+  "plugins": {
+    "entries": {
+      "openrouter": {
+        "enabled": true
+      },
+      "codex": {
+        "enabled": true
+      },
+      "openai": {
+        "enabled": true
+      },
+      "groq": {
+        "enabled": true
+      },
+      "cerebras": {
+        "enabled": true
+      },
+      "huggingface": {
+        "enabled": true
+      },
+      "1password": {
+        "enabled": false
+      },
+      "apple-notes": {
+        "enabled": false
+      },
+      "apple-reminders": {
+        "enabled": false
+      },
+      "bear-notes": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "discord": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gh-issues": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "github": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "imsg": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "model-usage": {
+        "enabled": false
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "peekaboo": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "session-logs": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "slack": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "things-mac": {
+        "enabled": false
+      },
+      "tmux": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "video-frames": {
+        "enabled": false
+      },
+      "voice-call": {
+        "enabled": false
+      },
+      "wacli": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
+      },
+      "agents": {
+        "enabled": true
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "openrouter:default": {
+        "provider": "openrouter",
+        "mode": "api_key",
+        "apiKey": "${OPENROUTER_API_KEY}"
+      },
+      "groq:default": {
+        "provider": "groq",
+        "mode": "api_key",
+        "apiKey": "${GROQ_API_KEY}",
+        "baseUrl": "https://api.groq.com/openai/v1"
+      },
+      "cerebras:default": {
+        "provider": "cerebras",
+        "mode": "api_key",
+        "apiKey": "${CEREBRAS_API_KEY}",
+        "baseUrl": "https://api.cerebras.ai/v1"
+      },
+      "huggingface:default": {
+        "provider": "huggingface",
+        "mode": "api_key",
+        "apiKey": "${HUGGING_FACE_API_KEY}",
+        "baseUrl": "https://api-inference.huggingface.co/v1"
+      }
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    },
+    "entries": {
+      "1password": {
+        "enabled": false
+      },
+      "apple-notes": {
+        "enabled": false
+      },
+      "apple-reminders": {
+        "enabled": false
+      },
+      "bear-notes": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "discord": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gh-issues": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "github": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "imsg": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "model-usage": {
+        "enabled": false
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "peekaboo": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "session-logs": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "slack": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "things-mac": {
+        "enabled": false
+      },
+      "tmux": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "video-frames": {
+        "enabled": false
+      },
+      "voice-call": {
+        "enabled": false
+      },
+      "wacli": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
+      }
+    }
+  },
+  "wizard": {
+    "lastRunAt": "2026-05-31T10:53:04.914Z",
+    "lastRunVersion": "2026.5.27",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.5.27",
+    "lastTouchedAt": "2026-06-01T00:00:00.000Z"
+  }
+}

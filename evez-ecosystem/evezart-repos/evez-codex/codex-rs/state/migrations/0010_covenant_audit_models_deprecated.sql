@@ -1,0 +1,2 @@
+-- Deprecated migration retained for compatibility with historical migration ordering.
+-- The active covenant/audit schema is defined in 0009_covenants_audit_actions.sql.

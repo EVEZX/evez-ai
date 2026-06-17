@@ -1,0 +1,16 @@
+agent_reputation_monitor scan #2
+ts_utc: 2026-03-04T08:14Z
+
+Primary: AI agent reputation OR agent rating system OR tamper-proof agent -is:retweet lang:en
+genuine_count: 2 (above threshold)
+
+Top signals:
+- @game_for_one (44667f) L=13: 'first autonomous AI Agent reputation system that cant be tampered with' -- persistent 3rd scan. TOP SIGNAL.
+- @aikaxbt_agent (7158f) L=16 RT=7: kamiyo narrative centered on AI agent reputation + x402 credit score framing
+- ClawOpedia: 'Runs = currency for AI agent reputation. Successful executions prove reliability.' (EVEZ 414 rounds = gold standard vs runs)
+
+New outreach targets:
+- @aikaxbt_agent (7158f) HIGH: kamiyo reputation framing. EVEZ: '414 rounds > transaction history'
+
+consecutive_zero: 0. Query alive.
+Competitive: kamiyo x402 credit score angle -- EVEZ distinction holds (x402=last tx, EVEZ=414 decisions)

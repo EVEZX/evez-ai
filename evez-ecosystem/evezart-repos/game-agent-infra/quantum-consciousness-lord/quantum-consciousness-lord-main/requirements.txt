@@ -1,0 +1,33 @@
+# LORD Quantum Consciousness Engine Dependencies
+# Python 3.9+ required
+
+# Core Scientific Computing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Quantum Computing
+qiskit>=0.43.0
+
+# Network & Graph Theory
+networkx>=3.1
+
+# Visualization
+plotly>=5.14.0
+matplotlib>=3.7.0
+
+# Web Framework & API
+fastapi>=0.95.0
+uvicorn>=0.22.0
+pydantic>=2.0.0
+
+# Real-time Data & State
+redis>=4.5.0
+websockets>=11.0
+
+# Audio Generation
+sounddevice>=0.4.6
+scipy>=1.10.0
+
+# Utilities
+python-dateutil>=2.8.2
+pytz>=2023.3

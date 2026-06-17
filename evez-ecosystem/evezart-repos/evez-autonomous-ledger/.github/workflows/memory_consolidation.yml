@@ -1,0 +1,21 @@
+name: Memory Consolidation (3-hour)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  consolidate:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests anthropic
+      - name: Consolidate memory
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python agents/memory/consolidator.py

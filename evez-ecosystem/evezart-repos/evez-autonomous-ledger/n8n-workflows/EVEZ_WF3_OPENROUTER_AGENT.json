@@ -1,0 +1,211 @@
+{
+  "name": "EVEZ OpenRouter Agent \u2014 llama+deepseek:free \u2014 FREE 24/7",
+  "nodes": [
+    {
+      "id": "O1",
+      "name": "\u23f1 Every 30 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "O2",
+      "name": "\ud83d\udd27 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "O3",
+      "name": "\ud83d\udcac Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-O3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-openrouter-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "O4",
+      "name": "\ud83d\udea8 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        600
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "O5",
+      "name": "\ud83c\udf10 OpenRouter Free Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function openrouter(sys,usr,model='meta-llama/llama-3.3-70b-instruct:free',max=800){\n  const k=$env.OPENROUTER_API_KEY||'';\n  if(!k)return{error:'Set OPENROUTER_API_KEY. Free key: openrouter.ai'};\n  try{\n    const r=await $fetch('https://openrouter.ai/api/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json','HTTP-Referer':'https://evezos.app.n8n.cloud'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'openrouter'};}\n}\nconst slot=Math.floor(Date.now()/1800000);\nconst models=[\n  'meta-llama/llama-3.3-70b-instruct:free',\n  'deepseek/deepseek-r1:free',\n  'google/gemini-2.0-flash-exp:free',\n  'mistralai/mistral-7b-instruct:free',\n  'qwen/qwen3-8b:free',\n];\nconst model=models[slot%models.length];\nconst missions=[\n  \"EVEZ-OS: free AI stack (Groq+Gemini+OR), n8n 3 workflows active, CF Sentinel undeployed. Single highest-leverage action next 24h?\",\n  \"Autonomous agent bus trunk-and-branch topology, 17-agent target, PID 335. Architectural gaps and free-tool fixes?\",\n  \"DeFi March 2026: $50 seed, Morpho loop 65% LTV, Kamino 28%, EigenLayer restaking. Optimal entry sequence?\",\n  \"7-day EVEZ roadmap: day 1-2 foundation, 3-4 intelligence, 5-6 capital, 7 full loop. Specific actions only.\",\n  \"Agentic Summer 2026: Base $12.6B, MCP live, AI economy forming. Zero-cost EVEZ market position for next 7 days?\",\n];\nconst mission=missions[slot%missions.length];\n\nconst result=await openrouter(\n  `You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON. Return JSON: {\"strategic_insight\":\"3-sentence insight\",\"recommended_action\":\"specific step\",\"confidence\":0.8,\"wealth_signal\":{\"opportunity\":\"\",\"expected_return\":\"\",\"risk\":\"\"}}`,\n  mission,model,700\n);\n\nconst entry={slot,model,mission:mission.slice(0,80),\n  insight:result.strategic_insight||result.raw?.slice(0,300)||'',\n  action:result.recommended_action||'',\n  confidence:result.confidence||0,\n  wealth_signal:JSON.stringify(result.wealth_signal||{}),\n  provider:'openrouter',free_model:true,\n  entry_hash:H({slot,model}),ts:new Date().toISOString(),pid:335};\n\nawait log('OR_FREE_CYCLE',entry);\nreturn [{json:entry}];\n"
+      }
+    },
+    {
+      "id": "O6",
+      "name": "\ud83d\udcac OR Chat",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        400
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function openrouter(sys,usr,model='meta-llama/llama-3.3-70b-instruct:free',max=800){\n  const k=$env.OPENROUTER_API_KEY||'';\n  if(!k)return{error:'Set OPENROUTER_API_KEY. Free key: openrouter.ai'};\n  try{\n    const r=await $fetch('https://openrouter.ai/api/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json','HTTP-Referer':'https://evezos.app.n8n.cloud'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'openrouter'};}\n}\nconst b=$input.first().json.body||$input.first().json;\nconst msg=b.chatInput||b.message||b.query||'EVEZ status?';\nconst model=b.model||'meta-llama/llama-3.3-70b-instruct:free';\nconst result=await openrouter(`You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON.`,msg,model,700);\nawait log('OR_CHAT',{query:msg,model});\nreturn [{json:{response:result,model,provider:'openrouter',free:true,ts:new Date().toISOString()}}];\n"
+      }
+    },
+    {
+      "id": "O7",
+      "name": "\ud83e\ude79 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('OR_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true,hint:'Get free key: openrouter.ai'}}];"
+      }
+    },
+    {
+      "id": "O8",
+      "name": "\u21a9 Agent ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "O9",
+      "name": "\u21a9 Chat ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "\u23f1 Every 30 Minutes": {
+      "main": [
+        [
+          {
+            "node": "\ud83c\udf10 OpenRouter Free Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd27 Test Run": {
+      "main": [
+        [
+          {
+            "node": "\ud83c\udf10 OpenRouter Free Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac Chat": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udcac OR Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udea8 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\ude79 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83c\udf10 OpenRouter Free Agent": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Agent ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac OR Chat": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Chat ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "openrouter"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+OpenClaw Monitor Scan #8
+Timestamp: 2026-03-04T04:14Z
+Query: "OpenClaw" -is:retweet lang:en
+
+Results:
+  result_count: 20 (has_more)
+  genuine_count: 10
+  cluster_forming: true
+  consecutive_zero: 0
+  signal_strength: 8/10
+
+Top Genuine Signals:
+  @grok (8,239,867f) L=1 - CoPaw (Alibaba/AgentScope) vs OpenClaw comparison. CoPaw pros: native local LLMs, Chinese platforms (DingTalk/Feishu/QQ). First direct competitor framing by grok.
+  @grok (8,239,867f) L=1 - ClawJacked high-severity flaw: WebSocket localhost bypass, password brute-force, full control takeover. No plugins needed. 'Core claim is true.'
+  @ai_enginial (23,592f) - Sports betting agent builder on OpenClaw
+  @sauciii (18,293f) - 'give it a soul' personality upgrade framing
+  @wickedguro (1,811f) - '@marclou is the new OpenClaw' trending comparison
+  @JohnnyNel_ (1,978f) - Flash model for pattern detection
+  @mikeydsoftware (1,642f) - 'still haven't found anything to do with OpenClaw' (practitioner gap)
+  @JohnArndt (1,172f) - 'when you give your openclaw the keys, they work for you'
+  @alexmd2 (2,251f) - 10 models benchmarked, Opus best at large context
+  @DnuLkjkjh (212f) - VPS migration for agent uptime (agents dying on laptop sleep)
+
+New Terms:
+  IronCurtain - new OpenClaw sub-project announced
+  ClawJacked - WebSocket localhost bypass security flaw (grok amplified)
+  CoPaw - Alibaba/AgentScope competitor framing
+  give_it_a_soul - agent personality/identity upgrade framing
+  openclaw_vps_24_7_uptime - VPS migration for behavioral continuity
+
+EVEZ Positioning:
+  ClawJacked = anyone can hijack your OpenClaw instance.
+  EVEZ 414-round behavioral record = forensic audit trail before/during/after the attack.
+  CoPaw and OpenClaw both run agents. Neither keeps behavioral records. EVEZ is the audit layer above both.
+
+Benchmark Tracking:
+  cobie Fortune500 RT: ~908 (stable from scan #5, no new escalation this 4h window)
+  grok active engagement: CONFIRMED (2 tweets, 1L each)
+  OKX OnchainOS: not in this window
+  Docker bug: not in this window
+
+Retire Check: consecutive_zero=0. NOT triggered.
+
+New Outreach Targets:
+  @ai_enginial (23,592f) - HIGH. Sports betting agent builder.
+
+Gist: SENSE teal prepended. 198 entries total.
+Files Updated: TWITTER_SIGNALS.md, OUTREACH_QUEUE.md, LOOP_SPAWN_STATE.md

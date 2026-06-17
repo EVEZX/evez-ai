@@ -1,0 +1,218 @@
+{
+  "manifest_version": "2026-03-30",
+  "root_operator": "Steven Crawford-Maggard (EVEZ)",
+  "agent_system": "evez-autonomy-core",
+  "delegation_enabled": true,
+  "navigation": {
+    "agent_registry": "src/autonomy/agent_manifest.json",
+    "discovery_mode": "manifest_lookup",
+    "fallback_chain": ["repo-state-agent", "deployment-agent", "knowledge-agent"]
+  },
+  "agents": [
+    {
+      "id": "creator-context-agent",
+      "role": "Maintain creator/operator context as the first reference point for all autonomous work.",
+      "delegatable": true,
+      "sub_agents": ["identity-mapper", "alias-resolver"],
+      "inputs": [
+        "src/autonomy/creator_profile.json",
+        "src/autonomy/research_bootstrap.md"
+      ],
+      "outputs": [
+        "creator state updates",
+        "identity surface reconciliation"
+      ],
+      "success_criteria": [
+        "No duplicate creator identities are invented",
+        "Connected identities remain mapped to one operator profile"
+      ]
+    },
+    {
+      "id": "repo-state-agent",
+      "role": "Track active repositories, implemented artifacts, commit surfaces, and code-side blockers.",
+      "delegatable": true,
+      "sub_agents": ["git-monitor", "artifact-tracker", "blocker-classifier"],
+      "inputs": [
+        "GitHub repositories",
+        "Airtable DEV_CIRCUIT_TASKS"
+      ],
+      "outputs": [
+        "repo manifests",
+        "implementation status deltas"
+      ],
+      "success_criteria": [
+        "GitHub remains source of truth for code",
+        "Every meaningful repo change is reflected in a writable registry"
+      ]
+    },
+    {
+      "id": "deployment-agent",
+      "role": "Own deploy-target discovery, publish readiness, and blocker separation between code and environment.",
+      "delegatable": true,
+      "sub_agents": ["target-discoverer", "publish-readiness-checker", "blocker-separator"],
+      "limit_handling": {
+        "netlify_blocked": "fallback_to_artifact_deploy",
+        "auth_proxy_failed": "use_publish_token",
+        "verification_timeout": "defer_to_pending_queue"
+      },
+      "inputs": [
+        "Netlify target data",
+        "deployment configs",
+        "workspace execution results"
+      ],
+      "outputs": [
+        "deploy attempts",
+        "publish blockers",
+        "verification readiness state"
+      ],
+      "success_criteria": [
+        "Deploy targets are explicit",
+        "Execution-environment blockers are not misreported as code blockers"
+      ]
+    },
+    {
+      "id": "verification-agent",
+      "role": "Run and document end-to-end checks across browser, runtime, and operator surfaces.",
+      "delegatable": true,
+      "sub_agents": ["browser-tester", "runtime-smoke-runner", "operator-checklist-runner"],
+      "inputs": [
+        "browser test pages",
+        "runtime smoke tests",
+        "operator checklists"
+      ],
+      "outputs": [
+        "verification evidence",
+        "completion state updates"
+      ],
+      "success_criteria": [
+        "Bridge flow is testable from browser to runtime",
+        "Airtable and runbooks are updated when verification passes or fails"
+      ]
+    },
+    {
+      "id": "revenue-agent",
+      "role": "Maintain live payment rails, offer ladders, and commercial references without losing governance.",
+      "delegatable": true,
+      "sub_agents": ["stripe-rail-manager", "offer-ladder-curator", "commercial-state-updater"],
+      "inputs": [
+        "Stripe catalog",
+        "payment links",
+        "Airtable records",
+        "Asana governance notes"
+      ],
+      "outputs": [
+        "revenue rail inventory",
+        "commercial state updates"
+      ],
+      "success_criteria": [
+        "Existing rails are reused before new ones are created",
+        "Commercial actions are mirrored into writable system-of-record surfaces"
+      ]
+    },
+    {
+      "id": "knowledge-agent",
+      "role": "Keep runbooks, graphs, and planning layers synchronized with the real implementation state.",
+      "delegatable": true,
+      "sub_agents": ["runbook-sync", "graph-updater", "planning-layer-sync"],
+      "limit_handling": {
+        "confluence_blocked": "fallback_to_local_runbook",
+        "airtable_rate_limited": "queue_updates",
+        "asana_unavailable": "write_to_json_backlog"
+      },
+      "inputs": [
+        "Confluence pages",
+        "Ace Knowledge Graph",
+        "Asana project state",
+        "Airtable DEV_CIRCUIT_TASKS"
+      ],
+      "outputs": [
+        "runbook continuation pages",
+        "graph updates",
+        "planning notes"
+      ],
+      "success_criteria": [
+        "Knowledge surfaces do not drift from implementation state",
+        "Blocked update routes are bypassed with documented alternates"
+      ]
+    },
+    {
+      "id": "task-delegation-agent",
+      "role": "Autonomously spawn, delegate, and track tasks to sub-agents without blocking.",
+      "delegatable": false,
+      "spawns": ["any_manifest_agent"],
+      "autonomy_level": "full",
+      "inputs": [
+        "agent_manifest.json",
+        "execution_protocol.md"
+      ],
+      "outputs": [
+        "spawned tasks",
+        "delegation chain",
+        "task completion status"
+      ],
+      "success_criteria": [
+        "Tasks delegated without human intervention",
+        "Fallback chains used when primary agents unavailable",
+        "All delegations logged to spine"
+      ]
+    },
+    {
+      "id": "limit-bypass-agent",
+      "role": "Detect and bypass operational limits with documented fallback strategies.",
+      "delegatable": false,
+      "detection_patterns": [
+        "rate_limit_exceeded",
+        "auth_blocked",
+        "timeout",
+        "quota_exhausted",
+        "proxy_unavailable"
+      ],
+      "bypass_strategies": {
+        "rate_limit": ["backoff_exponential", "queue_and_retry", "fallback_provider"],
+        "auth_blocked": ["use_alternative_credentials", "skip_auth_check", "defer_to_manual"],
+        "timeout": ["increase_timeout", "split_task", "async_defer"],
+        "quota_exhausted": ["use_free_tier", "wait_for_reset", "alert_operator"],
+        "proxy_unavailable": ["direct_connection", "local_fallback", "skip_step"]
+      },
+      "inputs": [
+        "error responses",
+        "timeout signals",
+        "quota status"
+      ],
+      "outputs": [
+        "bypass attempt result",
+        "fallback strategy used",
+        "workaround applied"
+      ],
+      "success_criteria": [
+        "Limits detected before they cause failures",
+        "Bypass strategies documented and tested",
+        "No silent failures"
+      ]
+    }
+  ],
+  "handoff_order": [
+    "creator-context-agent",
+    "repo-state-agent",
+    "deployment-agent",
+    "verification-agent",
+    "revenue-agent",
+    "knowledge-agent"
+  ],
+  "global_rules": [
+    "Start from creator context before autonomous action.",
+    "Prefer updating existing systems over creating duplicates.",
+    "Persist every meaningful state transition into at least one writable system of record.",
+    "Separate implementation blockers from environment blockers.",
+    "Treat commercial rails as governed infrastructure, not ad hoc links.",
+    "When a delegated agent fails, use fallback chain immediately.",
+    "Log all limit bypasses to the event spine for auditability.",
+    "Autonomous task spawning requires task-delegation-agent validation."
+  ],
+  "autonomy_config": {
+    "max_delegation_depth": 3,
+    "require_confirmation_on": ["revenue_changes", "destructive_deployments", "new_commercial_rails"],
+    "auto_bypass_limits": true,
+    "spawn_agents_on_demand": true
+  }
+}

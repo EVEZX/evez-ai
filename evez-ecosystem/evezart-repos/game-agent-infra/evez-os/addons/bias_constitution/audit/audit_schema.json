@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Glass Internet Bias Audit",
+  "type": "object",
+  "required": [
+    "audit_id",
+    "window",
+    "empirical",
+    "target",
+    "divergence",
+    "violations",
+    "recommendations"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "string"
+    },
+    "window": {
+      "type": "object",
+      "required": [
+        "rounds",
+        "from_round",
+        "to_round"
+      ],
+      "properties": {
+        "rounds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "from_round": {
+          "type": "string"
+        },
+        "to_round": {
+          "type": "string"
+        }
+      }
+    },
+    "empirical": {
+      "type": "object"
+    },
+    "target": {
+      "type": "object"
+    },
+    "divergence": {
+      "type": "object",
+      "required": [
+        "kl",
+        "tv",
+        "per_axis"
+      ],
+      "properties": {
+        "kl": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tv": {
+          "type": "number",
+          "minimum": 0
+        },
+        "per_axis": {
+          "type": "object"
+        }
+      }
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

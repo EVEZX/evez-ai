@@ -1,0 +1,18 @@
+{
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
+  ],
+  "env": {
+    "BRAIN_ID": "vercel-alpha",
+    "GROQ_MODEL": "llama-3.3-70b-versatile"
+  }
+}

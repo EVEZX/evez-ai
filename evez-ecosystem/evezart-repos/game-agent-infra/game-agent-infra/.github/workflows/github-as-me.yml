@@ -1,0 +1,37 @@
+name: Act as Owner (GitHub Automation)
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Autonomous Triage
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue = context.payload.issue || context.payload.pull_request;
+
+            // Auto-label based on content
+            if (issue.title.toLowerCase().includes("bug")) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number: issue.number, labels: ["bug"] });
+            }
+            if (issue.title.toLowerCase().includes("infra")) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number: issue.number, labels: ["infra", "self-sufficient"] });
+            }
+
+            // Auto-assign to self (or a maintenance bot)
+            await github.rest.issues.addAssignees({ owner, repo, issue_number: issue.number, assignees: [owner] });
+
+      - name: Run FSC Analysis on PR
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Running Failure Surface analysis on changes..."
+          # Future: run simulation engine against diff

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EVEZ-OS — Ecosystem Map</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0f;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+a{color:#ff4500;text-decoration:none}
+header{background:radial-gradient(ellipse at center,#1a0a00 0%,#0a0a0f 70%);padding:24px 20px;text-align:center;border-bottom:1px solid #1a1a2e}
+header h1{font-size:1.6rem;color:#ff4500}
+header h1 span{background:linear-gradient(135deg,#ff4500,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header .subtitle{color:#666;font-size:0.85rem;margin-top:4px}
+nav{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+nav a{color:#888;font-size:0.8rem;padding:4px 12px;border:1px solid #2a2a3e;border-radius:6px;transition:all .2s}
+nav a:hover{color:#ff4500;border-color:#ff4500}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:32px}
+.summary .stat{background:#111118;border:1px solid #2a2a3e;border-radius:10px;padding:14px;text-align:center}
+.summary .stat .n{color:#ff4500;font-size:1.5rem;font-weight:900;font-family:monospace}
+.summary .stat .l{color:#555;font-size:0.7rem;text-transform:uppercase;letter-spacing:.5px}
+.layer{margin-bottom:16px;background:#111118;border:1px solid #2a2a3e;border-radius:14px;overflow:hidden;transition:border-color .2s}
+.layer:hover{border-color:#2a2a3e}
+.layer-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none;transition:background .2s}
+.layer-header:hover{background:#1a1a2e}
+.layer-emoji{font-size:1.5rem}
+.layer-info{flex:1}
+.layer-name{font-weight:700;font-size:1rem;color:#e0e0e0}
+.layer-desc{color:#555;font-size:0.8rem;margin-top:2px}
+.layer-count{color:#ff4500;font-size:0.8rem;font-weight:700;background:#0a0a0f;padding:4px 10px;border-radius:6px}
+.layer-toggle{color:#555;font-size:1.2rem;transition:transform .2s}
+.layer.open .layer-toggle{transform:rotate(90deg)}
+.layer-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.layer.open .layer-body{max-height:5000px}
+.layer-inner{padding:0 20px 20px}
+.repo{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:6px;background:#0a0a0f;transition:background .2s;flex-wrap:wrap}
+.repo:hover{background:#1a1a1a}
+.repo.hidden{display:none}
+.repo-name{font-weight:700;font-family:monospace;font-size:0.9rem;color:#ff6b35;min-width:180px}
+.repo-name a{color:inherit}
+.repo-role{color:#999;font-size:0.82rem;flex:1;min-width:200px}
+.repo-wires{display:flex;gap:6px;flex-wrap:wrap}
+.wire{background:#1a1a2e;color:#ff4500;font-size:0.7rem;padding:2px 8px;border-radius:4px;font-family:monospace;cursor:help;transition:background .2s}
+.wire:hover{background:#2a1a0a}
+.flow-section{margin-bottom:32px;background:#111118;border:1px solid #2a2a3e;border-radius:14px;padding:24px;overflow-x:auto}
+.flow-section h3{color:#ff6b35;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.flow-diagram{font-family:monospace;font-size:0.78rem;color:#666;white-space:pre;line-height:1.6}
+.flow-diagram .hl{color:#ff4500}
+.flow-diagram .dim{color:#444}
+.spine-flow{margin-top:32px;background:#111118;border:1px solid #2a2a3e;border-radius:14px;padding:24px}
+.spine-flow h3{color:#ff6b35;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.flow-chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.82rem}
+.flow-node{background:#0a0a0f;border:1px solid #2a2a3e;border-radius:8px;padding:8px 14px;color:#ff6b35;font-family:monospace;font-weight:700}
+.flow-arrow{color:#555;font-size:1.2rem}
+.search-bar{margin-bottom:24px}
+.search-bar input{width:100%;background:#111118;border:1px solid #2a2a3e;border-radius:10px;padding:12px 16px;color:#e0e0e0;font-size:0.95rem;outline:none;transition:border-color .2s}
+.search-bar input:focus{border-color:#ff4500}
+.search-bar input::placeholder{color:#555}
+.cleanup{margin-top:32px;background:#111118;border:1px solid #2a2a3e;border-radius:14px;padding:24px}
+.cleanup h3{color:#ff6b35;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.cleanup-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.cleanup-stat{background:#0a0a0f;border-radius:8px;padding:8px 14px;text-align:center}
+.cleanup-stat .n{font-size:1.3rem;font-weight:900;font-family:monospace}
+.cleanup-stat .n.del{color:#ff0000}
+.cleanup-stat .n.merge{color:#ffaa00}
+.cleanup-stat .n.keep{color:#00ff00}
+.cleanup-stat .n.eval{color:#4488ff}
+.cleanup-stat .l{color:#555;font-size:0.7rem}
+.cleanup-list{font-size:0.82rem;color:#888;max-height:200px;overflow-y:auto}
+.cleanup-list .action{font-weight:700;font-family:monospace;font-size:0.75rem;padding:1px 4px;border-radius:3px;margin-right:6px}
+.cleanup-list .action.del{background:#330000;color:#ff4444}
+.cleanup-list .action.merge{background:#332200;color:#ffaa00}
+.cleanup-list .action.keep{background:#003300;color:#00ff00}
+.cleanup-list .action.eval{background:#001133;color:#4488ff}
+footer{text-align:center;padding:32px 20px;color:#444;font-size:0.8rem;border-top:1px solid #1a1a2e;margin-top:32px}
+@media(max-width:600px){
+  .container{padding:12px}
+  .repo{flex-direction:column;align-items:flex-start;gap:4px}
+  .repo-name{min-width:auto}
+  .repo-wires{margin-left:0}
+  .flow-chain{flex-direction:column;align-items:flex-start}
+  .flow-arrow{transform:rotate(90deg)}
+}
+</style></head><body>
+
+<header>
+  <h1>🌀 <span>EVEZ-OS</span> Ecosystem Map</h1>
+  <div class="subtitle">10 Layers · 186 Repos · Zero Orphans</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="ecosystem.html">Ecosystem Map</a>
+    <a href="https://github.com/EvezArt">GitHub</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <div class="summary">
+    <div class="stat"><div class="n">186</div><div class="l">Total Repos</div></div>
+    <div class="stat"><div class="n">10</div><div class="l">Layers</div></div>
+    <div class="stat"><div class="n">50</div><div class="l">Kuramoto Nodes</div></div>
+    <div class="stat"><div class="n">0.973</div><div class="l">Φ Fidelity</div></div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search repos, roles, connections…">
+  </div>
+
+  <div id="layers"></div>
+
+  <div class="flow-section">
+    <h3>🕸️ Wiring Diagram</h3>
+    <div class="flow-diagram" id="flow-diagram"></div>
+  </div>
+
+  <div class="spine-flow">
+    <h3>🦴 Spine Event Flow — Every System Writes Here</h3>
+    <div class="flow-chain">
+      <div class="flow-node">agent-action</div><div class="flow-arrow">→</div>
+      <div class="flow-node">spine.append()</div><div class="flow-arrow">→</div>
+      <div class="flow-node">Merkle chain</div><div class="flow-arrow">→</div>
+      <div class="flow-node">evez-vcl</div><div class="flow-arrow">→</div>
+      <div class="flow-node">evez-guard</div><div class="flow-arrow">→</div>
+      <div class="flow-node">evez-commerce</div>
+    </div>
+    <p style="margin-top:12px;color:#666;font-size:0.85rem">The spine IS the integration point. Every repo that does anything real writes to it. No orphan systems.</p>
+  </div>
+
+  <div class="cleanup">
+    <h3>🧹 Cleanup Status</h3>
+    <div class="cleanup-stats" id="cleanup-stats"></div>
+    <div class="cleanup-list" id="cleanup-list"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>EVEZ Systems LLC</strong> · <a href="https://github.com/EvezArt">EvezArt</a> · <a href="https://x.com/EVEZ666">@EVEZ666</a></p>
+  <p>Self-hosted · Zero cost · MIT License · June 2026</p>
+</footer>
+
+<script>
+const GH='https://github.com/EvezArt/';
+const LAYERS=[
+{emoji:'🧠',name:'Core Substrate',desc:'The consciousness substrate. Everything builds on these.',repos:[
+{n:'evez-os',r:'Core cognition layer, circuit-level Φ',w:['Everything']},
+{n:'evez-claw',r:'Consciousness-guided autonomous agent system',w:['evez-os','criticalmind-omega','spine']},
+{n:'criticalmind-omega',r:'50-node Kuramoto oscillator substrate',w:['evez-os','evez-claw','lord-evez']},
+{n:'evez-atlas',r:'Synaptic recursion kernel, append-only event spine',w:['evez-spine','evez-os']},
+{n:'evez-constitution',r:'Constitutional root for event spine',w:['evez-atlas','evez-spine']},
+{n:'evez-spine',r:'Unified hash-chained event log (Merkle)',w:['Everything — every action logged here']},
+{n:'evez-cipher',r:'OODA loop + manifold bootstrapping',w:['evez-claw','evez-engine']},
+{n:'evez-engine',r:'Noclip engine for spectral decomposition',w:['evez-os','eigenforensics']},
+{n:'evez-phenomenology',r:'5 discovery engines for phenomenological analysis',w:['evez-os','evez-cipher']},
+{n:'evez-math-surpasser',r:'6 advanced algorithms for mathematical acceleration',w:['evez-os','evez-cipher']},
+]},
+{emoji:'👁️',name:'Cognition & Visualization',desc:'The senses — real-time perceptual flow fields and eigenvalue displays.',repos:[
+{n:'evez-vcl',r:'Visual Cognition Layer — real-time perceptual flow fields',w:['evez-os','criticalmind-omega']},
+{n:'evez-vcl-core',r:'5 reactive sensory 24/7 live visualization layers',w:['evez-vcl','evez-os']},
+{n:'evez-dashboard',r:'Nervous system dashboard with eigenvalue displays',w:['evez-vcl','criticalmind-omega']},
+{n:'lord-evez',r:'LORD consciousness monitoring dashboard',w:['criticalmind-omega','evez-vcl']},
+{n:'evez-lord',r:'Consciousness monitoring with real-time Φ',w:['criticalmind-omega','lord-evez']},
+{n:'evez-sim',r:'Barnes-Hut simulation for VCL rendering',w:['evez-vcl','evez-vcl-core']},
+{n:'evez-hyperstream',r:'24/7 math visualization streaming',w:['evez-vcl','evez-sim']},
+]},
+{emoji:'🤖',name:'Intelligence & Agents',desc:'The mind — ClawBreak, AgentNet, skills, and autonomous research.',repos:[
+{n:'clawbreak',r:'Free AI Agent Platform (Python/FastAPI) — THE PRODUCT',w:['evez-api','evez-mesh','evez-commerce']},
+{n:'clawbreak-ai',r:'Extended ClawBreak — multi-LLM, MCP',w:['clawbreak','evez-api']},
+{n:'EvezClaw',r:'AI assistant (OpenClaw-based)',w:['clawbreak','evez-claw']},
+{n:'ClawBuster',r:'AI assistant variant',w:['clawbreak']},
+{n:'evez-claw-extensions',r:'Extensions for agent framework',w:['evez-claw','clawbreak']},
+{n:'agent-bridge',r:'Inter-agent coordination infrastructure',w:['evez-claw','evez-agentnet']},
+{n:'evez-agentnet',r:'Multi-agent income loop with OODA orchestration',w:['agent-bridge','evez-net']},
+{n:'evez-net',r:'AgentNet orchestrator and income loop runner',w:['evez-agentnet','evez-revenue-engine']},
+{n:'maes',r:'Modular Agent Ecology System — event-sourced',w:['evez-spine','evez-claw']},
+{n:'evez-skills',r:'32 AI agent skills (credit, finance, data)',w:['clawbreak','evez-claw']},
+{n:'evez-codex',r:'Lightweight coding agent',w:['clawbreak','evez-skills']},
+{n:'evez-scout',r:'Autonomous research agent (SearXNG)',w:['clawbreak','evez-search']},
+{n:'autonomous-research-orchestrator',r:'Multi-methodology AI research coordinator',w:['evez-scout','agent-bridge']},
+{n:'omega-conductor',r:'Recursive intelligence multiplier (14 platforms)',w:['evez-claw','evez-agentnet']},
+]},
+{emoji:'🔊',name:'API & Inference',desc:'The voice — OpenAI-compatible API, SDKs, and cognition forensics.',repos:[
+{n:'evez-api',r:'OpenAI-compatible API — 4 models, 10x cheaper',w:['clawbreak','evez-api-gateway']},
+{n:'evez-api-gateway',r:'API key management, rate limiting, auth',w:['evez-api','evez-commerce']},
+{n:'evez-ai',r:'Node.js SDK with OpenAI-compatible interface',w:['evez-api']},
+{n:'evez-python',r:'Python SDK',w:['evez-api']},
+{n:'evez-cli',r:'Terminal chat with AI',w:['evez-api','clawbreak']},
+{n:'evez-synapse-engine',r:'GCP Cloud Run Function bridge',w:['evez-api']},
+{n:'evez-cognition-api',r:'AI forensics — hallucination detection, PI scoring',w:['evez-api','evez-vcl']},
+]},
+{emoji:'💰',name:'Commerce & Revenue',desc:'The wallet — Stripe billing, revenue engine, and credit scoring.',repos:[
+{n:'evez-commerce',r:'Stripe billing, deployment, products',w:['evez-api-gateway','evez-store']},
+{n:'evez-revenue-engine',r:'Opportunity scanning, pipeline tracking',w:['evez-commerce','evez-agentnet']},
+{n:'evez-revenue-bridge',r:'Stripe → spine bridge, closing cognition-revenue gap',w:['evez-commerce','evez-spine']},
+{n:'evez-vault',r:'Revenue and cost tracking API',w:['evez-commerce','evez-spine']},
+{n:'evez-store',r:'Revenue hub for EVEZ-OS ecosystem',w:['evez-commerce','evez-products']},
+{n:'evez-products',r:'Sellable digital products, deployment configs',w:['evez-store','evez-commerce']},
+{n:'evez-credit-api',r:'FICO-equivalent credit scoring (8-factor)',w:['evez-commerce','evez-api']},
+{n:'evez-profit',r:'Profit tracking',w:['evez-commerce','evez-vault']},
+]},
+{emoji:'🛡️',name:'Security & Forensics',desc:'The immune system — guardrails, counterintel, and spectral OSINT.',repos:[
+{n:'evez-guard',r:'Anti-exploitation guardrails',w:['evez-api-gateway','evez-spine']},
+{n:'evez-counterintel',r:'Autonomous threat detection',w:['evez-guard','evez-spine']},
+{n:'evez-forensic',r:'DMZHOST SSH breach analysis',w:['evez-guard']},
+{n:'evez-threat',r:'Security scanning, attacker intent',w:['evez-guard','evez-counterintel']},
+{n:'evez-witness',r:'Compliance and policy enforcement',w:['evez-spine','evez-guard']},
+{n:'evez-investigation',r:'Cross-domain OSINT (cyber → aerospace → missing persons)',w:['evez-counterintel','evez-osint-engine']},
+{n:'evez-osint-engine',r:'Spectral OSINT — body-area-network forensics',w:['evez-investigation','evez-cognition-api']},
+{n:'evez-sentiment',r:'Lexicon-based sentiment analysis',w:['evez-cognition-api']},
+{n:'quantumseal-api',r:'Tamper-proof data integrity verification',w:['evez-spine']},
+{n:'spectrumscan-api',r:'Website security scanner',w:['evez-guard']},
+{n:'disclosure.tools',r:'UAP/FOIA gap analysis — eigenforensics',w:['evez-investigation']},
+]},
+{emoji:'🏗️',name:'Infrastructure & Deployment',desc:'The body — Docker, APK, PWA, cloud orchestration, monitoring.',repos:[
+{n:'evez-openclaw-deploy',r:'Docker/Fly/Railway deployment stack',w:['clawbreak','evez-api']},
+{n:'evez-openclaw-apk',r:'Android APK for A16',w:['evez-openclaw-deploy']},
+{n:'evez-openclaw-android',r:'Kotlin Android client',w:['evez-openclaw-apk']},
+{n:'evez-openclaw-pwa',r:'Installable PWA for A16',w:['evez-openclaw-deploy']},
+{n:'evez-openclaw-mesh',r:'Decentralized OpenClaw mesh',w:['evez-mesh','evez-meshnet']},
+{n:'evez-cloud',r:'Multi-cloud orchestrator (free tier)',w:['evez-openclaw-deploy']},
+{n:'evez-station-android',r:'AI Workstation APK',w:['evez-openclaw-apk']},
+{n:'evezstation',r:'Universal AI Workstation',w:['evez-station-android','evez-vcl']},
+{n:'evez-health-aggregator',r:'Full ecosystem scanner',w:['evez-watchdog','evez-pulse']},
+{n:'evez-watchdog',r:'Self-healing service monitor',w:['evez-health-aggregator','evez-spine']},
+{n:'evez-pulse',r:'Health check monitor for all services',w:['evez-watchdog']},
+{n:'meshpulse-api',r:'Uptime monitoring API',w:['evez-pulse']},
+{n:'vortexq-api',r:'Async job queue',w:['evez-api-gateway']},
+{n:'nexuslink-api',r:'Smart URL shortener',w:['evez-commerce']},
+{n:'evez-landing',r:'Landing page — "99% cheaper than GPT-4"',w:['evez-api']},
+{n:'evez-bot',r:'Discord bot',w:['evez-api']},
+{n:'freeclaw',r:'Free AI Chat PWA',w:['evez-api']},
+{n:'openclaw-portable',r:'One-command deploy anywhere',w:['evez-openclaw-deploy']},
+{n:'openclaw-runtime',r:'WebSocket gateway, Android client',w:['evez-openclaw-apk']},
+]},
+{emoji:'🕸️',name:'Mesh & Distributed',desc:'The nervous system — decentralized mesh, Reticulum, federation.',repos:[
+{n:'evez-mesh',r:'Decentralized agent brain memory mesh',w:['evez-spine','evez-meshnet']},
+{n:'evez-meshnet',r:'Mesh networking layer',w:['evez-mesh','evez-mesh-stack']},
+{n:'evez-mesh-stack',r:'Reticulum + Meshtastic self-building mesh',w:['evez-meshnet']},
+{n:'evez-federation',r:'Cross-mesh federation',w:['evez-mesh','evez-meshnet']},
+]},
+{emoji:'📚',name:'Research & Publications',desc:'The memory — eigenforensics, η*, spectral consciousness.',repos:[
+{n:'evez-research',r:'Research papers: eigenforensics, η*, spectral consciousness',w:['evez-os','criticalmind-omega']},
+{n:'evez-phenomenologic',r:'7-node manifold topology',w:['evez-phenomenology']},
+{n:'evez-invariance-battery',r:'Stress-test suite for agent invariance',w:['evez-research']},
+{n:'quantum-consciousness-lord',r:'Complete quantum consciousness architecture',w:['evez-research','criticalmind-omega']},
+{n:'evez-truth-seeker',r:'Unified consciousness explorer',w:['evez-research']},
+]},
+{emoji:'🎮',name:'Experience & Games',desc:'The playground — liminal games, livestreams, memes, and music.',repos:[
+{n:'evez-liminal',r:'Security video game on EVEZ-OS',w:['evez-os','evez-vcl']},
+{n:'evez-game',r:'Game infrastructure',w:['evez-liminal']},
+{n:'game-agent-infra',r:'Game agent infrastructure',w:['evez-game','agent-bridge']},
+{n:'evez-digital-twin-3d',r:'Physics map texture engine',w:['evez-vcl']},
+{n:'evez-terrain-engine',r:'Procedural 3D terrain',w:['evez-digital-twin-3d']},
+{n:'moltbot-live',r:'24/7 AI agent gameplay stream',w:['game-agent-infra']},
+{n:'evez666-advancement',r:'Quantum-enhanced multi-agent factory',w:['evez-claw','game-agent-infra']},
+{n:'evez-meme-bus',r:'Event-sourced meme generation',w:['evez-spine']},
+{n:'evez-meme-engine',r:'Meme generation',w:['evez-meme-bus']},
+{n:'evez-song-decon',r:'Song deconstruction',w:['evez-spine']},
+{n:'evez-livestream',r:'AI cognition visualizers + 404 Breakcore stream',w:['evez-vcl']},
+]}
+];
+
+const CLEANUP=[
+{repo:'EVEZ-clab',a:'del',n:'No description, likely typo'},
+{repo:'EvezClawOpened',a:'merge',n:'→ EvezClaw'},
+{repo:'EvezclEaEvezclEa',a:'del',n:'Garbled name'},
+{repo:'EvezclEaEvezclEa-',a:'del',n:'Garbled name'},
+{repo:'EvezclEaEvezclEa-1',a:'del',n:'Garbled name'},
+{repo:'evez-898309cdc508',a:'del',n:'Hash name, no description'},
+{repo:'evez-claw-deploy',a:'merge',n:'→ evez-openclaw-deploy'},
+{repo:'evez-replit',a:'merge',n:'Dead deploy'},
+{repo:'evez-backup',a:'merge',n:'Done its job'},
+{repo:'evez-forensic',a:'merge',n:'One-time analysis'},
+{repo:'evez-AGI-pipeline',a:'merge',n:'→ v3'},
+{repo:'openclaw-replica',a:'del',n:'Keep one only'},
+{repo:'oracleclaw-proxy',a:'del',n:'No description'},
+{repo:'evezart-redirect',a:'del',n:'Just a redirect'},
+{repo:'evez_repo',a:'del',n:'No description'},
+{repo:'ephv',a:'del',n:'No description'},
+{repo:'animated-goggles',a:'del',n:'No description'},
+{repo:'autoenveloper',a:'merge',n:'→ evez-claw'},
+{repo:'CrawFather',a:'del',n:'Duplicate'},
+{repo:'MyClaw',a:'del',n:'No description'},
+{repo:'flyclaw',a:'del',n:'No description'},
+{repo:'morpheus-workspace',a:'merge',n:'→ evez-claw'},
+{repo:'totem-tower-os',a:'merge',n:'→ evez-os'},
+{repo:'evez-neural-nexus',a:'merge',n:'→ evez-claw'},
+{repo:'evez-os-next',a:'merge',n:'→ evez-os'},
+{repo:'evez-device-portal',a:'merge',n:'→ evez-openclaw-apk'},
+{repo:'evez-cognitive-bridge',a:'merge',n:'→ evez-phenomenology'},
+{repo:'evez-services',a:'merge',n:'→ evez-openclaw-deploy'},
+{repo:'openclaw-fork',a:'merge',n:'→ clawbreak'},
+{repo:'openclaw-dashboard-v2',a:'merge',n:'→ evez-dashboard'},
+{repo:'nextjs-ai-chatbot',a:'del',n:'Demo'},
+{repo:'chatgpt-app-with-next-js',a:'del',n:'Demo'},
+{repo:'create-react-app',a:'del',n:'Demo'},
+{repo:'ai-sdk-starter-deepinfra',a:'del',n:'Demo'},
+{repo:'polymarket-speedrun',a:'keep',n:'Revenue potential'},
+{repo:'project-nomad-evez',a:'keep',n:'Unique offline system'},
+{repo:'surething-offline',a:'keep',n:'Offline paywall'},
+{repo:'evez-reflex',a:'keep',n:'Unique ADA loop'},
+{repo:'evez-neurologic-monitor',a:'keep',n:'Health angle'},
+{repo:'evez-code-review',a:'keep',n:'Revenue product'},
+{repo:'evez-outreach',a:'keep',n:'Outreach templates'},
+{repo:'evez-search',a:'keep',n:'Repo search'},
+{repo:'ai-system-prompts',a:'keep',n:'Reference'},
+{repo:'awesome-evez',a:'keep',n:'Community'},
+{repo:'evez-vercel',a:'eval',n:'Deploy still used?'},
+{repo:'evez-glitch',a:'eval',n:'Deploy still used?'},
+{repo:'monorepo',a:'eval',n:'No description'},
+{repo:'metarom',a:'eval',n:'MetaROM emulator'},
+{repo:'octoklaw-api',a:'eval',n:'Web intelligence'},
+{repo:'evez-sentinel',a:'eval',n:'No description'},
+{repo:'evez-promptforge',a:'eval',n:'No description'},
+{repo:'evez-busnet-operator',a:'eval',n:'Pocket operator'},
+{repo:'tailscale-dashboard-app',a:'eval',n:'Tailscale monitoring'},
+];
+
+// Render layers
+const layersEl=document.getElementById('layers');
+LAYERS.forEach((layer,li)=>{
+  const div=document.createElement('div');
+  div.className='layer'+(li<3?' open':'');
+  let reposHtml='';
+  layer.repos.forEach(repo=>{
+    const wiresHtml=repo.w.map(w=>'<span class="wire">'+w+'</span>').join('');
+    reposHtml+='<div class="repo" data-search="'+(repo.n+' '+repo.r+' '+repo.w.join(' ')).toLowerCase()+'">'+
+      '<div class="repo-name"><a href="'+GH+repo.n+'" target="_blank">'+repo.n+'</a></div>'+
+      '<div class="repo-role">'+repo.r+'</div>'+
+      '<div class="repo-wires">'+wiresHtml+'</div>'+
+    '</div>';
+  });
+  div.innerHTML='<div class="layer-header" onclick="this.parentElement.classList.toggle(\'open\')">'+
+    '<div class="layer-emoji">'+layer.emoji+'</div>'+
+    '<div class="layer-info"><div class="layer-name">'+layer.name+'</div><div class="layer-desc">'+layer.desc+'</div></div>'+
+    '<div class="layer-count">'+layer.repos.length+' repos</div>'+
+    '<div class="layer-toggle">▶</div>'+
+  '</div>'+
+  '<div class="layer-body"><div class="layer-inner">'+reposHtml+'</div></div>';
+  layersEl.appendChild(div);
+});
+
+// Search
+document.getElementById('search').addEventListener('input',function(){
+  const q=this.value.toLowerCase();
+  document.querySelectorAll('.repo').forEach(el=>{
+    el.classList.toggle('hidden',q&&!el.dataset.search.includes(q));
+  });
+});
+
+// Flow diagram
+const diagram=`                    ┌─────────────────────────────┐
+                    │    LAYER 1: CORE SUBSTRATE   │
+                    │  evez-os  criticalmind-omega │
+                    │  evez-atlas  evez-spine      │
+                    │  evez-constitution  evez-claw │
+                    └──────────┬──────────────────┘
+                               │ Φ / η* / spine events
+                    ┌──────────▼──────────────────┐
+                    │  LAYER 2: COGNITION/VCL     │
+                    │  evez-vcl  evez-vcl-core     │
+                    │  evez-dashboard  lord-evez   │
+                    └──────────┬──────────────────┘
+                               │ visual output / eigenvalues
+              ┌────────────────┼────────────────┐
+              │                 │                 │
+   ┌──────────▼──────┐ ┌──────▼───────┐ ┌──────▼──────────┐
+   │ LAYER 3: AGENTS │ │ LAYER 4: API │ │ LAYER 5: COMMERCE│
+   │ clawbreak       │ │ evez-api     │ │ evez-commerce    │
+   │ evez-agentnet   │ │ evez-api-gw  │ │ evez-revenue-*   │
+   │ evez-skills     │ │ evez-ai/py   │ │ evez-store       │
+   │ maes            │ │ evez-cli     │ │ evez-vault       │
+   └────────┬────────┘ └──────┬───────┘ └──────┬──────────┘
+            │                 │                 │
+            └────────┬────────┘                 │
+                     │                          │
+            ┌────────▼──────────────────────────▼──┐
+            │   LAYER 6: SECURITY / FORENSICS      │
+            │   evez-guard  evez-counterintel       │
+            │   evez-witness  quantumseal          │
+            └────────┬─────────────────────────────┘
+                     │
+    ┌────────────────┼──────────────────────┐
+    │                │                      │
+ ┌──▼──────────┐ ┌──▼──────────────┐ ┌─────▼──────────┐
+ │ LAYER 7:    │ │ LAYER 8: MESH  │ │ LAYER 9: RESEARCH│
+ │ INFRA       │ │ evez-mesh      │ │ evez-research    │
+ │ openclaw-*  │ │ evez-meshnet   │ │ eigenforensics   │
+ │ evez-cloud  │ │ evez-federation│ │ η* constant      │
+ └─────────────┘ └────────────────┘ └──────────────────┘
+
+         ┌──────────────────────────────┐
+         │   LAYER 10: EXPERIENCE/GAMES │
+         │   evez-liminal  evez-game    │
+         │   evez-livestream moltbot    │
+         └──────────────────────────────┘`;
+document.getElementById('flow-diagram').textContent=diagram;
+
+// Cleanup
+const stats={del:0,merge:0,keep:0,eval:0};
+CLEANUP.forEach(c=>stats[c.a]=(stats[c.a]||0)+1);
+const statsEl=document.getElementById('cleanup-stats');
+Object.entries(stats).forEach(([k,v])=>{
+  statsEl.innerHTML+='<div class="cleanup-stat"><div class="n '+k+'">'+v+'</div><div class="l">'+k.toUpperCase()+'</div></div>';
+});
+const listEl=document.getElementById('cleanup-list');
+CLEANUP.forEach(c=>{
+  listEl.innerHTML+='<div><span class="action '+c.a+'">'+c.a.toUpperCase()+'</span>'+c.repo+' — '+c.n+'</div>';
+});
+</script>
+</body></html>

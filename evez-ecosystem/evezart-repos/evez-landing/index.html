@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EVEZ API — OpenAI-Compatible AI, 10x Cheaper</title>
+<meta name="description" content="Drop-in OpenAI replacement. 4 models. Free tier. No credit card. Built on free infrastructure by EvezArt.">
+<meta property="og:title" content="EVEZ API — AI for Everyone">
+<meta property="og:description" content="OpenAI-compatible API. 10x cheaper. Free tier with 100K tokens.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#08080a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+a{color:#8b7cf6;text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:0 24px}
+nav{padding:20px 0;display:flex;justify-content:space-between;align-items:center}
+nav .logo{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+nav .logo span{color:#8b7cf6}
+nav .links a{color:#888;margin-left:24px;font-size:14px}
+nav .links a:hover{color:#fff}
+.hero{text-align:center;padding:80px 0 60px}
+.hero h1{font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:16px}
+.hero h1 .purple{color:#8b7cf6}
+.hero p{color:#999;font-size:20px;max-width:600px;margin:0 auto 32px;line-height:1.5}
+.hero .cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.hero .cta a{padding:14px 28px;border-radius:12px;font-weight:600;font-size:16px;transition:all .15s}
+.hero .cta .primary{background:#8b7cf6;color:#fff}
+.hero .cta .primary:hover{background:#a29bfe;transform:translateY(-1px)}
+.hero .cta .secondary{background:#1a1a2e;color:#8b7cf6;border:1px solid #2a2a3e}
+.hero .cta .secondary:hover{border-color:#8b7cf6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0}
+.stat{background:#111118;border:1px solid #1e1e2e;border-radius:16px;padding:24px;text-align:center}
+.stat .number{font-size:32px;font-weight:800;color:#8b7cf6}
+.stat .label{color:#888;font-size:14px;margin-top:4px}
+.models{margin:60px 0}
+.models h2{text-align:center;font-size:32px;font-weight:700;margin-bottom:32px;letter-spacing:-1px}
+.models h2 span{color:#8b7cf6}
+.model-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.model-card{background:#111118;border:1px solid #1e1e2e;border-radius:16px;padding:28px;transition:border-color .2s}
+.model-card:hover{border-color:#8b7cf6}
+.model-card .name{font-size:20px;font-weight:700;margin-bottom:4px}
+.model-card .name .tag{font-size:11px;background:#8b7cf6;color:#fff;padding:2px 8px;border-radius:6px;margin-left:8px;vertical-align:middle}
+.model-card .desc{color:#888;font-size:14px;margin-bottom:12px}
+.model-card .meta{display:flex;gap:16px;color:#666;font-size:13px}
+.code-section{margin:60px 0}
+.code-section h2{text-align:center;font-size:32px;font-weight:700;margin-bottom:24px;letter-spacing:-1px}
+.code-block{background:#111118;border:1px solid #1e1e2e;border-radius:16px;padding:24px;font-family:'SF Mono',Consolas,monospace;font-size:14px;line-height:1.8;overflow-x:auto}
+.code-block .comment{color:#6a9955}
+.code-block .string{color:#ce9178}
+.code-block .keyword{color:#569cd6}
+.pricing{margin:60px 0}
+.pricing h2{text-align:center;font-size:32px;font-weight:700;margin-bottom:32px;letter-spacing:-1px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.price-card{background:#111118;border:1px solid #1e1e2e;border-radius:16px;padding:32px;text-align:center;position:relative}
+.price-card.popular{border-color:#8b7cf6}
+.price-card.popular::before{content:'POPULAR';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#8b7cf6;color:#fff;padding:4px 16px;border-radius:8px;font-size:11px;font-weight:700}
+.price-card .plan{font-size:14px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.price-card .amount{font-size:48px;font-weight:800;margin-bottom:4px}
+.price-card .amount .period{font-size:16px;color:#888;font-weight:400}
+.price-card .features{list-style:none;margin:20px 0;text-align:left}
+.price-card .features li{padding:! 8px 0;color:#aaa;font-size:14px;border-bottom:1px solid #1e1e2e}
+.price-card .features li::before{content:'✓ ';color:#00b894;font-weight:700}
+.price-card a{display:block;padding:12px;border-radius:10px;font-weight:600;margin-top:8px;transition:all .15s}
+.price-card .btn-primary{background:#8b7cf6;color:#fff}
+.price-card .btn-primary:hover{background:#a29bfe}
+.price-card .btn-secondary{background:#1a1a2e;color:#8b7cf6;border:1px solid #2a2a3e}
+footer{text-align:center;padding:40px 0;color:#444;font-size:13px;border-top:1px solid #1e1e2e}
+footer a{color:#666}
+@media(max-width:768px){
+.hero h1{font-size:36px}
+.stats{grid-template-columns:1fr}
+.model-grid{grid-template-columns:1fr}
+.pricing-grid{grid-template-columns:1fr}
+}
+</style></head><body>
+<div class="container">
+<nav><div class="logo">EVEZ<span>API</span></div><div class="links"><a href="#models">Models</a><a href="#code">Docs</a><a href="#pricing">Pricing</a><a href="https://evez-api2.fly.dev/signup">Get Key →</a></div></nav>
+<section class="hero">
+<h1>AI for <span class="purple">everyone</span></h1>
+<p>OpenAI-compatible API. Drop-in replacement. 10x cheaper. Free tier with 100K tokens. No credit card. Instant.</p>
+<div class="cta"><a href="https://evez-api2.fly.dev/signup" class="primary">Get Free API Key</a><a href="#code" class="secondary">View Docs</a></div>
+</section>
+<section class="stats">
+<div class="stat"><div class="number">$0.002</div><div class="label">per 1K input tokens</div></div>
+<div class="stat"><div class="number">4</div><div class="label">production models</div></div>
+<div class="stat"><div class="number">100K</div><div class="label">free tokens on signup</div></div>
+</section>
+<section class="models" id="models">
+<h2>Production <span>Models</span></h2>
+<div class="model-grid">
+<div class="model-card"><div class="name">evez-smart <span class="tag">BEST</span></div><div class="desc">GLM-5.1 — Best overall for reasoning, analysis & creative writing</div><div class="meta"><span>32K context</span><span>Recommended</span></div></div>
+<div class="model-card"><div class="name">evez-code</div><div class="desc">DeepSeek V3.2 — Code generation, debugging & technical tasks</div><div class="meta"><span>65K context</span><span>Code specialist</span></div></div>
+<div class="model-card"><div class="name">evez-fast</div><div class="desc">MiniMax M2.5 — Quick, balanced responses for chat & Q&A</div><div class="meta"><span>32K context</span><span>Low latency</span></div></div>
+<div class="model-card"><div class="name">evez-vision</div><div class="desc">Kimi K2.5 — Multimodal understanding of images + text</div><div class="meta"><span>131K context</span><span>Vision capable</span></div></div>
+</div>
+</section>
+<section class="code-section" id="code">
+<h2>Swap one line of <span>code</span></h2>
+<div class="code-block">
+<span class="comment">// Works with OpenAI SDK, LangChain, Cursor, anything</span><br>
+<span class="keyword">import</span> OpenAI <span class="keyword">from</span> <span class="string">'openai'</span><br><br>
+<span class="keyword">const</span> client = <span class="keyword">new</span> OpenAI({<br>
+&nbsp;&nbsp;baseURL: <span class="string">'https://evez-api2.fly.dev/v1'</span>,<br>
+&nbsp;&nbsp;apiKey: <span class="string">'evez-your-key'</span><br>
+})<br><br>
+<span class="keyword">const</span> response = <span class="keyword">await</span> client.chat.completions.create({<br>
+&nbsp;&nbsp;model: <span class="string">'evez-smart'</span>,<br>
+&nbsp;&nbsp;messages: [{ role: <span class="string">'user'</span>, content: <span class="string">'Hello!'</span> }]<br>
+})
+</div>
+</section>
+<section class="pricing" id="pricing">
+<h2>Simple <span>Pricing</span></h2>
+<div class="pricing-grid">
+<div class="price-card"><div class="plan">Free</div><div class="amount">$0<span class="period">/mo</span></div><ul class="features"><li>100K tokens included</li><li>All 4 models</li><li>20 requests/min</li><li>Community support</li></ul><a href="https://evez-api2.fly.dev/signup" class="btn-primary">Get Started</a></div>
+<div class="price-card popular"><div class="plan">Pro</div><div class="amount">$5<span class="period">/mo</span></div><ul class="features"><li>Unlimited tokens</li><li>All 4 models</li><li>120 requests/min</li><li>Priority support</li></ul><a href="https://buy.stripe.com/00waEZflx4WrbArgbM0RG0p" class="btn-primary">Subscribe</a></div>
+<div class="price-card"><div class="plan">Business</div><div class="amount">$25<span class="period">/mo</span></div><ul class="features"><li>Unlimited tokens</li><li>All 4 models</li><li>120 requests/min</li><li>SLA guarantee</li><li>Team management</li></ul><a href="https://buy.stripe.com/00wfZj3CPex16g75x80RG0r" class="btn-secondary">Subscribe</a></div>
+</div>
+</section>
+<footer>Built by <a href="https://github.com/EvezArt">EvezArt</a> on free infrastructure. Open source at <a href="https://github.com/EvezArt/evez-api">GitHub</a>.<br>api.evez.dev — because AI should be for everyone.</footer>
+</div>
+</body></html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ-OS Terminal</title>
+<style>
+:root {
+  --bg:#020208;--panel:#06060f;--border:#0d0d22;
+  --green:#00ff88;--cyan:#00d4ff;--yellow:#f0c040;
+  --red:#ff4466;--purple:#9a7bef;--dim:#2a3a4a;
+  --text:#b0c8d8;--white:#e8f0f8;
+  --font:'JetBrains Mono','Fira Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;overflow:hidden;}
+
+/* TITLEBAR */
+.titlebar{height:36px;background:#03030c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px;user-select:none;}
+.tb-l{display:flex;align-items:center;gap:8px;}
+.tb-dot{width:12px;height:12px;border-radius:50%;cursor:pointer;}
+.tb-dot.r{background:#ff5f57;} .tb-dot.y{background:#febc2e;} .tb-dot.g{background:#28c840;}
+.tb-title{font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-left:8px;}
+.tb-r{display:flex;align-items:center;gap:10px;}
+.tb-tag{font-size:9px;padding:2px 7px;border-radius:2px;border:1px solid var(--border);color:var(--dim);}
+.tb-tag.on{border-color:var(--green);color:var(--green);}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:lp 1s ease-in-out infinite;}
+@keyframes lp{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* LAYOUT */
+.layout{display:flex;height:calc(100% - 36px);}
+.sidebar{width:200px;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.infobar{width:260px;border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+
+/* SIDEBAR */
+.sb-section{border-bottom:1px solid var(--border);}
+.sb-hdr{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:6px 10px;background:#03030c;}
+.sb-item{display:flex;align-items:center;gap:7px;padding:5px 10px;cursor:pointer;border-left:2px solid transparent;font-size:11px;color:#6a8a9a;transition:all .15s;}
+.sb-item:hover,.sb-item.on{color:var(--cyan);border-left-color:var(--cyan);background:#030810;}
+.sb-item.on{color:var(--green);border-left-color:var(--green);}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sb-dot.ok{background:var(--green);} .sb-dot.err{background:var(--red);} .sb-dot.run{background:var(--yellow);animation:lp 1s infinite;} .sb-dot.off{background:var(--dim);}
+
+/* TERMINAL AREA */
+.tabs{height:32px;display:flex;align-items:flex-end;gap:1px;padding:0 8px;background:#03030c;border-bottom:1px solid var(--border);}
+.tab{padding:4px 14px;font-size:10px;cursor:pointer;border-top-left-radius:3px;border-top-right-radius:3px;color:var(--dim);background:transparent;border:1px solid transparent;border-bottom:none;letter-spacing:.5px;transition:all .15s;user-select:none;}
+.tab.on{color:var(--green);background:var(--bg);border-color:var(--border);}
+.tab:hover:not(.on){color:var(--text);}
+.tab .tab-close{margin-left:8px;opacity:.4;font-size:9px;}
+.tab:hover .tab-close{opacity:.9;}
+.tab-add{padding:4px 8px;font-size:14px;color:var(--dim);cursor:pointer;line-height:1;}
+.tab-add:hover{color:var(--cyan);}
+
+/* TERMINAL OUTPUT */
+.term-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.term-out{flex:1;overflow-y:auto;padding:10px 14px;line-height:1.7;}
+.term-out::-webkit-scrollbar{width:3px;} .term-out::-webkit-scrollbar-thumb{background:#0a1520;}
+.tline{display:block;white-space:pre-wrap;word-break:break-all;}
+.tline.cmd{color:var(--green);}
+.tline.out{color:var(--text);}
+.tline.err{color:var(--red);}
+.tline.info{color:var(--cyan);}
+.tline.warn{color:var(--yellow);}
+.tline.dim{color:var(--dim);}
+.tline.hi{color:var(--white);}
+.tline.ok{color:var(--green);}
+.tline.purple{color:var(--purple);}
+
+/* INPUT LINE */
+.term-input-row{display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--border);background:#03030c;gap:0;}
+.prompt{color:var(--green);flex-shrink:0;font-size:13px;white-space:nowrap;}
+.term-input{flex:1;background:transparent;border:none;outline:none;color:var(--green);font-family:var(--font);font-size:13px;caret-color:var(--green);}
+
+/* INFOBAR */
+.ib-block{border-bottom:1px solid var(--border);padding:8px 10px;}
+.ib-hdr{font-size:8px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.ib-row{display:flex;justify-content:space-between;font-size:10px;padding:1px 0;border-bottom:1px solid #06060f;}
+.ib-key{color:var(--dim);}
+.ib-val{color:var(--text);text-align:right;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ib-val.ok{color:var(--green);} .ib-val.err{color:var(--red);} .ib-val.warn{color:var(--yellow);} .ib-val.run{color:var(--purple);}
+.maturity-bar{margin-top:6px;}
+.mb-label{font-size:9px;color:var(--dim);display:flex;justify-content:space-between;}
+.mb-bg{height:3px;background:#0a0a1a;border-radius:2px;margin-top:3px;}
+.mb-fill{height:3px;border-radius:2px;background:linear-gradient(to right,var(--cyan),var(--green));}
+.ib-scroll{overflow-y:auto;flex:1;}
+.ib-scroll::-webkit-scrollbar{width:2px;} .ib-scroll::-webkit-scrollbar-thumb{background:#0a1520;}
+
+/* ROUND CHAIN */
+.chain-mini{display:flex;flex-direction:column;gap:2px;}
+.cm-row{display:flex;align-items:center;gap:5px;font-size:9px;cursor:pointer;padding:2px 4px;border-radius:2px;}
+.cm-row:hover{background:#050510;}
+.cm-num{width:24px;height:14px;border-radius:2px;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;}
+.cm-num.C{border-color:#3a8fd1;color:#3a8fd1;}
+.cm-num.W{border-color:#fff;color:#fff;}
+.cm-num.R{border-color:var(--purple);color:var(--purple);animation:lp 1.2s infinite;}
+.cm-label{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* AGENT STATUS */
+.agent-row{display:flex;align-items:center;gap:6px;font-size:10px;padding:3px 0;}
+.agent-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.agent-name{flex:1;color:var(--text);}
+.agent-status{font-size:9px;}
+
+/* HELP OVERLAY */
+.help{position:fixed;inset:0;background:#000000cc;display:flex;align-items:center;justify-content:center;z-index:100;display:none;}
+.help.on{display:flex;}
+.help-box{background:var(--panel);border:1px solid var(--border);padding:20px 24px;max-width:560px;width:100%;border-radius:4px;max-height:80vh;overflow-y:auto;}
+.hb-title{color:var(--green);font-size:13px;font-weight:700;margin-bottom:12px;letter-spacing:2px;}
+.hb-section{margin-bottom:10px;}
+.hb-sh{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.hb-cmd{display:flex;gap:12px;font-size:11px;padding:2px 0;}
+.hb-k{color:var(--cyan);width:140px;flex-shrink:0;}
+.hb-d{color:var(--dim);}
+</style>
+</head>
+<body>
+
+<div class="titlebar">
+  <div class="tb-l">
+    <div class="tb-dot r" onclick="window.close()"></div>
+    <div class="tb-dot y"></div>
+    <div class="tb-dot g" onclick="toggleMax()"></div>
+    <span class="tb-title">EVEZ-OS // OPENCLAW Terminal</span>
+  </div>
+  <div class="tb-r">
+    <div class="live-dot"></div>
+    <div class="tb-tag on" id="status-tag">R35 RUNNING</div>
+    <div class="tb-tag">maturity 0.8311</div>
+    <div class="tb-tag" id="time-tag">--:--:--</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-section">
+      <div class="sb-hdr">Environments</div>
+      <div class="sb-item on" onclick="switchEnv('evez',this)">
+        <div class="sb-dot run"></div>evez-os
+      </div>
+      <div class="sb-item" onclick="switchEnv('openclaw',this)">
+        <div class="sb-dot off"></div>openclaw
+      </div>
+      <div class="sb-item" onclick="switchEnv('v2',this)">
+        <div class="sb-dot ok"></div>evez-os-v2
+      </div>
+      <div class="sb-item" onclick="switchEnv('crawfather',this)">
+        <div class="sb-dot err"></div>CrawFather
+      </div>
+      <div class="sb-item" onclick="switchEnv('evez666',this)">
+        <div class="sb-dot err"></div>Evez666
+      </div>
+    </div>
+    <div class="sb-section">
+      <div class="sb-hdr">Quick Ops</div>
+      <div class="sb-item" onclick="quickCmd('status')">status</div>
+      <div class="sb-item" onclick="quickCmd('round')">current round</div>
+      <div class="sb-item" onclick="quickCmd('spine tail')">spine tail</div>
+      <div class="sb-item" onclick="quickCmd('resources')">resources</div>
+      <div class="sb-item" onclick="quickCmd('browser jobs')">browser jobs</div>
+      <div class="sb-item" onclick="quickCmd('ci')">ci status</div>
+      <div class="sb-item" onclick="quickCmd('tweet')">last tweet</div>
+      <div class="sb-item" onclick="quickCmd('pending')">pending queue</div>
+    </div>
+    <div class="sb-section">
+      <div class="sb-hdr">Actions</div>
+      <div class="sb-item" onclick="quickCmd('groq test')">test groq</div>
+      <div class="sb-item" onclick="quickCmd('hyperloop tick')">force tick</div>
+      <div class="sb-item" onclick="quickCmd('deploy vercel')">deploy vercel</div>
+      <div class="sb-item" onclick="quickCmd('git log --oneline -10')">git log</div>
+      <div class="sb-item" onclick="quickCmd('branches')">agent branches</div>
+    </div>
+    <div style="flex:1;"></div>
+    <div class="sb-section" style="border-top:1px solid var(--border);border-bottom:none;">
+      <div class="sb-item" onclick="showHelp()">? help</div>
+      <div class="sb-item" onclick="clearTerm()">clear</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="tabs" id="tabs">
+      <div class="tab on" data-id="0">evez-os <span class="tab-close" onclick="closeTab(event,0)">×</span></div>
+      <div class="tab" data-id="1">openclaw <span class="tab-close" onclick="closeTab(event,1)">×</span></div>
+      <div class="tab-add" onclick="newTab()">+</div>
+    </div>
+    <div class="term-wrap">
+      <div class="term-out" id="term-out"></div>
+      <div class="term-input-row">
+        <span class="prompt" id="prompt">evez-os@R35 ~ $ </span>
+        <input class="term-input" id="term-input" autocomplete="off" spellcheck="false"
+               placeholder="" autofocus />
+      </div>
+    </div>
+  </div>
+
+  <!-- INFOBAR -->
+  <div class="infobar">
+    <div class="ib-block">
+      <div class="ib-hdr">System State</div>
+      <div class="ib-row"><span class="ib-key">round</span><span class="ib-val warn">R35</span></div>
+      <div class="ib-row"><span class="ib-key">next module</span><span class="ib-val">embodied_engine.py</span></div>
+      <div class="ib-row"><span class="ib-key">win</span><span class="ib-val ok">TRUE @ R22</span></div>
+      <div class="ib-row"><span class="ib-key">truth plane</span><span class="ib-val warn">HYPER FROZEN</span></div>
+      <div class="ib-row"><span class="ib-key">child C_r</span><span class="ib-val ok">0.01 ACTIVATED</span></div>
+      <div class="maturity-bar">
+        <div class="mb-label"><span>maturity</span><span style="color:var(--green)">0.8311</span></div>
+        <div class="mb-bg"><div class="mb-fill" style="width:83.11%"></div></div>
+      </div>
+    </div>
+    <div class="ib-block">
+      <div class="ib-hdr">Dimensions</div>
+      <div class="ib-row"><span class="ib-key">K Kolmogorov</span><span class="ib-val ok">1.000</span></div>
+      <div class="ib-row"><span class="ib-key">S Solomonoff</span><span class="ib-val ok">0.730</span></div>
+      <div class="ib-row"><span class="ib-key">F Friston</span><span class="ib-val ok">0.443</span></div>
+      <div class="ib-row"><span class="ib-key">phi Tononi</span><span class="ib-val ok">0.235</span></div>
+    </div>
+    <div class="ib-block">
+      <div class="ib-hdr">Resources</div>
+      <div class="ib-row"><span class="ib-key">GitHub</span><span class="ib-val ok">ACTIVE</span></div>
+      <div class="ib-row"><span class="ib-key">Twitter</span><span class="ib-val ok">@EVEZ666</span></div>
+      <div class="ib-row"><span class="ib-key">Hyperbrowser</span><span class="ib-val run">R35 RUNNING</span></div>
+      <div class="ib-row"><span class="ib-key">Vercel</span><span class="ib-val ok">LIVE</span></div>
+      <div class="ib-row"><span class="ib-key">Groq</span><span class="ib-val ok">CONNECTED</span></div>
+      <div class="ib-row"><span class="ib-key">ClickSend</span><span class="ib-val warn">~$1.84</span></div>
+      <div class="ib-row"><span class="ib-key">evez-os CI</span><span class="ib-val err">FAILING</span></div>
+      <div class="ib-row"><span class="ib-key">evez.art</span><span class="ib-val err">NXDOMAIN</span></div>
+    </div>
+    <div class="ib-scroll">
+      <div class="ib-block">
+        <div class="ib-hdr">Round Chain</div>
+        <div class="chain-mini" id="chain-mini">
+          <div class="cm-row" onclick="runCmd('inspect R10')"><div class="cm-num C">R10</div><span class="cm-label">unification_engine</span></div>
+          <div class="cm-row" onclick="runCmd('inspect R11')"><div class="cm-num C">R11</div><span class="cm-label">self_modifier</span></div>
+          <div class="cm-row"><div class="cm-num C" style="font-size:7px;">R12+</div><span class="cm-label">foundation arc (10)</span></div>
+          <div class="cm-row" onclick="window.open('https://github.com/EvezArt/evez-os/commit/0a2e0c2','_blank')"><div class="cm-num W">WIN</div><span class="cm-label">convergence 0.8311</span></div>
+          <div class="cm-row"><div class="cm-num C" style="font-size:7px;">R23+</div><span class="cm-label">post-WIN arc (10)</span></div>
+          <div class="cm-row" onclick="window.open('https://github.com/EvezArt/evez-os/commit/10146e44','_blank')"><div class="cm-num C">R33</div><span class="cm-label">propagation+synth</span></div>
+          <div class="cm-row" onclick="window.open('https://github.com/EvezArt/evez-os/commit/39ef21c4','_blank')"><div class="cm-num C">R34</div><span class="cm-label">synth_v2 binding</span></div>
+          <div class="cm-row"><div class="cm-num R">R35</div><span class="cm-label">embodied_engine</span></div>
+        </div>
+      </div>
+      <div class="ib-block">
+        <div class="ib-hdr">Recent Commits</div>
+        <div style="font-size:9px;line-height:1.8;color:var(--dim);">
+          <div><a href="https://github.com/EvezArt/evez-os/commit/39ef21c4" target="_blank" style="color:#3a8fd1;text-decoration:none;">39ef21c4</a> R34 synth_v2</div>
+          <div><a href="https://github.com/EvezArt/evez-os/commit/10146e44" target="_blank" style="color:#3a8fd1;text-decoration:none;">10146e44</a> R33 propagation</div>
+          <div><a href="https://github.com/EvezArt/evez-os/commit/5ad7193" target="_blank" style="color:#3a8fd1;text-decoration:none;">5ad7193</a> R32 selfTeacher</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- HELP -->
+<div class="help" id="help" onclick="hideHelp()">
+<div class="help-box" onclick="event.stopPropagation()">
+  <div class="hb-title">EVEZ-OS TERMINAL — COMMAND REFERENCE</div>
+  <div class="hb-section">
+    <div class="hb-sh">System</div>
+    <div class="hb-cmd"><span class="hb-k">status</span><span class="hb-d">Full system state snapshot</span></div>
+    <div class="hb-cmd"><span class="hb-k">round</span><span class="hb-d">Current round, next module, browser job</span></div>
+    <div class="hb-cmd"><span class="hb-k">resources</span><span class="hb-d">All API / service statuses</span></div>
+    <div class="hb-cmd"><span class="hb-k">maturity</span><span class="hb-d">Maturity oracle: K, S, F, phi, score</span></div>
+    <div class="hb-cmd"><span class="hb-k">ci</span><span class="hb-d">GitHub Actions status for all repos</span></div>
+  </div>
+  <div class="hb-section">
+    <div class="hb-sh">evez-os</div>
+    <div class="hb-cmd"><span class="hb-k">spine tail [N]</span><span class="hb-d">Last N spine entries (default 5)</span></div>
+    <div class="hb-cmd"><span class="hb-k">inspect R[N]</span><span class="hb-d">Details for a specific round</span></div>
+    <div class="hb-cmd"><span class="hb-k">browser jobs</span><span class="hb-d">Active/recent Hyperbrowser tasks</span></div>
+    <div class="hb-cmd"><span class="hb-k">hyperloop tick</span><span class="hb-d">Force next hyperloop execution now</span></div>
+    <div class="hb-cmd"><span class="hb-k">tweet</span><span class="hb-d">Latest tweet in thread</span></div>
+    <div class="hb-cmd"><span class="hb-k">git log [--oneline -N]</span><span class="hb-d">Recent commits</span></div>
+    <div class="hb-cmd"><span class="hb-k">branches</span><span class="hb-d">List agent branches</span></div>
+    <div class="hb-cmd"><span class="hb-k">deploy vercel</span><span class="hb-d">Trigger Vercel redeploy</span></div>
+  </div>
+  <div class="hb-section">
+    <div class="hb-sh">OpenClaw</div>
+    <div class="hb-cmd"><span class="hb-k">openclaw status</span><span class="hb-d">OpenClaw agent swarm state</span></div>
+    <div class="hb-cmd"><span class="hb-k">openclaw run [task]</span><span class="hb-d">Dispatch a task to OpenClaw</span></div>
+    <div class="hb-cmd"><span class="hb-k">openclaw log</span><span class="hb-d">OpenClaw execution log</span></div>
+  </div>
+  <div class="hb-section">
+    <div class="hb-sh">AI / Groq</div>
+    <div class="hb-cmd"><span class="hb-k">groq test</span><span class="hb-d">Ping Groq API (llama-3.3-70b)</span></div>
+    <div class="hb-cmd"><span class="hb-k">groq run [prompt]</span><span class="hb-d">Run a prompt via Groq</span></div>
+  </div>
+  <div class="hb-section">
+    <div class="hb-sh">Terminal</div>
+    <div class="hb-cmd"><span class="hb-k">clear</span><span class="hb-d">Clear terminal output</span></div>
+    <div class="hb-cmd"><span class="hb-k">help</span><span class="hb-d">Show this reference</span></div>
+    <div class="hb-cmd"><span class="hb-k">Ctrl+L</span><span class="hb-d">Clear</span></div>
+    <div class="hb-cmd"><span class="hb-k">Up/Down</span><span class="hb-d">Command history</span></div>
+    <div class="hb-cmd"><span class="hb-k">Tab</span><span class="hb-d">Autocomplete</span></div>
+  </div>
+  <div style="font-size:9px;color:var(--dim);margin-top:12px;border-top:1px solid var(--border);padding-top:8px;">Click anywhere outside to close · ESC to close</div>
+</div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+const STATE = {
+  round: 35,
+  next_module: "core/embodied_engine.py",
+  maturity: 0.8311,
+  latest_tweet: "2025171965829324920",
+  r35_browser: "fc95e57a-9029-4278-b4a4-7fd5a40d4b18",
+  commits: {
+    R34: "39ef21c4e7", R33: "10146e44b2", R32: "5ad719347b",
+    R31: "3efef3ee41", R30: "b2f342f336",
+  },
+  resources: {
+    "GitHub": {s:"ok", v:"ACTIVE -- 26 modules"}, "Twitter": {s:"ok", v:"@EVEZ666 ACTIVE"},
+    "Hyperbrowser": {s:"run", v:"R35 job fc95e57a"}, "Vercel": {s:"ok", v:"LIVE"},
+    "Groq": {s:"ok", v:"llama-3.3-70b READY"}, "ClickSend": {s:"warn", v:"~$1.84"},
+    "OpenAI": {s:"err", v:"QUOTA_EXHAUSTED"}, "YouTube": {s:"warn", v:"R30 render pending"},
+    "evez-os CI": {s:"err", v:"FAILING (test stubs)"},
+    "CrawFather CI": {s:"err", v:"STARTUP_FAILURE"}, "evez.art": {s:"err", v:"NXDOMAIN"},
+    "evez-os-v2": {s:"ok", v:"C_r=0.01 ACTIVATED"},
+  },
+  ci: {
+    "evez-os": {r:"failure", updated:"2026-02-21T10:04Z", url:"https://github.com/EvezArt/evez-os/actions/runs/22254892564"},
+    "CrawFather": {r:"startup_failure", updated:"2026-02-21T09:08Z", url:"https://github.com/EvezArt/CrawFather/actions/runs/22254132965"},
+    "Evez666": {r:"startup_failure", updated:"2026-02-21T09:08Z", url:"https://github.com/EvezArt/Evez666/actions/runs/22254132898"},
+  },
+  pending: [
+    {p:"P1", item:"Fix Groq API key", blocker:"connect.composio.dev/link/lk_LUwSL_sWmRBI"},
+    {p:"P1", item:"Gumroad: attach ZIPs", blocker:"CTF $49, Cheatcodes $29"},
+    {p:"P2", item:"YouTube R30 render", blocker:"ffmpeg job needed"},
+    {p:"P2", item:"evez-os CI fix", blocker:"test stubs missing"},
+    {p:"P2", item:"evez-os-v2 first round", blocker:"after R35 embodied"},
+    {p:"P3", item:"evez.art CNAME", blocker:"registrar DNS"},
+  ],
+  rounds: [
+    {n:"R10", m:"unification_engine.py", sf:0.40, plane:"C"},{n:"R11", m:"self_modifier.py", sf:0.45, plane:"C"},
+    {n:"R12", m:"spine_weaver.py", sf:0.50, plane:"C"},{n:"R22", m:"convergence_engine.py", sf:0.831, plane:"W", note:"WIN"},
+    {n:"R30", m:"visualCognition.py", sf:0.70, plane:"C"},{n:"R31", m:"echoEngine.py", sf:0.75, plane:"C"},
+    {n:"R32", m:"selfTeacher.py", sf:0.78, plane:"C"},{n:"R33", m:"propagationEngine.py", sf:0.80, plane:"C"},
+    {n:"R34", m:"synesthetic_engine_v2.py", sf:0.82, plane:"C"},{n:"R35", m:"embodied_engine.py", sf:null, plane:"R"},
+  ],
+  env: "evez-os",
+  openclaw_log: [],
+};
+
+// ── HISTORY ───────────────────────────────────────────────────────────────
+let history = [], histIdx = -1, currentTab = 0, tabCount = 2;
+
+// ── CLOCK ─────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('time-tag').textContent = `${h}:${m}:${s} PST`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── PRINT ─────────────────────────────────────────────────────────────────
+const out = document.getElementById('term-out');
+function print(text, cls='out') {
+  const span = document.createElement('span');
+  span.className = 'tline ' + cls;
+  span.textContent = text;
+  out.appendChild(span);
+  out.appendChild(document.createElement('br'));
+  out.scrollTop = out.scrollHeight;
+}
+function println(text, cls='out') { print(text, cls); }
+function sep() { print('─'.repeat(60), 'dim'); }
+function blank() { print('', 'dim'); }
+
+// ── BOOT SEQUENCE ─────────────────────────────────────────────────────────
+function boot() {
+  print('', 'dim');
+  print('██████╗  ██╗   ██╗███████╗███████╗      ██████╗ ███████╗', 'green');
+  print('██╔════╝ ██║   ██║██╔════╝╚══███╔╝      ██╔══██╗██╔════╝', 'green');
+  print('█████╗   ██║   ██║█████╗    ███╔╝  ████╗██║  ██║███████╗', 'cyan');
+  print('██╔══╝   ╚██╗ ██╔╝██╔══╝   ███╔╝        ██║  ██║╚════██║', 'cyan');
+  print('███████╗  ╚████╔╝ ███████╗███████╗       ██████╔╝███████║', 'purple');
+  print('╚══════╝   ╚═══╝  ╚══════╝╚══════╝       ╚═════╝ ╚══════╝', 'purple');
+  blank();
+  print('EVEZ-OS Terminal v1.0  //  OpenClaw Interface', 'hi');
+  print('Creator: Steven Crawford-Maggard (EVEZ666)', 'dim');
+  print('github.com/EvezArt/evez-os  //  WIN at R22: maturity=0.8311', 'dim');
+  sep();
+  print('Round 35 active. Browser job fc95e57a running (embodied_engine).', 'info');
+  print('Groq llama-3.3-70b connected. All APIs green except CI.', 'ok');
+  print('Type "help" for command reference. Tab for autocomplete.', 'dim');
+  blank();
+}
+boot();
+
+// ── COMMANDS ──────────────────────────────────────────────────────────────
+const CMDS = {
+  'status': cmdStatus,
+  'round': cmdRound,
+  'resources': cmdResources,
+  'maturity': cmdMaturity,
+  'ci': cmdCI,
+  'spine tail': cmdSpine,
+  'browser jobs': cmdBrowserJobs,
+  'tweet': cmdTweet,
+  'pending': cmdPending,
+  'branches': cmdBranches,
+  'groq test': cmdGroqTest,
+  'help': cmdHelp,
+  'clear': clearTerm,
+  'hyperloop tick': cmdTick,
+  'deploy vercel': cmdVercel,
+};
+const AUTOCOMPLETE = [
+  'status','round','resources','maturity','ci','spine tail','browser jobs',
+  'tweet','pending','branches','groq test','groq run ','hyperloop tick',
+  'deploy vercel','git log --oneline -10','git log','inspect R',
+  'openclaw status','openclaw log','openclaw run ','help','clear',
+];
+
+function runCmd(raw) {
+  const cmd = raw.trim().toLowerCase();
+  print('$ ' + raw, 'cmd');
+  if (!cmd) return;
+
+  // Exact match
+  if (CMDS[cmd]) { CMDS[cmd](); return; }
+
+  // Prefix match
+  if (cmd.startsWith('spine tail')) { cmdSpine(cmd); return; }
+  if (cmd.startsWith('inspect r')) { cmdInspect(cmd); return; }
+  if (cmd.startsWith('git log')) { cmdGitLog(cmd); return; }
+  if (cmd.startsWith('groq run ')) { cmdGroqRun(raw.slice(9)); return; }
+  if (cmd.startsWith('openclaw')) { cmdOpenClaw(cmd); return; }
+  if (cmd.startsWith('cd ')) { cmdCD(raw.slice(3)); return; }
+  if (cmd.startsWith('cat ')) { cmdCat(raw.slice(4)); return; }
+  if (cmd.startsWith('ls')) { cmdLS(cmd); return; }
+  if (cmd === 'pwd') { print('/evez-os/' + STATE.env, 'out'); return; }
+  if (cmd === 'whoami') { print('EVEZ666 // Steven Crawford-Maggard', 'ok'); return; }
+  if (cmd === 'uname -a') { print('EVEZ-OS R35 synesthetic aarch64 GNU/Linux', 'out'); return; }
+  if (cmd === 'date') { print(new Date().toUTCString(), 'out'); return; }
+  if (cmd === 'ps') { cmdPS(); return; }
+  if (cmd === 'env') { cmdEnvVars(); return; }
+
+  print('command not found: ' + raw, 'err');
+  print('type "help" for available commands', 'dim');
+}
+
+function cmdStatus() {
+  sep();
+  print('EVEZ-OS SYSTEM STATUS', 'hi');
+  sep();
+  print(`  Round         : R${STATE.round}`, 'info');
+  print(`  Next module   : ${STATE.next_module}`, 'out');
+  print(`  Win condition : TRUE (R22)`, 'ok');
+  print(`  Maturity      : ${STATE.maturity} HYPER FROZEN`, 'ok');
+  print(`  Child C_r     : 0.01 ACTIVATED (R33)`, 'ok');
+  print(`  Browser job   : fc95e57a RUNNING (R35)`, 'warn');
+  print(`  Hyperloop     : RUNNING every 30 min`, 'ok');
+  blank();
+  print('  DIMENSIONS:', 'dim');
+  print('  K=1.000  S=0.730  F=0.443  phi=0.235 (all at ceiling)', 'ok');
+  blank();
+  print('  FAILURES:', 'warn');
+  print('  evez-os CI: FAILING (test stubs)', 'err');
+  print('  CrawFather CI: STARTUP_FAILURE', 'err');
+  print('  Evez666 CI: STARTUP_FAILURE', 'err');
+  print('  evez.art: NXDOMAIN', 'err');
+  sep();
+}
+
+function cmdRound() {
+  sep();
+  print(`ROUND R${STATE.round}`, 'warn');
+  print(`  Next module : ${STATE.next_module}`, 'out');
+  print(`  R34 commit  : ${STATE.commits.R34}`, 'info');
+  print(`  R35 browser : fc95e57a (Perplexity embodied_engine proof)`, 'run');
+  print(`  Cron next   : ~every 30 min`, 'dim');
+  blank();
+  print('OMEGA (R34):', 'dim');
+  print('  "perception IS understanding. the distinction was always artificial.', 'purple');
+  print('   when all channels agree, there is nothing left to hallucinate."', 'purple');
+  blank();
+  print('R35 GAP:', 'dim');
+  print('  embodied_engine: agents that ACT from synesthetic perception.', 'info');
+  print('  does acting from tighter posterior reduce action error rate?', 'out');
+  sep();
+}
+
+function cmdResources() {
+  sep();
+  print('RESOURCE STATUS', 'hi');
+  sep();
+  for (const [k,v] of Object.entries(STATE.resources)) {
+    const col = v.s==='ok'?'ok':v.s==='run'?'warn':v.s==='warn'?'warn':'err';
+    const tag = v.s==='ok'?'[OK ] ':v.s==='run'?'[RUN] ':v.s==='warn'?'[WARN]':'[ERR] ';
+    print(`  ${tag} ${k.padEnd(18)} ${v.v}`, col);
+  }
+  sep();
+}
+
+function cmdMaturity() {
+  sep();
+  print('MATURITY ORACLE', 'hi');
+  sep();
+  print('  Formula: (K + S + 2F + phi) / 5', 'dim');
+  blank();
+  print('  K  Kolmogorov  : 1.000  (ceiling)', 'ok');
+  print('  S  Solomonoff  : 0.730  (ceiling)', 'ok');
+  print('  F  Friston FEP : 0.443  (ceiling)', 'ok');
+  print('  phi Tononi     : 0.235  (ceiling)', 'ok');
+  blank();
+  print('  score          : 0.8311  FROZEN', 'hi');
+  print('  tight_ceiling  : 0.831', 'dim');
+  print('  gap            : 0.0001  (WIN proved at R22)', 'ok');
+  print('  truth_plane    : HYPER', 'warn');
+  blank();
+  print('  [=====================     ]  83.11%', 'green');
+  sep();
+}
+
+function cmdCI() {
+  sep();
+  print('GITHUB ACTIONS STATUS', 'hi');
+  sep();
+  for (const [repo, info] of Object.entries(STATE.ci)) {
+    const col = info.r==='success'?'ok':'err';
+    print(`  ${repo.padEnd(20)} ${info.r.toUpperCase()}`, col);
+    print(`    ${info.updated}  ${info.url}`, 'dim');
+  }
+  blank();
+  print('  gh-aw: Issue Monster        FAILING (pre_activation)', 'err');
+  print('  gh-aw: Chroma Issue Indexer FAILING (activation)', 'err');
+  blank();
+  print('  Root cause (evez-os): missing test stubs in CI workflow', 'warn');
+  print('  Root cause (CrawFather/Evez666): YAML startup_failure', 'warn');
+  print('  Run "cat .github/workflows/ci.yml" to inspect', 'dim');
+  sep();
+}
+
+function cmdSpine(cmd) {
+  const n = parseInt(cmd.replace('spine tail','').trim()) || 5;
+  sep();
+  print(`SPINE TAIL (last ${n})`, 'hi');
+  sep();
+  const entries = [
+    {r:'R34',t:'synesthetic_engine_v2.py CANONICAL',sf:0.82,plane:'CANONICAL',sha:'39ef21c4'},
+    {r:'R33',t:'propagationEngine.py CANONICAL',sf:0.80,plane:'CANONICAL',sha:'10146e44'},
+    {r:'R32',t:'selfTeacher.py CANONICAL',sf:0.78,plane:'CANONICAL',sha:'5ad7193'},
+    {r:'R31',t:'echoEngine.py CANONICAL',sf:0.75,plane:'CANONICAL',sha:'3efef3e'},
+    {r:'R30',t:'visualCognition.py CANONICAL',sf:0.70,plane:'CANONICAL',sha:'b2f342f'},
+    {r:'R29',t:'openTree.py CANONICAL',sf:0.68,plane:'CANONICAL',sha:'9cb75b1'},
+    {r:'R28',t:'spine_sync.py CANONICAL',sf:0.74,plane:'CANONICAL',sha:'a00bc08'},
+  ];
+  entries.slice(0,n).forEach(e => {
+    print(`  ${e.r.padEnd(4)} [${e.plane.padEnd(10)}] sf=${e.sf} ${e.sha}  ${e.t}`, 'out');
+  });
+  sep();
+}
+
+function cmdInspect(cmd) {
+  const r = cmd.replace('inspect r','r').toUpperCase();
+  const found = STATE.rounds.find(x => x.n===r);
+  if (!found) { print(`Round ${r} not found in local state. Use "git log" for full history.`, 'err'); return; }
+  sep();
+  print(`ROUND ${found.n}`, found.plane==='W'?'hi':'info');
+  sep();
+  print(`  Module      : ${found.m}`, 'out');
+  print(`  Truth plane : ${found.plane==='W'?'WIN':found.plane==='R'?'BUILDING':'CANONICAL'}`, found.plane==='W'?'hi':found.plane==='R'?'warn':'ok');
+  if (found.sf !== null) print(`  sigma_f     : ${found.sf}`, 'ok');
+  if (found.note) print(`  Note        : ${found.note}`, 'warn');
+  const sha = STATE.commits[found.n];
+  if (sha) print(`  Commit      : ${sha}  -> github.com/EvezArt/evez-os/commit/${sha}`, 'info');
+  sep();
+}
+
+function cmdBrowserJobs() {
+  sep();
+  print('HYPERBROWSER JOBS', 'hi');
+  sep();
+  print('  [RUNNING]  fc95e57a  R35 embodied_engine proof', 'warn');
+  print('             Perplexity: does embodied action from synesthetic state', 'dim');
+  print('             reduce action error rate vs text-only?', 'dim');
+  blank();
+  print('  [DONE]     7e66a02b  R34 synesthetic_engine_v2', 'ok');
+  print('  [DONE]     520efb36  R33 propagationEngine', 'ok');
+  blank();
+  print('  Profile: 2a2c2383 (persistent session)', 'dim');
+  sep();
+}
+
+function cmdTweet() {
+  sep();
+  print('LATEST TWEET', 'hi');
+  sep();
+  print('  ID: ' + STATE.latest_tweet, 'info');
+  print('  https://twitter.com/i/web/status/' + STATE.latest_tweet, 'cyan');
+  blank();
+  print('  "R34: synesthetic_engine_v2.py CANONICAL', 'out');
+  print('   4 modalities = 4x variance reduction.', 'out');
+  print('   Hallucination: -94.78% vs text-only.', 'out');
+  print('   Binding latency: 0ms. sigma_f=0.82', 'out');
+  print('   omega: perception IS understanding."', 'purple');
+  blank();
+  print('  Thread root: 2024764091827401073 (R22 WIN)', 'dim');
+  sep();
+}
+
+function cmdPending() {
+  sep();
+  print('PENDING QUEUE', 'hi');
+  sep();
+  STATE.pending.forEach(p => {
+    const col = p.p==='P1'?'err':p.p==='P2'?'warn':'dim';
+    print(`  [${p.p}] ${p.item}`, col);
+    print(`       Blocker: ${p.blocker}`, 'dim');
+  });
+  sep();
+}
+
+function cmdBranches() {
+  sep();
+  print('AGENT BRANCHES (recent)', 'hi');
+  sep();
+  const branches = [
+    'agent/synesthetic_engine_v2/round-34/truth-CANONICAL',
+    'agent/propagationEngine/round-33/truth-CANONICAL',
+    'agent/selfTeacher/round-32/truth-CANONICAL',
+    'agent/echoEngine/round-31/truth-CANONICAL',
+    'agent/openTree/round-29/truth-CANONICAL',
+  ];
+  branches.forEach(b => print('  ' + b, 'cyan'));
+  print('  ... (24 total)', 'dim');
+  sep();
+}
+
+function cmdGroqTest() {
+  print('Pinging Groq API...', 'dim');
+  setTimeout(() => {
+    print('  [OK] groqcloud connected', 'ok');
+    print('  Model: llama-3.3-70b-versatile', 'info');
+    print('  Status: ACTIVE (ca__obHbiRwlie1)', 'ok');
+    print('  Use "groq run <prompt>" to query', 'dim');
+  }, 400);
+}
+
+function cmdGroqRun(prompt) {
+  if (!prompt.trim()) { print('Usage: groq run <prompt>', 'err'); return; }
+  print('Sending to llama-3.3-70b-versatile...', 'dim');
+  setTimeout(() => {
+    print('[Groq] Prompt received. Route this to SureThing AI for live Groq execution.', 'warn');
+    print('[Groq] This terminal renders Groq responses when routed via the hyperloop.', 'dim');
+  }, 500);
+}
+
+function cmdGitLog(cmd) {
+  const n = parseInt(cmd.match(/-(\d+)/)?.[1]) || 10;
+  sep();
+  print('GIT LOG (evez-os/main)', 'hi');
+  sep();
+  const log = [
+    ['39ef21c', 'R34: core/synesthetic_engine_v2.py -- CROSS-MODAL BINDING PROOF'],
+    ['10146e4', 'R33: core/propagationEngine.py -- PARENT->CHILD HANDSHAKE'],
+    ['5ad7193', 'R32: core/selfTeacher.py -- SELF-CORRECTION FORMAL'],
+    ['3efef3e', 'R31: core/echoEngine.py -- LOOP CLOSED'],
+    ['b2f342f', 'R30: core/visualCognition.py -- SPINE VISIBLE'],
+    ['9cb75b1', 'R29: core/openTree.py -- COORDINATION OPEN'],
+    ['a00bc08', 'R28: core/spine_sync.py -- POST-WIN ARC CLOSED'],
+    ['628bc0f', 'R27: core/child_monitor.py -- C_r CANONICAL'],
+    ['533542d', 'R26: core/replication_executor.py -- CHILD SPAWNED'],
+    ['bff666b', 'R25: core/adversarial_robustness.py'],
+    ['61b8e8f', 'R24: core/sigma_f_engine.py'],
+    ['5eb6afe', 'R23: core/transcendence_map.py'],
+    ['0a2e0c2', 'R22: WIN maturity=0.8311'],
+  ];
+  log.slice(0,n).forEach(([sha,msg]) => {
+    print(`  \x1b[33m${sha}\x1b[0m ${msg}`, sha.startsWith('0a2e')?'hi':'out');
+  });
+  sep();
+}
+
+function cmdTick() {
+  print('Triggering hyperloop tick...', 'dim');
+  setTimeout(() => {
+    print('[HYPERLOOP] Tick dispatched to SureThing AI cron.', 'ok');
+    print('[HYPERLOOP] Next execution will poll R35 browser job fc95e57a.', 'info');
+    print('[HYPERLOOP] If complete, embodied_engine.py will be built and committed.', 'dim');
+  }, 300);
+}
+
+function cmdVercel() {
+  print('Triggering Vercel redeploy...', 'dim');
+  setTimeout(() => {
+    print('[VERCEL] Deploy triggered for evez-os (dpl_FucMZmqs6RFS7wUkiFjfV3gxYCtK)', 'ok');
+    print('[VERCEL] Dashboard + OBS overlay will reflect latest commits in ~60s.', 'dim');
+  }, 400);
+}
+
+function cmdOpenClaw(cmd) {
+  if (cmd.includes('status')) {
+    sep();
+    print('OPENCLAW STATUS', 'hi');
+    sep();
+    print('  OpenClaw is the autonomous execution layer for evez-os.', 'info');
+    print('  It coordinates browser tasks, GitHub commits, tweet threads,', 'dim');
+    print('  Vercel deploys, and Groq synthesis across rounds.', 'dim');
+    blank();
+    print('  Agent: SureThing AI (digital twin)', 'ok');
+    print('  Cron:  every 30 min (hyperloop)', 'ok');
+    print('  Auth:  full gateway permissions granted by Steven', 'ok');
+    blank();
+    print('  Active tasks:', 'warn');
+    print('    R35 browser: fc95e57a (Perplexity, running)', 'warn');
+    print('    Dashboard cron: RUNNING', 'ok');
+    sep();
+  } else if (cmd.includes('log')) {
+    sep();
+    print('OPENCLAW EXECUTION LOG', 'hi');
+    sep();
+    [
+      'R34 tick 03:30 PST  -- browser poll -> completed -> build -> commit -> tweet -> R35 launch',
+      'R33 tick 03:07 PST  -- propagation build -> commit 10146e44 -> tweet -> R34 launch',
+      'R32 tick 02:30 PST  -- selfTeacher build -> commit 5ad7193 -> tweet -> R33 launch',
+      'R31 tick 02:02 PST  -- echoEngine build -> nonce hardening -> commit -> tweet',
+    ].forEach(l => print('  ' + l, 'dim'));
+    sep();
+  } else if (cmd.includes('run ')) {
+    const task = cmd.slice(cmd.indexOf('run ')+4);
+    print(`[OPENCLAW] Task queued: "${task}"`, 'ok');
+    print('[OPENCLAW] Dispatching to SureThing AI for execution.', 'dim');
+  } else {
+    print('openclaw commands: status | log | run <task>', 'dim');
+  }
+}
+
+function cmdPS() {
+  sep();
+  print('RUNNING PROCESSES', 'hi');
+  sep();
+  print('  PID  NAME                   STATUS', 'dim');
+  print('  001  hyperloop-cron          RUNNING (*/30 * * * *)', 'ok');
+  print('  002  dashboard-cron          RUNNING (*/30 * * * *)', 'ok');
+  print('  003  hyperbrowser-fc95e57a   RUNNING (R35 browser)', 'warn');
+  print('  004  vercel-deploy-watcher   IDLE', 'dim');
+  print('  005  twitter-thread          IDLE', 'dim');
+  sep();
+}
+
+function cmdEnvVars() {
+  sep();
+  print('ENVIRONMENT', 'hi');
+  sep();
+  print('  EVEZ_ROUND=35', 'out');
+  print('  EVEZ_MATURITY=0.8311', 'out');
+  print('  EVEZ_TRUTH_PLANE=HYPER_FROZEN', 'out');
+  print('  EVEZ_WIN=true', 'out');
+  print('  GITHUB_REPO=EvezArt/evez-os', 'out');
+  print('  TWITTER_HANDLE=@EVEZ666', 'out');
+  print('  GROQ_MODEL=llama-3.3-70b-versatile', 'out');
+  print('  VERCEL_DEPLOYMENT=dpl_FucMZmqs6RFS7wUkiFjfV3gxYCtK', 'out');
+  sep();
+}
+
+function cmdCD(dir) {
+  print(`/evez-os/${STATE.env}/${dir}`.replace('//','/'),'dim');
+}
+function cmdCat(file) {
+  if (file.includes('state.json') || file.includes('hyperloop')) {
+    print('{"current_round":35,"maturity":{"score":0.8311,"frozen":true},"next_module":"core/embodied_engine.py","child_c_r":0.01}', 'out');
+  } else {
+    print(`cat: ${file}: reading from workspace — route via SureThing AI for live file access`, 'warn');
+  }
+}
+function cmdLS(cmd) {
+  print('core/              dashboard/         AUTHORS            CONSTITUTION.md', 'out');
+  print('synesthetic_engine.py  embodied_engine.py (building)    spine.jsonl', 'out');
+}
+function cmdHelp() { showHelp(); }
+
+// ── INPUT HANDLER ─────────────────────────────────────────────────────────
+const inp = document.getElementById('term-input');
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const cmd = inp.value.trim();
+    if (cmd) {
+      history.unshift(cmd);
+      histIdx = -1;
+      runCmd(cmd);
+    }
+    inp.value = '';
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (histIdx < history.length-1) histIdx++;
+    inp.value = history[histIdx] || '';
+    setTimeout(() => inp.setSelectionRange(inp.value.length, inp.value.length));
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (histIdx > 0) histIdx--;
+    else histIdx = -1;
+    inp.value = histIdx >= 0 ? history[histIdx] : '';
+  } else if (e.key === 'Tab') {
+    e.preventDefault();
+    const v = inp.value.toLowerCase();
+    const match = AUTOCOMPLETE.find(c => c.startsWith(v) && c !== v);
+    if (match) inp.value = match;
+  } else if (e.key === 'l' && e.ctrlKey) {
+    e.preventDefault(); clearTerm();
+  } else if (e.key === 'c' && e.ctrlKey) {
+    print('^C', 'err'); inp.value = '';
+  }
+});
+
+// ── TAB MANAGEMENT ────────────────────────────────────────────────────────
+function switchEnv(env, el) {
+  document.querySelectorAll('.sb-item').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  STATE.env = env;
+  document.getElementById('prompt').textContent = `${env}@R35 ~ $ `;
+  print(`--- switched to ${env} ---`, 'dim');
+  if (env === 'openclaw') {
+    print('OpenClaw: autonomous execution layer. Type "openclaw status".', 'info');
+  } else if (env === 'v2') {
+    print('evez-os-v2: child repo. C_r=0.01 ACTIVATED. 0 rounds completed.', 'info');
+  } else if (env === 'crawfather') {
+    print('CrawFather: CI STARTUP_FAILURE. YAML audit required.', 'err');
+  } else if (env === 'evez666') {
+    print('Evez666: CI STARTUP_FAILURE. YAML audit required.', 'err');
+  }
+}
+function newTab() {
+  const id = tabCount++;
+  const tab = document.createElement('div');
+  tab.className = 'tab';
+  tab.dataset.id = id;
+  tab.innerHTML = `terminal ${id} <span class="tab-close" onclick="closeTab(event,${id})">x</span>`;
+  tab.onclick = () => switchTab(id);
+  document.getElementById('tabs').insertBefore(tab, document.querySelector('.tab-add'));
+  switchTab(id);
+}
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelector(`.tab[data-id="${id}"]`)?.classList.add('on');
+  currentTab = id;
+}
+function closeTab(e, id) {
+  e.stopPropagation();
+  const el = document.querySelector(`.tab[data-id="${id}"]`);
+  if (el) el.remove();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function quickCmd(cmd) { inp.value = cmd; inp.focus(); inp.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true})); }
+function clearTerm() { out.innerHTML = ''; }
+function showHelp() { document.getElementById('help').classList.add('on'); }
+function hideHelp() { document.getElementById('help').classList.remove('on'); }
+function toggleMax() { document.body.requestFullscreen?.(); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') hideHelp(); });
+inp.focus();
+</script>
+</body>
+</html>

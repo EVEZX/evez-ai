@@ -1,0 +1,16 @@
+name: Test GitHub Actions
+# Disabled — ./actions/lord-fusion-action local action does not exist in repo.
+# Re-enable after actions/lord-fusion-action/ directory is committed.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Status
+        run: |
+          echo "test-actions: disabled — actions/lord-fusion-action not present"
+          echo "Commit: ${{ github.sha }}"

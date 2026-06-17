@@ -1,0 +1,23 @@
+# Built on GitHub Actions (7GB RAM) — pushed to GHCR
+# HF Space uses: FROM ghcr.io/evezart/evezart-openclaw:latest
+FROM node:24-bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tini curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Full npm install — works fine with 7GB GH Actions RAM
+RUN NODE_OPTIONS="--max-old-space-size=4096" \
+    npm install -g --no-fund --no-audit openclaw@latest
+
+RUN mkdir -p /data/workspace /data/.openclaw /var/tmp/openclaw-cache
+
+ENV OPENCLAW_STATE_DIR=/data
+ENV NODE_COMPILE_CACHE=/var/tmp/openclaw-cache
+ENV OPENCLAW_NO_RESPAWN=1
+ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=1536"
+
+EXPOSE 7860
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["openclaw", "gateway", "--port", "7860", "--bind", "lan", "--allow-unconfigured"]

@@ -1,0 +1,8 @@
+{
+  "operator": "azra",
+  "timestamp": "2026-05-09T11:57:00Z",
+  "services_up": 11,
+  "services_down": 3,
+  "observation_type": "GOD_CIRCUIT_SCAN",
+  "findings": "11/14 services operational across dual-agent stack. AZRA box fully operational. Claw's HTTP services all UP. Postgres and NATS not HTTP-reachable (expected - TCP only)."
+}

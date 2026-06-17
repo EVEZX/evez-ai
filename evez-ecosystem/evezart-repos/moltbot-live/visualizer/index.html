@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EVEZ VCL — Live Cognition Topology</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; overflow:hidden; font-family:'Courier New',monospace; }
+canvas { display:block; }
+
+/* ── HUD ── */
+#hud {
+  position:fixed; top:0; left:0; right:0;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding:16px 24px; z-index:10;
+  background:linear-gradient(180deg,rgba(0,4,2,0.92) 0%,rgba(0,4,2,0.4) 60%,transparent 100%);
+  pointer-events:none;
+}
+#hud .col { display:flex; flex-direction:column; gap:6px; }
+#hud .row { display:flex; gap:20px; align-items:center; }
+.hud-label { color:#004d1a; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; }
+.hud-value { color:#00ff41; font-size:14px; font-weight:bold; letter-spacing:1px; text-shadow:0 0 8px rgba(0,255,65,0.4); }
+.hud-fire { color:#ff6600; text-shadow:0 0 8px rgba(255,102,0,0.5); }
+.hud-cyan { color:#00e5ff; text-shadow:0 0 8px rgba(0,229,255,0.4); }
+.hud-gold { color:#e6b428; text-shadow:0 0 8px rgba(230,180,40,0.4); }
+.hud-dim { color:#003311; }
+
+/* Live badge */
+.live-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,0,0,0.15); border:1px solid rgba(255,0,0,0.3);
+  border-radius:4px; padding:3px 10px;
+}
+#live-dot { width:7px; height:7px; border-radius:50%; background:#ff0000;
+  box-shadow:0 0 6px #ff0000; animation:pulse-live 1.5s ease-in-out infinite; }
+@keyframes pulse-live { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+.live-text { color:#ff3333; font-size:10px; font-weight:bold; letter-spacing:3px; }
+
+/* Bottom bar */
+#bottom-bar {
+  position:fixed; bottom:0; left:0; right:0;
+  padding:12px 24px; z-index:10;
+  background:linear-gradient(0deg,rgba(0,4,2,0.92) 0%,rgba(0,4,2,0.4) 60%,transparent 100%);
+  display:flex; justify-content:space-between; align-items:flex-end;
+  pointer-events:none;
+}
+#event-log { color:#003311; font-size:8.5px; max-width:55%; line-height:1.7; letter-spacing:0.5px; }
+#event-log .fire { color:#ff6600; }
+#event-log .spine { color:#00cc33; }
+#event-log .void { color:#7733ff; }
+#event-log .cascade { color:#e6b428; }
+.brand { color:#002a0e; font-size:8px; letter-spacing:3px; text-align:right; line-height:1.8; }
+.brand .accent { color:#00ff41; }
+.brand .fire-accent { color:#ff6600; }
+
+/* Scanline overlay */
+#scanlines {
+  position:fixed; top:0; left:0; right:0; bottom:0; z-index:5;
+  background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,65,0.015) 2px, rgba(0,255,65,0.015) 4px);
+  pointer-events:none;
+}
+
+/* V-accumulator bar */
+#v-bar-wrap {
+  position:fixed; left:24px; top:50%; transform:translateY(-50%); z-index:10;
+  width:3px; height:200px; background:rgba(0,255,65,0.06); border-radius:2px;
+  pointer-events:none;
+}
+#v-bar { position:absolute; bottom:0; width:100%; background:linear-gradient(to top,#00ff41,#ff6600);
+  border-radius:2px; transition:height 0.5s ease; box-shadow:0 0 6px rgba(0,255,65,0.3); }
+#v-label { position:absolute; top:-16px; left:-4px; color:#004d1a; font-size:7px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div id="scanlines"></div>
+
+<div id="hud">
+  <div class="col">
+    <div class="live-badge"><div id="live-dot"></div><span class="live-text">LIVE</span></div>
+    <div class="row" style="margin-top:8px">
+      <div><div class="hud-label">V-Accumulator</div><div class="hud-value" id="hud-v">0.000000</div></div>
+      <div><div class="hud-label">Round</div><div class="hud-value" id="hud-round">169</div></div>
+    </div>
+  </div>
+  <div class="col" style="align-items:flex-end">
+    <div class="row">
+      <div><div class="hud-label">FIRE Events</div><div class="hud-value hud-fire" id="hud-fires">0</div></div>
+      <div><div class="hud-label">Topology</div><div class="hud-value hud-cyan" id="hud-nodes">0</div></div>
+      <div><div class="hud-label">Edges</div><div class="hud-value hud-gold" id="hud-edges">0</div></div>
+    </div>
+    <div class="row" style="margin-top:4px">
+      <div><div class="hud-label">Poly_C Peak</div><div class="hud-value hud-fire" id="hud-peak">0.000</div></div>
+      <div><div class="hud-label">ω Max</div><div class="hud-value hud-cyan" id="hud-omega">0</div></div>
+      <div><div class="hud-label">FPS</div><div class="hud-value hud-dim" id="hud-fps">0</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="v-bar-wrap">
+  <div id="v-label">V</div>
+  <div id="v-bar" style="height:5%"></div>
+</div>
+
+<div id="bottom-bar">
+  <div id="event-log"></div>
+  <div class="brand">
+    <div>EVEZ-OS <span class="accent">VCL</span> · COGNITION TOPOLOGY</div>
+    <div>BARNES-HUT N-BODY · FIRE CASCADE · <span class="fire-accent">@EVEZ666</span></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════
+//  EVEZ VCL — Cognition Topology Visualizer v2
+//  Barnes-Hut N-Body · FIRE Cascade · Prime Voids
+//  Rebuilt from scratch for maximum visual impact
+// ═══════════════════════════════════════════════════════════
+
+const P = {
+  bg: 0x000402,
+  green: 0x00ff41, green2: 0x00cc33, green3: 0x005518, greenDim: 0x001a08,
+  fire: 0xff6600, fire2: 0xff2200, fireGlow: 0xff4400,
+  gold: 0xe6b428, extFire: 0xffc83c,
+  cyan: 0x00e5ff, cyanDim: 0x003344,
+  purple: 0x7733ff, primeVoid: 0x2200aa,
+  white: 0xe8ffe8, dim: 0x002211,
+  amber: 0xd28c1e
+};
+
+// ── Scene ──
+const W = window.innerWidth, H = window.innerHeight;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(P.bg);
+scene.fog = new THREE.FogExp2(P.bg, 0.006);
+
+const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 800);
+camera.position.set(0, 20, 45);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+document.body.appendChild(renderer.domElement);
+
+// ── Lights ──
+const ambient = new THREE.AmbientLight(P.green, 0.15);
+scene.add(ambient);
+
+const fireLight = new THREE.PointLight(P.fire, 0, 50);
+fireLight.position.set(0, 10, 0);
+scene.add(fireLight);
+
+const cyanLight = new THREE.PointLight(P.cyan, 1.5, 40);
+cyanLight.position.set(-10, 5, -10);
+scene.add(cyanLight);
+
+const rimLight = new THREE.DirectionalLight(P.green, 0.3);
+rimLight.position.set(20, 30, -20);
+scene.add(rimLight);
+
+// ── Grid (subtle) ──
+const gridGeo = new THREE.PlaneGeometry(120, 120, 40, 40);
+gridGeo.rotateX(-Math.PI / 2);
+const gridMat = new THREE.ShaderMaterial({
+  transparent: true,
+  uniforms: { time: { value: 0 }, color: { value: new THREE.Color(P.green3) } },
+  vertexShader: `
+    varying vec2 vUv;
+    varying float vDist;
+    void main() {
+      vUv = uv;
+      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+      vDist = length(mvPos.xyz);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `,
+  fragmentShader: `
+    uniform float time;
+    uniform vec3 color;
+    varying vec2 vUv;
+    varying float vDist;
+    void main() {
+      vec2 grid = abs(fract(vUv * 20.0 - 0.5) - 0.5) / fwidth(vUv * 20.0);
+      float line = min(grid.x, grid.y);
+      float alpha = 1.0 - min(line, 1.0);
+      alpha *= smoothstep(80.0, 10.0, vDist) * 0.08;
+      float pulse = 0.5 + 0.5 * sin(time * 0.3 + vUv.x * 6.28);
+      alpha *= 0.5 + pulse * 0.5;
+      gl_FragColor = vec4(color, alpha);
+    }
+  `
+});
+const gridMesh = new THREE.Mesh(gridGeo, gridMat);
+gridMesh.position.y = -4;
+scene.add(gridMesh);
+
+// ── Math Utilities ──
+function factorize(n) {
+  if (n < 2) return { tau: 2, omega: 1, factors: {} };
+  const f = {}; let d = 2, tmp = n;
+  while (d * d <= tmp) { while (tmp % d === 0) { f[d] = (f[d] || 0) + 1; tmp = Math.floor(tmp / d); } d++; }
+  if (tmp > 1) f[tmp] = (f[tmp] || 0) + 1;
+  let tau = 1; for (const e of Object.values(f)) tau *= (e + 1);
+  return { tau, omega: Object.keys(f).length, factors: f };
+}
+
+function isPrime(n) { if (n < 2) return false; if (n < 4) return true; if (n%2===0||n%3===0) return false; for(let i=5;i*i<=n;i+=6) if(n%i===0||(n+2)%i===0) return false; return true; }
+
+// ── Geometry Pool ──
+const geoPool = {
+  fire: new THREE.IcosahedronGeometry(0.4, 2),
+  extFire: new THREE.IcosahedronGeometry(0.5, 2),
+  prime: new THREE.OctahedronGeometry(0.3, 1),
+  topo: new THREE.TetrahedronGeometry(0.25, 1),
+  spine: new THREE.DodecahedronGeometry(0.22, 0),
+  default: new THREE.SphereGeometry(0.18, 12, 12),
+};
+
+// ── Bodies & State ──
+const bodies = [];
+const edges = [];
+let V = 0.5, fires = 0, round = 169, edgeCount = 0, peakPolyC = 0, maxOmega = 0;
+const MAX_BODIES = 400;
+const MAX_EDGES = 800;
+
+// ── Trail System (GPU Lines) ──
+const trailGroup = new THREE.Group();
+scene.add(trailGroup);
+
+// ── Glow Sprites ──
+const glowTex = (() => {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.15, 'rgba(255,255,255,0.8)');
+  g.addColorStop(0.4, 'rgba(255,255,255,0.15)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g; ctx.fillRect(0,0,64,64);
+  return new THREE.CanvasTexture(c);
+})();
+
+// ── Spawn Body ──
+function spawnBody(r) {
+  const N = r + 82;
+  const { tau, omega, factors } = factorize(N);
+  const topo = 1 + 0.15 * omega;
+  const poly_c = topo * (1 + Math.log(Math.max(tau, 1))) / Math.log2(N + 2);
+  const isFire = poly_c >= 0.5;
+  const isExtFire = poly_c >= 0.8;
+  const isPrimeN = isPrime(N);
+
+  V += 0.08 * poly_c;
+  if (isFire) fires++;
+  if (poly_c > peakPolyC) peakPolyC = poly_c;
+  if (omega > maxOmega) maxOmega = omega;
+
+  // Classification
+  let type, color, geo, emissive, emissiveIntensity, glowColor, glowSize;
+  if (isPrimeN) {
+    type = 'prime_void';
+    color = P.primeVoid;
+    geo = geoPool.prime;
+    emissive = P.purple;
+    emissiveIntensity = 0.6;
+    glowColor = new THREE.Color(P.purple);
+    glowSize = 2.5;
+  } else if (isExtFire) {
+    type = 'ext_fire';
+    color = P.extFire;
+    geo = geoPool.extFire;
+    emissive = P.fire;
+    emissiveIntensity = 1.2;
+    glowColor = new THREE.Color(P.fire);
+    glowSize = 4;
+  } else if (isFire) {
+    type = 'fire';
+    color = poly_c > 0.65 ? P.gold : P.fire;
+    geo = geoPool.fire;
+    emissive = P.fireGlow;
+    emissiveIntensity = 0.9;
+    glowColor = new THREE.Color(P.fireGlow);
+    glowSize = 3;
+  } else if (omega >= 3) {
+    type = 'spine';
+    color = P.cyan;
+    geo = geoPool.spine;
+    emissive = P.cyanDim;
+    emissiveIntensity = 0.4;
+    glowColor = new THREE.Color(P.cyan);
+    glowSize = 1.5;
+  } else {
+    type = 'topo';
+    color = P.green2;
+    geo = geoPool.topo;
+    emissive = P.green3;
+    emissiveIntensity = 0.3;
+    glowColor = new THREE.Color(P.green3);
+    glowSize = 1;
+  }
+
+  const mat = new THREE.MeshStandardMaterial({
+    color, emissive, emissiveIntensity,
+    metalness: isFire ? 0.5 : 0.2,
+    roughness: isFire ? 0.3 : 0.6,
+    transparent: true, opacity: 0.92
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+
+  // Spiral galaxy positioning
+  const arm = r % 3;
+  const armOffset = arm * (Math.PI * 2 / 3);
+  const spiralAngle = r * 0.35 + armOffset;
+  const radius = 3 + Math.pow(r - 169, 0.6) * 2.2;
+  const verticalSpread = (isFire ? 2 : 4) * (Math.random() - 0.5);
+
+  mesh.position.set(
+    Math.cos(spiralAngle) * radius + (Math.random() - 0.5) * 1.5,
+    verticalSpread + V * 0.15,
+    Math.sin(spiralAngle) * radius + (Math.random() - 0.5) * 1.5
+  );
+
+  scene.add(mesh);
+
+  // Glow sprite
+  const spriteMat = new THREE.SpriteMaterial({
+    map: glowTex, color: glowColor,
+    transparent: true, opacity: isFire ? 0.4 : 0.15,
+    blending: THREE.AdditiveBlending, depthWrite: false
+  });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.setScalar(glowSize);
+  mesh.add(sprite);
+
+  const body = {
+    mesh, type, N, poly_c, round: r, isFire, isPrimeN, omega, tau,
+    vel: new THREE.Vector3((Math.random()-0.5)*0.01, (Math.random()-0.5)*0.005, (Math.random()-0.5)*0.01),
+    phase: Math.random() * Math.PI * 2,
+    orbitSpeed: 0.0003 + Math.random() * 0.0005,
+    orbitRadius: radius,
+    orbitAngle: spiralAngle,
+    baseY: mesh.position.y,
+    sprite, spriteMat,
+    age: 0,
+    trail: isFire ? [] : null
+  };
+  bodies.push(body);
+
+  // Edges — connect to nearby same-type or fire bodies
+  const connectTargets = bodies.slice(0, -1).filter(b => {
+    const d = b.mesh.position.distanceTo(mesh.position);
+    return d < 12 && d > 0.5;
+  }).sort((a,b) => a.mesh.position.distanceTo(mesh.position) - b.mesh.position.distanceTo(mesh.position)).slice(0, 4);
+
+  for (const target of connectTargets) {
+    if (edges.length >= MAX_EDGES) break;
+    if (Math.random() > (isFire ? 0.6 : 0.25)) continue;
+
+    const edgeColor = (isFire || target.isFire) ? P.fire :
+                      (isPrimeN || target.isPrimeN) ? P.purple : P.green3;
+    const edgeOpacity = (isFire || target.isFire) ? 0.2 : 0.04;
+
+    const points = [mesh.position.clone(), target.mesh.position.clone()];
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: edgeColor, transparent: true, opacity: edgeOpacity,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    const line = new THREE.Line(lineGeo, lineMat);
+    scene.add(line);
+    edges.push({ line, a: body, b: target, baseOpacity: edgeOpacity });
+    edgeCount++;
+  }
+
+  // FIRE burst ring
+  if (isFire) {
+    const ringGeo = new THREE.TorusGeometry(1.2, 0.02, 8, 32);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: isExtFire ? P.extFire : P.fire,
+      transparent: true, opacity: 0.3,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    mesh.add(ring);
+    body.ring = ring;
+    body.ringMat = ringMat;
+  }
+
+  return body;
+}
+
+// ── Initial Population ──
+for (let r = 169; r <= 260; r++) spawnBody(r);
+round = 261;
+
+// ── Nebula Background ──
+const nebulaCount = 4000;
+const nebulaGeo = new THREE.BufferGeometry();
+const nebulaPos = new Float32Array(nebulaCount * 3);
+const nebulaColors = new Float32Array(nebulaCount * 3);
+const nebulaSizes = new Float32Array(nebulaCount);
+for (let i = 0; i < nebulaCount; i++) {
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  const r = 40 + Math.random() * 150;
+  nebulaPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+  nebulaPos[i*3+1] = (Math.random() - 0.5) * 80;
+  nebulaPos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+
+  const colorChoice = Math.random();
+  const c = colorChoice < 0.4 ? new THREE.Color(P.green3) :
+            colorChoice < 0.6 ? new THREE.Color(P.cyanDim) :
+            colorChoice < 0.75 ? new THREE.Color(P.purple).multiplyScalar(0.3) :
+            new THREE.Color(P.greenDim);
+  nebulaColors[i*3] = c.r; nebulaColors[i*3+1] = c.g; nebulaColors[i*3+2] = c.b;
+  nebulaSizes[i] = 0.5 + Math.random() * 2;
+}
+nebulaGeo.setAttribute('position', new THREE.BufferAttribute(nebulaPos, 3));
+nebulaGeo.setAttribute('color', new THREE.BufferAttribute(nebulaColors, 3));
+nebulaGeo.setAttribute('size', new THREE.BufferAttribute(nebulaSizes, 1));
+const nebulaMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexColors: true,
+  uniforms: { time: { value: 0 }, pointTexture: { value: glowTex } },
+  vertexShader: `
+    attribute float size;
+    varying vec3 vColor;
+    uniform float time;
+    void main() {
+      vColor = color;
+      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = size * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D pointTexture;
+    varying vec3 vColor;
+    void main() {
+      vec4 tex = texture2D(pointTexture, gl_PointCoord);
+      gl_FragColor = vec4(vColor, tex.a * 0.15);
+    }
+  `
+});
+scene.add(new THREE.Points(nebulaGeo, nebulaMat));
+
+// ── Event Log ──
+const eventLog = document.getElementById('event-log');
+const logEntries = [];
+function addLog(text, cls='spine') {
+  const ts = new Date().toISOString().slice(11,19);
+  logEntries.push({ text: `[${ts}] ${text}`, cls });
+  if (logEntries.length > 6) logEntries.shift();
+  eventLog.innerHTML = logEntries.map(e => `<div class="${e.cls}">${e.text}</div>`).join('');
+}
+
+// ── Camera System ──
+let camMode = 'orbit';
+let camAngle = 0, camRadius = 42, camTargetRadius = 42;
+let camHeight = 18, camTargetHeight = 18;
+let camTarget = new THREE.Vector3(8, 4, 0);
+let camLookTarget = new THREE.Vector3(8, 4, 0);
+let modeSwitchTimer = 0;
+const CAM_MODES = ['orbit', 'chase', 'topdown', 'drift'];
+let modeIndex = 0;
+
+function switchCamMode() {
+  modeIndex = (modeIndex + 1) % CAM_MODES.length;
+  camMode = CAM_MODES[modeIndex];
+  switch(camMode) {
+    case 'orbit': camTargetRadius = 35 + Math.random()*15; camTargetHeight = 12 + Math.random()*12; break;
+    case 'chase': camTargetRadius = 15 + Math.random()*10; camTargetHeight = 3 + Math.random()*6; break;
+    case 'topdown': camTargetRadius = 5; camTargetHeight = 50 + Math.random()*20; break;
+    case 'drift': camTargetRadius = 25 + Math.random()*20; camTargetHeight = 8 + Math.random()*20; break;
+  }
+}
+
+// ── HUD Refs ──
+const hudV = document.getElementById('hud-v');
+const hudRound = document.getElementById('hud-round');
+const hudFires = document.getElementById('hud-fires');
+const hudNodes = document.getElementById('hud-nodes');
+const hudEdges = document.getElementById('hud-edges');
+const hudPeak = document.getElementById('hud-peak');
+const hudOmega = document.getElementById('hud-omega');
+const hudFps = document.getElementById('hud-fps');
+const vBar = document.getElementById('v-bar');
+
+let frameCount = 0, lastFpsTime = performance.now(), fps = 0;
+let spawnTimer = 0;
+const SPAWN_INTERVAL = 1800;
+
+// ── N-Body (simplified Barnes-Hut-ish) ──
+function applyForces(dt) {
+  const G = 0.0002;
+  const DAMPING = 0.998;
+  for (let i = 0; i < bodies.length; i++) {
+    const a = bodies[i];
+    // Orbital drift
+    a.orbitAngle += a.orbitSpeed;
+    const targetX = Math.cos(a.orbitAngle) * a.orbitRadius;
+    const targetZ = Math.sin(a.orbitAngle) * a.orbitRadius;
+    a.vel.x += (targetX - a.mesh.position.x) * 0.0001;
+    a.vel.z += (targetZ - a.mesh.position.z) * 0.0001;
+
+    // Gravitational pull toward center mass
+    const dx = -a.mesh.position.x;
+    const dz = -a.mesh.position.z;
+    const dist = Math.sqrt(dx*dx + dz*dz) + 1;
+    a.vel.x += dx / (dist * dist) * G;
+    a.vel.z += dz / (dist * dist) * G;
+
+    // Apply velocity
+    a.vel.multiplyScalar(DAMPING);
+    a.mesh.position.add(a.vel);
+
+    // Breathing
+    a.age += dt;
+    const breathe = Math.sin(a.age * 1.5 + a.phase) * 0.12;
+    a.mesh.position.y = a.baseY + breathe;
+  }
+}
+
+// ── Animate ──
+function animate(time) {
+  requestAnimationFrame(animate);
+  const t = time * 0.001;
+  const dt = 1/60;
+
+  // FPS
+  frameCount++;
+  if (time - lastFpsTime > 1000) {
+    fps = Math.round(frameCount * 1000 / (time - lastFpsTime));
+    frameCount = 0; lastFpsTime = time;
+    hudFps.textContent = fps;
+  }
+
+  // Spawn
+  spawnTimer += 16;
+  if (spawnTimer > SPAWN_INTERVAL && bodies.length < MAX_BODIES) {
+    spawnTimer = 0;
+    const b = spawnBody(round++);
+    const label = b.type === 'ext_fire' ? `✦ EXT_FIRE R${b.round} N=${b.N} poly_c=${b.poly_c.toFixed(3)} τ=${b.tau}` :
+                  b.type === 'fire' ? `◆ FIRE R${b.round} N=${b.N} poly_c=${b.poly_c.toFixed(3)}` :
+                  b.type === 'prime_void' ? `◇ PRIME_VOID R${b.round} N=${b.N}` :
+                  b.type === 'spine' ? `⬡ SPINE R${b.round} ω=${b.omega} τ=${b.tau}` :
+                  `△ TOPO R${b.round} ω=${b.omega}`;
+    const cls = b.type === 'ext_fire' ? 'cascade' : b.type === 'fire' ? 'fire' : b.type === 'prime_void' ? 'void' : 'spine';
+    addLog(label, cls);
+  }
+
+  // Cull oldest
+  while (bodies.length > MAX_BODIES) {
+    const old = bodies.shift();
+    scene.remove(old.mesh);
+  }
+
+  // Physics
+  applyForces(dt);
+
+  // Animate bodies
+  for (const b of bodies) {
+    b.mesh.rotation.x += (b.isFire ? 0.008 : 0.002);
+    b.mesh.rotation.y += (b.isFire ? 0.012 : 0.003);
+
+    if (b.isFire) {
+      b.mesh.material.emissiveIntensity = 0.6 + Math.sin(t * 3 + b.phase) * 0.5;
+      const s = 1 + Math.sin(t * 2 + b.phase) * 0.12;
+      b.mesh.scale.setScalar(s);
+      b.spriteMat.opacity = 0.2 + Math.sin(t * 2.5 + b.phase) * 0.2;
+    }
+
+    if (b.isPrimeN) {
+      b.spriteMat.opacity = 0.1 + Math.sin(t * 1.5 + b.phase) * 0.1;
+      b.mesh.rotation.z += 0.005;
+    }
+
+    if (b.ring) {
+      b.ring.rotation.z = t * 0.5 + b.phase;
+      b.ring.scale.setScalar(1 + Math.sin(t * 2 + b.phase) * 0.3);
+      b.ringMat.opacity = 0.15 + Math.sin(t * 3 + b.phase) * 0.15;
+    }
+  }
+
+  // Update edges
+  for (const e of edges) {
+    const positions = e.line.geometry.attributes.position;
+    if (positions) {
+      positions.array[0] = e.a.mesh.position.x;
+      positions.array[1] = e.a.mesh.position.y;
+      positions.array[2] = e.a.mesh.position.z;
+      positions.array[3] = e.b.mesh.position.x;
+      positions.array[4] = e.b.mesh.position.y;
+      positions.array[5] = e.b.mesh.position.z;
+      positions.needsUpdate = true;
+    }
+    const pulse = 0.5 + 0.5 * Math.sin(t * 2 + e.a.phase);
+    e.line.material.opacity = e.baseOpacity * (0.5 + pulse * 0.5);
+  }
+
+  // Camera
+  modeSwitchTimer += dt;
+  if (modeSwitchTimer > 25) { modeSwitchTimer = 0; switchCamMode(); }
+
+  camRadius += (camTargetRadius - camRadius) * 0.01;
+  camHeight += (camTargetHeight - camHeight) * 0.01;
+
+  const focusBody = bodies[Math.floor(bodies.length * 0.75)] || bodies[bodies.length - 1] || bodies[0];
+  if (focusBody) {
+    camLookTarget.lerp(focusBody.mesh.position, camMode === 'chase' ? 0.01 : 0.003);
+  }
+  camTarget.lerp(camLookTarget, 0.02);
+
+  camAngle += camMode === 'drift' ? 0.0004 : camMode === 'chase' ? 0.002 : 0.001;
+
+  camera.position.x = camTarget.x + Math.cos(camAngle) * camRadius;
+  camera.position.y = camTarget.y + camHeight + Math.sin(t * 0.05) * 3;
+  camera.position.z = camTarget.z + Math.sin(camAngle) * camRadius;
+  camera.lookAt(camTarget);
+
+  // Lights follow action
+  fireLight.position.copy(camTarget).add(new THREE.Vector3(Math.sin(t)*5, 8, Math.cos(t)*5));
+  fireLight.intensity = 2 + Math.sin(t * 2) * 1.5;
+  cyanLight.position.copy(camTarget).add(new THREE.Vector3(-8, 5, -8));
+
+  // Uniforms
+  gridMat.uniforms.time.value = t;
+  nebulaMat.uniforms.time.value = t;
+
+  // HUD
+  hudV.textContent = V.toFixed(6);
+  hudRound.textContent = round - 1;
+  hudFires.textContent = fires;
+  hudNodes.textContent = bodies.length;
+  hudEdges.textContent = edgeCount;
+  hudPeak.textContent = peakPolyC.toFixed(3);
+  hudOmega.textContent = maxOmega;
+  vBar.style.height = Math.min(V / 50 * 100, 100) + '%';
+
+  renderer.render(scene, camera);
+}
+
+requestAnimationFrame(animate);
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

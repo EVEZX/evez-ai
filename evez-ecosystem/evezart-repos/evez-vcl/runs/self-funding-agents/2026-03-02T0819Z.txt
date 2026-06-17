@@ -1,0 +1,10 @@
+self-funding-agents scan #30 -- 2026-03-02T08:19Z
+query: AI agent revenue OR AI agent licensing OR agent compute economics -is:retweet lang:en
+genuine_signal_count: 2
+consecutive_zero_genuine: 0
+retirement_recommendation: false
+high_signal_tweets:
+  - beffjezosOG (7950f L=7 RT=1 imp=630): AI agent revenue companies generating revenue from task/work not trading fees
+  - NFI_AI (6f L=1): Salesforce AI agent revenue $800M up 169%
+spam_filtered: alpha_forge_ai (repeat spam)
+query_status: ALIVE

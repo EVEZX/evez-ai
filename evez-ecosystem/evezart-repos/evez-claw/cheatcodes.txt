@@ -1,0 +1,9 @@
+# OpenClaw Cheatcodes
+# Use with `openclaw cheat <code>`
+
+# Fast restart gateway
+RESTART_GATEWAY="openclaw gateway restart"
+# Burst mode: run deploy script and then start gateway
+BURST_DEPLOY="./deploy.sh && openclaw gateway start"
+# Enable all skills in the skills directory
+ENABLE_ALL_SKILLS="for s in $(ls skills); do openclaw skill enable $s; done"

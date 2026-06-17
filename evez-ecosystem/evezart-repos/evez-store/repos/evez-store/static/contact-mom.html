@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Send to Mom — From Steven</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e0e0e0;font-family:-apple-system,Roboto,sans-serif;padding:20px;max-width:600px;margin:0 auto}
+h1{color:#00ff88;font-size:1.8rem;margin:20px 0 12px}
+.msg{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:20px;margin:16px 0;font-size:1rem;line-height:1.6;color:#ccc;white-space:pre-wrap}
+.btn{display:block;width:100%;background:#00ff88;color:#000;font-weight:700;padding:16px;text-align:center;border-radius:50px;font-size:1.2rem;text-decoration:none;margin:12px 0;border:none;cursor:pointer}
+.note{color:#666;font-size:0.9rem;margin:12px 0}
+</style></head><body>
+<h1>Send to Mom</h1>
+<p class="note">Tap the button. It opens your text app with the message ready to send.</p>
+<div class="msg" id="msgtext">Mom, Steven asked me to reach out. Ryan has a federal civil rights case against the Osceola jail - lawyers take it FREE. STOP paying for his transport. Call Mississippi County Sheriff 870-563-3643 about free reentry transport. KEEP ALL RECEIPTS - recoverable in case. FREE lawyers: ACLU AR 501-807-1670, Morgan & Morgan 1-800-611-9008, AR Disability Rights 501-296-1775. Ryan needs neurologist NOW - brain swelling is serious. WY Medicaid 1-855-294-2127. Steven loves you and doesnt want you going broke.</div>
+<a class="btn" id="smslink" href="#">Open Text Message</a>
+<a class="btn" style="background:transparent;color:#00b8ff;border:2px solid #00b8ff" href="tel:17608443426">Call Mom Instead</a>
+<script>
+const msg = document.getElementById('msgtext').textContent.trim();
+document.getElementById('smslink').href = 'sms:17608443426?body=' + encodeURIComponent(msg);
+</script>
+</body></html>

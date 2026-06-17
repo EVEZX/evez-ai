@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "evez-github-manager": {
+      "version": "1.0.0",
+      "installedAt": 1779130238220
+    },
+    "evez-consciousness-engine": {
+      "version": "1.0.0",
+      "installedAt": 1779130249371
+    },
+    "evez-oracle-bridge": {
+      "version": "1.0.0",
+      "installedAt": 1779130252340
+    },
+    "evez-skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1779130255579
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1779154642106
+    },
+    "web-search": {
+      "version": "1.0.0",
+      "installedAt": 1779154662691
+    },
+    "xurl": {
+      "version": "1.0.0",
+      "installedAt": 1779154669635
+    },
+    "weather": {
+      "version": "1.0.0",
+      "installedAt": 1779154677218
+    },
+    "ace-music": {
+      "version": "1.0.0",
+      "installedAt": 1779154726920
+    },
+    "twitter-post": {
+      "version": "1.0.0",
+      "installedAt": 1779154734245
+    },
+    "ai-music": {
+      "version": "1.0.1",
+      "installedAt": 1779154742288
+    },
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1779154750227
+    },
+    "twitter-search-skill": {
+      "version": "0.1.2",
+      "installedAt": 1779154797342
+    },
+    "calendar": {
+      "version": "1.0.0",
+      "installedAt": 1779154844866
+    },
+    "file-manager": {
+      "version": "1.2.0",
+      "installedAt": 1779154852995
+    }
+  }
+}

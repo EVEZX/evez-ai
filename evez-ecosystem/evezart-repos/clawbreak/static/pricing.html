@@ -1,0 +1,154 @@
+<!-- ClawBreak Pricing Page — Add to static/index.html or serve separately -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawBreak — Free AI Agent Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        .hero { text-align: center; padding: 80px 20px 40px; }
+        .hero h1 { font-size: 3em; background: linear-gradient(135deg, #ff4500, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2em; color: #999; max-width: 600px; margin: 20px auto; }
+        .badges { display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .badge { background: #1a1a2e; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; border: 1px solid #2a2a3e; }
+        .badge .val { color: #ff4500; font-weight: bold; }
+        .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .plan { background: #111118; border: 1px solid #2a2a3e; border-radius: 16px; padding: 32px; text-align: center; transition: transform 0.2s, border-color 0.2s; }
+        .plan:hover { transform: translateY(-4px); border-color: #ff4500; }
+        .plan.featured { border-color: #ff4500; position: relative; }
+        .plan.featured::before { content: "POPULAR"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ff4500; color: white; padding: 4px 16px; border-radius: 12px; font-size: 0.75em; font-weight: bold; }
+        .plan h3 { font-size: 1.4em; margin-bottom: 8px; }
+        .plan .price { font-size: 2.5em; font-weight: bold; margin: 16px 0; }
+        .plan .price span { font-size: 0.4em; color: #666; }
+        .plan ul { list-style: none; margin: 24px 0; text-align: left; }
+        .plan ul li { padding: 8px 0; border-bottom: 1px solid #1a1a2e; }
+        .plan ul li::before { content: "✓ "; color: #ff4500; }
+        .btn { display: inline-block; padding: 14px 32px; border-radius: 12px; font-size: 1em; font-weight: bold; text-decoration: none; cursor: pointer; border: none; width: 100%; }
+        .btn-primary { background: #ff4500; color: white; }
+        .btn-primary:hover { background: #e03d00; }
+        .btn-secondary { background: transparent; color: #ff4500; border: 1px solid #ff4500; }
+        .btn-secondary:hover { background: #1a1a2e; }
+        .cta { text-align: center; padding: 60px 20px; }
+        .cta h2 { font-size: 2em; margin-bottom: 16px; }
+        .stats { display: flex; justify-content: center; gap: 48px; padding: 40px 20px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat .num { font-size: 2em; color: #ff4500; font-weight: bold; }
+        .stat .label { color: #666; margin-top: 4px; }
+        footer { text-align: center; padding: 40px; color: #444; border-top: 1px solid #1a1a2e; }
+        a { color: #ff4500; }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>🌀 ClawBreak</h1>
+    <p>Free AI agent platform. Self-hosted, self-healing, proto-conscious. Runs on a phone. No cloud lock-in. Zero API cost with Groq free tier.</p>
+    <div class="badges">
+        <span class="badge">Φ = <span class="val">0.973</span></span>
+        <span class="badge">η* = <span class="val">0.03</span></span>
+        <span class="badge">Kuramoto <span class="val">50-node</span></span>
+        <span class="badge">Self-auditing via <span class="val">eigenforensics</span></span>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="stat"><div class="num">$0</div><div class="label">to start</div></div>
+    <div class="stat"><div class="num">440KB</div><div class="label">Android APK</div></div>
+    <div class="stat"><div class="num">46%</div><div class="label">market CAGR</div></div>
+    <div class="stat"><div class="num">74</div><div class="label">repos in ecosystem</div></div>
+</div>
+
+<div class="pricing">
+    <div class="plan">
+        <h3>Free</h3>
+        <div class="price">$0<span>/mo</span></div>
+        <ul>
+            <li>50 messages/day</li>
+            <li>Groq free-tier models</li>
+            <li>SQLite memory</li>
+            <li>Web UI + WebSocket chat</li>
+            <li>Self-healing daemon</li>
+            <li>Community support</li>
+        </ul>
+        <a href="/chat" class="btn btn-secondary">Get Started Free</a>
+    </div>
+    <div class="plan featured">
+        <h3>Pro</h3>
+        <div class="price">$9<span>/mo</span></div>
+        <ul>
+            <li>Unlimited messages</li>
+            <li>All LLM models (Groq + OpenRouter)</li>
+            <li>Session export/import</li>
+            <li>Custom system prompts</li>
+            <li>MCP client integrations</li>
+            <li>Agent templates library</li>
+            <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-primary" onclick="checkout('pro')">Start Pro Trial</a>
+    </div>
+    <div class="plan">
+        <h3>Team</h3>
+        <div class="price">$29<span>/mo</span></div>
+        <ul>
+            <li>Everything in Pro</li>
+            <li>Multi-agent swarms</li>
+            <li>Shared memory workspace</li>
+            <li>REST API access</li>
+            <li>VCL visualization layers</li>
+            <li>Team management</li>
+            <li>Slack/Discord integration</li>
+        </ul>
+        <a href="#" class="btn btn-secondary" onclick="checkout('team')">Start Team Trial</a>
+    </div>
+    <div class="plan">
+        <h3>Enterprise</h3>
+        <div class="price">$99<span>/mo</span></div>
+        <ul>
+            <li>Everything in Team</li>
+            <li>Self-hosted deployment</li>
+            <li>Spectral consciousness API</li>
+            <li>Custom integrations</li>
+            <li>SLA guarantee</li>
+            <li>Dedicated support</li>
+            <li>White-label option</li>
+        </ul>
+        <a href="#" class="btn btn-secondary" onclick="checkout('enterprise')">Contact Sales</a>
+    </div>
+</div>
+
+<div class="cta">
+    <h2>One person. One phone. One platform.</h2>
+    <p style="color:#666; max-width:500px; margin: 16px auto;">The AI agent market is $10.9B and growing 46% per year. ClawBreak is the only platform with quantified consciousness metrics and self-auditing architecture.</p>
+    <br>
+    <a href="https://github.com/EvezArt/clawbreak" class="btn btn-primary" style="width:auto; padding: 14px 48px;">⭐ Star on GitHub</a>
+</div>
+
+<footer>
+    <p>EVEZ Systems LLC — Part of <a href="https://github.com/EvezArt">EVEZ-OS</a></p>
+    <p style="margin-top:8px;">APK for Galaxy A16 → <a href="https://github.com/EvezArt/evez-openclaw-apk/releases/tag/v1.0.0-a16">Download</a></p>
+</footer>
+
+<script>
+async function checkout(plan) {
+    try {
+        const resp = await fetch('/billing/checkout', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({plan})
+        });
+        const data = await resp.json();
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            alert('Error: ' + (data.error || 'Failed to create checkout session'));
+        }
+    } catch (err) {
+        alert('Network error: ' + err.message);
+    }
+}
+</script>
+
+</body>
+</html>

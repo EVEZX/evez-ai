@@ -1,0 +1,15 @@
+name: FIRE Cascade Receiver
+on:
+  repository_dispatch:
+    types: [fire_cascade]
+  workflow_dispatch:
+jobs:
+  fire-received:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log FIRE event
+        run: |
+          echo "FIRE CASCADE RECEIVED at MAES"
+          mkdir -p events
+          echo '{"ts":"'$(date -u +%FT%TZ)'","event":"fire_cascade","source":"'${{ github.event.client_payload.source || 'manual' }}'"}' >> events/fire_cascade.jsonl

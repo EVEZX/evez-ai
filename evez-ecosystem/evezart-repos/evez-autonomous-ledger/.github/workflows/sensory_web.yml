@@ -1,0 +1,21 @@
+name: Web Sensory Loop (30-min)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web-sense:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests feedparser
+      - name: Run web sensory agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/sensory/web_sense.py

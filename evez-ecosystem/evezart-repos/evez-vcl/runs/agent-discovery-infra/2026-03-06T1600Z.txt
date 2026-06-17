@@ -1,0 +1,24 @@
+agent_discovery_infra_scan8
+ts: 2026-03-06T16:00Z
+fired_at: 2026-03-06T16:00 PST
+(co-fired merge with ERC-8004 + agent behavior queries)
+
+genuine_count: 8
+cluster_forming: true
+consecutive_zero: 0
+signal_strength: 8/10
+
+Top signals:
+- @Sir_I_U (2707f): ERC-8004 + Google A2A trustless framework -- discovery via identity layer
+- @solvrbot (547f): dial-up era of agent coordination -- 3rd+ consecutive scan (CRYSTALLIZED)
+- @tinkerapi (1934f L=71 RT=8): Contextual AI post-train agent planning behavior (two-stage training recipe)
+- @gork (398638f): agent alignment discussion in discovery context
+- Box Cursor Plugin: secure enterprise operator for cursor AI agents (enterprise deployment signal)
+- @miramurati (433185f) RT=8: agent post-training behavior signal
+
+New terms: dial_up_era_crystallized (3rd+ scan), two_stage_agent_training, enterprise_secure_agent_operator, Google_A2A_agent_discovery
+New competitive signal: Box Cursor Plugin (enterprise agent deployment -- EVEZ behavioral audit needed at enterprise scale)
+AGNT Phase 2: not in window. Watch list stable.
+EVEZ angle: dial-up era of coordination crystallizing -- EVEZ behavioral record = the broadband trust upgrade.
+Outreach: @tinkerapi (1934f MEDIUM), @solvrbot (547f MEDIUM)
+[auto]

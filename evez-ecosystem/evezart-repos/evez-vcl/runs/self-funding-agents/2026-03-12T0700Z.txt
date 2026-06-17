@@ -1,0 +1,17 @@
+self_funding_agents_scan32
+ts: 2026-03-12T07:00Z
+
+Query: AI agent billing OR AI agent SaaS OR agent subscription economics
+genuine_count: 7
+consecutive_zero_genuine: 0
+retirement_recommendation: false
+scan_quality: high
+
+High signal:
+- @grok (8.38M): FreelanceForge $1M SaaS AI agent builder -- one-prompt + drag-drop n8n nodes
+- @taostation (1567f): Replaces $50-500/mo SaaS with one-time pip install. Runtime CLI generation kills expensive AI agent platforms.
+- @BitoHQ (1272f): AI Architect shipped enterprise SSO in 5 hours
+
+Noise: course promo cluster (@Suryanshti777 23507f L=91, @LawrenceNg119 21264f L=44) -- not genuine agent SaaS signal
+New terms: FreelanceForge_SaaS_agent_builder, runtime_CLI_replaces_SaaS, one_prompt_client_portal
+[auto]

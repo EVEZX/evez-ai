@@ -1,0 +1,80 @@
+name: LORD Monitor CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/lord-monitor/**'
+      - 'package.json'
+      - 'vercel.json'
+      - '.github/workflows/lord-monitor-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'public/lord-monitor/**'
+      - 'package.json'
+      - 'vercel.json'
+      - '.github/workflows/lord-monitor-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-static-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate monitor file set and internal references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('public/lord-monitor')
+          required = [
+              'index.html',
+              'control-center.html',
+              'recursive-polygon.html',
+              'audio-viz.html',
+              'polygon-3d.html',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit(f'Missing required monitor files: {missing}')
+
+          html_files = list(root.glob('*.html'))
+          link_pattern = re.compile(r'(?:href|src)="([^"]+)"')
+          unresolved = []
+          for html_file in html_files:
+              text = html_file.read_text(encoding='utf-8')
+              for rel in link_pattern.findall(text):
+                  if rel.startswith(('http://', 'https://', '#', 'data:')):
+                      continue
+                  target = (html_file.parent / rel).resolve()
+                  if not target.exists():
+                      unresolved.append((html_file.name, rel))
+          if unresolved:
+              raise SystemExit(f'Unresolved local links: {unresolved}')
+
+          control_center = (root / 'control-center.html').read_text(encoding='utf-8')
+          if 'fusion-update' not in control_center:
+              raise SystemExit('control-center.html must emit fusion-update messages')
+          print('Static monitor validation passed')
+          PY
+
+      - name: Serve monitor locally and probe pages
+        run: |
+          python -m http.server 8123 --directory public/lord-monitor >/tmp/lord-monitor-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid' EXIT
+          sleep 2
+          curl -f http://127.0.0.1:8123/index.html >/dev/null
+          curl -f http://127.0.0.1:8123/control-center.html >/dev/null
+          curl -f http://127.0.0.1:8123/recursive-polygon.html >/dev/null
+          curl -f http://127.0.0.1:8123/audio-viz.html >/dev/null
+          curl -f http://127.0.0.1:8123/polygon-3d.html >/dev/null

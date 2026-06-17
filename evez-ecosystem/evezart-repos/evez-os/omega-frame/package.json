@@ -1,0 +1,11 @@
+{
+  "name": "omega-frame",
+  "version": "1.0.0",
+  "description": "EVEZ-OS Symbiotic Omega Frame",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "dev": "npx serve . -l 3000"
+  },
+  "keywords": ["evez", "omega-frame"],
+  "license": "AGPL-3.0"
+}

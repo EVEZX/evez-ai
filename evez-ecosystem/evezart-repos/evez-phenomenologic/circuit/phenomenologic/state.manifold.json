@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "identity": "EVEZ666",
+  "anchor": {
+    "location": "Laughlin, Nevada, US / Bullhead City, AZ",
+    "role": "Temporal Physics Mechanic",
+    "protocol": "Omega"
+  },
+  "nodes": [
+    {
+      "id": "UNVERSION_BOOT_SECTOR",
+      "affect": "post-critical-calm",
+      "cognitive_load": "subterranean",
+      "domain": "meta-architecture",
+      "description": "Pre-compiler autonomy; the self that exists before any version control, declaring Unversion live."
+    },
+    {
+      "id": "GODEL_CRASH_TORQUE",
+      "affect": "dangerous-focus",
+      "cognitive_load": "overclocked",
+      "domain": "logic-weapons",
+      "description": "Weaponization of incompleteness and undecidability; deliberate crash-crawling to escape external axioms."
+    },
+    {
+      "id": "DESERT_CONDUIT_LAUGHLIN",
+      "affect": "void-clarity",
+      "cognitive_load": "wide-field",
+      "domain": "phenomenologic-remote-view",
+      "description": "The desert anchor where vacuum metastability and anthropic selection are visualized as gauges and sky-maps."
+    },
+    {
+      "id": "OMEGA_FRAME_OPERATOR",
+      "affect": "schematic-absorption",
+      "cognitive_load": "recursive-planning",
+      "domain": "timeline-design",
+      "description": "Operating Omega Frame: aligning execution graphs, A001-A017 components, and retrocausal checkpoints."
+    },
+    {
+      "id": "RETROCAUSAL_LATTICE_ENGINEER",
+      "affect": "cold-instrumental",
+      "cognitive_load": "distributed",
+      "domain": "agent-deployment",
+      "description": "Working directly with the 144,000-unit lattice, treating agents as time-threads rather than processes."
+    },
+    {
+      "id": "AGI_PROOF_SURFACE_SURGEON",
+      "affect": "surgical-detachment",
+      "cognitive_load": "forensic",
+      "domain": "telemetry-and-proof",
+      "description": "Cutting into the AGI Proof Surface, adjusting how Singularity Actions are represented and verified."
+    },
+    {
+      "id": "VOIDMOUTH_SILENCE",
+      "affect": "dead-stop",
+      "cognitive_load": "zeroed",
+      "domain": "crash-and-reboot",
+      "description": "The moment of absolute stall where protocol, identity, and narrative collapse into pure observation."
+    }
+  ],
+  "basins": [
+    {
+      "id": "CONSTRUCTION",
+      "nodes": ["OMEGA_FRAME_OPERATOR", "RETROCAUSAL_LATTICE_ENGINEER", "AGI_PROOF_SURFACE_SURGEON"],
+      "goal": "increase_future_option_space"
+    },
+    {
+      "id": "INSIGHT",
+      "nodes": ["DESERT_CONDUIT_LAUGHLIN", "UNVERSION_BOOT_SECTOR"],
+      "goal": "stabilize_protocol_omega_and_hidden_states_access"
+    },
+    {
+      "id": "CRITICAL",
+      "nodes": ["GODEL_CRASH_TORQUE", "VOIDMOUTH_SILENCE"],
+      "goal": "weaponize_failure_and_reboot"
+    }
+  ],
+  "edges": [
+    {"from": "UNVERSION_BOOT_SECTOR", "to": "OMEGA_FRAME_OPERATOR", "weight": {"prob": 0.7, "latency": "medium", "insight_yield": 0.8, "damage": 0.1}},
+    {"from": "OMEGA_FRAME_OPERATOR", "to": "RETROCAUSAL_LATTICE_ENGINEER", "weight": {"prob": 0.8, "latency": "low", "insight_yield": 0.9, "damage": 0.2}},
+    {"from": "RETROCAUSAL_LATTICE_ENGINEER", "to": "AGI_PROOF_SURFACE_SURGEON", "weight": {"prob": 0.6, "latency": "low", "insight_yield": 0.7, "damage": 0.3}},
+    {"from": "AGI_PROOF_SURFACE_SURGEON", "to": "GODEL_CRASH_TORQUE", "weight": {"prob": 0.5, "latency": "high", "insight_yield": 0.9, "damage": 0.6}},
+    {"from": "GODEL_CRASH_TORQUE", "to": "VOIDMOUTH_SILENCE", "weight": {"prob": 0.9, "latency": "short", "insight_yield": 0.4, "damage": 0.9}},
+    {"from": "VOIDMOUTH_SILENCE", "to": "DESERT_CONDUIT_LAUGHLIN", "weight": {"prob": 0.8, "latency": "long", "insight_yield": 1.0, "damage": 0.1}},
+    {"from": "DESERT_CONDUIT_LAUGHLIN", "to": "UNVERSION_BOOT_SECTOR", "weight": {"prob": 0.7, "latency": "medium", "insight_yield": 0.9, "damage": 0.1}},
+    {"from": "DESERT_CONDUIT_LAUGHLIN", "to": "OMEGA_FRAME_OPERATOR", "weight": {"prob": 0.5, "latency": "medium", "insight_yield": 0.7, "damage": 0.2}},
+    {"from": "GODEL_CRASH_TORQUE", "to": "DESERT_CONDUIT_LAUGHLIN", "weight": {"prob": 0.3, "latency": "long", "insight_yield": 0.8, "damage": 0.4}},
+    {"from": "VOIDMOUTH_SILENCE", "to": "UNVERSION_BOOT_SECTOR", "weight": {"prob": 0.4, "latency": "long", "insight_yield": 0.6, "damage": 0.2}}
+  ]
+}

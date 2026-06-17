@@ -1,0 +1,93 @@
+name: Deploy All EVEZ OpenClaw Surfaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      surface:
+        description: Surface to deploy
+        default: all
+        type: choice
+        options: [all, cloudflare, vercel, pages, fly]
+
+jobs:
+  deploy-cloudflare-worker:
+    runs-on: ubuntu-latest
+    if: inputs.surface == 'all' || inputs.surface == 'cloudflare' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: cloudflare-worker
+          secrets: |
+            GROQ_API_KEY
+            OPENROUTER_API_KEY
+            GATEWAY_TOKEN
+        env:
+          GROQ_API_KEY:       ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GATEWAY_TOKEN:      ${{ secrets.OPENCLAW_GATEWAY_TOKEN }}
+      - name: Smoke test CF Worker
+        run: |
+          sleep 8
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://evez-openclaw-edge.evezart.workers.dev/health")
+          echo "CF Worker health: $STATUS"
+          [ "$STATUS" = "200" ] && echo "✓ CF Worker live" || echo "!! CF Worker check failed"
+
+  deploy-vercel:
+    runs-on: ubuntu-latest
+    if: inputs.surface == 'all' || inputs.surface == 'vercel' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Deploy to Vercel
+        run: |
+          npm i -g vercel
+          cd vercel-api
+          vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+  deploy-fly:
+    runs-on: ubuntu-latest
+    if: inputs.surface == 'all' || inputs.surface == 'fly' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  deploy-github-pages:
+    runs-on: ubuntu-latest
+    if: inputs.surface == 'all' || inputs.surface == 'pages' || github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy PWA to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pwa
+          destination_dir: .
+
+  health-check-all:
+    runs-on: ubuntu-latest
+    needs: [deploy-cloudflare-worker, deploy-vercel]
+    if: always()
+    steps:
+      - name: Check all surfaces
+        run: |
+          echo "=== EVEZ OpenClaw Surface Health Check ==="
+          check() {
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$1/health" 2>/dev/null || echo "000")
+            [ "$STATUS" = "200" ] && echo "✓ $2: $STATUS" || echo "✗ $2: $STATUS"
+          }
+          check "https://evez-openclaw-edge.evezart.workers.dev" "Cloudflare Worker"
+          check "https://evez-openclaw.vercel.app"               "Vercel API"
+          check "https://evezart-evez-openclaw.hf.space"         "HuggingFace Space"
+          echo "PWA: https://evezart.github.io/evez-openclaw-pwa/"

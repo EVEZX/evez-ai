@@ -1,0 +1,25 @@
+GAME AGENT INFRA — ONE MEGA MAP (ASCII)
+
+Players ──Web/Launcher──► Vercel Next.js UI (Auth, Chat, Admin) ──► API Gateway
+   │                                                              │
+   │  realtime (WebSocket/WebRTC)                                  │ REST/gRPC
+   ▼                                                              ▼
+Game Client ───────────────► Realtime Gateway (WS) ─────────────► Game Server (Authoritative)
+                                   │                                 │
+                                   │ events (NATS/Kafka)              │ state snapshots
+                                   ▼                                 ▼
+                            Event Spine (Append-only) ───────────► Projection Store (Redis/DB)
+                                   │                                 │
+                                   │ FSC probes + telemetry           │ query
+                                   ▼                                 ▼
+                          Agent Orchestrator (LLM Tools) ────────► Matchmaking / Econ / Anti-cheat
+                                   │
+                                   │ tool calls
+                                   ▼
+                             External Tools (search, code, analytics)
+
+Observability (OTel) taps EVERYTHING:
+logs/metrics/traces + "pending vs final" states + provenance for every rewrite.
+
+Retrocausal-looking loop (safe):
+Speculative client prediction → server reconciliation/rollback → event sourcing → projection rebuild.

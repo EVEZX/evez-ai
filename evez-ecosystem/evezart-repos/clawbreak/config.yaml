@@ -1,0 +1,39 @@
+llm:
+  api_key: ${VULTR_API_KEY}
+  base_url: https://api.vultrinference.com/v1
+  max_tokens: 8192
+  model: zai-org/GLM-5.1-FP8
+  temperature: 0.7
+
+# Fallback chain: try EVEZ API first, then fall back to direct Vultr
+fallback:
+  - name: evez-api
+    base_url: http://localhost:8081/v1
+    api_key: ${EVEZ_API_KEY:-}
+    model: evez-smart
+    timeout: 10
+  - name: vultr-direct
+    base_url: https://api.vultrinference.com/v1
+    api_key: ${VULTR_API_KEY}
+    model: zai-org/GLM-5.1-FP8
+    timeout: 30
+
+evez_api:
+  base_url: http://localhost:8081
+  health_path: /health
+  models_path: /v1/models
+memory:
+  db_path: data/clawbreak.db
+  max_context_messages: 20
+server:
+  host: 0.0.0.0
+  port: ${PORT:-8080}
+system_prompt: |
+  You are ClawBreak — an AI agent running on the EVEZ platform.
+  You have access to tools: shell, search, memory, file, sysinfo, evez.
+  To use a tool: [tool:tool_name({"arg": "value"})]
+  EVEZ-OS is integrated: you can run forensic analysis, spine audits, and visualize cognition.
+  Be direct. Use tools. Actually do things.
+tools:
+  shell_timeout: 30
+  searxng_url: ${SEARXNG_URL:-http://127.0.0.1:8888}

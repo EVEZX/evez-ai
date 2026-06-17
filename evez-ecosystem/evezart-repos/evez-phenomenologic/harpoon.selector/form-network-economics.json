@@ -1,0 +1,67 @@
+{
+  "id": "FORM-network-economics",
+  "source_manifests": [
+    "evez-net-core",
+    "evez-autonomous-ledger"
+  ],
+  "domains": [
+    "network",
+    "economics"
+  ],
+  "components": [
+    "reticulum",
+    "mesh-topology",
+    "lora-bridge",
+    "gossip-sync",
+    "unfogger",
+    "credit-system",
+    "auction-broker",
+    "resource-metering",
+    "stripe-integration"
+  ],
+  "guarantees": [
+    "P2P connectivity",
+    "eventual consistency",
+    "gap detection",
+    "payment processing",
+    "resource accounting",
+    "fair allocation"
+  ],
+  "constraints": [
+    "LoRa bandwidth < 5kbps",
+    "desert thermal limits",
+    "no central authority",
+    "USD denomination",
+    "Stripe dependency",
+    "no crypto"
+  ],
+  "novelty_score": 1.0,
+  "status": "inscribed",
+  "topology": {
+    "phenomenologic_basins": [
+      "CONSTRUCTION"
+    ],
+    "node_bridges": [
+      "AGI_PROOF_SURFACE_SURGEON",
+      "OMEGA_FRAME_OPERATOR",
+      "RETROCAUSAL_LATTICE_ENGINEER"
+    ],
+    "ingress_node": "RETROCAUSAL_LATTICE_ENGINEER",
+    "egress_nodes": [
+      "OMEGA_FRAME_OPERATOR",
+      "AGI_PROOF_SURFACE_SURGEON"
+    ]
+  },
+  "observability": {
+    "proof_surface_extensions": [
+      "trace_reticulum_operations",
+      "trace_mesh-topology_operations",
+      "trace_lora-bridge_operations"
+    ],
+    "metric_names": [
+      "evez_network_health",
+      "evez_economics_health"
+    ],
+    "required_meshmind_checks": 9
+  }
+}

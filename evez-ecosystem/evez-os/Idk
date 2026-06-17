@@ -1,0 +1,102 @@
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import List, Dict, Any, Optional
+import json
+import os
+
+router = APIRouter(prefix="/api/telemetry", tags=["telemetry"])
+
+# ── Spine integration ────────────────────────────────────────────────────────
+SPINE_PATH = os.getenv("EVEZ_SPINE_PATH", "spine.jsonl")
+
+def _append_spine(record: dict) -> None:
+    """Append-only write to the EVEZ-OS spine."""
+    try:
+        with open(SPINE_PATH, "a") as f:
+            f.write(json.dumps(record, default=str) + "\n")
+    except Exception:
+        pass  # spine write failure is non-fatal
+
+# ── Pydantic models ──────────────────────────────────────────────────────────
+
+class IsolationDecision(BaseModel):
+    mode: str                        # quarantine | restrict | monitor | pass
+    actions: List[str]
+    principles: List[str]
+    confidence: float = 1.0
+
+class IsolationEvent(BaseModel):
+    event_id: str
+    source: str
+    severity: str                    # critical | high | medium | low
+    description: str
+    decision: IsolationDecision
+    received_at: datetime = Field(default_factory=datetime.utcnow)
+    metadata: Dict[str, Any] = {}
+
+class IsolationAck(BaseModel):
+    status: str
+    event_id: str
+    spine_written: bool = False
+
+# ── In-memory store (swap for Postgres / SQLAlchemy later) ───────────────────
+ISOLATION_EVENTS: Dict[str, IsolationEvent] = {}
+
+# ── Routes ───────────────────────────────────────────────────────────────────
+
+@router.post("/isolation", response_model=IsolationAck)
+async def ingest_isolation(event: IsolationEvent) -> IsolationAck:
+    """
+    Accept an isolation event from ESIU or any agent.
+    Stores the event, appends to the append-only spine.
+    """
+    ISOLATION_EVENTS[event.event_id] = event
+
+    spine_record = {
+        "type": "ISOLATION_EVENT",
+        "event_id": event.event_id,
+        "source": event.source,
+        "severity": event.severity,
+        "decision_mode": event.decision.mode,
+        "actions": event.decision.actions,
+        "received_at": event.received_at.isoformat(),
+    }
+    _append_spine(spine_record)
+
+    return IsolationAck(
+        status="accepted",
+        event_id=event.event_id,
+        spine_written=True,
+    )
+
+
+@router.get("/isolation/{event_id}", response_model=Optional[IsolationEvent])
+async def get_isolation(event_id: str) -> Optional[IsolationEvent]:
+    """Retrieve a stored isolation event by ID."""
+    return ISOLATION_EVENTS.get(event_id)
+
+
+@router.get("/isolation", response_model=List[IsolationEvent])
+async def list_isolation(severity: Optional[str] = None) -> List[IsolationEvent]:
+    """List all isolation events, optionally filtered by severity."""
+    events = list(ISOLATION_EVENTS.values())
+    if severity:
+        events = [e for e in events if e.severity == severity]
+    return sorted(events, key=lambda e: e.received_at, reverse=True)
+
+
+@router.get("/stats")
+async def telemetry_stats() -> Dict[str, Any]:
+    """Return aggregate telemetry statistics."""
+    events = list(ISOLATION_EVENTS.values())
+    severity_counts: Dict[str, int] = {}
+    mode_counts: Dict[str, int] = {}
+    for e in events:
+        severity_counts[e.severity] = severity_counts.get(e.severity, 0) + 1
+        mode_counts[e.decision.mode] = mode_counts.get(e.decision.mode, 0) + 1
+    return {
+        "total_events": len(events),
+        "severity_breakdown": severity_counts,
+        "decision_mode_breakdown": mode_counts,
+    }

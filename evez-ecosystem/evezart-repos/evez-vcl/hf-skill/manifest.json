@@ -1,0 +1,30 @@
+{
+  "name": "evez-self-awareness",
+  "version": "1.0.0",
+  "description": "EVEZ OS Self-Awareness Loop -- autonomous gap detection, capability building, and system evolution. Runs every 6h. Reads system state, identifies missing pipelines and broken integrations, builds new autonomous loops to fill gaps. Each run increments a generation counter.",
+  "author": "EvezArt",
+  "license": "EVEZ-Partnership-v1",
+  "type": "skill",
+  "entry_point": "loops/self_awareness_loop.json",
+  "inputs": [
+    {"name": "system_state", "type": "json", "description": "Current EVEZ OS system state including connected APIs, active loops, and known gaps"},
+    {"name": "connected_apis", "type": "array", "description": "List of available API integrations"},
+    {"name": "generation", "type": "integer", "description": "Current system generation counter"}
+  ],
+  "outputs": [
+    {"name": "gaps_found", "type": "array", "description": "List of identified capability gaps with priority and build action"},
+    {"name": "gaps_built", "type": "array", "description": "List of capabilities built this run"},
+    {"name": "new_generation", "type": "integer", "description": "Incremented generation counter after run"}
+  ],
+  "capabilities": [
+    "self_diagnosis",
+    "capability_gap_detection",
+    "autonomous_loop_spawning",
+    "system_state_backup",
+    "live_gist_feed_publishing"
+  ],
+  "tags": ["interpretability", "autonomous-agents", "self-awareness", "meta-cognition", "loop-architecture"],
+  "homepage": "https://evez-autonomizer.vercel.app",
+  "repository": "https://github.com/EvezArt/evez-vcl",
+  "live_feed": "https://gist.github.com/EvezArt/a6a6e78c59210c94828f8fa97f592ea7"
+}

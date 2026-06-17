@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "agentvault"
+version = "0.2.0"
+description = "Private vault + indexer + search for ChatGPT/Perplexity exports"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+agentvault-sync  = "vault.sync_agent:scan_once"
+agentvault-watch = "vault.sync_agent:watch"
+
+[tool.setuptools.packages.find]
+where = ["."]

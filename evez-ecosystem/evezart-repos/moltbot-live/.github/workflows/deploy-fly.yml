@@ -1,0 +1,43 @@
+name: Deploy EVEZ VCL Stream to Fly.io
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'visualizer/**'
+      - 'stream_vcl.py'
+      - 'Dockerfile.vcl'
+      - 'fly.toml'
+      - 'run_forever.sh'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Create Fly app (idempotent)
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl apps create evez-vcl-live --org evez 2>/dev/null || true
+
+      - name: Set stream key secret
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          echo "${{ secrets.YOUTUBE_STREAM_KEY }}" | flyctl secrets set YOUTUBE_STREAM_KEY=- --app evez-vcl-live --stage
+
+      - name: Deploy to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy \
+            --app evez-vcl-live \
+            --remote-only \
+            --strategy immediate \
+            --wait-timeout 120

@@ -1,0 +1,46 @@
+name: Deploy VCL Instances
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      vcl:
+        description: "VCL to deploy (fire|ocean|neural|void|prime|all)"
+        default: "all"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        vcl: [fire, ocean, neural, void, prime]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy evez-vcl-${{ matrix.vcl }}
+        if: >
+          github.event.inputs.vcl == matrix.vcl ||
+          github.event.inputs.vcl == 'all' ||
+          github.event_name == 'push'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          APP="evez-vcl-${{ matrix.vcl }}"
+          flyctl apps create $APP --org evez 2>/dev/null || true
+          flyctl secrets set \
+            VCL_ID=${{ matrix.vcl }} \
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
+            YOUTUBE_TOKEN=${{ secrets.YOUTUBE_TOKEN }} \
+            GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
+            STREAM_KEY_FIRE=${{ secrets.STREAM_KEY_FIRE }} \
+            STREAM_KEY_OCEAN=${{ secrets.STREAM_KEY_OCEAN }} \
+            STREAM_KEY_NEURAL=${{ secrets.STREAM_KEY_NEURAL }} \
+            STREAM_KEY_VOID=${{ secrets.STREAM_KEY_VOID }} \
+            STREAM_KEY_PRIME=${{ secrets.STREAM_KEY_PRIME }} \
+            --app $APP
+          sed "s/evez-vcl-fire/$APP/" fly.toml > fly-${{ matrix.vcl }}.toml
+          flyctl deploy --remote-only --config fly-${{ matrix.vcl }}.toml

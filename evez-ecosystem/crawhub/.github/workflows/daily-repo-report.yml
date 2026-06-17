@@ -1,0 +1,346 @@
+name: Daily repository report
+
+# This workflow runs daily at 00:00 UTC to generate a report of all repositories
+# owned by EvezArt. It supports both public and private repositories.
+#
+# REPORT_TOKEN Setup:
+# To include private repositories in the report, you need to set the REPORT_TOKEN secret.
+# This should be a GitHub Personal Access Token (PAT) with 'repo' scope.
+#
+# Set the secret via GitHub CLI:
+#   echo "YOUR_PAT" | gh secret set REPORT_TOKEN --repo EvezArt/crawhub
+#
+# Or via GitHub UI:
+#   1. Go to Settings > Secrets and variables > Actions
+#   2. Click "New repository secret"
+#   3. Name: REPORT_TOKEN
+#   4. Value: Your PAT with 'repo' scope
+#   5. Click "Add secret"
+#
+# Without REPORT_TOKEN, the workflow will only fetch public repositories.
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: Generate repository report
+        env:
+          REPORT_TOKEN: ${{ secrets.REPORT_TOKEN }}
+        run: |
+          cat > generate_report.py << 'EOF'
+          #!/usr/bin/env python3
+          import os
+          import sys
+          import json
+          import csv
+          import time
+          import requests
+          from typing import List, Dict, Any, Optional
+
+          # Configuration
+          GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
+          OWNER = "EvezArt"
+          MAX_RETRIES = 3
+          RETRY_BACKOFF_BASE = 2  # seconds
+
+          def get_headers(token: Optional[str]) -> Dict[str, str]:
+              """Build headers for GitHub API requests."""
+              headers = {
+                  "Content-Type": "application/json",
+              }
+              if token:
+                  headers["Authorization"] = f"Bearer {token}"
+              return headers
+
+          def execute_graphql_query(query: str, variables: Dict[str, Any], token: Optional[str], attempt: int = 0) -> Dict[str, Any]:
+              """Execute a GraphQL query with retry logic."""
+              headers = get_headers(token)
+              
+              try:
+                  response = requests.post(
+                      GITHUB_GRAPHQL_URL,
+                      json={"query": query, "variables": variables},
+                      headers=headers,
+                      timeout=30
+                  )
+                  
+                  # Handle rate limiting
+                  if response.status_code == 429 or (response.status_code == 403 and "rate limit" in response.text.lower()):
+                      if attempt < MAX_RETRIES:
+                          retry_after = int(response.headers.get("Retry-After", RETRY_BACKOFF_BASE ** attempt))
+                          print(f"Rate limited. Retrying after {retry_after} seconds... (attempt {attempt + 1}/{MAX_RETRIES})")
+                          time.sleep(retry_after)
+                          return execute_graphql_query(query, variables, token, attempt + 1)
+                      else:
+                          print(f"Error: Max retries exceeded for rate limiting")
+                          sys.exit(1)
+                  
+                  # Handle other 4xx/5xx errors
+                  if response.status_code >= 400:
+                      print(f"Error: HTTP {response.status_code}")
+                      print(f"Response: {response.text}")
+                      sys.exit(1)
+                  
+                  result = response.json()
+                  
+                  # Check for GraphQL errors
+                  if "errors" in result:
+                      print(f"GraphQL errors: {json.dumps(result['errors'], indent=2)}")
+                      sys.exit(1)
+                  
+                  return result
+                  
+              except requests.exceptions.RequestException as e:
+                  print(f"Error: Request failed: {e}")
+                  if attempt < MAX_RETRIES:
+                      backoff = RETRY_BACKOFF_BASE ** attempt
+                      print(f"Retrying after {backoff} seconds... (attempt {attempt + 1}/{MAX_RETRIES})")
+                      time.sleep(backoff)
+                      return execute_graphql_query(query, variables, token, attempt + 1)
+                  else:
+                      print(f"Error: Max retries exceeded")
+                      sys.exit(1)
+
+          def fetch_all_repositories(owner: str, token: Optional[str]) -> List[Dict[str, Any]]:
+              """Fetch all repositories for the given owner with pagination."""
+              query = """
+              query($login: String!, $after: String) {
+                repositoryOwner(login: $login) {
+                  repositories(first: 100, after: $after) {
+                    nodes {
+                      name
+                      owner {
+                        login
+                      }
+                      isPrivate
+                      url
+                      description
+                      defaultBranchRef {
+                        name
+                      }
+                      createdAt
+                      updatedAt
+                      pushedAt
+                      stargazerCount
+                      forkCount
+                      diskUsage
+                      repositoryTopics(first: 10) {
+                        nodes {
+                          topic {
+                            name
+                          }
+                        }
+                      }
+                      licenseInfo {
+                        name
+                      }
+                      primaryLanguage {
+                        name
+                      }
+                    }
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                  }
+                }
+              }
+              """
+              
+              all_repos = []
+              has_next_page = True
+              after_cursor = None
+              page_count = 0
+              
+              print(f"Fetching repositories for owner: {owner}")
+              
+              while has_next_page:
+                  page_count += 1
+                  print(f"Fetching page {page_count}...")
+                  
+                  variables = {
+                      "login": owner,
+                      "after": after_cursor
+                  }
+                  
+                  result = execute_graphql_query(query, variables, token)
+                  
+                  repo_owner = result.get("data", {}).get("repositoryOwner")
+                  if not repo_owner:
+                      print(f"Error: No repositories found for owner '{owner}'")
+                      sys.exit(1)
+                  
+                  repositories = repo_owner.get("repositories", {})
+                  nodes = repositories.get("nodes", [])
+                  page_info = repositories.get("pageInfo", {})
+                  
+                  all_repos.extend(nodes)
+                  print(f"  Fetched {len(nodes)} repositories (total: {len(all_repos)})")
+                  
+                  has_next_page = page_info.get("hasNextPage", False)
+                  after_cursor = page_info.get("endCursor")
+              
+              print(f"Total repositories fetched: {len(all_repos)}")
+              return all_repos
+
+          def format_repository_data(repos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+              """Format repository data for output."""
+              formatted_repos = []
+              
+              for repo in repos:
+                  # Extract topics
+                  topics = []
+                  if repo.get("repositoryTopics", {}).get("nodes"):
+                      topics = [t["topic"]["name"] for t in repo["repositoryTopics"]["nodes"] if t.get("topic")]
+                  
+                  # Extract default branch
+                  default_branch = ""
+                  if repo.get("defaultBranchRef"):
+                      default_branch = repo["defaultBranchRef"].get("name", "")
+                  
+                  # Extract license
+                  license_name = ""
+                  if repo.get("licenseInfo"):
+                      license_name = repo["licenseInfo"].get("name", "")
+                  
+                  # Extract primary language
+                  primary_language = ""
+                  if repo.get("primaryLanguage"):
+                      primary_language = repo["primaryLanguage"].get("name", "")
+                  
+                  formatted_repo = {
+                      "name": repo.get("name", ""),
+                      "full_name": f"{repo.get('owner', {}).get('login', '')}/{repo.get('name', '')}",
+                      "owner_login": repo.get("owner", {}).get("login", ""),
+                      "is_private": repo.get("isPrivate", False),
+                      "url": repo.get("url", ""),
+                      "description": repo.get("description", "") or "",
+                      "default_branch": default_branch,
+                      "created_at": repo.get("createdAt", ""),
+                      "updated_at": repo.get("updatedAt", ""),
+                      "pushed_at": repo.get("pushedAt", "") or "",
+                      "stargazer_count": repo.get("stargazerCount", 0),
+                      "fork_count": repo.get("forkCount", 0),
+                      "disk_usage": repo.get("diskUsage", 0),
+                      "topics": ",".join(topics),
+                      "license": license_name,
+                      "primary_language": primary_language,
+                  }
+                  
+                  formatted_repos.append(formatted_repo)
+              
+              return formatted_repos
+
+          def write_json_report(repos: List[Dict[str, Any]], filename: str):
+              """Write repository data to JSON file."""
+              with open(filename, "w", encoding="utf-8") as f:
+                  json.dump(repos, f, indent=2, ensure_ascii=False)
+              print(f"JSON report written to: {filename}")
+
+          def write_csv_report(repos: List[Dict[str, Any]], filename: str):
+              """Write repository data to CSV file."""
+              if not repos:
+                  print("No repositories to write to CSV")
+                  return
+              
+              fieldnames = [
+                  "name",
+                  "full_name",
+                  "owner_login",
+                  "is_private",
+                  "url",
+                  "description",
+                  "default_branch",
+                  "created_at",
+                  "updated_at",
+                  "pushed_at",
+                  "stargazer_count",
+                  "fork_count",
+                  "disk_usage",
+                  "topics",
+                  "license",
+                  "primary_language",
+              ]
+              
+              with open(filename, "w", newline="", encoding="utf-8") as f:
+                  writer = csv.DictWriter(f, fieldnames=fieldnames)
+                  writer.writeheader()
+                  writer.writerows(repos)
+              
+              print(f"CSV report written to: {filename}")
+
+          def main():
+              """Main function to generate repository report."""
+              token = os.environ.get("REPORT_TOKEN", "").strip()
+              
+              if token:
+                  print("Using authenticated requests (REPORT_TOKEN is set)")
+              else:
+                  print("Using unauthenticated requests (REPORT_TOKEN is not set)")
+                  print("Only public repositories will be included in the report")
+              
+              # Fetch all repositories
+              try:
+                  repos = fetch_all_repositories(OWNER, token or None)
+              except Exception as e:
+                  print(f"Fatal error: {e}")
+                  sys.exit(1)
+              
+              # Format the data
+              formatted_repos = format_repository_data(repos)
+              
+              # Write reports
+              write_json_report(formatted_repos, "repo-report.json")
+              write_csv_report(formatted_repos, "repo-report.csv")
+              
+              print("\nReport generation completed successfully!")
+              print(f"Total repositories: {len(formatted_repos)}")
+              
+              # Print summary statistics
+              private_count = sum(1 for r in formatted_repos if r["is_private"])
+              public_count = len(formatted_repos) - private_count
+              print(f"  Public: {public_count}")
+              print(f"  Private: {private_count}")
+
+          if __name__ == "__main__":
+              main()
+          EOF
+          
+          python generate_report.py
+      
+      - name: Upload JSON report
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-report.json
+          path: repo-report.json
+          retention-days: 90
+      
+      - name: Upload CSV report
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-report.csv
+          path: repo-report.csv
+          retention-days: 90

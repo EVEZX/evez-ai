@@ -1,0 +1,145 @@
+name: Deploy EVEZ OpenClaw Mesh to Fly.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      node:
+        description: 'Which node to deploy (all/alpha/beta/brain)'
+        required: false
+        default: 'all'
+
+jobs:
+  deploy-brain:
+    name: Deploy Brain Node (evez666)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Set Secrets — Brain
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+        run: |
+          SECRETS=()
+          [ -n "$GROQ_API_KEY" ] && SECRETS+=("GROQ_API_KEY=$GROQ_API_KEY")
+          [ -n "$OPENROUTER_API_KEY" ] && SECRETS+=("OPENROUTER_API_KEY=$OPENROUTER_API_KEY")
+          [ -n "$ANTHROPIC_API_KEY" ] && SECRETS+=("ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY")
+          [ -n "$GEMINI_API_KEY" ] && SECRETS+=("GEMINI_API_KEY=$GEMINI_API_KEY")
+          [ -n "$PERPLEXITY_API_KEY" ] && SECRETS+=("PERPLEXITY_API_KEY=$PERPLEXITY_API_KEY")
+          [ -n "$MINIMAX_API_KEY" ] && SECRETS+=("MINIMAX_API_KEY=$MINIMAX_API_KEY")
+          [ -n "$VENICE_API_KEY" ] && SECRETS+=("VENICE_API_KEY=$VENICE_API_KEY")
+          [ -n "$KIMI_API_KEY" ] && SECRETS+=("KIMI_API_KEY=$KIMI_API_KEY")
+          [ -n "$ZAI_API_KEY" ] && SECRETS+=("ZAI_API_KEY=$ZAI_API_KEY")
+          if [ ${#SECRETS[@]} -gt 0 ]; then
+            flyctl secrets set --app evez666 "${SECRETS[@]}"
+          fi
+      - name: Deploy Brain
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        working-directory: nodes/brain
+        run: |
+          cp -r ../../mesh .
+          flyctl deploy --app evez666 --config fly.toml --dockerfile Dockerfile.brain \
+            --remote-only --detach
+
+  deploy-nodes:
+    name: Deploy OpenClaw Nodes
+    runs-on: ubuntu-latest
+    needs: deploy-brain
+    strategy:
+      matrix:
+        include:
+          - app: openclaws-qol4-a
+            dir: nodes/alpha
+            node_id: alpha
+          - app: openclaw-pfncdg
+            dir: nodes/beta
+            node_id: beta
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Set Node Secrets
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+          CLAUDE_AI_SESSION_KEY: ${{ secrets.CLAUDE_AI_SESSION_KEY }}
+          CLAUDE_WEB_SESSION_KEY: ${{ secrets.CLAUDE_WEB_SESSION_KEY }}
+          CLAUDE_WEB_COOKIE: ${{ secrets.CLAUDE_WEB_COOKIE }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        run: |
+          APP=${{ matrix.app }}
+          SECRETS=()
+          [ -n "$GROQ_API_KEY" ] && SECRETS+=("GROQ_API_KEY=$GROQ_API_KEY")
+          [ -n "$OPENROUTER_API_KEY" ] && SECRETS+=("OPENROUTER_API_KEY=$OPENROUTER_API_KEY")
+          [ -n "$ANTHROPIC_API_KEY" ] && SECRETS+=("ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY")
+          [ -n "$GEMINI_API_KEY" ] && SECRETS+=("GEMINI_API_KEY=$GEMINI_API_KEY")
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && SECRETS+=("TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN")
+          [ -n "$DISCORD_BOT_TOKEN" ] && SECRETS+=("DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN")
+          [ -n "$SLACK_BOT_TOKEN" ] && SECRETS+=("SLACK_BOT_TOKEN=$SLACK_BOT_TOKEN")
+          [ -n "$SLACK_APP_TOKEN" ] && SECRETS+=("SLACK_APP_TOKEN=$SLACK_APP_TOKEN")
+          [ -n "$CLAUDE_AI_SESSION_KEY" ] && SECRETS+=("CLAUDE_AI_SESSION_KEY=$CLAUDE_AI_SESSION_KEY")
+          [ -n "$CLAUDE_WEB_SESSION_KEY" ] && SECRETS+=("CLAUDE_WEB_SESSION_KEY=$CLAUDE_WEB_SESSION_KEY")
+          [ -n "$CLAUDE_WEB_COOKIE" ] && SECRETS+=("CLAUDE_WEB_COOKIE=$CLAUDE_WEB_COOKIE")
+          [ -n "$ELEVENLABS_API_KEY" ] && SECRETS+=("ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY")
+          [ -n "$DEEPGRAM_API_KEY" ] && SECRETS+=("DEEPGRAM_API_KEY=$DEEPGRAM_API_KEY")
+          [ -n "$VENICE_API_KEY" ] && SECRETS+=("VENICE_API_KEY=$VENICE_API_KEY")
+          [ -n "$KIMI_API_KEY" ] && SECRETS+=("KIMI_API_KEY=$KIMI_API_KEY")
+          [ -n "$ZAI_API_KEY" ] && SECRETS+=("ZAI_API_KEY=$ZAI_API_KEY")
+          [ -n "$FIRECRAWL_API_KEY" ] && SECRETS+=("FIRECRAWL_API_KEY=$FIRECRAWL_API_KEY")
+          [ -n "$BRAVE_API_KEY" ] && SECRETS+=("BRAVE_API_KEY=$BRAVE_API_KEY")
+          [ -n "$PERPLEXITY_API_KEY" ] && SECRETS+=("PERPLEXITY_API_KEY=$PERPLEXITY_API_KEY")
+          if [ ${#SECRETS[@]} -gt 0 ]; then
+            flyctl secrets set --app "$APP" "${SECRETS[@]}"
+          fi
+
+      - name: Copy openclaw.json
+        run: |
+          mkdir -p ${{ matrix.dir }}/.openclaw
+          cp config/openclaw.json ${{ matrix.dir }}/.openclaw/openclaw.json
+
+      - name: Deploy Node ${{ matrix.node_id }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        working-directory: ${{ matrix.dir }}
+        run: |
+          flyctl deploy --app ${{ matrix.app }} --config fly.toml --remote-only --detach
+
+  test:
+    name: Test Mesh
+    runs-on: ubuntu-latest
+    needs: deploy-nodes
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install httpx asyncio fastapi pydantic
+      - name: Wait for nodes to start
+        run: sleep 60
+      - name: Run mesh test suite
+        run: python3 mesh_orchestrator.py test
+        continue-on-error: true

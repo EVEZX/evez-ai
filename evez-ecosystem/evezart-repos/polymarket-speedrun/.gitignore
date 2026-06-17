@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+venv/
+trades_*.json
+.DS_Store

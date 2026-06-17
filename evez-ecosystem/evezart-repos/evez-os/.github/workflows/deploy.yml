@@ -1,0 +1,43 @@
+name: Deploy EVEZ-OS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+        env:
+          DATABASE_URL: sqlite:///./test.db
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          EVEZ_FROM_EMAIL: test@evez.app
+          EVEZ_SUCCESS_URL: https://evez.app/success
+          EVEZ_CANCEL_URL: https://evez.app/cancel
+
+      - name: Deploy evez-os to Render
+        run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK_EVEZ_OS }}"
+
+      - name: Deploy metarom to Render
+        run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK_METAROM }}"
+
+      - name: Notify Telegram
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="✅ EVEZ-OS deployed to production — $(date -u)"

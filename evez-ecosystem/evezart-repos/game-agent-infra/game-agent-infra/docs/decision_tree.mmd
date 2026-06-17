@@ -1,0 +1,16 @@
+```mermaid
+graph TB
+ A["User Message"] -->|pending| B["Gateway"]
+ B -->|FSC check| C{"Anomaly?"}
+ C -->|yes| D["Degrade ring_estimate"]
+ C -->|no| E["Advance ring_estimate"]
+ D --> F["controlled_reduction"]
+ E --> G["Score projection"]
+ G --> H["Fork spine → speculate"]
+ H --> I["Compute Σf, CS, PS, Ω"]
+ I --> J{"Ω < 0.2 && tests pass?"}
+ J -->|YES| K["Promote pending → final"]
+ J -->|NO| L["Rollback"]
+ K --> M["Append provenance to spine"]
+ M --> N["User reply"]
+```

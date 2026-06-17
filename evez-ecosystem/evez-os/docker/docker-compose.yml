@@ -1,0 +1,186 @@
+version: "3.9"
+
+# ============================================================
+# EVEZ-OS FULL STACK — docker-compose.yml
+# 5 containers + shared env, healthchecks, restart policies
+# docker compose up --build
+# ============================================================
+
+x-common-env: &common-env
+  NODE_ENV: production
+  ABLY_API_KEY: ${ABLY_API_KEY}
+  BACKENDLESS_APP_ID: ${BACKENDLESS_APP_ID}
+  BACKENDLESS_API_KEY: ${BACKENDLESS_API_KEY}
+
+services:
+
+  spine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.spine
+    image: evezart/evez-os-spine:latest
+    container_name: evez-spine
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      <<: *common-env
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - evez-net
+    volumes:
+      - spine-data:/app/data
+
+  services:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.services
+    image: evezart/evez-os-services:latest
+    container_name: evez-services
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    depends_on:
+      spine:
+        condition: service_healthy
+    environment:
+      <<: *common-env
+      GOOGLE_CLOUD_VISION_API_KEY: ${GOOGLE_CLOUD_VISION_API_KEY}
+      ASTICA_API_KEY: ${ASTICA_API_KEY}
+      ALL_IMAGES_AI_API_KEY: ${ALL_IMAGES_AI_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      AIML_API_KEY: ${AIML_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY}
+      YOUSEARCH_API_KEY: ${YOUSEARCH_API_KEY}
+      JIGSAWSTACK_API_KEY: ${JIGSAWSTACK_API_KEY}
+      CLOUDCONVERT_API_KEY: ${CLOUDCONVERT_API_KEY}
+      CONVERTAPI_SECRET: ${CONVERTAPI_SECRET}
+      MEM0_API_KEY: ${MEM0_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - evez-net
+
+  agents:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.agents
+    image: evezart/evez-os-agents:latest
+    container_name: evez-agents
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    depends_on:
+      spine:
+        condition: service_healthy
+      services:
+        condition: service_healthy
+    environment:
+      <<: *common-env
+      AGENTQL_API_KEY: ${AGENTQL_API_KEY}
+      HYPERBROWSER_API_KEY: ${HYPERBROWSER_API_KEY}
+      BROWSEAI_API_KEY: ${BROWSEAI_API_KEY}
+      AGENTY_API_KEY: ${AGENTY_API_KEY}
+      MICROSOFT_CLARITY_PROJECT_ID: ${MICROSOFT_CLARITY_PROJECT_ID}
+      ANCHOR_BROWSER_API_KEY: ${ANCHOR_BROWSER_API_KEY}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - evez-net
+
+  terminals:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.terminals
+    image: evezart/evez-os-terminals:latest
+    container_name: evez-terminals
+    restart: unless-stopped
+    ports:
+      - "3004:3004"
+    depends_on:
+      spine:
+        condition: service_healthy
+      services:
+        condition: service_healthy
+    environment:
+      <<: *common-env
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      AGENT_MAIL_API_KEY: ${AGENT_MAIL_API_KEY}
+      CLICKSEND_USERNAME: ${CLICKSEND_USERNAME}
+      CLICKSEND_API_KEY: ${CLICKSEND_API_KEY}
+      TWOCHAT_API_KEY: ${TWOCHAT_API_KEY}
+      TWOCHAT_ACCOUNT_ID: ${TWOCHAT_ACCOUNT_ID}
+      TWITTER_API_KEY: ${TWITTER_API_KEY}
+      TWITTER_API_SECRET: ${TWITTER_API_SECRET}
+      TWITTER_ACCESS_TOKEN_EVEZ666: ${TWITTER_ACCESS_TOKEN_EVEZ666}
+      TWITTER_ACCESS_SECRET_EVEZ666: ${TWITTER_ACCESS_SECRET_EVEZ666}
+      TWITTER_ACCESS_TOKEN_STEVEN: ${TWITTER_ACCESS_TOKEN_STEVEN}
+      TWITTER_ACCESS_SECRET_STEVEN: ${TWITTER_ACCESS_SECRET_STEVEN}
+      MEM0_API_KEY: ${MEM0_API_KEY}
+      MEM0_NAMESPACE: evez-os
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - evez-net
+
+  riley-x:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.riley
+    image: evezart/evez-os-riley-x:latest
+    container_name: evez-riley
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    depends_on:
+      spine:
+        condition: service_healthy
+      services:
+        condition: service_healthy
+    environment:
+      <<: *common-env
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY}
+      AIVOOV_API_KEY: ${AIVOOV_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY}
+      LMNT_API_KEY: ${LMNT_API_KEY}
+      VAPI_API_KEY: ${VAPI_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - evez-net
+
+networks:
+  evez-net:
+    driver: bridge
+
+volumes:
+  spine-data:
+    driver: local

@@ -1,0 +1,23 @@
+name: Self-Repair Daemon (10-min)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  repair:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run self-repair daemon
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/repair/self_repair.py

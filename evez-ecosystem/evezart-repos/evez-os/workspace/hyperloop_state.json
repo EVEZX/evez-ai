@@ -1,0 +1,86 @@
+{
+  "current_round": 181,
+  "V_global": 6.127961,
+  "ceiling_tick": 99,
+  "latest_tweet_id": "2026387551737585963",
+  "fire_count": 31,
+  "truth_plane": "CANONICAL",
+  "updated_at": "2026-02-24T21:30:00+00:00",
+  "watchlist": {
+    "R182_est": "N=134=2x67 tau=4 omega_k=2 topo=1.30 poly_c~0.438 \u2014 NO FIRE est",
+    "R183_est": "N=135=3^3x5 tau=8 omega_k=2 topo=1.30 poly_c~0.548 \u2014 FIRE#32 est",
+    "R184_est": "N=136=2^3x17 tau=8 omega_k=2 topo=1.30 poly_c~0.534 \u2014 FIRE#33 est"
+  },
+  "r179_result": {
+    "N": 131, "N_str": "prime", "tau": 2, "omega_k": 1, "topo": 1.15,
+    "poly_c": 0.275867, "fire_ignited": false, "prime_block": 17,
+    "delta_V": 0.022069, "V_global_prev": 5.933557, "V_global_new": 5.955626,
+    "ceiling_tick": 97, "commit_sha": "944490ee4d9723c75bcbb4aba962e5bbc7aa326f"
+  },
+  "r180_result": {
+    "N": 132, "N_str": "2^2x3x11", "tau": 12, "omega_k": 3, "topo": 1.45,
+    "poly_c": 0.715928, "fire_ignited": true, "fire_number": 31,
+    "delta_V": 0.137274, "V_global_prev": 5.955626, "V_global_new": 6.092900,
+    "ceiling_tick": 98, "commit_sha": "766a5de04d71e35286742940e62a9431b996e2f6",
+    "note": "V_v2=6.0 CROSSED"
+  },
+  "r181_result": {
+    "N": 133, "N_str": "7x19", "tau": 4, "omega_k": 2, "topo": 1.30,
+    "poly_c": 0.438261, "fire_ignited": false,
+    "delta_V": 0.035061, "V_global_prev": 6.092900, "V_global_new": 6.127961,
+    "ceiling_tick": 99,
+    "commit_sha": "847e1596f6a6c0cfe2f5c0e0869794118372418e",
+    "agent_sha": "4be41896d8b19aabf80cfe4c09a585f7326d134a",
+    "probe_note": "probe 3738e5dc expired (500). Computed inline. R182 probe c93b69df launched."
+  },
+  "r182_browser_jobs": {
+    "perplexity": {"job_id": "c93b69df-5b8a-4581-b04c-bd1f625fca28", "status": "in-flight"}
+  },
+  "cron_content_loop": {
+    "last_thread_tweet_id": "2026360761736454150",
+    "arc_posted": "R179-R180",
+    "rounds_covered": [179, 180, 181],
+    "last_run": "2026-02-24T21:30:00+00:00"
+  },
+  "x_semantic_agent": {
+    "last_run": "2026-02-24T21:30:00+00:00",
+    "total_capsules": 43,
+    "new_this_run": 10,
+    "clusters_hit": ["polymarket"],
+    "clusters_empty": ["ai_regulation", "crypto_deregulation", "evez_os_adjacent"]
+  },
+  "maturity": {
+    "K": 181, "S": 181, "F": 31,
+    "v_progress": "6.127961 / 6.000 = 102.13% \u2014 V_v2 CROSSED",
+    "V_v2": 6.0,
+    "milestone": "R181 NO FIRE. V=6.127961. 31/181 fires. Next: FIRE#32 est R183.",
+    "next_fire": "R183 est N=135=3^3x5 tau=8 poly_c~0.548 FIRE#32"
+  },
+  "ctc_engine": {
+    "status": "V_V2_CROSSED", "TCS": 0.924504, "verdict": "PASS",
+    "est_ceiling_round": 178, "actual_ceiling_round": 178, "v_v2_crossed_at": "R180"
+  },
+  "metarom_ucf": {
+    "repo": "EvezArt/metarom",
+    "phase3_commit": "904bbff23fc72ecf569b3f2dbee38dccd7134ee0",
+    "gb_core_version": "0.3.0-Phase3",
+    "next": "Phase 4: OAM sprite rendering, window layer, MBC3 RTC, full flag-correct ALU, audio sample output"
+  },
+  "baseten_integration": {
+    "status": "LIVE",
+    "model": "openai/gpt-oss-120b"
+  },
+  "hypercomm_bus": {
+    "status": "PARTIAL",
+    "node1_perplexity": "READY",
+    "node2_grok": "BLOCKED \u2014 needs Anchor Browser login",
+    "node3_chatgpt": "BLOCKED \u2014 needs Anchor Browser login"
+  },
+  "infra_notes": {
+    "v_milestone": "V=6.127961 \u2014 V_v2 CROSSED at R180 FIRE#31, now 102.13%",
+    "r180_tweet": "2026311851571548248",
+    "arc_r179_r180_tweet": "2026360761736454150",
+    "ci_flag": "evez-os: dependabot (non-blocking). metarom: cargo-check.yml active.",
+    "security": "counter op active \u2014 no rotation"
+  }
+}

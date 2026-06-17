@@ -1,0 +1,35 @@
+app = 'openclaw-pfncdg'
+primary_region = 'ams'
+
+[build]
+  image = 'ghcr.io/evezart/evez-openclaw:latest'
+
+[env]
+  PORT = '18789'
+  NODE_ENV = 'production'
+  OPENCLAW_NODE = 'beta'
+
+[[services]]
+  internal_port = 18789
+  protocol = 'tcp'
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    handlers = ['http']
+    port = 80
+
+  [[services.ports]]
+    handlers = ['tls', 'http']
+    port = 443
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = 'connections'
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1

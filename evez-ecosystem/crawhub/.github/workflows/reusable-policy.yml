@@ -1,0 +1,119 @@
+name: Reusable Thin-Caller Policy Check
+
+on:
+  workflow_call:
+    inputs:
+      allowlist:
+        description: >
+          Comma-separated list of workflow files to exclude from
+          thin-caller checks
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  check-thin-caller:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check thin-caller policy
+        shell: bash
+        run: |
+          set -e
+
+          ALLOWLIST="${{ inputs.allowlist }}"
+          VIOLATIONS=()
+
+          echo "🔍 Checking workflows for thin-caller policy..."
+          echo ""
+
+          # Convert allowlist to array
+          IFS=',' read -ra ALLOWED_FILES <<< "$ALLOWLIST"
+
+          # Find all workflow files
+          WORKFLOWS=$(
+            find .github/workflows -type f \
+              \( -name "*.yml" -o -name "*.yaml" \) \
+            2>/dev/null || echo ""
+          )
+
+          if [ -z "$WORKFLOWS" ]; then
+            echo "✅ No workflow files found to check"
+            exit 0
+          fi
+
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            filename=$(basename "$file")
+
+            # Check if file is in allowlist
+            is_allowed=false
+            for allowed in "${ALLOWED_FILES[@]}"; do
+              if [ "$(echo "$allowed" | xargs)" = "$filename" ]; then
+                echo "⏭️  Skipping $filename (allowlisted)"
+                is_allowed=true
+                break
+              fi
+            done
+
+            if [ "$is_allowed" = true ]; then
+              continue
+            fi
+
+            echo "📄 Checking $filename..."
+
+            # Check for 'run:' steps (indicates thick caller)
+            # Matches both "- run:" and "  run:" patterns in steps
+            # Excludes comments, workflow_run, runs-on, etc.
+            if grep -E "^[[:space:]]+(- )?(name|run):[[:space:]]" "$file" \
+              | grep -q "run:"; then
+              echo "  ❌ Found local 'run:' steps"
+              VIOLATIONS+=("$filename: Contains local 'run:' steps")
+            fi
+
+            # Check if workflow uses reusable workflows
+            uses_count=$(
+              grep -E "^[[:space:]]*-[[:space:]]*uses:[[:space:]]+" "$file" \
+              | wc -l || echo "0"
+            )
+            job_uses_count=$(
+              grep -E "^[[:space:]]+uses:[[:space:]]+" "$file" \
+              | grep -v "^[[:space:]]*-" | wc -l || echo "0"
+            )
+            total_uses=$((uses_count + job_uses_count))
+
+            if [ "$total_uses" -eq 0 ]; then
+              echo "  ⚠️  No reusable workflow references found"
+            else
+              echo "  ✅ Uses reusable workflows"
+              echo "     ($total_uses uses statements)"
+            fi
+
+            echo ""
+          done <<< "$WORKFLOWS"
+
+          # Report results
+          if [ ${#VIOLATIONS[@]} -gt 0 ]; then
+            echo "❌ Thin-caller policy violations found:"
+            echo ""
+            for violation in "${VIOLATIONS[@]}"; do
+              echo "  - $violation"
+            done
+            echo ""
+            echo "ℹ️  Thin-caller policy requires workflows to"
+            echo "   delegate to reusable workflows instead of"
+            echo "   containing local 'run:' steps. This improves"
+            echo "   consistency, maintainability, and security."
+            echo ""
+            echo "   To fix: Move logic to reusable workflows or"
+            echo "   add the file to the allowlist."
+            exit 1
+          else
+            echo "✅ All workflows comply with thin-caller policy"
+            exit 0
+          fi

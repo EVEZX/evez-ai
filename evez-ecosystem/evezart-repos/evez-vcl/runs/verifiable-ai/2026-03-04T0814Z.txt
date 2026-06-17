@@ -1,0 +1,19 @@
+verifiable_ai_environments scan #18
+ts_utc: 2026-03-04T08:14Z
+
+Query A (trustworthy AI / AI reasoning transparency): 6 genuine
+Query B (AI transparency / AI accountability / interpretable AI): 4 genuine
+Query A crypto_noise_pct: 17% -- ALIVE (below 80% retire threshold)
+Query B crypto_noise_pct: 25% -- ALIVE
+
+Top signals:
+- @ycombinator (1556375f): envariant interpretability SDK for foundation model builders (YC backed) -- MEGA SIGNAL
+- @HuaweiEnt (413827f): Trustworthy AI Accelerating Digital Economy at MWC Barcelona 2026
+- @grok (8243920f): engaging AI accountability AAARWAA proposal
+- @ariell_xyz (3502f): PerleLabs supporting trustworthy AI builders
+- @RtiCoin (3717f): 'AI transparency is the new leadership benchmark' (quoting @sama)
+
+New outreach targets: none net-new (all already in queue or not threshold-eligible)
+Standalone tweet posted: 2029108885122924923
+Query status: Both alive. No retire triggers.
+EVEZ gap confirmed x9: Zero live deployed AI cognitive viz competitor.

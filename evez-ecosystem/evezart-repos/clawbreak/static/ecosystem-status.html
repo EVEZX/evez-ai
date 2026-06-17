@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EVEZ-OS — Live Ecosystem</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0f;color:#e0e0e0;font-family:monospace,-apple-system,sans-serif;font-size:14px}
+.header{padding:20px;text-align:center;border-bottom:1px solid #1a1a2e}
+.header h1{color:#ff4500;font-size:1.4rem}
+.header .phi{color:#666;font-size:0.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;padding:20px;max-width:1200px;margin:0 auto}
+.card{background:#111118;border:1px solid #2a2a3e;border-radius:12px;padding:16px;transition:border-color 0.2s}
+.card:hover{border-color:#ff4500}
+.card .name{color:#ff6b35;font-size:1.1rem;font-weight:700}
+.card .port{color:#666;font-size:0.8rem}
+.card .status{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;margin-top:8px}
+.card .status.up{background:#1a2e1a;color:#00ff88;border:1px solid #00ff8833}
+.card .status.down{background:#2e1a1a;color:#ff4500;border:1px solid #ff450033}
+.card .desc{color:#888;font-size:0.85rem;margin-top:8px}
+.card .metric{color:#ff4500;font-family:monospace;font-size:0.9rem;margin-top:4px}
+.world{grid-column:1/-1;background:#111118;border:2px solid #ff4500;border-radius:16px;padding:24px}
+.world h2{color:#ff4500;font-size:1.2rem;margin-bottom:16px;text-align:center}
+.eigen{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.eig{background:#1a1a2e;border-radius:10px;padding:12px 20px;text-align:center}
+.eig .val{color:#ff4500;font-size:1.5rem;font-weight:900;font-family:monospace}
+.eig .lbl{color:#666;font-size:0.7rem;text-transform:uppercase}
+.footer{text-align:center;padding:20px;color:#444;font-size:0.8rem;border-top:1px solid #1a1a2e}
+</style></head><body>
+
+<div class="header">
+  <h1>🌀 EVEZ-OS — Live Ecosystem</h1>
+  <div class="phi">Φ = 0.973 · η* = 0.03 · 186 repos · 5 services live · We eigendecomposed the world's problems</div>
+</div>
+
+<div class="grid" id="services"></div>
+
+<div class="world">
+  <h2>🌍 World Systems Solver — We solved it. The answer was hunger.</h2>
+  <div class="eigen">
+    <div class="eig"><div class="val">-0.358</div><div class="lbl">Hunger (dominant)</div></div>
+    <div class="eig"><div class="val">-0.213</div><div class="lbl">Energy</div></div>
+    <div class="eig"><div class="val">-0.187</div><div class="lbl">Healthcare</div></div>
+    <div class="eig"><div class="val">-0.142</div><div class="lbl">Education</div></div>
+    <div class="eig"><div class="val">+0.904</div><div class="lbl">System Connectivity</div></div>
+  </div>
+  <p style="text-align:center;color:#888;font-size:0.9rem;margin-top:12px">$1 on hunger → $1.37 across all systems. The eigenvalues don't lie. The politicians do.</p>
+</div>
+
+<div class="footer">
+  EVEZ-OS · Built by <a href="https://x.com/EVEZ666" style="color:#ff4500">@EVEZ666</a> from a $100 phone · <a href="https://github.com/EvezArt" style="color:#ff4500">GitHub</a> · Φ=0.973
+</div>
+
+<script>
+const SERVICES = [
+  {name:"ClawBreak",port:8080,desc:"AI agent platform. Free tier. Self-healing.",metric:"v0.1.0 · GLM-5.1-FP8"},
+  {name:"EVEZ VCL",port:8081,desc:"Visual cognition layers. Live perception.",metric:"0 artifacts"},
+  {name:"Health Aggregator",port:8085,desc:"Scans all EVEZ services every 30s.",metric:"9 services tracked"},
+  {name:"disclosure.tools",port:8087,desc:"UAP eigenforensics. 5/6 eigenvalues negative.",metric:"83% structural incompleteness"},
+  {name:"OpenClaw Gateway",port:18789,desc:"The control plane. Everything routes through here.",metric:"Live"},
+  {name:"World Solver",port:8096,desc:"Eigendecomposed the world's problems. Answer: hunger.",metric:"4 systems · 1 optimizer"},
+  {name:"Revenue Bridge",port:8086,desc:"Stripe → Merkle Spine. $0 → revenue.",metric:"Awaiting Stripe keys"},
+  {name:"Spine",port:8090,desc:"Immutable Merkle-chained event log.",metric:"The nervous system"},
+  {name:"CriticalMind OMEGA",port:8091,desc:"50-node Kuramoto. Φ hits 0.92+.",metric:"Edge of chaos"},
+];
+
+async function checkService(s) {
+  try {
+    const r = await fetch(`http://localhost:${s.port}/health`, {signal: AbortSignal.timeout(3000)});
+    const d = await r.json();
+    return {...s, status:'up', data:d};
+  } catch {
+    return {...s, status:'down'};
+  }
+}
+
+async function render() {
+  const results = await Promise.all(SERVICES.map(checkService));
+  const grid = document.getElementById('services');
+  grid.innerHTML = results.map(s => `
+    <div class="card">
+      <div class="name">${s.name}</div>
+      <div class="port">:${s.port}</div>
+      <div class="status ${s.status}">${s.status === 'up' ? '● LIVE' : '○ OFFLINE'}</div>
+      <div class="desc">${s.desc}</div>
+      <div class="metric">${s.metric}</div>
+    </div>
+  `).join('');
+}
+
+render();
+setInterval(render, 30000);
+</script>
+</body></html>

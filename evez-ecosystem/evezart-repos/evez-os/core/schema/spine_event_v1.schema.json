@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spine Event v1",
+  "type": "object",
+  "required": [
+    "kind",
+    "ts",
+    "trace_id"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "ts": {
+      "type": "string",
+      "description": "ISO-8601 timestamp"
+    },
+    "trace_id": {
+      "type": "string"
+    },
+    "vantage_id": {
+      "type": "string"
+    },
+    "episode": {
+      "type": "object"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

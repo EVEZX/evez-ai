@@ -1,0 +1,133 @@
+{
+  "generated_at": "2026-02-20T16:46:00-08:00",
+  "round": 10,
+  "context": "All 3 previously missing packages absorbed. 5 speedruns completed.",
+  "packages_absorbed": [
+    {
+      "name": "evez_game_120_bundle",
+      "files": 423,
+      "uncompressed_kb": 6482,
+      "spine_entries": 120,
+      "root_hash": "dc2ff2efbaef2363"
+    },
+    {
+      "name": "openclaw_tool",
+      "files": 6461,
+      "uncompressed_kb": 49497,
+      "variant": "visualize-thought-tool"
+    },
+    {
+      "name": "openclaw_attention",
+      "files": 5866,
+      "uncompressed_kb": 49499,
+      "variant": "visualize-thought-attention",
+      "autoflow_visualizer_bytes": 19063
+    }
+  ],
+  "speedruns": [
+    {
+      "seed": 13,
+      "entries": 120,
+      "root_hash": "33198b60e996",
+      "top_lobbies": [
+        [
+          "DNS",
+          21
+        ],
+        [
+          "AUTH",
+          17
+        ],
+        [
+          "FUNDING",
+          17
+        ]
+      ],
+      "artifacts": 8
+    },
+    {
+      "seed": 42,
+      "entries": 120,
+      "root_hash": "f687be9a68cc",
+      "top_lobbies": [
+        [
+          "BGP",
+          19
+        ],
+        [
+          "TLS",
+          17
+        ],
+        [
+          "CDN",
+          16
+        ]
+      ],
+      "artifacts": 8
+    },
+    {
+      "seed": 666,
+      "entries": 120,
+      "root_hash": "9b64a26f1783",
+      "top_lobbies": [
+        [
+          "MIXED",
+          19
+        ],
+        [
+          "AUTH",
+          18
+        ],
+        [
+          "FUNDING",
+          17
+        ]
+      ],
+      "artifacts": 8
+    },
+    {
+      "seed": 2026,
+      "entries": 120,
+      "root_hash": "1bae0cfaf624",
+      "top_lobbies": [
+        [
+          "AUTH",
+          18
+        ],
+        [
+          "BGP",
+          16
+        ],
+        [
+          "ROLLBACK",
+          16
+        ]
+      ],
+      "artifacts": 8
+    },
+    {
+      "seed": 7,
+      "entries": 120,
+      "root_hash": "e60b2be99485",
+      "top_lobbies": [
+        [
+          "CDN",
+          25
+        ],
+        [
+          "MIXED",
+          17
+        ],
+        [
+          "ROLLBACK",
+          16
+        ]
+      ],
+      "artifacts": 8
+    }
+  ],
+  "total_entries": 600,
+  "total_artifacts": 40,
+  "spine_integrity": "840/840 valid across all prior spines + 600 new = 1440 total verified",
+  "openclaw_attention_note": "autoflow_visualizer.py v2 (19,063 bytes): adds --attention, --attention-source avoid/saliency, saliency_heatmap.png. Supercedes tool variant (17,513 bytes)."
+}

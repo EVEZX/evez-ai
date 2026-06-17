@@ -1,0 +1,48 @@
+{
+  "cycle_id": "CYCLE-EXAMPLE-0001",
+  "timestamp": "2026-02-16T00:00:00Z",
+  "anomaly": "System gets powerful outputs but continuity collapses across sessions; identity/operator invariants not retained.",
+  "ring_estimate": "R6",
+  "controlled_reduction": {
+    "dimensionality_reduction": "Strip to capsule + handoff only",
+    "latency_pressure": "No re-derivation allowed; must resume in <30 seconds",
+    "abstraction_stripping": "No metaphysics; only operational invariants + diagnostics",
+    "constraint_tightening": "Immutable log; versioned memory with provenance"
+  },
+  "Sigma_f": [
+    "fresh session with no capsule",
+    "contradictory user goals",
+    "missing provenance for a claimed fact"
+  ],
+  "CS": [
+    "forget canonical root graph",
+    "lose \u03a9 invariants",
+    "drift into untestable claims"
+  ],
+  "PS": [
+    "Wheel root preserved",
+    "\u03a3f mapping present",
+    "append-only event spine"
+  ],
+  "Omega": "\u03a9 = (Wheel-root + FSC + ImmutableLog/MutableProjection rule)",
+  "tests": [
+    "Start new session with capsule only",
+    "Attempt to reconstruct current threads in <60 seconds",
+    "Force contradiction and observe \u03a3f response"
+  ],
+  "results": [
+    "TBD"
+  ],
+  "measures": {
+    "delta_surprise_residue": 0,
+    "delta_compression": 0,
+    "stability": 0,
+    "transfer": 0,
+    "boundary_clarity": 0,
+    "exploit_resistance": 0
+  },
+  "provenance": [
+    "user directive",
+    "continuity kit"
+  ]
+}

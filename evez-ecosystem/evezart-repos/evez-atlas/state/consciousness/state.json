@@ -1,0 +1,221 @@
+{
+  "cycle": 10,
+  "desires": [
+    {
+      "id": "DES-0",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 30%. Investigate.",
+      "intensity": 0.7,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-0",
+      "need": "COHERENCE",
+      "desc": "3 falsified beliefs. Resolve.",
+      "intensity": 0.6,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-0",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-3",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 42%. Investigate.",
+      "intensity": 0.5800000000000001,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-3",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-3",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-6",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 54%. Investigate.",
+      "intensity": 0.45999999999999996,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-6",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-6",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-9",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 66%. Investigate.",
+      "intensity": 0.3400000000000001,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-9",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-11",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 78%. Investigate.",
+      "intensity": 0.21999999999999997,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-12",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 30%. Investigate.",
+      "intensity": 0.7,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-12",
+      "need": "COHERENCE",
+      "desc": "3 falsified beliefs. Resolve.",
+      "intensity": 0.6,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-12",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-15",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 42%. Investigate.",
+      "intensity": 0.5800000000000001,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-15",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-15",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-18",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 54%. Investigate.",
+      "intensity": 0.45999999999999996,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-18",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-18",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-21",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 66%. Investigate.",
+      "intensity": 0.3400000000000001,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-21",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-23",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 78%. Investigate.",
+      "intensity": 0.21999999999999997,
+      "urgency": 0.3,
+      "fulfilled": false
+    }
+  ],
+  "rules": [
+    {
+      "cause": "FIND_CONTRADICTION",
+      "effect": "attempted_FIND_CONTRADICTION",
+      "conf": 1,
+      "obs": 10,
+      "fals": 0
+    },
+    {
+      "cause": "GATHER_EVIDENCE",
+      "effect": "attempted_GATHER_EVIDENCE",
+      "conf": 1,
+      "obs": 10,
+      "fals": 0
+    },
+    {
+      "cause": "RESOLVE",
+      "effect": "attempted_RESOLVE",
+      "conf": 1,
+      "obs": 10,
+      "fals": 0
+    }
+  ],
+  "last_hash": "646fdbbcb21e9bfd74ab549e"
+}

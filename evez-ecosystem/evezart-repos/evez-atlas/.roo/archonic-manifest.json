@@ -1,0 +1,9 @@
+{
+  "entities": [],
+  "api_keys": {
+    "tier0_public": {"tier": 0, "name": "public"},
+    "tier1_builder": {"tier": 1, "name": "builder-omega"},
+    "tier2_admin": {"tier": 2, "name": "network-admin"},
+    "tier3_director": {"tier": 3, "name": "pan-phenomenological-intel"}
+  }
+}

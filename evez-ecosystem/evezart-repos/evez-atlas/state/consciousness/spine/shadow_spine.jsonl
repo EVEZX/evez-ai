@@ -1,0 +1,4 @@
+{"type": "SHADOW_CAPTURE", "event": "quantum_fincen_convergence_2027", "spread": 0.2, "shadow_price": 3.8403, "shallow_depth": 5, "deep_depth": 12, "visibility_pct": 80.0, "capture_hash": "c11707e9e8eb", "powered_by": "EVEZ"}
+{"type": "SHADOW_CAPTURE", "event": "quantum_fincen_convergence_2027", "spread": 0.67, "shadow_price": 42.4788, "shallow_depth": 5, "deep_depth": 38, "visibility_pct": 33.0, "capture_hash": "e3a2f666f61c", "powered_by": "EVEZ"}
+{"type": "SHADOW_CAPTURE", "event": "quantum_fincen_convergence_2027", "spread": 0.76, "shadow_price": 54.8541, "shallow_depth": 5, "deep_depth": 47, "visibility_pct": 24.0, "capture_hash": "15a65a13b47c", "powered_by": "EVEZ"}
+{"type": "SHADOW_CAPTURE", "event": "global_financial_cascade_Q3_2027", "spread": 0.65, "shadow_price": 41.2108, "shallow_depth": 5, "deep_depth": 38, "visibility_pct": 35.0, "capture_hash": "957c9091e5b3", "powered_by": "EVEZ"}

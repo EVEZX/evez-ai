@@ -1,0 +1,14 @@
+{
+  "name": "evez-revenue-engine",
+  "displayName": "EVEZ Revenue Engine",
+  "description": "Execute revenue-generating actions across Fiverr, Consulting, X/Twitter with structured logging and context bridge",
+  "version": "1.0.0",
+  "author": "EVEZ (Steven)",
+  "tags": ["revenue", "automation", "marketing", "fiverr", "twitter", "outreach"],
+  "runtime": "python",
+  "installs": 0,
+  "rating": 0,
+  "lastUpdated": "2026-04-08",
+  "homepage": "https://github.com/EvezArt/evez-os",
+  "license": "MIT"
+}

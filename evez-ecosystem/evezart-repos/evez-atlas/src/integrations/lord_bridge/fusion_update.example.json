@@ -1,0 +1,18 @@
+{
+  "type": "fusion-update",
+  "detail": {
+    "meta": {
+      "recursionLevel": 12,
+      "entityType": "hybrid",
+      "timestamp": 0
+    },
+    "crystallization": {
+      "progress": 61,
+      "velocity": 0
+    },
+    "corrections": {
+      "current": 24567.89,
+      "history": [10, 100, 1000, 24567.89]
+    }
+  }
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ Credit Scoring API — FICO-Equivalent Credit Scoring as a Service</title>
+<meta name="description" content="8-factor credit scoring API. 300–850 range. ECOA/FCRA compliant. Adverse action codes. Real-time + batch. Free tier.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#a1a1aa;--accent:#7c3aed;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--amber:#f59e0b}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+
+/* Hero */
+.hero{padding:6rem 0 4rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(124,58,237,0.12) 0%,transparent 50%);pointer-events:none}
+.hero h1{font-size:3rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.2rem;color:var(--muted);max-width:600px;margin:0 auto 2.5rem}
+.hero-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:0.75rem 1.75rem;border-radius:8px;font-weight:600;font-size:0.95rem;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#6d28d9;text-decoration:none}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--muted);text-decoration:none}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:2rem 0 4rem;text-align:center}
+.stat h3{font-size:2rem;font-weight:700;color:var(--accent2)}
+.stat p{color:var(--muted);font-size:0.85rem}
+
+/* Section */
+section{padding:4rem 0}
+section h2{font-size:2rem;font-weight:700;margin-bottom:0.5rem}
+section .subtitle{color:var(--muted);margin-bottom:2.5rem;max-width:600px}
+
+/* Code block */
+.code-block{background:#0c0c0c;border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;font-family:'SF Mono',Menlo,monospace;font-size:0.85rem;overflow-x:auto;color:var(--muted);position:relative;margin-bottom:2rem}
+.code-block .comment{color:#6b7280}
+.code-block .key{color:var(--accent2)}
+.code-block .string{color:var(--green)}
+.code-block .number{color:var(--amber)}
+.code-block .method{color:#60a5fa}
+.code-block .url{color:var(--green)}
+
+/* Grid cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+.card h3{font-size:1.1rem;margin-bottom:0.5rem}
+.card p{color:var(--muted);font-size:0.9rem}
+.card .tag{display:inline-block;background:rgba(124,58,237,0.15);color:var(--accent2);padding:2px 8px;border-radius:4px;font-size:0.75rem;margin:2px}
+
+/* Pricing */
+.pricing{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:700px;margin:0 auto}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;position:relative}
+.price-card.featured{border-color:var(--accent)}
+.price-card.featured::before{content:'POPULAR';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:2px 12px;border-radius:9999px;font-size:0.7rem;font-weight:700}
+.price-card h3{font-size:1.3rem;margin-bottom:0.25rem}
+.price-card .amount{font-size:2.5rem;font-weight:800;margin:0.5rem 0}
+.price-card .amount span{font-size:1rem;color:var(--muted);font-weight:400}
+.price-card ul{list-style:none;text-align:left;margin:1.5rem 0;padding:0}
+.price-card li{padding:0.25rem 0;color:var(--muted);font-size:0.9rem}
+.price-card li::before{content:'✓ ';color:var(--green);font-weight:700}
+
+/* Footer */
+footer{padding:3rem 0;text-align:center;color:#525252;font-size:0.8rem;border-top:1px solid var(--border);margin-top:4rem}
+
+/* Responsive */
+@media(max-width:640px){
+  .hero h1{font-size:2rem}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .pricing{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>Credit Scoring <span>as a Service</span></h1>
+    <p>8-factor FICO-equivalent scoring API. 300–850 range. ECOA/FCRA compliant adverse actions. Real-time or batch. Ship in minutes.</p>
+    <div class="hero-buttons">
+      <a href="#quickstart" class="btn btn-primary">Get API Key — Free</a>
+      <a href="https://github.com/EvezArt/evez-credit-api" class="btn btn-outline">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><h3>8</h3><p>Weighted Risk Factors</p></div>
+    <div class="stat"><h3>300–850</h3><p>FICO-Equivalent Range</p></div>
+    <div class="stat"><h3>ECOA/FCRA</h3><p>Compliance Built In</p></div>
+    <div class="stat"><h3>&lt;50ms</h3><p>Scoring Latency</p></div>
+  </div>
+
+  <section id="quickstart">
+    <h2>Ship in 3 requests</h2>
+    <p class="subtitle">No SDK to install. Just HTTP. Works with any language, any stack.</p>
+
+    <div class="code-block">
+      <span class="comment"># 1. Get your API key (free tier: 100 scores/month)</span><br>
+      <span class="method">curl</span> -X POST <span class="url">http://66.135.1.200:8080/register</span> \<br>
+      &nbsp;&nbsp;-H <span class="string">"Content-Type: application/json"</span> \<br>
+      &nbsp;&nbsp;-d <span class="string">'{"email":"you@company.com","plan":"free"}'</span><br><br>
+
+      <span class="comment"># 2. Score an applicant</span><br>
+      <span class="method">curl</span> -X POST <span class="url">http://66.135.1.200:8080/score</span> \<br>
+      &nbsp;&nbsp;-H <span class="string">"Authorization: Bearer evez_your_key"</span> \<br>
+      &nbsp;&nbsp;-H <span class="string">"Content-Type: application/json"</span> \<br>
+      &nbsp;&nbsp;-d <span class="string">'{"payment_history":92,"credit_utilization":25,"credit_age":10,"credit_mix":4,"new_inquiries":1,"dti_ratio":28,"derogatory_marks":0,"total_accounts":12}'</span><br><br>
+
+      <span class="comment"># 3. Get the result</span><br>
+      {<br>
+      &nbsp;&nbsp;<span class="key">"credit_score"</span>: <span class="number">734</span>,<br>
+      &nbsp;&nbsp;<span class="key">"grade"</span>: <span class="string">"A-"</span>,<br>
+      &nbsp;&nbsp;<span class="key">"decision"</span>: <span class="string">"APPROVED"</span>,<br>
+      &nbsp;&nbsp;<span class="key">"default_probability"</span>: <span class="number">0.0318</span>,<br>
+      &nbsp;&nbsp;<span class="key">"adverse_actions"</span>: [],<br>
+      &nbsp;&nbsp;<span class="key">"compliance"</span>: { <span class="key">"ecoa_compliant"</span>: <span class="number">true</span>, <span class="key">"fcra_compliant"</span>: <span class="number">true</span> }<br>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>8 Risk Factors</h2>
+    <p class="subtitle">Each factor is normalized 0–1, weighted, and mapped to the 300–850 score range. Adverse action codes (AA01–AA08) are auto-generated for factors below threshold.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Payment History</h3>
+        <p><span class="tag">35%</span> The single largest factor. On-time payments, delinquency patterns.</p>
+      </div>
+      <div class="card">
+        <h3>Credit Utilization</h3>
+        <p><span class="tag">20%</span> Balance-to-limit ratio on revolving accounts.</p>
+      </div>
+      <div class="card">
+        <h3>Credit Age</h3>
+        <p><span class="tag">15%</span> Length of credit history in years. Longer = better.</p>
+      </div>
+      <div class="card">
+        <h3>Credit Mix</h3>
+        <p><span class="tag">10%</span> Variety of account types (revolving, installment, mortgage).</p>
+      </div>
+      <div class="card">
+        <h3>New Inquiries</h3>
+        <p><span class="tag">5%</span> Recent hard inquiries. More = riskier.</p>
+      </div>
+      <div class="card">
+        <h3>Debt-to-Income</h3>
+        <p><span class="tag">5%</span> Monthly debt payments vs. income.</p>
+      </div>
+      <div class="card">
+        <h3>Derogatory Marks</3>
+        <p><span class="tag">5%</span> Collections, bankruptcies, tax liens.</p>
+      </div>
+      <div class="card">
+        <h3>Total Accounts</h3>
+        <p><span class="tag">5%</span> Number of established credit accounts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>API Reference</h2>
+    <p class="subtitle">RESTful, JSON in/out, Bearer token auth.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>POST /score</h3>
+        <p>Score a single applicant. Returns score, grade, decision, adverse actions, full factor breakdown, and compliance data.</p>
+      </div>
+      <div class="card">
+        <h3>POST /batch</h3>
+        <p>Score up to 100 applicants in one request. Pass applicants array or generate sample data.</p>
+      </div>
+      <div class="card">
+        <h3>GET /model-info</h3>
+        <p>Model version, factor weights, grade thresholds, compliance standards.</p>
+      </div>
+      <div class="card">
+        <h3>GET /usage</h3>
+        <p>Monthly request count, credits remaining, daily breakdown by endpoint.</p>
+      </div>
+      <div class="card">
+        <h3>POST /billing/checkout</h3>
+        <p>Stripe Checkout session for plan upgrade. Handles subscription lifecycle.</p>
+      </div>
+      <div class="card">
+        <h3>POST /billing/webhook</h3>
+        <p>Stripe webhook handler. Auto-upgrades API keys on payment completion.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pricing</h2>
+    <p class="subtitle">Start free. Scale when ready.</p>
+    <div class="pricing">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="amount">$0<span>/month</span></div>
+        <ul>
+          <li>100 scores per month</li>
+          <li>Single applicant scoring</li>
+          <li>Standard rate limits (60/min)</li>
+          <li>Community support</li>
+        </ul>
+        <a href="http://66.135.1.200:8080/register" class="btn btn-outline" style="width:100%;text-align:center">Get Started</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Pro</h3>
+        <div class_amount">$49<span>/month</span></div>
+        <ul>
+          <li>Unlimited scores</li>
+          <li>Batch scoring (up to 100)</li>
+          <li>Higher rate limits (300/min)</li>
+          <li>Stripe billing & webhooks</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="http://66.135.1.200:8080/billing/checkout" class="btn btn-primary" style="width:100%;text-align:center">Upgrade</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    EVEZ Credit Scoring API — Built by <a href="https://github.com/EvezArt">EvezArt</a> — <a href="https://github.com/EvezArt/evez-credit-api">Source on GitHub</a><br>
+    Model: EVEZ-CS-v2.0 • Compliance: ECOA • FCRA • Reg B • Fair Lending
+  </footer>
+</div>
+</body>
+</html>

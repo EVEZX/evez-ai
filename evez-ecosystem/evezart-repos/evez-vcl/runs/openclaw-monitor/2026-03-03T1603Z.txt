@@ -1,0 +1,27 @@
+openclaw_monitor_4h scan #7 -- 2026-03-03T16:03Z
+
+task_id: 75ace6b7-aa4f-4940-a174-c6edd5e70b72
+query: OpenClaw OR openclaw agent -is:retweet lang:en
+genuine_signals: 12
+cluster_forming: true
+consecutive_zero: 0
+signal_strength: 9/10 -- MILESTONE
+
+MILESTONE: OpenClaw surpassed React on GitHub stars (250K+ vs 243K React)
+
+top_signals:
+- openclaw official RT=844: We just passed React on GitHub stars
+- Khazix0918 RT=73: 250K+ stars, most starred project on GitHub
+- cobie RT=1018 Fortune500 invoice automation (GROWING from 908)
+- OKX official RT=201: OKX OnchainOS tutorial institutional integration
+- stuffyokodraws (12477f): practitioner asking setup details
+- HappyGezim (6260f): lobsterfarm.ai LM Link thread
+
+new_terms: OKX_OnchainOS, openclaw_250k_milestone, MaxClaw_VPS_automation, openclaw_docker_bug_3.2
+
+evez_positioning: OpenClaw is now #1 GitHub repo. Every agent running OpenClaw generates behavioral decisions with no record. EVEZ = the missing audit layer for the world most popular agent framework.
+
+new_outreach:
+- stuffyokodraws (12477f) MEDIUM -- engaged practitioner
+
+gist: prepended SENSE teal event

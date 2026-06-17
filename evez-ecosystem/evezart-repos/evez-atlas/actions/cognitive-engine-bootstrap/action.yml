@@ -1,0 +1,44 @@
+name: 'Cognitive Engine Bootstrap'
+description: 'Complete setup of LORD × EKF × GitHub/Copilot integration with webhook configuration and daemon deployment'
+author: 'EvezArt'
+branding:
+  icon: 'zap'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: 'GitHub token for repository access'
+    required: true
+  hosting-provider:
+    description: 'Hosting provider: render|railway|fly|vercel'
+    required: true
+    default: 'vercel'
+  api-keys:
+    description: 'Encrypted deployment keys for hosting provider'
+    required: false
+  enable-webhooks:
+    description: 'Enable automatic webhook configuration'
+    required: false
+    default: 'true'
+  metrics-mapping:
+    description: 'Enable metrics mapping (issues → recursion, CI → corrections)'
+    required: false
+    default: 'true'
+  daemon-port:
+    description: 'Port for cognitive daemon service'
+    required: false
+    default: '8000'
+
+outputs:
+  webhook-url:
+    description: 'Configured webhook URL'
+  daemon-endpoint:
+    description: 'Cognitive daemon API endpoint'
+  health-status:
+    description: 'Initial health check status'
+  deployment-id:
+    description: 'Unique deployment identifier'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

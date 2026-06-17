@@ -1,0 +1,105 @@
+{
+  "system": "game-agent-infra",
+  "layers": [
+    "client",
+    "edge",
+    "runtime",
+    "event_spine",
+    "state",
+    "observability",
+    "fsc"
+  ],
+  "nodes": [
+    {
+      "id": "ui",
+      "type": "nextjs",
+      "host": "vercel",
+      "role": "player UI + admin + chat"
+    },
+    {
+      "id": "apigw",
+      "type": "api-gateway",
+      "proto": [
+        "REST",
+        "gRPC"
+      ],
+      "role": "authz + routing + rate limiting"
+    },
+    {
+      "id": "rtgw",
+      "type": "realtime-gateway",
+      "proto": [
+        "WS",
+        "UDP"
+      ],
+      "role": "session mgmt + backpressure"
+    },
+    {
+      "id": "gs",
+      "type": "game-server",
+      "role": "authoritative sim + reconciliation"
+    },
+    {
+      "id": "agent",
+      "type": "agent-orchestrator",
+      "role": "LLM tools + policies + memory"
+    },
+    {
+      "id": "mm",
+      "type": "matchmaking",
+      "role": "queues + skill/ELO + lobbies"
+    },
+    {
+      "id": "es",
+      "type": "event-log",
+      "role": "append-only truth"
+    },
+    {
+      "id": "prj",
+      "type": "projector",
+      "role": "rebuild projections"
+    },
+    {
+      "id": "redis",
+      "type": "redis",
+      "role": "fast state + pubsub"
+    },
+    {
+      "id": "pg",
+      "type": "postgres",
+      "role": "durable state"
+    },
+    {
+      "id": "otel",
+      "type": "otel-collector",
+      "role": "logs/metrics/traces"
+    },
+    {
+      "id": "fsc",
+      "type": "fsc-engine",
+      "role": "\u03a3f/CS/PS/\u03a9 mapping + probes"
+    }
+  ],
+  "retrocausal_loop": {
+    "name": "client_prediction_server_reconcile_event_sourcing_projection_rebuild",
+    "pending_vs_final": true,
+    "rewrite_mechanisms": [
+      "rollback",
+      "replay",
+      "projection_rebuild"
+    ],
+    "safety_guards": [
+      "immutable_event_spine",
+      "explicit_pending_state",
+      "compensation_events",
+      "provenance_tags"
+    ]
+  },
+  "metrics": {
+    "finality_lag_ms_p95": "time from client action to authoritative commit",
+    "rollback_rate_per_min": "reconciliation frequency",
+    "projection_lag_ms_p95": "event->read model delay",
+    "agent_tool_call_rate": "tool usage per minute",
+    "fsc_sigma_f_cardinality": "size of failure surface neighborhood"
+  }
+}

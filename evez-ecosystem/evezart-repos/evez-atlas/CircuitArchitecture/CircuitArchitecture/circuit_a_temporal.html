@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit A: Temporal Body</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #0f0; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #0f0;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            z-index: 100;
+        }
+        .btn {
+            background: rgba(0,255,0,0.2);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        .btn:active { background: rgba(0,255,0,0.5); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="hud">
+        <div style="font-weight:bold;">CIRCUIT A: TEMPORAL BODY</div>
+        <div id="path-info">Path: <span id="current-path">A1</span></div>
+        <div id="sensor-info"></div>
+    </div>
+    <div id="controls">
+        <button class="btn" onclick="prevPath()">◄ PREV PATH</button>
+        <button class="btn" onclick="nextPath()">NEXT PATH ►</button>
+        <button class="btn" onclick="goToNavigator()">☰ NAVIGATOR</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        // Sensor data structures
+        const sensors = {
+            accel: { x: [], y: [], z: [], mag: [] },
+            gyro: { alpha: [], beta: [], gamma: [] },
+            touch: { x: 0, y: 0, active: false, history: [] },
+            time: []
+        };
+
+        const BUFFER_SIZE = 200;
+
+        // Pathway state
+        let currentPathIndex = 0;
+        const paths = ['A1_TIME_WALL', 'A2_RIBBON_TUNNEL', 'A3_EVENT_GLYPHS'];
+
+        // Three.js for 3D pathways
+        let scene, camera, renderer;
+        let ribbons = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            if (renderer) {
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 5, 10);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setClearColor(0x000000, 1);
+
+            const ambient = new THREE.AmbientLight(0x404040);
+            scene.add(ambient);
+
+            const light = new THREE.DirectionalLight(0x00ff00, 0.8);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+        }
+
+        function initSensors() {
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', (e) => {
+                    if (e.accelerationIncludingGravity) {
+                        const ax = e.accelerationIncludingGravity.x || 0;
+                        const ay = e.accelerationIncludingGravity.y || 0;
+                        const az = e.accelerationIncludingGravity.z || 0;
+                        const mag = Math.sqrt(ax*ax + ay*ay + az*az);
+
+                        sensors.accel.x.push(ax);
+                        sensors.accel.y.push(ay);
+                        sensors.accel.z.push(az);
+                        sensors.accel.mag.push(mag);
+                        sensors.time.push(Date.now());
+
+                        if (sensors.accel.x.length > BUFFER_SIZE) {
+                            sensors.accel.x.shift();
+                            sensors.accel.y.shift();
+                            sensors.accel.z.shift();
+                            sensors.accel.mag.shift();
+                            sensors.time.shift();
+                        }
+                    }
+                });
+            }
+
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    sensors.gyro.alpha.push(e.alpha || 0);
+                    sensors.gyro.beta.push(e.beta || 0);
+                    sensors.gyro.gamma.push(e.gamma || 0);
+
+                    if (sensors.gyro.alpha.length > BUFFER_SIZE) {
+                        sensors.gyro.alpha.shift();
+                        sensors.gyro.beta.shift();
+                        sensors.gyro.gamma.shift();
+                    }
+                });
+            }
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                sensors.touch.x = touch.clientX;
+                sensors.touch.y = touch.clientY;
+                sensors.touch.active = true;
+                sensors.touch.history.push({x: touch.clientX, y: touch.clientY, t: Date.now()});
+                if (sensors.touch.history.length > 100) sensors.touch.history.shift();
+            });
+        }
+
+        // PATH A1: TIME SERIES WALL
+        function renderTimeWall() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            const strips = [
+                {data: sensors.accel.x, color: '#f00', label: 'accel.x', y: height * 0.15},
+                {data: sensors.accel.y, color: '#0f0', label: 'accel.y', y: height * 0.30},
+                {data: sensors.accel.z, color: '#00f', label: 'accel.z', y: height * 0.45},
+                {data: sensors.gyro.alpha, color: '#ff0', label: 'gyro.α', y: height * 0.60},
+                {data: sensors.gyro.beta, color: '#f0f', label: 'gyro.β', y: height * 0.75},
+                {data: sensors.gyro.gamma, color: '#0ff', label: 'gyro.γ', y: height * 0.90}
+            ];
+
+            strips.forEach(strip => {
+                if (strip.data.length < 2) return;
+
+                ctx.strokeStyle = strip.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                strip.data.forEach((val, i) => {
+                    const x = (i / BUFFER_SIZE) * width;
+                    const y = strip.y + val * 3;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                ctx.fillStyle = strip.color;
+                ctx.font = '10px monospace';
+                ctx.fillText(strip.label, 5, strip.y - 10);
+            });
+        }
+
+        // PATH A2: 3D RIBBON TUNNEL
+        function renderRibbonTunnel() {
+            if (!ribbons.length) buildRibbons();
+
+            ribbons.forEach((ribbon, idx) => {
+                ribbon.rotation.y += 0.001 * (idx + 1);
+
+                const positions = ribbon.geometry.attributes.position;
+                for (let i = 0; i < positions.count; i++) {
+                    const dataIdx = Math.floor((i / positions.count) * sensors.accel.x.length);
+                    if (dataIdx < sensors.accel.x.length) {
+                        let val = 0;
+                        if (idx === 0) val = sensors.accel.x[dataIdx];
+                        else if (idx === 1) val = sensors.accel.y[dataIdx];
+                        else if (idx === 2) val = sensors.accel.z[dataIdx];
+                        positions.setY(i, val * 0.5);
+                    }
+                }
+                positions.needsUpdate = true;
+            });
+
+            camera.position.z -= 0.05;
+            if (camera.position.z < -50) camera.position.z = 10;
+            camera.lookAt(0, 0, camera.position.z - 5);
+
+            renderer.render(scene, camera);
+        }
+
+        function buildRibbons() {
+            const colors = [0xff0000, 0x00ff00, 0x0000ff];
+            for (let i = 0; i < 3; i++) {
+                const geometry = new THREE.PlaneGeometry(20, 2, 100, 1);
+                const material = new THREE.MeshPhongMaterial({
+                    color: colors[i],
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const ribbon = new THREE.Mesh(geometry, material);
+                ribbon.position.y = (i - 1) * 3;
+                ribbon.position.z = -25;
+                ribbon.rotation.x = Math.PI / 2;
+                scene.add(ribbon);
+                ribbons.push(ribbon);
+            }
+        }
+
+        // PATH A3: EVENT GLYPHS
+        function renderEventGlyphs() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Base waveform
+            ctx.strokeStyle = '#0f0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            sensors.accel.mag.forEach((val, i) => {
+                const x = (i / BUFFER_SIZE) * width;
+                const y = height / 2 + val * 10;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Event detection: motion spikes
+            sensors.accel.mag.forEach((val, i) => {
+                if (val > 15) {
+                    const x = (i / BUFFER_SIZE) * width;
+                    const y = height / 2 + val * 10;
+
+                    ctx.fillStyle = '#ff0';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#ff0';
+                    ctx.font = '12px monospace';
+                    ctx.fillText('⚡', x - 6, y - 10);
+                }
+            });
+
+            // Touch events
+            sensors.touch.history.forEach(touch => {
+                ctx.fillStyle = 'rgba(0,255,255,0.5)';
+                ctx.beginPath();
+                ctx.arc(touch.x, touch.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function render() {
+            const path = paths[currentPathIndex];
+
+            if (path === 'A1_TIME_WALL') {
+                renderTimeWall();
+            } else if (path === 'A2_RIBBON_TUNNEL') {
+                renderRibbonTunnel();
+            } else if (path === 'A3_EVENT_GLYPHS') {
+                renderEventGlyphs();
+            }
+
+            updateHUD();
+            requestAnimationFrame(render);
+        }
+
+        function updateHUD() {
+            document.getElementById('current-path').textContent = paths[currentPathIndex];
+            const mag = sensors.accel.mag.length ? sensors.accel.mag[sensors.accel.mag.length-1].toFixed(2) : '0.00';
+            document.getElementById('sensor-info').innerHTML = `
+                Accel: ${mag} m/s² | Buffer: ${sensors.accel.x.length}/${BUFFER_SIZE}
+            `;
+        }
+
+        function nextPath() {
+            currentPathIndex = (currentPathIndex + 1) % paths.length;
+            if (paths[currentPathIndex] === 'A2_RIBBON_TUNNEL' && !renderer) {
+                initThree();
+            }
+        }
+
+        function prevPath() {
+            currentPathIndex = (currentPathIndex - 1 + paths.length) % paths.length;
+            if (paths[currentPathIndex] === 'A2_RIBBON_TUNNEL' && !renderer) {
+                initThree();
+            }
+        }
+
+        function goToNavigator() {
+            window.location.href = 'circuit_navigator.html';
+        }
+
+        window.addEventListener('load', () => {
+            resize();
+            initSensors();
+            render();
+        });
+        window.addEventListener('resize', resize);
+
+        document.addEventListener('click', () => {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission();
+            }
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

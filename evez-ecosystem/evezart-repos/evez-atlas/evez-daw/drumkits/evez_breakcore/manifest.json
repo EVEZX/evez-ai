@@ -1,0 +1,26 @@
+{
+  "name": "evez_breakcore",
+  "style": "breakcore",
+  "samples": 19,
+  "files": {
+    "kick_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_1.wav",
+    "kick_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_2.wav",
+    "kick_3": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_3.wav",
+    "kick_4": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_4.wav",
+    "snare_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/snare_1.wav",
+    "snare_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/snare_2.wav",
+    "snare_3": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/snare_3.wav",
+    "snare_4": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/snare_4.wav",
+    "hat_closed_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/hat_closed_1.wav",
+    "hat_closed_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/hat_closed_2.wav",
+    "hat_open_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/hat_open_1.wav",
+    "hat_open_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/hat_open_2.wav",
+    "clap_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/clap_1.wav",
+    "clap_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/clap_2.wav",
+    "clap_3": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/clap_3.wav",
+    "rimshot": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/rimshot.wav",
+    "kick_distorted_1": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_distorted_1.wav",
+    "kick_distorted_2": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_distorted_2.wav",
+    "kick_distorted_3": "/home/openclaw/.openclaw/workspace/evez-daw/drumkits/evez_breakcore/kick_distorted_3.wav"
+  }
+}

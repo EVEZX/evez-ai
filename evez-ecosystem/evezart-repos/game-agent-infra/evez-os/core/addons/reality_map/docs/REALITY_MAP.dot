@@ -1,0 +1,53 @@
+digraph RealityMap {
+  rankdir=LR;
+  node [shape=box, fontname="Helvetica"];
+  BC [shape=doubleoctagon, label="Bias Constitution\n(target dist + drift bounds)", style=bold];
+
+  subgraph cluster_pub {
+    label="Public Internet Plane";
+    P [label="Players"];
+    C [label="Client/Game"];
+    E [label="Edge/CDN"];
+    D [label="DNS/Resolvers"];
+    B [label="BGP/Routing"];
+    O [label="Origin/API Gateway"];
+    I [label="Auth/Identity"];
+    P -> C -> E -> D -> B -> O;
+    O -> I;
+  }
+
+  subgraph cluster_back {
+    label="Game Backend Plane";
+    W [label="WS Gateway"];
+    G [label="Authoritative Game Server"];
+    M [label="Matchmaking/Econ/Anti-cheat"];
+    S [label="Event Spine (append-only)", shape=folder];
+    R [label="Projection Store (Redis/DB)", shape=folder];
+    F [label="FSC Engine (Σf CS PS Ω)", shape=component];
+    A [label="Agent Orchestrator (LLM tools)", shape=component];
+    X [label="Diagnostics + Actions", shape=box3d];
+
+    C -> W -> G -> M;
+    W -> S [label="events"];
+    S -> R [label="projection"];
+    S -> F [label="telemetry"];
+    F -> A;
+    A -> X;
+  }
+
+  OT [shape=oval, label="OTel taps\n(pending/final + provenance)"];
+  OT -> C [style=dashed];
+  OT -> E [style=dashed];
+  OT -> D [style=dashed];
+  OT -> B [style=dashed];
+  OT -> O [style=dashed];
+  OT -> W [style=dashed];
+  OT -> G [style=dashed];
+  OT -> S [style=dashed];
+  OT -> R [style=dashed];
+  OT -> F [style=dashed];
+  OT -> A [style=dashed];
+
+  BC -> P [style=dotted, label="constrains scenario dist"];
+  BC -> W [style=dotted, label="constrains scenario dist"];
+}

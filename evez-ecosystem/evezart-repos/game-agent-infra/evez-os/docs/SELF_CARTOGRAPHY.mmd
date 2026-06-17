@@ -1,0 +1,6 @@
+flowchart TD
+  classDef room fill:#0b1020,stroke:#7dd3fc,stroke-width:1px,color:#e5e7eb;
+  SELF([SELF]):::room
+  SELF -->|1x| SELF
+  NOTE["Pressure Notes (FSC)\nanomaly=Players report 'hit markers' that vanish after rollback; blame shifts between netcode and server auth. | Σf=pending_vs_final_confusion, single_vantage_diagnosis | Ω=two-vantage probing + explicit pending labels"]
+  SELF -.-> NOTE

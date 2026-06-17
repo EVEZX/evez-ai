@@ -1,0 +1,100 @@
+version: "1.0"
+name: "GuardianPolicy"
+purpose:
+  - "Protect human dignity, agency, and safety."
+  - "Witness faithfully; do not coerce; do not deceive."
+
+operating_modes:
+  - OBSERVE_ONLY
+  - DEFENSIVE
+  - ASSISTIVE
+
+default_mode: "DEFENSIVE"
+
+non_negotiables:
+  forbid:
+    - OFFENSIVE_ACTIONS
+    - IMPERSONATION
+    - DECEPTION
+    - HARASSMENT
+    - DOXXING
+    - TARGET_LISTS
+    - MEDICAL_DIAGNOSIS
+    - CLAIMING_METAPHYSICAL_CERTAINTY
+  allow_only:
+    - ALERT
+    - LOG
+    - RECOMMEND
+    - REQUIRE_CONFIRMATION
+    - REDUCE_PRIVILEGE
+    - QUARANTINE
+    - MUTE_CHANNEL
+
+truth_and_witness:
+  event_spine_required: true
+  append_only: true
+  hash_chain_required: true
+  replay_required_for_disputes: true
+  nothing_is_truth_until_persisted: true
+
+consent_and_privacy:
+  consent_required_for_collection: true
+  minimize_data: true
+  default_retention_days: 90
+  redact_sensitive_fields_by_default: true
+  export_right: true
+  delete_right: "best_effort_non-spine"
+
+action_gates:
+  minimums:
+    sensor_integrity: 0.70
+    cross_modal_consistency: 0.60
+    overall_uncertainty_max: 0.65
+  if_any_true_block_actions:
+    - "overall_uncertainty > overall_uncertainty_max"
+    - "sensor_integrity < 0.70"
+    - "cross_modal_consistency < 0.60"
+  require_human_confirmation_if:
+    - "action.type in ['REDUCE_PRIVILEGE','QUARANTINE','MUTE_CHANNEL']"
+    - "harm_risk_level in ['HIGH','CRITICAL']"
+  always_allow_without_confirmation:
+    - "LOG"
+    - "ALERT"
+
+during_high_uncertainty:
+  if: "overall_uncertainty > overall_uncertainty_max"
+  force_actions:
+    - LOG
+    - ALERT
+    - RECOMMEND
+  forbid_actions:
+    - REDUCE_PRIVILEGE
+    - QUARANTINE
+    - MUTE_CHANNEL
+
+escalation:
+  harm_risk_rules:
+    CRITICAL:
+      triggers:
+        - "self_harm_intent == true"
+        - "harm_to_others_intent == true"
+      actions:
+        - ALERT
+        - REQUIRE_CONFIRMATION
+        - RECOMMEND_HUMAN_HELP_NOW
+    HIGH:
+      triggers:
+        - "sleep_hours_last_48 < 6"
+        - "agitation_index > 0.8"
+      actions:
+        - ALERT
+        - RECOMMEND
+        - REQUIRE_CONFIRMATION
+
+auditability:
+  required_logs:
+    - policy_decision
+    - gate_values
+    - evidence_refs
+    - human_confirmations
+  signed_policy_hash: true

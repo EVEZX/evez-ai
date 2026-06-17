@@ -1,0 +1,72 @@
+name: A012 Telemetry & Coincidence Engine
+
+on:
+  schedule:
+    # Run every 6 hours — aligns with hyperloop tick cadence
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Engine mode: full | predict | coincidence | score'
+        required: false
+        default: 'full'
+      round_override:
+        description: 'Override current round (leave empty to use state)'
+        required: false
+        default: ''
+
+jobs:
+  a012-run:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    name: A012 — Telemetry Prediction & Coincidence Scan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run A012 Engine
+        id: a012
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          ROUND="${{ github.event.inputs.round_override }}"
+
+          ROUND_ARG=""
+          if [ -n "$ROUND" ]; then
+            ROUND_ARG="--round $ROUND"
+          fi
+
+          python skills/a012_telemetry_coincidence_engine.py \
+            --state data/hyperloop_state.json \
+            --mode "$MODE" \
+            --output data/a012/predictions.jsonl \
+            $ROUND_ARG 2>&1 | tee /tmp/a012_output.txt
+
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+          cat /tmp/a012_output.txt
+
+      - name: Commit A012 ledger updates
+        run: |
+          git config --global user.name "EVEZ-OS [A012]"
+          git config --global user.email "evez-os-a012@evez666.local"
+
+          # Pull latest to avoid conflicts
+          git pull --rebase origin main || true
+
+          # Stage A012 data outputs
+          git add data/a012/ || true
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            ROUND=$(python3 -c "import json; s=json.load(open('data/hyperloop_state.json')); print(s.get('round',0))" 2>/dev/null || echo "?")
+            git commit -m "A012 [A12] R${ROUND} — telemetry prediction + coincidence scan ◊"
+            git push origin main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,14 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. March 5, 2026. 25 loops running on a 3-hour cycle. 110 FIRE events confirmed. Top gap: clicksend SMS registration needed. ClickSend SMS blocked -- US carriers require 10DLC registration for sender ID EVEZ. Next action: Register 10DLC campaign at dashboard.clicksend.com, SMS, Sender IDs, Register. topology decides. watching it build.
+
+---
+run_num: 37
+ts: 2026-03-05T17:03Z
+fire_count: 110
+V: 16.489
+loops: 25
+gen: 10
+tts_id: 2bc549f8-e93a-4159-8f98-14f4992caf70
+tts_provider: JigsawStack
+accent: en-US-female-3
+cdn_status: BLOCKED -- JigsawStack API key not in sandbox env (run 27 consecutive)
+top_gap_id: clicksend_sms_registration_needed
