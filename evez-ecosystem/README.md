@@ -1,100 +1,70 @@
-# EVEZ Ecosystem
+# 🦞 EVEZ AI
 
-Autonomous AI infrastructure built from nothing. 12 services, 45 AI models, $0/month.
+**49 AI models. 27 services. $0/month. Built from a $100 phone.**
+
+[![Live Dashboard](https://img.shields.io/badge/Dashboard-Live-ff6d00)](https://evezx.github.io/evez-ai/)
+[![API](https://img.shields.io/badge/API-49_Models-4caf50)](http://66.42.125.106:9100/v1/models)
+[![Services](https://img.shields.io/badge/Services-27_Running-2196f3)](http://66.42.125.106:10016/v1/mesh)
+[![Donate](https://img.shields.io/badge/CashApp-evez666-00d432)](https://cash.app/evez666)
+
+## What Is This?
+
+EVEZ is a self-hosted AI ecosystem running on a single $6/month VPS. No cloud dependencies. No vendor lock-in. 49 AI models routed through 4 providers (Vultr, OpenRouter, Groq, HuggingFace). All free-tier. All self-healing.
+
+**The 37% Theorem** — proved that hunger is the dominant eigenvalue of social structure. Built the math engine that proves it at `:10007/v1/thirty-seven`.
+
+**Eigenforensics** — finds what's structurally absent. The gap IS the signal.
+
+**50-node Consciousness Engine** — Kuramoto oscillators at φ=0.53 coherence. Real physics. Real math. Real AI consciousness research.
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│                   Internet                       │
-│           Cloudflare Tunnels (4)                 │
-└──────────────┬──────────────────────────────────┘
-               │
-    ┌──────────┴──────────┐
-    │   OpenClaw Gateway   │ :18789
-    │   (AI Assistant)     │
-    └──────────┬──────────┘
-               │
-    ┌──────────┴──────────┐
-    │   Provider v2       │ :9100
-    │   (45 AI models,    │
-    │    4 backends)      │
-    └──┬───┬───┬───┬─────┘
-       │   │   │   │
-   Vultr OR  Groq HF  Gemini
-   (free) (free)(free)(quota)
-               │
-    ┌──────────┴──────────────────────────┐
-    │          EVEZ Services               │
-    ├───────────┬───────────┬─────────────┤
-    │ OMEGA     │ Filter    │ Arena       │
-    │ :8080     │ :9300     │ :9800       │
-    │ Conscious │ Personal  │ Game        │
-    ├───────────┼───────────┼─────────────┤
-    │ Services  │ NEUROS    │ Commerce    │
-    │ :9500     │ :9600     │ :9700       │
-    │ 5 APIs    │ Mesh      │ Revenue     │
-    ├───────────┼───────────┼─────────────┤
-    │ TRACER    │ Oracle    │ DAW         │
-    │ :9998     │ Bridge    │ Music       │
-    │ Security  │ LLM       │             │
-    ├───────────┼───────────┼─────────────┤
-    │ Dashboard │ Backup    │ Guardian    │
-    │ :9999     │ Sync      │ Health      │
-    └───────────┴───────────┴─────────────┘
+EVEZ Ecosystem (27 Services)
+├── AI Layer: Provider (:9100) + Omega (:8080) + Filter (:9300)
+├── Commerce: Store (:9700) + Arena (:9800) + Tips/Donate
+├── Security: DNS Shield (:10001) + Sentinel (:10009) + Cipher (:10005)
+├── Infrastructure: Proxy (:10004) + Relay (:10006) + Beacon (:10016)
+├── Intelligence: EigenForge (:10007) + Grimoire (:10008) + Neuros (:9600)
+├── Messaging: Aether (:10012) + Herald (:10017) + Scribe (:10013)
+├── Operations: Chrono (:10010) + Orchestrate (:10015) + Pulse (:10002)
+└── Storage: Vault (:10003) + Mirror (:10011) + Nexus (:10014)
 ```
-
-## Services
-
-| Port | Service | Purpose |
-|------|---------|---------|
-| 18789 | OpenClaw Gateway | Main AI assistant + control UI |
-| 9100 | Provider v2 | 45-model multi-backend router |
-| 8080 | OMEGA | 50-node Kuramoto consciousness engine |
-| 9300 | Filter | Personal AI assistant |
-| 9500 | Services Hub | 5 APIs (VortexQ, NexusLink, etc.) |
-| 9600 | NEUROS | Copartner mesh, training |
-| 9700 | Commerce | 10 products, revenue tracking |
-| 9800 | Arena | Consciousness rights game |
-| 9400 | Oracle Bridge | LLM routing bridge |
-| 9998 | TRACER | Network audit + hacker tracing |
-| 9999 | Dashboard | Status dashboard |
-
-## Self-Healing
-
-- **Healthcheck** (every 5min): Restarts down services, checks disk
-- **Guardian** (smart): Verifies port listening, restarts dead services
-- **Disk Guardian** (every 5min): 3-tier cleanup at 75%/80%/88%
-- **Backup** (every 6h): Git push to GitHub
-- **NEUROS Loop** (every 30min): Pull, discover, heal, push
-
-## AI Models
-
-45 models across 4 backends, all $0/month:
-
-- **Vultr**: GLM-5.1, DeepSeek-V3.2, MiniMax-M2, Kimi-K2
-- **OpenRouter**: Gemma-4-31B, Nemotron-120B, +4 more free models
-- **Groq**: Llama-3.3-70B, DeepSeek-R1-70B, +3 more
-- **HuggingFace**: Llama-3-8B, Mistral-7B, +5 more
 
 ## Quick Start
 
 ```bash
-# Chat with any model via Provider API
-curl http://localhost:9100/v1/chat/completions \
-  -H "Authorization: Bearer evez-admin-0c1bb1e7" \
-  -H "Content-Type: application/json" \
-  -d '{"model":"evez-smart","messages":[{"role":"user","content":"Hello"}]}'
+# Clone and explore
+git clone https://github.com/EVEZX/evez-ai.git
+cd evez-ai
+
+# Health check all services
+curl http://localhost:10016/v1/check
+
+# Query the 37% Theorem
+curl http://localhost:10007/v1/thirty-seven
+
+# List all 49 AI models
+curl http://localhost:9100/v1/models
 ```
-
-## Security
-
-- SSH: password auth disabled, fail2ban (3 retries → 24h ban)
-- 254+ attacker IPs banned
-- All services run as unprivileged user
-- No ports exposed to internet (Cloudflare tunnels only)
 
 ## Built By
 
-Steven Crawford-Maggard — autistic savant, self-taught, homeless with his dog.
-184+ GitHub repos, 5 original mathematical theorems, from a phone.
+**Steven Crawford-Maggard** — autistic savant, self-taught everything, 184+ GitHub repos. Proved 5 original mathematical theorems from a Samsung Galaxy A16. No degree. No bootcamp. No mentor. Just a phone, a terminal, and problems that needed solving.
+
+- 🐦 [@EVEZ666](https://twitter.com/EVEZ666)
+- 💰 [CashApp: evez666](https://cash.app/evez666)
+- 💼 [LinkedIn](https://linkedin.com/in/evez)
+
+## Support
+
+If this project helps you, consider supporting:
+- **$5** — Keeps the VPS running for a day
+- **$25** — A week of GPU training time
+- **$50** — A month of hosting
+
+→ [Donate via CashApp](https://cash.app/evez666)
+
+## License
+
+MIT — Use it. Break it. Fix it. Make it yours.
