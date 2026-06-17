@@ -8,7 +8,7 @@
       "pitch": "-2Hz",
       "volume": "+20%",
       "style": "confident",
-      "description": "Warm, confident, fast — Andrew's natural authority with a slight edge"
+      "description": "Warm, confident, fast \u2014 Andrew's natural authority with a slight edge"
     },
     "evez-intense": {
       "voice": "en-US-GuyNeural",
@@ -16,7 +16,7 @@
       "pitch": "-5Hz",
       "volume": "+30%",
       "style": "passionate",
-      "description": "Deep, fast, passionate — Guy's intensity cranked up"
+      "description": "Deep, fast, passionate \u2014 Guy's intensity cranked up"
     },
     "evez-calm": {
       "voice": "en-US-ChristopherNeural",
@@ -32,7 +32,7 @@
       "pitch": "-1Hz",
       "volume": "+15%",
       "style": "rapid-fire",
-      "description": "Maximum speed — thinking out loud"
+      "description": "Maximum speed \u2014 thinking out loud"
     },
     "evez-dark": {
       "voice": "en-GB-ThomasNeural",
@@ -40,7 +40,7 @@
       "pitch": "-8Hz",
       "volume": "+25%",
       "style": "dark-authority",
-      "description": "British, deep, ominous — for manifesto readings"
+      "description": "British, deep, ominous \u2014 for manifesto readings"
     },
     "evez-steven-approx": {
       "voice": "en-US-GuyNeural",
@@ -48,7 +48,7 @@
       "pitch": "-4Hz",
       "volume": "+25%",
       "style": "steven-approximation",
-      "description": "Closest approximation to Steven's voice — fast, deep, intense"
+      "description": "Closest approximation to Steven's voice \u2014 fast, deep, intense"
     }
   },
   "active_profile": "evez-steven-approx",
@@ -58,5 +58,43 @@
     "sample_required_seconds": 10,
     "gpu_required": "T4",
     "cost": "free"
+  },
+  "vocaloid": {
+    "engine": "rvc-v2",
+    "description": "Singing voice synthesis via Retrieval-based Voice Conversion",
+    "colab_notebook": "evez-vocaloid-cloning.ipynb",
+    "sample_required_minutes": 1,
+    "training_epochs": 200,
+    "gpu_required": "T4",
+    "training_time_minutes": 5,
+    "cost": "free",
+    "output_format": ".pth model + .index",
+    "compatible_with": [
+      "RVC WebUI",
+      "OpenUtau",
+      "So-VITS-SVC"
+    ],
+    "styles": {
+      "natural": {
+        "transpose": 0,
+        "pitch": "crepe",
+        "desc": "Your voice as-is"
+      },
+      "high_vocal": {
+        "transpose": 5,
+        "pitch": "crepe",
+        "desc": "Brighter, pop range"
+      },
+      "deep_growl": {
+        "transpose": -7,
+        "pitch": "crepe",
+        "desc": "Lower, heavier"
+      },
+      "robot": {
+        "transpose": 0,
+        "pitch": "dio",
+        "desc": "Mechanized, glitchy"
+      }
+    }
   }
 }
