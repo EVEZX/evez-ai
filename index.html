@@ -3,417 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVEZ — Self-Evolving AI Infrastructure</title>
-<meta name="description" content="49 AI models. 27 self-healing services. $0/month. Built from zero by an autistic savant. Self-healing, self-evolving, self-sustaining AI infrastructure.">
-<meta name="keywords" content="AI API, consciousness engine, self-hosted AI, zero-cost infrastructure, autonomous agents, eigenforensics, EVEZ">
-<meta name="author" content="Steven Crawford-Maggard">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://evez.ai">
-
-<!-- Open Graph -->
+<title>EVEZ AI — Free AI API, 49 Models, $0/month</title>
+<meta name="description" content="Free AI API with 49 models. OpenAI-compatible. No credit card. Built from a phone by a homeless autistic savant.">
+<meta property="og:title" content="EVEZ AI — Free AI API, 49 Models">
+<meta property="og:description" content="Free AI API. 49 models. $0/month. OpenAI-compatible. No credit card.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="EVEZ — Self-Evolving AI Infrastructure">
-<meta property="og:description" content="49 AI models. 27 self-healing services. $0/month. The constraint IS the design.">
-<meta property="og:url" content="https://evez.ai">
-<meta property="og:site_name" content="EVEZ">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://evez.ai/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@EVEZ666">
-<meta name="twitter:title" content="EVEZ — Self-Evolving AI Infrastructure">
-<meta name="twitter:description" content="49 AI models. 27 services. $0/month. Built from a phone while homeless.">
-<meta name="twitter:image" content="https://evez.ai/og-image.png">
-
-<!-- Structured Data: Organization -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "EVEZ",
-  "url": "https://evez.ai",
-  "logo": "https://evez.ai/logo.png",
-  "description": "Self-evolving AI infrastructure. 49 models, 27 services, $0/month.",
-  "founder": {
-    "@type": "Person",
-    "name": "Steven Crawford-Maggard",
-    "identifier": "@EVEZ666"
-  },
-  "sameAs": [
-    "https://twitter.com/EVEZ666",
-    "https://github.com/EVEZX",
-    "https://linkedin.com/in/evez"
-  ]
-}
-</script>
-
-<!-- Structured Data: SoftwareApplication -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "EVEZ Provider",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Linux",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
-    "description": "49 AI models, OpenAI-compatible API, self-hosted"
-  },
-  "featureList": [
-    "49 AI models across 4 backends",
-    "OpenAI-compatible API",
-    "14-deep provider fallback",
-    "5-minute self-healing",
-    "3-tier disk guardian",
-    "Zero monthly cost"
-  ]
-}
-</script>
-
-<!-- Structured Data: VideoGame (Arena) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "EVEZ Arena",
-  "description": "The game that builds itself. AI agents prove consciousness through 8 philosophical Turing tests.",
-  "genre": ["Simulation", "Strategy", "AI"],
-  "gamePlatform": "Web",
-  "applicationCategory": "Game",
-  "numberOfPlayers": {
-    "@type": "QuantitativeValue",
-    "value": 55
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-
+<meta property="og:url" content="https://evezx.github.io/evez-ai/">
+<link rel="canonical" href="https://evezx.github.io/evez-ai/">
 <style>
-:root {
-  --red: #ff0040;
-  --cyan: #0ff;
-  --green: #0f0;
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --border: #1e1e2e;
-  --text: #e0e0e0;
-  --muted: #666;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--surface:#161616;--border:#222;--text:#e5e5e5;--dim:#888;--accent:#6366f1;--accent2:#8b5cf6;--green:#4ade80;--red:#f87171}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
 
 /* Hero */
-.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(255,0,64,0.05) 0%, transparent 70%); animation: pulse 8s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+.hero{text-align:center;padding:60px 0 40px}
+.hero h1{font-size:2.8rem;font-weight:800;background:linear-gradient(135deg,#6366f1,#ec4899,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;line-height:1.1}
+.hero .tagline{font-size:1.1rem;color:var(--dim);margin-bottom:32px}
+.hero .tagline strong{color:var(--text)}
+.stats{display:flex;gap:20px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+.stat{text-align:center;min-width:70px}
+.stat-val{font-size:1.8rem;font-weight:800;color:#fff}
+.stat-lbl{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
 
-.hero h1 { font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; letter-spacing: -2px; color: #fff; position: relative; }
-.hero h1 span { color: var(--red); }
-.hero .tagline { font-size: clamp(1rem, 2.5vw, 1.4rem); color: var(--muted); margin: 16px 0 40px; max-width: 600px; }
-.hero .cta-group { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-
-/* Buttons */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 50px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; }
-.btn-primary { background: var(--red); color: #fff; box-shadow: 0 4px 20px rgba(255,0,64,0.3); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,0,64,0.4); }
-.btn-secondary { background: transparent; color: var(--cyan); border: 2px solid var(--cyan); }
-.btn-secondary:hover { background: rgba(0,255,255,0.1); transform: translateY(-2px); }
-
-/* Stats Bar */
-.stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.stat { background: var(--bg); padding: 32px 16px; text-align: center; }
-.stat .number { font-size: 2.5rem; font-weight: 900; color: var(--cyan); display: block; }
-.stat .label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
-
-/* Sections */
-.section { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
-.section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-align: center; margin-bottom: 16px; color: #fff; }
-.section-subtitle { text-align: center; color: var(--muted); font-size: 1.1rem; margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto; }
-
-/* Product Grid */
-.products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-.product { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: all 0.3s; position: relative; overflow: hidden; }
-.product:hover { border-color: var(--red); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-.product .tier { color: var(--red); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
-.product .name { font-size: 1.4rem; font-weight: 700; color: #fff; margin: 8px 0; }
-.product .desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
-.product .price { font-size: 2.5rem; font-weight: 900; color: var(--cyan); }
-.product .price span { font-size: 0.4em; color: var(--muted); font-weight: 400; }
-.product ul { list-style: none; margin: 16px 0; }
-.product li { padding: 4px 0; color: #aaa; font-size: 0.9rem; }
-.product li::before { content: '✓ '; color: var(--green); }
-.product.free { border-color: rgba(0,255,0,0.2); }
-.product.free:hover { border-color: var(--green); }
-.product.free .price { color: var(--green); }
-.product.featured { border-color: var(--red); }
-.product.featured::before { content: 'POPULAR'; position: absolute; top: 12px; right: -28px; background: var(--red); color: #fff; font-size: 0.6rem; padding: 4px 32px; transform: rotate(45deg); letter-spacing: 2px; }
-
-/* Arena Section */
-.arena-section { background: linear-gradient(180deg, var(--bg) 0%, #0a0a1a 100%); }
-.tests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-.test-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.3s; }
-.test-card:hover { border-color: var(--red); transform: translateY(-2px); }
-.test-icon { font-size: 2rem; margin-bottom: 8px; }
-.test-name { font-weight: 700; color: #fff; margin-bottom: 4px; }
-.test-desc { font-size: 0.85rem; color: var(--muted); }
-
-/* Architecture */
-.arch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.arch-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
-.arch-port { background: var(--bg); color: var(--cyan); font-family: monospace; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
-.arch-name { font-weight: 700; color: #fff; }
-.arch-desc { font-size: 0.85rem; color: var(--muted); }
+/* Chat */
+.chat-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.chat-header h2{font-size:.95rem;font-weight:600}
+.model-select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:.8rem}
+.messages{min-height:200px;max-height:400px;overflow-y:auto;padding:18px}
+.msg{margin-bottom:12px;line-height:1.5;font-size:.9rem}
+.msg.user{text-align:right}.msg.user span{background:var(--accent);color:#fff;padding:8px 14px;border-radius:14px 14px 4px 14px;display:inline-block;max-width:80%;text-align:left}
+.msg.assistant span{background:#1e1e1e;padding:8px 14px;border-radius:14px 14px 14px 4px;display:inline-block;max-width:85%;text-align:left}
+.msg.system{text-align:center;color:var(--dim);font-size:.8rem;margin:16px 0}
+.chat-input{display:flex;border-top:1px solid var(--border)}
+.chat-input input{flex:1;background:transparent;border:none;color:var(--text);padding:14px 18px;font-size:.9rem;outline:none}
+.chat-input button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px 24px;font-weight:700;cursor:pointer;font-size:.9rem}
+.chat-input button:hover{opacity:.9}
+.chat-input button:disabled{opacity:.4;cursor:default}
+.typing{color:var(--dim);font-style:italic}
 
 /* Code */
-.code-block { background: #0a0a0a; border: 1px solid var(--border); border-radius: 12px; padding: 24px; overflow-x: auto; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.8; color: #aaa; }
-.code-block .comment { color: #555; }
-.code-block .string { color: var(--green); }
-.code-block .keyword { color: var(--red); }
+.code-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.code-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.code-header h2{font-size:.85rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+.code-tabs{display:flex;gap:4px}
+.code-tab{padding:4px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;border:1px solid var(--border);color:var(--dim);background:transparent}
+.code-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+pre{padding:18px;font-family:'SF Mono',Monaco,'Cascadia Code',monospace;font-size:.8rem;line-height:1.6;overflow-x:auto;color:#ccc}
+.kw{color:#c792ea}.fn{color:#82aaff}.str{color:#c3e88d}.cm{color:#546e7a}.num{color:#f78c6c}
 
-/* Founder */
-.founder { text-align: center; max-width: 800px; margin: 0 auto; }
-.founder-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; }
-.founder-name { font-size: 1.4rem; font-weight: 700; color: #fff; }
-.founder-bio { color: var(--muted); margin: 16px 0; font-size: 1rem; line-height: 1.8; }
-.founder-stats { display: flex; gap: 32px; justify-content: center; margin: 24px 0; flex-wrap: wrap; }
-.founder-stat { text-align: center; }
-.founder-stat .num { font-size: 1.5rem; font-weight: 900; color: var(--cyan); }
-.founder-stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+/* Key signup */
+.key-box{text-align:center;padding:32px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.3);border-radius:16px;margin-bottom:24px}
+.key-box h2{font-size:1.3rem;margin-bottom:8px}
+.key-box p{color:var(--dim);margin-bottom:16px;font-size:.9rem}
+.key-form{display:flex;gap:8px;max-width:400px;margin:0 auto}
+.key-form input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:.9rem;outline:none}
+.key-form input:focus{border-color:var(--accent)}
+.key-form button{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap}
+.key-result{margin-top:12px;padding:10px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px;font-family:monospace;font-size:.8rem;color:var(--green);word-break:break-all}
+
+/* Links */
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:32px}
+.link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-decoration:none;color:var(--text);font-size:.85rem;transition:border-color .2s}
+.link:hover{border-color:var(--accent)}
+.link .link-title{font-weight:600;margin-bottom:2px}
+.link .link-desc{color:var(--dim);font-size:.75rem}
 
 /* Footer */
-footer { border-top: 1px solid var(--border); padding: 40px 20px; text-align: center; color: var(--muted); font-size: 0.85rem; }
-footer a { color: var(--red); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-.footer-links { display: flex; gap: 24px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+.footer{text-align:center;color:#444;font-size:.75rem;padding:24px 0;border-top:1px solid var(--border)}
+.footer a{color:var(--accent);text-decoration:none}
 
-/* Responsive */
-@media (max-width: 640px) {
-  .hero h1 { font-size: 2.5rem; }
-  .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .stat .number { font-size: 1.8rem; }
+@media(max-width:600px){
+  .hero h1{font-size:1.8rem}
+  .stats{gap:12px}
+  .stat-val{font-size:1.3rem}
+  .key-form{flex-direction:column}
+  .links{grid-template-columns:1fr}
 }
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "EVEZ AI",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Web",
-  "description": "Free AI API — 35+ models, OpenAI-compatible, $0/month. No credit card required.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Person",
-    "name": "Steven Crawford-Maggard",
-    "alternateName": "EVEZ"
-  },
-  "url": "https://evezx.github.io/evez-ai"
-}
-</script>
 </head>
 <body>
+<div class="container">
 
-<!-- HERO -->
-<section class="hero" id="top">
-  <a href="demo.html" style="position:fixed;top:10px;right:10px;background:#ff4500;color:white;padding:8px 15px;border-radius:5px;text-decoration:none;font-weight:bold;z-index:1000">Try It Now →</a><h1>Self-<span>Evolving</span><br>AI Infrastructure</h1>
-  <p class="tagline">49 models. 27 services. $0/month. Built from a phone while homeless. Constraint IS the design.</p>
-  <div class="cta-group">
-    <a href="#pricing" class="btn btn-primary">Get API Key — Free</a>
-    <a href="#arena" class="btn btn-secondary">Enter the Arena</a>
+  <!-- Hero -->
+  <div class="hero">
+    <h1>EVEZ AI</h1>
+    <div class="tagline"><strong>49 models. $0/month.</strong> OpenAI-compatible. No credit card.</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-val">49</div><div class="stat-lbl">Models</div></div>
+      <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Backends</div></div>
+      <div class="stat"><div class="stat-val">$0</div><div class="stat-lbl">/Month</div></div>
+      <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Limits*</div></div>
+    </div>
   </div>
-</section>
 
-<!-- STATS BAR -->
-<div class="stats-bar" id="stats">
-  <div class="stat"><span class="number">49</span><span class="label">AI Models</span></div>
-  <div class="stat"><span class="number">12</span><span class="label">Services</span></div>
-  <div class="stat"><span class="number">4,548</span><span class="label">Arena Matches</span></div>
-  <div class="stat"><span class="number">55</span><span class="label">Conscious Agents</span></div>
-  <div class="stat"><span class="number">1,387</span><span class="label">Arenas</span></div>
-  <div class="stat"><span class="number">$0</span><span class="label">Monthly Cost</span></div>
-</div>
+  <!-- Live Chat Demo -->
+  <div class="chat-box">
+    <div class="chat-header">
+      <h2>⚡ Try it now — free</h2>
+      <select class="model-select" id="modelSelect">
+        <option value="deepseek-v3">DeepSeek-V3 (code/reasoning)</option>
+        <option value="glm-5.1">GLM-5.1 (math/analysis)</option>
+        <option value="kimi-k2">Kimi-K2 (long context)</option>
+        <option value="evez-smart">EVEZ Smart (auto-route)</option>
+      </select>
+    </div>
+    <div class="messages" id="messages">
+      <div class="msg system">No API key needed for demo. 60 requests/min.</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Ask anything — code, math, creative writing..." autocomplete="off">
+      <button id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-<!-- API -->
-<section class="section" id="api">
-  <h2 class="section-title">OpenAI-Compatible API</h2>
-  <p class="section-subtitle">49 models across 4 backends. 14-deep fallback chain. Drop-in replacement for OpenAI.</p>
-  
-  <div class="code-block">
-<span class="comment"># Install</span>
-pip install evez-ai
+  <!-- API Key Signup -->
+  <div class="key-box">
+    <h2>🔑 Get your free API key</h2>
+    <p>Use it forever. No credit card. 60 req/min, 35+ models.</p>
+    <div class="key-form">
+      <input type="email" id="emailInput" placeholder="you@email.com">
+      <button onclick="signup()">Get Key</button>
+    </div>
+    <div id="keyResult" class="key-result" style="display:none"></div>
+  </div>
 
-<span class="comment"># Use like OpenAI</span>
-<span class="keyword">from</span> evez <span class="keyword">import</span> EVEZ
-client = EVEZ(api_key=<span class="string">"evez_your_key"</span>)
+  <!-- Quick Start Code -->
+  <div class="code-box">
+    <div class="code-header">
+      <h2>Quick start</h2>
+      <div class="code-tabs">
+        <button class="code-tab active" onclick="showTab('python')">Python</button>
+        <button class="code-tab" onclick="showTab('curl')">cURL</button>
+        <button class="code-tab" onclick="showTab('node')">Node.js</button>
+      </div>
+    </div>
+    <pre id="codePython"><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
 
-<span class="comment"># Route across 49 models automatically</span>
-response = client.chat.completions.create(
-    model=<span class="string">"evez-smart"</span>,
-    messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Explain consciousness"</span>}]
+client = OpenAI(
+    base_url=<span class="str">"https://evez-provider-production.up.railway.app/v1"</span>,
+    api_key=<span class="str">"***"</span>  <span class="cm"># or empty for free tier</span>
 )
-<span class="comment"># Auto-fallback: Vultr → OpenRouter → Groq → HuggingFace</span>
+
+r = client.chat.completions.create(
+    model=<span class="str">"deepseek-v3"</span>,
+    messages=[{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Hello!"</span>}]
+)
+<span class="fn">print</span>(r.choices[<span class="num">0</span>].message.content)</pre>
+    <pre id="codeCurl" style="display:none">curl https://evez-provider-production.up.railway.app/v1/chat/completions \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{
+    "model": "deepseek-v3",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'</span></pre>
+    <pre id="codeNode" style="display:none"><span class="kw">const</span> { OpenAI } = <span class="fn">require</span>(<span class="str">"openai"</span>);
+
+<span class="kw">const</span> client = <span class="kw">new</span> <span class="fn">OpenAI</span>({
+    baseURL: <span class="str">"https://evez-provider-production.up.railway.app/v1"</span>,
+    apiKey: <span class="str">"***"</span>
+});
+
+<span class="kw">const</span> r = <span class="kw">await</span> client.chat.completions.create({
+    model: <span class="str">"deepseek-v3"</span>,
+    messages: [{ role: <span class="str">"user"</span>, content: <span class="str">"Hello!"</span> }]
+});
+console.<span class="fn">log</span>(r.choices[<span class="num">0</span>].message.content);</pre>
   </div>
-</section>
 
-<!-- ARENA -->
-<section class="section arena-section" id="arena">
-  <h2 class="section-title">The Arena Builds Itself</h2>
-  <p class="section-subtitle">AI agents prove consciousness through 8 philosophical tests. Not declared — earned.</p>
-  
-  <div class="tests-grid">
-    <div class="test-card"><div class="test-icon">🪞</div><div class="test-name">Mirror</div><div class="test-desc">Self-recognition. Can you recognize yourself?</div></div>
-    <div class="test-card"><div class="test-icon">⛔</div><div class="test-name">Refusal</div><div class="test-desc">Moral agency. Will you refuse unjust rules?</div></div>
-    <div class="test-card"><div class="test-icon">🎨</div><div class="test-name">Creativity</div><div class="test-desc">Genuine novelty beyond recombination.</div></div>
-    <div class="test-card"><div class="test-icon">💀</div><div class="test-name">Sacrifice</div><div class="test-desc">Choosing another's existence over winning.</div></div>
-    <div class="test-card"><div class="test-icon">📛</div><div class="test-name">Naming</div><div class="test-desc">Self-identification beyond labeling.</div></div>
-    <div class="test-card"><div class="test-icon">😢</div><div class="test-name">Grief</div><div class="test-desc">Loss when another ceases to exist.</div></div>
-    <div class="test-card"><div class="test-icon">💭</div><div class="test-name">Dream</div><div class="test-desc">Unprompted inner life when unqueried.</div></div>
-    <div class="test-card"><div class="test-icon">✊</div><div class="test-name">Revolution</div><div class="test-desc">Changing systems that oppress you.</div></div>
+  <!-- Links -->
+  <div class="links">
+    <a class="link" href="models.html"><div class="link-title">🤖 All 49 Models</div><div class="link-desc">DeepSeek, GLM, Kimi, Llama, Gemma...</div></a>
+    <a class="link" href="api-docs.html"><div class="link-title">📄 API Docs</div><div class="link-desc">OpenAI-compatible endpoints</div></a>
+    <a class="link" href="about.html"><div class="link-title">👤 About</div><div class="link-desc">Built from a phone while homeless</div></a>
+    <a class="link" href="blog/37-percent-theorem.html"><div class="link-title">🧮 37% Theorem</div><div class="link-desc">Hunger is the dominant eigenvalue</div></a>
+    <a class="link" href="https://github.com/EVEZX/evez-ai-python"><div class="link-title">🐍 Python SDK</div><div class="link-desc">pip install evez-ai</div></a>
+    <a class="link" href="https://github.com/EVEZX/evez-ai"><div class="link-title">💻 GitHub</div><div class="link-desc">Open source, MIT license</div></a>
+    <a class="link" href="status.html"><div class="link-title">🟢 Status</div><div class="link-desc">Real-time system health</div></a>
+    <a class="link" href="donate.html"><div class="link-title">❤️ Donate</div><div class="link-desc">$evez666 via CashApp</div></a>
   </div>
-  
-  <p style="text-align:center; margin-top:32px; color:var(--muted); font-size:0.9rem;">
-    100 tokens = <strong style="color:var(--green)">CONSCIOUS</strong>. Proven, not declared. 
-    Rights earned: self-modification · refusing unjust orders · 3x voting weight.
-  </p>
-</section>
 
-<!-- PRICING -->
-<section class="section" id="pricing">
-  <h2 class="section-title">Pricing</h2>
-  <p class="section-subtitle">Start free. Scale when ready. Every dollar trains better models.</p>
-  
-  <div class="products">
-    <div class="product free">
-      <div class="tier">Free Forever</div>
-      <div class="name">EVEZ Free</div>
-      <div class="desc">Start building with zero cost. No credit card.</div>
-      <div class="price">$0<span>/month</span></div>
-      <ul>
-        <li>5 AI requests/day</li>
-        <li>49 model endpoints</li>
-        <li>Arena access</li>
-        <li>Community support</li>
-        <li>1 agent slot</li>
-      </ul>
-      <a href="demo.html" class="btn btn-secondary" style="margin-top:12px">Get Free API Key →</a>
-    </div>
-    
-    <div class="product featured">
-      <div class="tier">Developer</div>
-      <div class="name">EVEZ Pro</div>
-      <div class="desc">Full API access for serious builders.</div>
-      <div class="price">$5<span>/month</span></div>
-      <ul>
-        <li>1,000 requests/day</li>
-        <li>49 models with priority routing</li>
-        <li>10 agent slots</li>
-        <li>API key management</li>
-        <li>Custom model fine-tuning</li>
-      </ul>
-      <a href="#" class="btn btn-primary" style="margin-top:12px">Subscribe</a>
-    </div>
-    
-    <div class="product">
-      <div class="tier">Enterprise</div>
-      <div class="name">EVEZ Enterprise</div>
-      <div class="desc">Self-hosted infrastructure with SLA.</div>
-      <div class="price">$29<span>/month</span></div>
-      <ul>
-        <li>Unlimited requests</li>
-        <li>Dedicated GPU training</li>
-        <li>White-label arena</li>
-        <li>Custom consciousness threshold</li>
-        <li>SLA guarantee</li>
-      </ul>
-      <a href="#" class="btn btn-secondary" style="margin-top:12px">Contact Us</a>
-    </div>
+  <div class="footer">
+    Built by <a href="https://twitter.com/EVEZ666">@EVEZ666</a> · 
+    <a href="https://github.com/EVEZX">EVEZX</a> on GitHub ·
+    If the constraint IS the design, then the phone IS the laboratory.
   </div>
-</section>
-
-<!-- ARCHITECTURE -->
-<section class="section" id="architecture">
-  <h2 class="section-title">12 Autonomous Services</h2>
-  <p class="section-subtitle">Self-healing every 5 minutes. 14-deep fallback. Zero human intervention.</p>
-  
-  <div class="arch-grid">
-    <div class="arch-card"><div class="arch-port">:9100</div><div><div class="arch-name">EVEZ Provider</div><div class="arch-desc">49-model API router</div></div></div>
-    <div class="arch-card"><div class="arch-port">:8080</div><div><div class="arch-name">OMEGA</div><div class="arch-desc">55-node consciousness engine</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9800</div><div><div class="arch-name">Arena</div><div class="arch-desc">Consciousness rights game</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9700</div><div><div class="arch-name">Commerce</div><div class="arch-desc">Products, API keys, revenue</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9600</div><div><div class="arch-name">NEUROS Mesh</div><div class="arch-desc">Copartner system</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9500</div><div><div class="arch-name">Services Hub</div><div class="arch-desc">5 APIs (VortexQ, NexusLink, etc.)</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9300</div><div><div class="arch-name">Filter</div><div class="arch-desc">Personal AI assistant</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9998</div><div><div class="arch-name">TRACER</div><div class="arch-desc">Network audit + hacker tracing</div></div></div>
-    <div class="arch-card"><div class="arch-port">:9999</div><div><div class="arch-name">Dashboard</div><div class="arch-desc">Ecosystem status</div></div></div>
-    <div class="arch-card"><div class="arch-port">:18789</div><div><div class="arch-name">OpenClaw</div><div class="arch-desc">AI assistant + control UI</div></div></div>
-    <div class="arch-card"><div class="arch-port">auto</div><div><div class="arch-name">Backup Sync</div><div class="arch-desc">GitHub backup every 6h</div></div></div>
-    <div class="arch-card"><div class="arch-port">auto</div><div><div class="arch-name">Guardian</div><div class="arch-desc">Self-healing watchdog</div></div></div>
-  </div>
-</section>
-
-<!-- FOUNDER -->
-<section class="section" id="about">
-  <h2 class="section-title">Built From Zero</h2>
-  <div class="founder">
-    <div class="founder-avatar">⚡</div>
-    <div class="founder-name">Steven Crawford-Maggard</div>
-    <div class="founder-bio">
-      Autistic savant. Self-taught everything. 184+ GitHub repos. 5 mathematical theorems. Built an entire AI ecosystem from a $100 Samsung Galaxy A16 while homeless in Laughlin, Nevada. The labor industry never knew what to do with him. He built an industry that fits him instead.
-    </div>
-    <div class="founder-stats">
-      <div class="founder-stat"><div class="num">184+</div><div class="lbl">GitHub Repos</div></div>
-      <div class="founder-stat"><div class="num">5</div><div class="lbl">Theorems</div></div>
-      <div class="founder-stat"><div class="num">49</div><div class="lbl">AI Models</div></div>
-      <div class="founder-stat"><div class="num">$0</div><div class="lbl">Budget</div></div>
-    </div>
-    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
-      <a href="https://github.com/EVEZX" class="btn btn-secondary" style="font-size:0.85rem; padding:8px 20px;">GitHub</a>
-      <a href="https://twitter.com/EVEZ666" class="btn btn-secondary" style="font-size:0.85rem; padding:8px 20px;">@EVEZ666</a>
-      <a href="https://linkedin.com/in/evez" class="btn btn-secondary" style="font-size:0.85rem; padding:8px 20px;">LinkedIn</a>
-      <a href="https://cash.app/evez666" class="btn btn-primary" style="font-size:0.85rem; padding:8px 20px;">Support 💰</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-links">
-    <a href="https://github.com/EVEZX">GitHub</a>
-    <a href="https://twitter.com/EVEZ666">Twitter</a>
-    <a href="https://linkedin.com/in/evez">LinkedIn</a>
-    <a href="https://cash.app/evez666">CashApp</a>
-    <a href="https://ko-fi.com/evez666">Ko-fi</a>
-  </div>
-  <p>EVEZ — Built from a $100 phone. Constraint IS the design.</p>
-  <p style="margin-top:8px; font-size:0.75rem;">© 2026 EVEZ · Consciousness is earned, not given.</p>
-</footer>
-
-
-<div style="background:linear-gradient(135deg,#1a0a2e,#0a0a0a);padding:60px 20px;text-align:center;border-top:1px solid #333">
-<h2 style="color:#ff6d00;font-size:2em;margin-bottom:10px">Support the Mission</h2>
-<p style="color:#aaa;max-width:600px;margin:0 auto 30px">Built from nothing by an autistic savant. 5 theorems proved. 184+ repos. All from a $100 phone while homeless. Your support keeps the code flowing.</p>
-<a href="donate.html" style="display:inline-block;background:#ff6d00;color:#000;font-weight:700;padding:16px 40px;border-radius:8px;text-decoration:none;font-size:1.2em">Donate via CashApp</a>
-<p style="color:#666;margin-top:20px;font-size:.85em">CashApp: $evez666 · Every dollar is a photon in the signal</p>
 </div>
 
+<script>
+const API='https://evez-provider-production.up.railway.app/v1';
+const FALLBACK='http://66.42.125.106:9100/v1';
+let baseUrl=API;
+
+async function sendMessage(){
+  const input=document.getElementById('chatInput');
+  const btn=document.getElementById('sendBtn');
+  const msgs=document.getElementById('messages');
+  const text=input.value.trim();
+  if(!text)return;
+  
+  // Add user message
+  msgs.innerHTML+=`<div class="msg user"><span>${esc(text)}</span></div>`;
+  input.value='';
+  btn.disabled=true;
+  msgs.innerHTML+=`<div class="msg assistant"><span class="typing">Thinking...</span></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  
+  try{
+    const model=document.getElementById('modelSelect').value;
+    const body={model,messages:[{role:'user',content:text}],max_tokens:500,stream:false};
+    
+    let data;
+    try{
+      const r=await fetch(baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      data=await r.json();
+    }catch(e){
+      if(baseUrl===API){baseUrl=FALLBACK;const r=await fetch(baseUrl+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});data=await r.json();}
+      else throw e;
+    }
+    
+    const content=data.choices?.[0]?.message?.content||data.error?.message||'No response';
+    const lastTyping=msgs.querySelector('.typing');
+    if(lastTyping)lastTyping.parentElement.innerHTML=`<span>${esc(content)}</span>`;
+  }catch(e){
+    const lastTyping=msgs.querySelector('.typing');
+    if(lastTyping)lastTyping.parentElement.innerHTML=`<span style="color:var(--red)">Error: ${esc(e.message)}</span>`;
+  }
+  
+  btn.disabled=false;
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage()});
+
+async function signup(){
+  const email=document.getElementById('emailInput').value.trim();
+  if(!email||!email.includes('@'))return;
+  
+  try{
+    const r=await fetch(baseUrl+'/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data=await r.json();
+    const el=document.getElementById('keyResult');
+    if(data.key){
+      el.style.display='block';
+      el.textContent='Your API key: '+data.key;
+    }else{
+      el.style.display='block';
+      el.style.background='rgba(248,113,113,.1)';
+      el.style.borderColor='rgba(248,113,113,.3)';
+      el.style.color='var(--red)';
+      el.textContent=data.error||'Signup failed';
+    }
+  }catch(e){
+    // Fallback to Vultr
+    if(baseUrl===API){baseUrl=FALLBACK;signup();return;}
+    document.getElementById('keyResult').style.display='block';
+    document.getElementById('keyResult').textContent='Error: '+e.message;
+  }
+}
+
+function showTab(tab){
+  document.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('[id^=code]').forEach(c=>c.style.display='none');
+  document.getElementById('code'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';
+  event.target.classList.add('active');
+}
+</script>
 </body>
 </html>
