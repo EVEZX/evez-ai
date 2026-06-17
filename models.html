@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ AI — 35+ Free AI Models</title>
+<meta name="description" content="35+ free AI models including GLM-5.1, DeepSeek-V3, Kimi-K2, Llama-3.3-70B. All $0/month via OpenAI-compatible API.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0a0a;color:#e5e5e5;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:2rem;margin-bottom:8px}
+.subtitle{color:#888;margin-bottom:32px}
+.models{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.model{background:#161616;border:1px solid #222;border-radius:12px;padding:16px;transition:border-color .2s}
+.model:hover{border-color:#6366f1}
+.model-name{font-weight:700;font-size:1.05rem;color:#fff}
+.model-backend{font-size:0.75rem;color:#6366f1;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}
+.model-desc{font-size:0.85rem;color:#888;margin-top:8px;line-height:1.4}
+.model-tag{display:inline-block;background:#1a1a2e;color:#a5b4fc;font-size:0.7rem;padding:2px 8px;border-radius:4px;margin-top:8px}
+.cta{text-align:center;margin-top:32px;padding:24px;background:#161616;border:1px solid #222;border-radius:12px}
+.cta a{display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;padding:12px 32px;border-radius:8px;font-weight:700;font-size:1.1rem}
+.cta a:hover{opacity:.9}
+nav{margin-bottom:24px;font-size:0.85rem}
+nav a{color:#6366f1;margin-right:16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="/">← Home</a>
+    <a href="demo.html">Demo</a>
+    <a href="api-docs.html">API Docs</a>
+    <a href="status.html">Status</a>
+  </nav>
+  <h1>35+ Free AI Models</h1>
+  <p class="subtitle">All $0/month. OpenAI-compatible API. No credit card.</p>
+
+  <div class="models" id="modelGrid">
+    <div class="model"><div class="model-name">🤖 EVEZ Smart</div><div class="model-backend">auto-routed</div><div class="model-desc">Automatically picks the best model for your prompt. Code goes to DeepSeek, math to GLM, creative to Kimi.</div><div class="model-tag">recommended</div></div>
+    <div class="model"><div class="model-name">💻 EVEZ Code</div><div class="model-backend">auto-routed</div><div class="model-desc">Optimized for code generation, debugging, and technical writing.</div><div class="model-tag">coding</div></div>
+    <div class="model"><div class="model-name">⚡ EVEZ Fast</div><div class="model-backend">auto-routed</div><div class="model-desc">Fastest response times. Great for quick questions and simple tasks.</div><div class="model-tag">speed</div></div>
+    <div class="model"><div class="model-name">🧠 GLM-5.1</div><div class="model-backend">vultr inference</div><div class="model-desc">Advanced reasoning model. Excels at math, logic, and complex analysis.</div><div class="model-tag">reasoning</div></div>
+    <div class="model"><div class="model-name">🔬 DeepSeek-V3</div><div class="model-backend">vultr inference</div><div class="model-desc">State-of-the-art code and reasoning model. 685B Mixture-of-Experts.</div><div class="model-tag">code</div></div>
+    <div class="model"><div class="model-name">🌊 Kimi-K2</div><div class="model-backend">vultr inference</div><div class="model-desc">Long context model. Handles 128K+ tokens. Great for document analysis.</div><div class="model-tag">long-context</div></div>
+    <div class="model"><div class="model-name">🦙 Llama-3.3-70B</div><div class="model-backend">groq</div><div class="model-desc">Meta's open-source model at blazing Groq speeds. 70B parameters.</div><div class="model-tag">open-source</div></div>
+    <div class="model"><div class="model-name">💎 MiniMax-M2.5</div><div class="model-backend">vultr inference</div><div class="model-desc">Multimodal model. Handles text and image inputs.</div><div class="model-tag">multimodal</div></div>
+    <div class="model"><div class="model-name">🐍 Qwen3-Coder</div><div class="model-backend">openrouter</div><div class="model-desc">Alibaba's code-focused model. Great for Python, JS, and general programming.</div><div class="model-tag">code</div></div>
+    <div class="model"><div class="model-name">🔮 Nemotron-120B</div><div class="model-backend">openrouter</div><div class="model-desc">NVIDIA's large model. Strong general performance.</div><div class="model-tag">general</div></div>
+    <div class="model"><div class="model-name">📖 Hermes-405B</div><div class="model-backend">openrouter</div><div class="model-desc">Largest free model available. 405B parameters via OpenRouter.</div><div class="model-tag">largest-free</div></div>
+    <div class="model"><div class="model-name">⚡ DeepSeek-R1</div><div class="model-backend">groq</div><div class="model-desc">Reasoning model with chain-of-thought. Solves complex problems step by step.</div><div class="model-tag">reasoning</div></div>
+  </div>
+
+  <div class="cta">
+    <p style="margin-bottom:16px;color:#888">Get your free API key and start using these models now:</p>
+    <a href="demo.html">Get Free API Key →</a>
+  </div>
+</div>
+</body>
+</html>
