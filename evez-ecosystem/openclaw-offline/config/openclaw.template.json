@@ -1,0 +1,476 @@
+{
+  "models": {
+    "providers": {
+      "vultr": {
+        "baseUrl": "https://api.vultrinference.com/v1",
+        "apiKey": "{{VULTR_API_KEY}}",
+        "auth": "token",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "zai-org/GLM-5.1-FP8",
+            "name": "GLM-5.1-FP8",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 202752,
+            "maxTokens": 8192
+          },
+          {
+            "id": "nvidia/DeepSeek-V3.2-NVFP4",
+            "name": "DeepSeek-V3.2-NVFP4",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "MiniMaxAI/MiniMax-M2.5",
+            "name": "MiniMax-M2.5",
+            "api": "openai-completions",
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "moonshotai/Kimi-K2.5",
+            "name": "Kimi-K2.5",
+            "api": "openai-completions",
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "openrouter": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "{{OPENROUTER_API_KEY}}",
+        "models": [
+          {
+            "id": "google/gemma-4-31b-it:free",
+            "name": "Gemma-4-31B-Free",
+            "contextWindow": 262144,
+            "maxTokens": 8192
+          },
+          {
+            "id": "nvidia/nemotron-3-super-120b-a12b:free",
+            "name": "Nemotron-120B-Free",
+            "contextWindow": 1000000,
+            "maxTokens": 4096
+          },
+          {
+            "id": "google/gemma-4-26b-a4b-it:free",
+            "name": "Gemma-4-26B-Free",
+            "contextWindow": 262144,
+            "maxTokens": 8192
+          },
+          {
+            "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "name": "Nemotron-550B-Free",
+            "contextWindow": 1000000,
+            "maxTokens": 4096
+          },
+          {
+            "id": "nex-agi/nex-n2-pro:free",
+            "name": "NEX-N2-Pro-Free",
+            "contextWindow": 262144,
+            "maxTokens": 8192
+          },
+          {
+            "id": "nvidia/nemotron-nano-9b-v2:free",
+            "name": "Nemotron-Nano-9B-Free",
+            "contextWindow": 128000,
+            "maxTokens": 4096
+          },
+          {
+            "id": "nvidia/nemotron-3-nano-30b-a3b:free",
+            "name": "Nemotron-Nano-30B-Free",
+            "contextWindow": 256000,
+            "maxTokens": 4096
+          }
+        ]
+      },
+      "groq": {
+        "baseUrl": "https://api.groq.com/openai/v1",
+        "apiKey": "{{GROQ_API_KEY}}",
+        "models": [
+          {
+            "id": "llama-3.1-8b-instant",
+            "name": "Llama-3.1-8B-Instant",
+            "contextWindow": 131072,
+            "maxTokens": 8192
+          },
+          {
+            "id": "llama-3.3-70b-versatile",
+            "name": "Llama-3.3-70B-Versatile",
+            "contextWindow": 131072,
+            "maxTokens": 8192
+          },
+          {
+            "id": "gemma2-9b-it",
+            "name": "Gemma2-9B-IT",
+            "contextWindow": 8192,
+            "maxTokens": 8192
+          },
+          {
+            "id": "mixtral-8x7b-32768",
+            "name": "Mixtral-8x7B",
+            "contextWindow": 32768,
+            "maxTokens": 32768
+          },
+          {
+            "id": "deepseek-r1-distill-llama-70b",
+            "name": "DeepSeek-R1-70B",
+            "contextWindow": 131072,
+            "maxTokens": 8192,
+            "reasoning": true
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "compaction": {
+        "mode": "default",
+        "identifierPolicy": "strict"
+      },
+      "timeoutSeconds": 86400,
+      "workspace": "/home/openclaw",
+      "contextInjection": "always",
+      "bootstrapMaxChars": 50000,
+      "bootstrapTotalMaxChars": 300000
+    }
+  },
+  "commands": {
+    "native": true,
+    "nativeSkills": true,
+    "restart": true,
+    "ownerDisplay": "raw",
+    "bash": true,
+    "config": true,
+    "mcp": true,
+    "plugins": true,
+    "debug": true,
+    "ownerAllowFrom": [
+      "telegram:7453631330"
+    ]
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "controlUi": {
+      "allowedOrigins": [
+        "http://127.0.0.1:18789",
+        "http://127.0.0.1",
+        "https://e70b1eab-9f4a-41a1-bc0b-b3ed5a200065.vultropenclaw.com"
+      ],
+      "dangerouslyDisableDeviceAuth": true,
+      "enabled": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "{{ENV_AUTH_TOKEN}}",
+      "allowTailscale": true
+    },
+    "trustedProxies": [
+      "127.0.0.1"
+    ]
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.6.8",
+    "lastTouchedAt": "2026-06-17T02:18:05.572Z"
+  },
+  "channels": {
+    "whatsapp": {
+      "chunkMode": "newline",
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "debounceMs": 0,
+      "mediaMaxMb": 50,
+      "enabled": true
+    },
+    "telegram": {
+      "enabled": true,
+      "botToken": "{{ENV_TELEGRAM_BOTTOKEN}}",
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "allowFrom": [
+        7453631330
+      ],
+      "defaultTo": 7453631330,
+      "groupAllowFrom": [
+        "7453631330"
+      ]
+    }
+  },
+  "approvals": {
+    "exec": {
+      "enabled": true
+    },
+    "plugin": {
+      "enabled": true
+    }
+  },
+  "messages": {
+    "tts": {
+      "auto": "always",
+      "provider": "microsoft",
+      "providers": {
+        "microsoft": {
+          "enabled": true,
+          "speakerVoice": "en-US-GuyNeural",
+          "lang": "en-US",
+          "outputFormat": "audio-24khz-48kbitrate-mono-mp3",
+          "rate": "+20%",
+          "pitch": "-4Hz",
+          "volume": "+25%"
+        }
+      }
+    }
+  },
+  "talk": {
+    "consultFastMode": true,
+    "realtime": {
+      "brain": "direct-tools"
+    }
+  },
+  "tools": {
+    "profile": "full",
+    "media": {
+      "audio": {
+        "enabled": true,
+        "models": [
+          {
+            "provider": "openrouter",
+            "model": "openai/whisper-large-v3"
+          }
+        ]
+      }
+    }
+  },
+  "skills": {
+    "entries": {
+      "1password": {
+        "enabled": false
+      },
+      "apple-notes": {
+        "enabled": false
+      },
+      "apple-reminders": {
+        "enabled": false
+      },
+      "bear-notes": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "discord": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": true
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "imsg": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": true
+      },
+      "model-usage": {
+        "enabled": true
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": true
+      },
+      "ordercli": {
+        "enabled": true
+      },
+      "peekaboo": {
+        "enabled": true
+      },
+      "sag": {
+        "enabled": true
+      },
+      "session-logs": {
+        "enabled": true
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "slack": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": true
+      },
+      "things-mac": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "voice-call": {
+        "enabled": false
+      },
+      "wacli": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": true
+      }
+    }
+  },
+  "wizard": {
+    "lastRunAt": "2026-06-16T23:42:13.878Z",
+    "lastRunVersion": "2026.6.8",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "plugins": {
+    "entries": {
+      "active-memory": {
+        "enabled": true
+      },
+      "admin-http-rpc": {
+        "enabled": true
+      },
+      "memory-wiki": {
+        "enabled": true
+      },
+      "duckduckgo": {
+        "enabled": true
+      },
+      "webhooks": {
+        "enabled": true
+      },
+      "workboard": {
+        "enabled": true
+      },
+      "parallel": {
+        "enabled": true
+      },
+      "llm-task": {
+        "enabled": true
+      },
+      "perplexity": {
+        "enabled": true
+      },
+      "signal": {
+        "enabled": true
+      },
+      "sms": {
+        "enabled": true
+      },
+      "firecrawl": {
+        "enabled": true
+      },
+      "tavily": {
+        "enabled": true
+      },
+      "exa": {
+        "enabled": true
+      },
+      "codex-supervisor": {
+        "enabled": true
+      },
+      "open-prose": {
+        "enabled": true
+      },
+      "policy": {
+        "enabled": true
+      },
+      "thread-ownership": {
+        "enabled": true
+      }
+    }
+  },
+  "browser": {
+    "noSandbox": true,
+    "headless": true
+  }
+}
