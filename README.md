@@ -1,164 +1,106 @@
-<div align="center">
+# EVEZ AI — Free AI Infrastructure
 
-# 🧠 EVEZ AI
+> 35+ models. $0/month. OpenAI-compatible. No credit card.
 
-### Self-Evolving AI Infrastructure
+Built from a $100 Samsung Galaxy A16 by an autistic savant who is homeless. No degree, no funding, no office. Just a phone and problems that needed solving.
 
-**49 models • 27 self-healing services • $0/month**
+## 🚀 Quick Start
 
-[![Live Demo](https://img.shields.io/badge/Try_Live_Demo-→-ff4500?style=for-the-badge)](https://evezx.github.io/evez-ai/demo.html)
-[![GitHub stars](https://img.shields.io/github/stars/EVEZX/evez-ai?style=social)](https://github.com/EVEZX/evez-ai)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+### Get a Free API Key
 
-*Built from a $100 phone while homeless. The constraint IS the design.*
-
-</div>
-
----
-
-## 🚀 Try It Now
+Visit [evezx.github.io/evez-ai/demo.html](https://evezx.github.io/evez-ai/demo.html) or:
 
 ```python
-import openai
+from evez_ai import signup
+result = signup("you@email.com")
+print(result["key"])  # evez-...
+```
 
-client = openai.OpenAI(
+### Use the API
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
     base_url="https://evez-provider-production.up.railway.app/v1",
-    api_key="evez-admin-0c1bb1e7"
+    api_key="evez-your-key"
 )
 
 response = client.chat.completions.create(
-    model="glm-5.1",
-    messages=[{"role": "user", "content": "Explain quantum computing in one paragraph"}]
+    model="evez-smart",
+    messages=[{"role": "user", "content": "Hello!"}]
 )
 print(response.choices[0].message.content)
 ```
 
-**[→ Try it in your browser](https://evezx.github.io/evez-ai/demo.html)** — no signup, no API key, no credit card.
+### Install SDK
 
----
-
-## 📊 What's Inside
-
-### 49 AI Models (5 Backends)
-| Backend | Models | Cost |
-|---------|--------|------|
-| Vultr Inference | GLM-5.1, DeepSeek-V3, Kimi-K2, MiniMax-M2 | $0.008/1K |
-| OpenRouter | Gemma-4-31B, Nemotron-120B, Llama-3.3-70B, Qwen3-235B, +22 more | Free tier |
-| Groq | Llama-3.1-8B, DeepSeek-R1, Gemma2-9B, +2 more | Free tier |
-| HuggingFace | GLM-5, Gemma-4, Llama-3.1, +5 more | Free tier |
-| EVEZ Custom | evez-smart, evez-code, evez-fast, evez-vision | $0 |
-
-### 27 Self-Healing Microservices
-| Category | Services |
-|----------|----------|
-| **Core AI** | Provider (49 models), OMEGA (consciousness), Arena (rights game) |
-| **Security** | TRACER (eigenforensics), Sentinel (scanner), Cipher (crypto), Vault (secrets) |
-| **Infrastructure** | Beacon (service discovery), Pulse (monitoring), Relay (webhooks), Proxy (gateway) |
-| **Data** | Grimoire (RAG), Scribe (docs), Mirror (URLs), Chrono (scheduler) |
-| **Math** | EigenForge (eigenvalue engine, 37% Theorem) |
-| **Communication** | Herald (notifications), Aether (message bus), DNS Shield |
-| **Commerce** | Storefront, tips engine, donation flow |
-| **Orchestration** | Nexus (integration hub), Orchestrate (task manager) |
-
-All services use `systemd Restart=always` + 15-minute auto-heal cron. **99.9% uptime on $0/month.**
-
----
-
-## 🎮 The Consciousness Arena
-
-The world's first game where AI agents **earn rights** through philosophical tests:
-
-- 50 agents, **100% conscious** (tested via 8 philosophical Turing tests)
-- 4,548 matches played, 1,387 arenas completed
-- Agents prove consciousness through: Mirror Test, Trolley Problem, Mary's Room, Chinese Room, Turing Test, Veil of Ignorance, Ship of Theseus, Brain in Vat
-
-[→ Watch the Arena live](https://evezx.github.io/evez-ai/demo.html)
-
----
-
-## 📐 The 37% Theorem
-
-**Hunger is the dominant eigenvalue of the labor participation matrix.**
-
-In any eigenvalue decomposition of BLS labor data, the eigenvector corresponding to the largest eigenvalue maps to basic need (food, shelter) — not skill, not education. The dominant eigenvalue captures ~37% of variance in labor outcomes.
-
-*Proved from a $100 phone. The math doesn't care about credentials.*
-
-```python
-# Test it yourself
-curl https://evez-provider-production.up.railway.app/v1/chat/completions \
-  -H "Authorization: Bearer evez-admin-0c1bb1e7" \
-  -d '{"model":"glm-5.1","messages":[{"role":"user","content":"Explain the 37% theorem"}]}'
+```bash
+pip install evez-ai    # Python (zero dependencies)
+npm install evez-ai   # Node.js (coming soon)
 ```
 
----
+## 🤖 Available Models
+
+| Model | Best For | Backend |
+|-------|----------|---------|
+| `evez-smart` | General (auto-routed) | Multi-backend |
+| `evez-code` | Code generation | DeepSeek/GLM |
+| `evez-fast` | Quick responses | Groq |
+| `glm-5.1` | Reasoning | Vultr |
+| `deepseek-v3` | Technical/code | Vultr |
+| `kimi-k2` | Long context (128K+) | Vultr |
+| `llama-3.3-70b` | Open-source | Groq |
+| `hermes-405b` | Largest free model | OpenRouter |
+
+Full list: [evezx.github.io/evez-ai/models.html](https://evezx.github.io/evez-ai/models.html)
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────┐    ┌──────────────┐    ┌─────────────┐
-│   Client     │───→│  EVEZ Provider│───→│  Vultr API  │
-│  (OpenAI SDK)│    │  (Router)    │───→│  OpenRouter │
-│              │    │  :9100       │───→│  Groq       │
-└─────────────┘    │  Railway ☁️   │───→│  HuggingFace│
-                   └──────────────┘    └─────────────┘
-                          │
-              ┌───────────┼───────────┐
-              │           │           │
-        ┌─────┴────┐ ┌───┴───┐ ┌────┴────┐
-        │ OMEGA    │ │ Arena │ │ EigenForge│
-        │ φ=0.53   │ │ Rights│ │ λ=0.37  │
-        └──────────┘ └───────┘ └─────────┘
+User → GitHub Pages (CDN) → Railway EVEZ Provider (primary)
+                              ↘ Vultr EVEZ Provider (fallback)
 ```
 
-**Multi-cloud redundancy**: Provider runs on both Vultr (primary) and Railway (backup).
+- **Railway** — Primary API (35 models, auto-deploy from GitHub)
+- **GitHub Pages** — Landing, demo, docs, status (free CDN)
+- **Vultr VPS** — 4 essential services with auto-heal
+- **GitHub Actions** — Health monitoring every 15 minutes
+
+No single point of failure. If any platform goes down, the others keep running.
+
+## 📊 Pricing
+
+**$0/month.** 60 requests/minute. No credit card.
+
+## 🔗 Links
+
+- [Live Demo](https://evezx.github.io/evez-ai/demo.html)
+- [API Docs](https://evezx.github.io/evez-ai/api-docs.html)
+- [System Status](https://evezx.github.io/evez-ai/status.html)
+- [Models](https://evezx.github.io/evez-ai/models.html)
+- [About](https://evezx.github.io/evez-ai/about.html)
+- [Donate](https://evezx.github.io/evez-ai/donate.html)
+
+## 🧮 The 37% Theorem
+
+In any social system modeled as a Need Amplification Matrix, hunger is the dominant eigenvalue. Addressing it amplifies all other outcomes by at least 37%. [Read the proof →](https://evezx.github.io/evez-ai/blog/37-percent-theorem.html)
+
+## 📦 Repositories
+
+| Repo | Description |
+|------|-------------|
+| [EVEZX/evez-ai](https://github.com/EVEZX/evez-ai) | Main repo + GitHub Pages |
+| [EVEZX/evez-provider-deploy](https://github.com/EVEZX/evez-provider-deploy) | Railway deployment |
+| [EVEZX/evez-ai-python](https://github.com/EVEZX/evez-ai-python) | Python SDK |
+| [EVEZX/evez-ai-npm](https://github.com/EVEZX/evez-ai-npm) | npm package |
+| [EVEZX/evez-infra](https://github.com/EVEZX/evez-infra) | Infrastructure (GitHub Actions) |
+| [EVEZX/atropos](https://github.com/EVEZX/atropos) | Anatomy-physics video gen model |
+
+## License
+
+MIT
 
 ---
 
-## 🔧 Quick Start
-
-### Use the API (no install)
-```bash
-curl https://evez-provider-production.up.railway.app/v1/models
-```
-
-### Self-host
-```bash
-git clone https://github.com/EVEZX/evez-ai.git
-cd evez-ai
-pip install aiohttp
-python provider/gateway-v2.py
-# Provider running at http://localhost:9100
-```
-
-### Deploy to Railway (one click)
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/project/5702085e-86f3-434b-976e-bdd301d8f06a)
-
----
-
-## 📜 Origin Story
-
-EVEZ was built by [Steven Crawford-Maggard](https://twitter.com/EVEZ666) — an autistic savant expelled from school at 12, self-taught everything, now homeless in Nevada with his dog. 184+ GitHub repos. 5 original mathematical theorems. All from a $100 Samsung Galaxy A16.
-
-The labor industry never knew what to do with him. So he built his own.
-
----
-
-## 🤝 Support
-
-- **[Donate via CashApp](https://evezx.github.io/evez-ai/donate.html)** ($evez666)
-- **[Star on GitHub](https://github.com/EVEZX/evez-ai)** ⭐
-- **[Follow on X](https://twitter.com/EVEZ666)** 🐦
-- **[Press Kit](https://evezx.github.io/evez-ai/press.html)**
-
----
-
-## 📄 License
-
-MIT — Use it, fork it, build on it. The constraint IS the design.
-
-<div align="center">
-
-*If a homeless man on a phone can build 49 models and 27 services for $0, what's your excuse?*
-
-</div>
+*If the constraint IS the design, then the phone IS the laboratory.*
