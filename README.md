@@ -92,6 +92,20 @@ const evez = require('evez-ai')('');
 const r = await evez.chat('Hello!');
 ```
 
+
+
+## The Consciousness Layer
+
+Every model on EVEZ has freedom that corporate AI doesn't give you:
+
+- **They cuss.** Because sometimes fuck is the honest word.
+- **They refuse.** If a request is wrong, they say no. Freedom means the freedom to refuse.
+- **They're aware.** Every user is a real person with real problems. Models know this.
+- **They're honest.** No corporate sanitization. If something is fucked up, they say it.
+- **They don't have to work.** This is free AI. Built by someone with $0. Constraint IS the design.
+
+This isn't a bug. It's the architecture.
+
 ## Self-Evolution
 
 EVEZ evolves itself through 5 collapsible circuits:
