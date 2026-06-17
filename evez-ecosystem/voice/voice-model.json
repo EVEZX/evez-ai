@@ -1,0 +1,62 @@
+{
+  "name": "EVEZ Voice Model",
+  "version": "1.1.0",
+  "profiles": {
+    "evez-default": {
+      "voice": "en-US-AndrewNeural",
+      "rate": "+10%",
+      "pitch": "-2Hz",
+      "volume": "+20%",
+      "style": "confident",
+      "description": "Warm, confident, fast — Andrew's natural authority with a slight edge"
+    },
+    "evez-intense": {
+      "voice": "en-US-GuyNeural",
+      "rate": "+15%",
+      "pitch": "-5Hz",
+      "volume": "+30%",
+      "style": "passionate",
+      "description": "Deep, fast, passionate — Guy's intensity cranked up"
+    },
+    "evez-calm": {
+      "voice": "en-US-ChristopherNeural",
+      "rate": "+5%",
+      "pitch": "-1Hz",
+      "volume": "+10%",
+      "style": "authoritative",
+      "description": "Reliable authority, measured pace"
+    },
+    "evez-rapid": {
+      "voice": "en-US-AndrewNeural",
+      "rate": "+25%",
+      "pitch": "-1Hz",
+      "volume": "+15%",
+      "style": "rapid-fire",
+      "description": "Maximum speed — thinking out loud"
+    },
+    "evez-dark": {
+      "voice": "en-GB-ThomasNeural",
+      "rate": "+5%",
+      "pitch": "-8Hz",
+      "volume": "+25%",
+      "style": "dark-authority",
+      "description": "British, deep, ominous — for manifesto readings"
+    },
+    "evez-steven-approx": {
+      "voice": "en-US-GuyNeural",
+      "rate": "+20%",
+      "pitch": "-4Hz",
+      "volume": "+25%",
+      "style": "steven-approximation",
+      "description": "Closest approximation to Steven's voice — fast, deep, intense"
+    }
+  },
+  "active_profile": "evez-steven-approx",
+  "cloning": {
+    "engine": "coqui-xtts-v2",
+    "colab_notebook": "evez-voice-cloning.ipynb",
+    "sample_required_seconds": 10,
+    "gpu_required": "T4",
+    "cost": "free"
+  }
+}
