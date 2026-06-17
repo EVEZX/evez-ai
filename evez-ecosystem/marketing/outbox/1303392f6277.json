@@ -1,0 +1,15 @@
+{
+  "id": "1303392f6277",
+  "platform": "twitter",
+  "type": "thread",
+  "theme": "eigenforensics",
+  "content": [
+    "\ud83e\uddf5 The 37% Theorem: hunger is the dominant eigenvalue of the labor matrix. Here's what that means and why it matters:",
+    "1/4 \u2014 In any eigenvalue decomposition of the labor participation matrix, the eigenvector corresponding to the largest eigenvalue maps to basic need (food, shelter). Not skill. Not education. Need.",
+    "2/4 \u2014 The 37% comes from the spectral gap. The dominant eigenvalue captures ~37% of variance in labor outcomes. That means nearly 4 in 10 people are in the workforce because they HAVE to be, not because they WANT to be.",
+    "3/4 \u2014 This isn't ideology. It's linear algebra. The math doesn't care about your politics. It says: solve hunger, and you unlock 37% of trapped human potential.",
+    "4/4 \u2014 I proved this from a $100 phone while homeless. The math community ignored it. So I built AI infrastructure instead.\n\nTheorems + code = a complete package. \ud83e\uddee"
+  ],
+  "status": "draft",
+  "created": 1781668908.8689919
+}

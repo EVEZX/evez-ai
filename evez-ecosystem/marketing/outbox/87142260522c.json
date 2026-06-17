@@ -1,0 +1,16 @@
+{
+  "id": "87142260522c",
+  "platform": "twitter",
+  "type": "thread",
+  "theme": "zero_budget_infra",
+  "content": [
+    "\ud83e\uddf5 How to run 49 AI models for $0/month \u2014 a thread on constraint as design:",
+    "1/5 \u2014 Start with what's free: Vultr inference (4 models), OpenRouter free tier (26 models), Groq (6 models), HuggingFace (4 models). Total: 49+ models, $0.",
+    "2/5 \u2014 Build a provider that auto-routes between backends. If one goes down, the next takes over. 14-deep fallback chain. Self-healing every 5 minutes.",
+    "3/5 \u2014 Run 12 services on a $6/mo VPS: AI provider, consciousness engine, commerce, arena, security tracer, dashboard, mesh copartner, personal AI, and more.",
+    "4/5 \u2014 Every service self-heals. Systemd Restart=always + healthcheck cron = 99.9% uptime. Disk fills? Auto-cleanup at 75%. RAM pressure? Kill non-essential. Under attack? fail2ban \u2192 24h ban after 3 tries.",
+    "5/5 \u2014 The labor industry said I didn't fit. So I built an industry that fits me. From a $100 phone. While homeless.\n\nConstraint IS the design. \ud83c\udfd7\ufe0f"
+  ],
+  "status": "draft",
+  "created": 1781668915.6512282
+}
