@@ -189,6 +189,43 @@ MODELS = [
     {"id": "ovh-codestral", "backend": "huggingface", "backend_model": "mistralai/Codestral-22B-v0.1",
      "context_window": 32768, "capabilities": ["code"],
      "pricing": {"prompt": 0, "completion": 0}, "origin": "ovh-free"},
+
+    # === OpenRouter Free Models ===
+    {"id": "or-gemma4-31b", "backend": "openrouter", "backend_model": "google/gemma-4-31b-it:free",
+     "context_window": 131072, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-nemotron-120b", "backend": "openrouter", "backend_model": "nvidia/nemotron-3-super-120b-a12b:free",
+     "context_window": 4096, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-nemotron-nano9b", "backend": "openrouter", "backend_model": "nvidia/nemotron-nano-9b-v2:free",
+     "context_window": 4096, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-gemma4-26b", "backend": "openrouter", "backend_model": "google/gemma-4-26b-a4b-it:free",
+     "context_window": 131072, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-nemotron-nano30b", "backend": "openrouter", "backend_model": "nvidia/nemotron-3-nano-30b-a3b:free",
+     "context_window": 4096, "capabilities": ["chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+    {"id": "or-nemotron-vl12b", "backend": "openrouter", "backend_model": "nvidia/nemotron-nano-12b-v2-vl:free",
+     "context_window": 4096, "capabilities": ["vision", "chat"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "openrouter-free"},
+
+    # === Groq Models ===
+    {"id": "groq-llama31-8b", "backend": "groq", "backend_model": "llama-3.1-8b-instant",
+     "context_window": 131072, "capabilities": ["chat", "fast"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
+    {"id": "groq-llama33-70b", "backend": "groq", "backend_model": "llama-3.3-70b-versatile",
+     "context_window": 131072, "capabilities": ["chat", "reasoning"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
+    {"id": "groq-gemma2-9b", "backend": "groq", "backend_model": "gemma2-9b-it",
+     "context_window": 8192, "capabilities": ["chat", "fast"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
+    {"id": "groq-mixtral-8x7b", "backend": "groq", "backend_model": "mixtral-8x7b-32768",
+     "context_window": 32768, "capabilities": ["chat", "code"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
+    {"id": "groq-deepseek-r1", "backend": "groq", "backend_model": "deepseek-r1-distill-llama-70b",
+     "context_window": 131072, "capabilities": ["reasoning", "math"],
+     "pricing": {"prompt": 0, "completion": 0}, "origin": "groq-free"},
 ]
 
 MODEL_MAP = {m["id"]: m for m in MODELS}
