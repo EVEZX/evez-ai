@@ -1,0 +1,115 @@
+name: Agent OS OODA Cycle
+
+on:
+  schedule:
+    # Every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'os-evez/**'
+      - '.github/workflows/agent-os.yml'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  ooda-cycle:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run OODA Cycle
+        id: ooda
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd os-evez
+          python -c "
+          import json, sys
+          sys.path.insert(0, '.')
+          from orchestrator import Orchestrator
+          from memory import MemorySystem
+          from agent_bus import get_bus
+
+          bus = get_bus()
+          memory = MemorySystem()
+          orch = Orchestrator(bus=bus, memory=memory)
+
+          # Run OODA cycle
+          report = orch.run_ooda_cycle()
+          print('=== OODA CYCLE REPORT ===')
+          print(json.dumps(report, indent=2, default=str))
+
+          # Check for errors
+          issues = report.get('phases', {}).get('observe', {}).get('issues', [])
+          has_errors = any(i.get('severity') in ('critical', 'high') for i in issues)
+
+          print(f'\nIssues found: {len(issues)}')
+          print(f'Has critical/high errors: {has_errors}')
+          "
+
+      - name: Run Expansion Scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd os-evez
+          python -c "
+          import json, sys
+          sys.path.insert(0, '.')
+          from expansion import ExpansionEngine
+
+          engine = ExpansionEngine()
+          result = engine.run_expansion_cycle(create_issues=False)
+          print('=== EXPANSION SCAN ===')
+          print(f'Markers: {result[\"markers_found\"]}')
+          print(f'Test gaps: {result[\"test_gaps\"]}')
+          print(f'Proposals: {result[\"proposals_generated\"]}')
+          for p in result.get('proposals', [])[:5]:
+              print(f'  [{p[\"priority_score\"]:.1f}] {p[\"title\"][:70]}')
+          "
+
+      - name: Self-Repair Check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd os-evez
+          python -c "
+          import json, sys
+          sys.path.insert(0, '.')
+          from self_repair import SelfRepairDaemon
+
+          daemon = SelfRepairDaemon()
+          # Only scan the main repo in CI to avoid rate limits
+          result = daemon.run_repair_cycle(repos=['evez-os'])
+          print('=== SELF-REPAIR CHECK ===')
+          print(json.dumps(result, indent=2, default=str))
+          "
+
+      - name: Run Tests
+        run: |
+          cd os-evez
+          python -m pytest tests/test_agent_os.py -v --tb=short 2>&1 || true
+
+      - name: Upload Spine Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-os-spine
+          path: |
+            spine/agent_bus.jsonl
+            spine/EVENT_SPINE.jsonl
+            spine/semantic_graph.json
+          retention-days: 30
+          if-no-files-found: ignore

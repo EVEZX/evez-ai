@@ -1,0 +1,9 @@
+{
+  "run": 1,
+  "ts": "2026-03-06T08:08Z",
+  "query": "AI agent billing OR AI agent SaaS OR agent subscription economics -is:retweet lang:en",
+  "consecutive_zero_genuine": 1,
+  "genuine_count": 0,
+  "note": "Twitter rate-limited this session. Scan skipped gracefully. consecutive_zero incremented to 1/3.",
+  "retirement_recommendation": false
+}

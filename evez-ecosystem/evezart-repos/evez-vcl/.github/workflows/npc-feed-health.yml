@@ -1,0 +1,59 @@
+name: NPC Feed Health Check
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # every 2 hours
+  workflow_dispatch:
+
+jobs:
+  check-feed:
+    runs-on: ubuntu-latest
+    name: Validate Witness Registry Feed
+    steps:
+      - name: Fetch feed
+        id: fetch
+        run: |
+          HTTP_CODE=$(curl -s -o /tmp/feed.json -w "%{http_code}" \
+            "https://evezart.github.io/witness-registry/api/entities.json")
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "HTTP $HTTP_CODE"
+          cat /tmp/feed.json | head -c 500 || true
+
+      - name: Validate response
+        run: |
+          CODE="${{ steps.fetch.outputs.http_code }}"
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Feed returned HTTP $CODE"
+            exit 1
+          fi
+          python3 -c "
+import json, sys
+try:
+    data = json.load(open('/tmp/feed.json'))
+    entities = data if isinstance(data, list) else data.get('entities', data.get('data', data.get('records', [])))
+    print(f'Feed OK: {len(entities)} entities')
+except Exception as e:
+    print(f'::error::JSON parse failed: {e}', file=sys.stderr)
+    sys.exit(1)
+"
+
+      - name: Freshness check (warn if >4h stale)
+        run: |
+          python3 -c "
+import json, sys
+from datetime import datetime, timezone, timedelta
+try:
+    data = json.load(open('/tmp/feed.json'))
+    updated_at = data.get('updated_at') if isinstance(data, dict) else None
+    if updated_at:
+        then = datetime.fromisoformat(updated_at.replace('Z','+00:00'))
+        age = datetime.now(timezone.utc) - then
+        if age > timedelta(hours=4):
+            print(f'::warning::Feed is {age} old (updated_at={updated_at})')
+        else:
+            print(f'Feed freshness OK: {age} old')
+    else:
+        print('No updated_at field in feed')
+except Exception as e:
+    print(f'Non-fatal: {e}')
+"

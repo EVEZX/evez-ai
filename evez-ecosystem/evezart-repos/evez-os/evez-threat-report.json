@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-05-29T06:46:15.137258Z",
+  "defender": "EVEZ Counter-Intelligence v1.0",
+  "threats": [],
+  "lateral_movement_signs": [],
+  "network_anomalies": [
+    {
+      "type": "suspicious_dns",
+      "detail": "nameserver 172.24.0.254\noptions timeout:2 attempts:3 ndots:0\n"
+    }
+  ],
+  "firewall_rules": 1,
+  "services_running": 1,
+  "kernel_hardening": "ACTIVE",
+  "fail2ban": "ACTIVE",
+  "ssh_port": 2222,
+  "ssh_password_auth": false,
+  "attack_surface": "MINIMAL (80, 443, 2222 only)"
+}

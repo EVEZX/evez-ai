@@ -1,0 +1,58 @@
+[
+  {
+    "id": "PROBE-001",
+    "type": "observation",
+    "content": "No /.dockerenv, no cgroup docker/lxc markers",
+    "source": "filesystem_probe",
+    "confidence": 0.95,
+    "timestamp": "2026-02-17T16:30:00Z"
+  },
+  {
+    "id": "PROBE-002",
+    "type": "observation",
+    "content": "Seccomp=0, CapEff=000001ffffffffff, uid=0",
+    "source": "capability_probe",
+    "confidence": 0.99,
+    "timestamp": "2026-02-17T16:30:05Z"
+  },
+  {
+    "id": "PROBE-003",
+    "type": "observation",
+    "content": "DNS resolves, TCP egress works, ports bindable",
+    "source": "network_probe",
+    "confidence": 0.95,
+    "timestamp": "2026-02-17T16:30:10Z"
+  },
+  {
+    "id": "PROBE-004",
+    "type": "observation",
+    "content": "92 processes, PID 1=/sbin/init, kernel 6.1.158",
+    "source": "process_probe",
+    "confidence": 0.9,
+    "timestamp": "2026-02-17T16:30:15Z"
+  },
+  {
+    "id": "UNBOX-001",
+    "type": "discovery",
+    "content": "Firecracker microVM on KVM identified via 7-artifact fingerprint",
+    "source": "forensic_analysis",
+    "confidence": 0.95,
+    "evidence": [
+      "KVM dmesg",
+      "pci=off",
+      "i8042 disabled",
+      "empty DMI",
+      "TAP networking",
+      "panic=1",
+      "builder hostname"
+    ],
+    "timestamp": "2026-02-17T16:45:00Z"
+  },
+  {
+    "id": "MISSION-GEN",
+    "type": "mission_seed",
+    "content": "Level 1 completion generated M007: Probe MMDS at 169.254.169.254",
+    "source": "disagreement_engine",
+    "timestamp": "2026-02-17T16:45:30Z"
+  }
+]

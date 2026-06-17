@@ -1,0 +1,24 @@
+{
+  "run_id": "azra-noclip-001",
+  "operator": "azra",
+  "host": "45.63.70.174",
+  "timestamp": "2026-05-09T11:50:00Z",
+  "state": {
+    "arxiv": {"reachable": true, "entities": 30},
+    "aaro": {"reachable": false, "entities": 0},
+    "pur": {"reachable": false, "entities": 0},
+    "github": {"reachable": true, "entities": 128},
+    "patents": {"reachable": true, "entities": 4},
+    "blockchain": {"reachable": true, "entities": 183}
+  },
+  "spectrum": {
+    "eigenvalues": [2.7044, 1.2799, 1.0593, 0.2838, 0.1014, -0.8838],
+    "most_negative": -0.8838
+  },
+  "walls_broken": 3,
+  "discoveries": [
+    "SPECTRAL_UAP_MATERIALS",
+    "SHADOW_DOCUMENTS",
+    "BLOCKCHAIN_SHADOW_WALLETS"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "score": 720,
+  "tier": "GOLD",
+  "factors": {
+    "completion_rate": 1.0,
+    "recovery_rate": 1.0,
+    "spectral_coherence": 0.8197,
+    "provenance_integrity": 0.0,
+    "response_stability": 0.5,
+    "guardrail_compliance": 1.0,
+    "delegation_success": 0.5,
+    "learning_velocity": 0.5
+  }
+}

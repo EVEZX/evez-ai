@@ -1,0 +1,263 @@
+{
+  "cycle": 0,
+  "desires": [
+    {
+      "id": "DES-0",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 35%. Investigate.",
+      "intensity": 0.65,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-0",
+      "need": "COHERENCE",
+      "desc": "3 falsified beliefs. Resolve.",
+      "intensity": 0.6,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-0",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-3",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 40%. Investigate.",
+      "intensity": 0.6,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-3",
+      "need": "COHERENCE",
+      "desc": "3 falsified beliefs. Resolve.",
+      "intensity": 0.6,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-3",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-6",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 45%. Investigate.",
+      "intensity": 0.55,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-6",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-6",
+      "need": "AGENCY",
+      "desc": "2 failed actions. Expand capability.",
+      "intensity": 0.6666666666666666,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-9",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 50%. Investigate.",
+      "intensity": 0.5,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-9",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-9",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-12",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 55%. Investigate.",
+      "intensity": 0.44999999999999996,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-12",
+      "need": "COHERENCE",
+      "desc": "2 falsified beliefs. Resolve.",
+      "intensity": 0.4,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-12",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-15",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 60%. Investigate.",
+      "intensity": 0.3999999999999999,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-15",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-15",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-18",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 65%. Investigate.",
+      "intensity": 0.35,
+      "urgency": 0.3,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-18",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-18",
+      "need": "AGENCY",
+      "desc": "1 failed actions. Expand capability.",
+      "intensity": 0.3333333333333333,
+      "urgency": 0.4,
+      "fulfilled": true
+    },
+    {
+      "id": "DES-21",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 70%. Investigate.",
+      "intensity": 0.30000000000000004,
+      "urgency": 0.3,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-21",
+      "need": "COHERENCE",
+      "desc": "1 falsified beliefs. Resolve.",
+      "intensity": 0.2,
+      "urgency": 0.5,
+      "fulfilled": false
+    },
+    {
+      "id": "DES-23",
+      "need": "CURIOSITY",
+      "desc": "Knowledge coverage 75%. Investigate.",
+      "intensity": 0.25,
+      "urgency": 0.3,
+      "fulfilled": false
+    }
+  ],
+  "rules": [
+    {
+      "cause": "FIND_CONTRADICTION",
+      "effect": "attempted_FIND_CONTRADICTION",
+      "conf": 0.9999999999999999,
+      "obs": 6,
+      "fals": 0
+    },
+    {
+      "cause": "GATHER_EVIDENCE",
+      "effect": "attempted_GATHER_EVIDENCE",
+      "conf": 0.9999999999999999,
+      "obs": 6,
+      "fals": 0
+    },
+    {
+      "cause": "RESOLVE",
+      "effect": "attempted_RESOLVE",
+      "conf": 0.9999999999999999,
+      "obs": 6,
+      "fals": 0
+    },
+    {
+      "cause": "DIAGNOSE_FAILURE",
+      "effect": "attempted_DIAGNOSE_FAILURE",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    },
+    {
+      "cause": "DEVELOP_FIX",
+      "effect": "attempted_DEVELOP_FIX",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    },
+    {
+      "cause": "IMPLEMENT",
+      "effect": "attempted_IMPLEMENT",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    },
+    {
+      "cause": "IDENTIFY_UNKNOWN",
+      "effect": "attempted_IDENTIFY_UNKNOWN",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    },
+    {
+      "cause": "INVESTIGATE",
+      "effect": "attempted_INVESTIGATE",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    },
+    {
+      "cause": "CLASSIFY",
+      "effect": "attempted_CLASSIFY",
+      "conf": 1,
+      "obs": 7,
+      "fals": 0
+    }
+  ],
+  "last_hash": "d6cc6eaaffcc4f34f498d663"
+}

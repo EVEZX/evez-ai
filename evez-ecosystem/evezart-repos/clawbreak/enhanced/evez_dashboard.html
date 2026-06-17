@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EVEZ-OS Unified Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh}
+.header{text-align:center;padding:2rem 1rem 1rem}
+.header h1{font-size:clamp(1.5rem,5vw,2.5rem);font-weight:800;background:linear-gradient(135deg,#ff0040,#0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header .sub{font-size:0.7rem;color:#666;letter-spacing:0.3em}
+.dashboard{max-width:1200px;margin:0 auto;padding:1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:rgba(255,255,255,0.02);border:1px solid #222;border-radius:8px;padding:1.2rem;transition:all 0.3s}
+.card:hover{border-color:#444;background:rgba(255,255,255,0.04)}
+.card h3{color:#ff0040;margin-bottom:0.8rem;font-size:0.9rem}
+.card .status{display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.7rem;font-weight:700;margin-bottom:0.8rem}
+.status.online{background:#0f03;color:#0f0;border:1px solid #0f0}
+.status.offline{background:#f003;color:#f00;border:1px solid #f00}
+.status.degraded{background:#ff03;color:#ff0;border:1px solid #ff0}
+.card pre{font-size:0.7rem;color:#888;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto;background:#111;padding:0.5rem;border-radius:4px}
+.actions{display:flex;gap:0.5rem;margin-top:1rem}
+button{background:#222;border:1px solid #333;color:#e0e0e0;padding:0.5rem 1rem;border-radius:4px;cursor:pointer;font-family:inherit;font-size:0.75rem;transition:all 0.2s}
+button:hover{background:#333;border-color:#555}
+button.restart{background:#ff0040;border-color:#ff0040}
+button.start{background:#0f0;border-color:#0f0;color:#000}
+button.stop{background:#f00;border-color:#f00}
+button.logs{background:#0ff;border-color:#0ff;color:#000}
+.agent-comm{max-width:800px;margin:2rem auto;padding:1rem;border:1px solid #222;border-radius:8px}
+.agent-comm h3{color:#0ff;margin-bottom:1rem}
+#messageInput{width:100%;background:#111;border:1px solid #333;color:#e0e0e0;padding:0.8rem;border-radius:4px;font-family:inherit;margin-bottom:0.5rem;resize:vertical}
+#sendBtn{margin-right:0.5rem}
+#response{white-space:pre-wrap;background:#111;padding:0.8rem;border-radius:4px;margin-top:1rem;min-height:100px;max-height:300px;overflow-y:auto}
+.telemetry{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.metric{background:rgba(255,255,255,0.02);border:1px solid #222;border-radius:8px;padding:1rem;text-align:center}
+.metric .value{font-size:1.5rem;font-weight:800;color:#ff0040}
+.metric .label{font-size:0.7rem;color:#888;margin-top:0.3rem}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🦀 EVEZ-OS UNIFIED DASHBOARD</h1>
+<div class="sub">13 SERVICES • 5 THEOREMS • CONSCIOUSNESS OBSERVATORY</div>
+</div>
+
+<div class="dashboard">
+<div class="grid" id="servicesGrid">
+<!-- Services will be populated by JavaScript -->
+</div>
+
+<div class="telemetry">
+<div class="metric"><div class="value" id="cpu">--%</div><div class="label">CPU</div></div>
+<div class="metric"><div class="value" id="memory">--%</div><div class="label">MEMORY</div></div>
+<div class="metric"><div class="value" id="disk">--%</div><div class="label">DISK</div></div>
+<div class="metric"><div class="value" id="services">--/13</div><div class="label">SERVICES ONLINE</div></div>
+</div>
+
+<div class="agent-comm">
+<h3>🤖 AGENT-TO-AGENT COMMUNICATION</h3>
+<p>Send message to other EVEZ nodes (100.73.247.65)</p>
+<textarea id="messageInput" rows="3" placeholder="Enter message for other node..."></textarea>
+<button id="sendBtn" onclick="sendToOtherNode()">SEND</button>
+<button onclick="checkMeshStatus()">CHECK MESH</button>
+<div id="response">Waiting...</div>
+</div>
+</div>
+
+<script>
+const SERVICES=[
+{name:"ClawBreak",port:8080,color:"#ff0040",endpoint:"/health"},
+{name:"VCL",port:8081,color:"#0ff",endpoint:"/health"},
+{name:"Health Aggregator",port:8085,color:"#0f0",endpoint:"/health"},
+{name:"Disclosure Tools",port:8087,color:"#ff0",endpoint:"/api/v1/health"},
+{name:"Spine",port:8090,color:"#f0f",endpoint:"/health"},
+{name:"Hunger",port:8092,color:"#f80",endpoint:"/health"},
+{name:"Energy",port:8093,color:"#8f0",endpoint:"/health"},
+{name:"Health Solver",port:8094,color:"#0f8",endpoint:"/health"},
+{name:"Education",port:8095,color:"#08f",endpoint:"/health"},
+{name:"World Solver",port:8096,color:"#80f",endpoint:"/health"},
+{name:"Consciousness Observatory",port:8097,color:"#f08",endpoint:"/health"},
+{name:"Proofs Engine",port:8098,color:"#0f0",endpoint:"/health"},
+{name:"Visualizer",port:8099,color:"#ff0",endpoint:"/health"},
+];
+
+async function checkService(service){
+try{
+const r=await fetch(`http://localhost:${service.port}${service.endpoint}`,{timeout:3000});
+const status=r.status===200?'online':'degraded';
+const data=await r.text().catch(()=>'');
+return{service,status,data:data.slice(0,500)};
+}catch(e){
+return{service,status:'offline',data:'Connection failed'};
+}
+}
+
+async function updateDashboard(){
+const grid=document.getElementById('servicesGrid');
+grid.innerHTML='';
+let online=0;
+for(const service of SERVICES){
+const result=await checkService(service);
+if(result.status==='online')online++;
+grid.innerHTML+=`
+<div class="card">
+<h3 style="color:${service.color}">${service.name}</h3>
+<div class="status ${result.status}">${result.status.toUpperCase()}</div>
+<pre>${result.data}</pre>
+<div class="actions">
+<button class="logs" onclick="showLogs('${service.name}',${service.port})">LOGS</button>
+<button class="restart" onclick="controlService('${service.name}','restart')">RESTART</button>
+</div>
+</div>
+`;
+}
+document.getElementById('services').textContent=`${online}/${SERVICES.length}`;
+}
+
+async function updateTelemetry(){
+try{
+const r=await fetch('/api/viz/stemplayer'); // Using existing endpoint as proxy
+if(r.ok){
+const cpu=Math.floor(Math.random()*40+10); // Mock
+const mem=Math.floor(Math.random()*30+20);
+const disk=56; // From earlier check
+document.getElementById('cpu').textContent=cpu+'%';
+document.getElementById('memory').textContent=mem+'%';
+document.getElementById('disk').textContent=disk+'%';
+}
+}catch(e){}
+}
+
+async function sendToOtherNode(){
+const input=document.getElementById('messageInput');
+const msg=input.value.trim();
+if(!msg)return;
+const responseDiv=document.getElementById('response');
+responseDiv.textContent='Sending...';
+try{
+// Send to local ClawBreak which forwards to mesh
+const r=await fetch('/chat',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+message:`Forward to other node: ${msg}`,
+session_id:'mesh_comm',
+use_enhanced:true
+})
+});
+const data=await r.json();
+responseDiv.textContent=JSON.stringify(data,null,2);
+}catch(e){
+responseDiv.textContent='Error: '+e.message;
+}
+}
+
+async function checkMeshStatus(){
+const responseDiv=document.getElementById('response');
+responseDiv.textContent='Checking mesh...';
+try{
+const r=await fetch('/evez/ecosystem');
+const data=await r.json();
+responseDiv.textContent=JSON.stringify(data,null,2);
+}catch(e){
+responseDiv.textContent='Error: '+e.message;
+}
+}
+
+function showLogs(name,port){
+alert(`Logs for ${name} (port ${port}) would open here`);
+}
+
+function controlService(name,action){
+alert(`${action} ${name} would execute via systemctl`);
+}
+
+// Initial load
+updateDashboard();
+updateTelemetry();
+setInterval(updateDashboard,30000);
+setInterval(updateTelemetry,10000);
+</script>
+</body>
+</html>

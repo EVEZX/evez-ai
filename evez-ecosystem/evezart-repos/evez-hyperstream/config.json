@@ -1,0 +1,90 @@
+[
+  {
+    "title": "EVEZ Hypergeometric 2D \u2014 Live Generative Mathematics",
+    "vis": "hyper_2d",
+    "desc": "Real-time \u2082F\u2081(a,b;c;z) phase portraits. Type numbers to mutate. #Math #EVEZ",
+    "broadcast_id": "a0bPZMrznIM",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILYTBiUFpNcnpuSU0",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682228590362",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "bhp1-y21s-s8ab-a108-4z7m",
+    "watch_url": "https://youtube.com/watch?v=a0bPZMrznIM"
+  },
+  {
+    "title": "EVEZ Hypergeometric 3D \u2014 Rotating Surface Mathematics",
+    "vis": "hyper_3d",
+    "desc": "3D hypergeometric surfaces, real-time rotation. #Math3D #EVEZ",
+    "broadcast_id": "_5l0CfgE3g0",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILXzVsMENmZ0UzZzA",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682232621125",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "9xh0-m0j9-6773-1281-eftj",
+    "watch_url": "https://youtube.com/watch?v=_5l0CfgE3g0"
+  },
+  {
+    "title": "EVEZ 4D Polytope Arena \u2014 Tesseract & 24-Cell Live",
+    "vis": "polytope_4d",
+    "desc": "4D polytope projections: tesseract, 24-cell, 120-cell. Type shape names to switch. #4D #EVEZ",
+    "broadcast_id": "-5FDrSt7nZc",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILLTVGRHJTdDduWmM",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682236180938",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "pd5z-hamk-far1-pq73-c10u",
+    "watch_url": "https://youtube.com/watch?v=-5FDrSt7nZc"
+  },
+  {
+    "title": "EVEZ Reactive Lattice \u2014 Cross-Stream Neural Mesh",
+    "vis": "lattice",
+    "desc": "8 streams connected into a live neural lattice. Comments pulse the mesh. #EVEZ",
+    "broadcast_id": "0n8_Kkaijfk",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILMG44X0trYWlqZms",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682240307322",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "edcs-q4cg-cx2y-t0j7-fucu",
+    "watch_url": "https://youtube.com/watch?v=0n8_Kkaijfk"
+  },
+  {
+    "title": "EVEZ AI Arena \u2014 Skillset Model Battles Live",
+    "vis": "arena",
+    "desc": "AI agents compete in live arenas. Vote by typing agent names. #AIArena #EVEZ",
+    "broadcast_id": "HhgWYqc8rbg",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILSGhnV1lxYzhyYmc",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682243588851",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "25re-t3z7-0x5a-06kc-265u",
+    "watch_url": "https://youtube.com/watch?v=HhgWYqc8rbg"
+  },
+  {
+    "title": "EVEZ Mandelbrot Reactive \u2014 Comment-Driven Fractal Zoom",
+    "vis": "fractal",
+    "desc": "Mandelbrot/Julia fractals driven by your comments. Type coordinates. #Fractals #EVEZ",
+    "broadcast_id": "x-q93pHVUoA",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILeC1xOTNwSFZVb0E",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682246747235",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "dpp8-8pr3-gyhe-ywzt-52b8",
+    "watch_url": "https://youtube.com/watch?v=x-q93pHVUoA"
+  },
+  {
+    "title": "EVEZ Fourier Arena \u2014 Live 3D Signal Decomposition",
+    "vis": "fourier",
+    "desc": "Fourier transforms in real-time 3D. Type: square/sawtooth/triangle. #FourierTransform #EVEZ",
+    "broadcast_id": "1igd9N7kqqI",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILMWlnZDlON2txcUk",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682250029612",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "h6em-faqg-0u5d-h3vq-9cch",
+    "watch_url": "https://youtube.com/watch?v=1igd9N7kqqI"
+  },
+  {
+    "title": "EVEZ666 Cognitive Stream \u2014 AI Neural Activation Live",
+    "vis": "cognitive",
+    "desc": "EVEZ666 AI cognitive loops visualized live. #EVEZ666 #AI",
+    "broadcast_id": "AZKZDbM2Fbk",
+    "live_chat_id": "KicKGFVDb3pjMGhVaVB4aGhZRDNoUDZHVmJJURILQVpLWkRiTTJGYms",
+    "stream_id": "ozc0hUiPxhhYD3hP6GVbIQ1777682253100751",
+    "rtmp_url": "rtmp://a.rtmp.youtube.com/live2",
+    "stream_key": "fmub-k0uu-kkxs-0h19-asdp",
+    "watch_url": "https://youtube.com/watch?v=AZKZDbM2Fbk"
+  }
+]

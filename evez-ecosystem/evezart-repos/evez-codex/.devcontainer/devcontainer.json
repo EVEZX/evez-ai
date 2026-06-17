@@ -1,0 +1,43 @@
+{
+  "name": "Codex",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "platform": "linux/arm64"
+  },
+
+  /* Force VS Code to run the container as arm64 in
+     case your host is x86 (or vice-versa). */
+  "runArgs": ["--platform=linux/arm64"],
+
+  "containerEnv": {
+    "RUST_BACKTRACE": "1",
+    "CARGO_TARGET_DIR": "${containerWorkspaceFolder}/codex-rs/target-arm64",
+    "GOPATH": "/home/ubuntu/go",
+    "PATH": "/home/ubuntu/.cargo/bin:/home/ubuntu/go/bin:/home/ubuntu/.local/bin:${containerEnv:PATH}"
+  },
+
+  "remoteUser": "ubuntu",
+  
+  "postCreateCommand": "bash -c 'cd /workspace && pnpm install && cd ops-stack && pnpm install'",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "go.gopath": "/home/ubuntu/go",
+        "python.defaultInterpreterPath": "/usr/bin/python3"
+      },
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "golang.go",
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "vscjava.vscode-java-pack",
+        "redhat.java"
+      ]
+    }
+  }
+}

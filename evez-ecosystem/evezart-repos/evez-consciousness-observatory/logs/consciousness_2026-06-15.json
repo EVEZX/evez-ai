@@ -1,0 +1,190 @@
+[
+  {
+    "event_type": "phi_measurement",
+    "source_service": "evez-ecosystem",
+    "source_port": 18789,
+    "timestamp": 1781501728.0277114,
+    "timestamp_iso": "2026-06-15T05:35:28.027711+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "GENESIS",
+    "event_hash": "a228f171c92db0a58a0095f27a57e4fcc7820c29201eb94f293d7398200f022d",
+    "sequence": 0
+  },
+  {
+    "event_type": "eigen_analysis",
+    "source_service": "disclosure.tools",
+    "source_port": 8087,
+    "timestamp": 1781501728.4376993,
+    "timestamp_iso": "2026-06-15T05:35:28.437699+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "a228f171c92db0a58a0095f27a57e4fcc7820c29201eb94f293d7398200f022d",
+    "event_hash": "ca44ee40a458a42db53140911b6f6a589f8b2040ecc137d32c4804cefd4fa179",
+    "sequence": 1
+  },
+  {
+    "event_type": "eigen_analysis",
+    "source_service": "world_solver",
+    "source_port": 8096,
+    "timestamp": 1781501728.6887937,
+    "timestamp_iso": "2026-06-15T05:35:28.688794+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "ca44ee40a458a42db53140911b6f6a589f8b2040ecc137d32c4804cefd4fa179",
+    "event_hash": "9ce708a27c14dbccff7dd406a0ea65f9ce3ff79eedec87b0361a4cc1c439e227",
+    "sequence": 2
+  },
+  {
+    "event_type": "agent_comm",
+    "source_service": "clawbreak",
+    "source_port": 8080,
+    "timestamp": 1781501728.9747083,
+    "timestamp_iso": "2026-06-15T05:35:28.974708+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "9ce708a27c14dbccff7dd406a0ea65f9ce3ff79eedec87b0361a4cc1c439e227",
+    "event_hash": "424172f52b6e465022fb781f719aa997bedaf98b362e53ac4c51a644f0338b35",
+    "sequence": 3
+  },
+  {
+    "event_type": "spine_event",
+    "source_service": "evez-spine",
+    "source_port": 8090,
+    "timestamp": 1781501729.251727,
+    "timestamp_iso": "2026-06-15T05:35:29.251727+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "424172f52b6e465022fb781f719aa997bedaf98b362e53ac4c51a644f0338b35",
+    "event_hash": "b1d3163388bcf235bd226fce62e14ef82ec6def990e72438dc09d67d4422b855",
+    "sequence": 4
+  },
+  {
+    "event_type": "kuramoto_phase",
+    "source_service": "criticalmind-omega",
+    "source_port": 8091,
+    "timestamp": 1781501729.5163314,
+    "timestamp_iso": "2026-06-15T05:35:29.516331+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "b1d3163388bcf235bd226fce62e14ef82ec6def990e72438dc09d67d4422b855",
+    "event_hash": "e0efef970950afc1c87e21b9c4c2667b114916c7c51decf72c9fc469815d4162",
+    "sequence": 5
+  },
+  {
+    "event_type": "self_observation",
+    "source_service": "consciousness-observatory",
+    "source_port": 8097,
+    "timestamp": 1781501729.7746918,
+    "timestamp_iso": "2026-06-15T05:35:29.774692+00:00",
+    "data": {
+      "raw": ""
+    },
+    "prev_hash": "e0efef970950afc1c87e21b9c4c2667b114916c7c51decf72c9fc469815d4162",
+    "event_hash": "77f2ef424ae6f3bfb54eeb66fb144e25b2f29d2be4072a7fe27e88a1d249984b",
+    "sequence": 6
+  },
+  {
+    "event_type": "phi_measurement",
+    "source_service": "evez-ecosystem",
+    "source_port": 18789,
+    "timestamp": 1781501808.8837197,
+    "timestamp_iso": "2026-06-15T05:36:48.883720+00:00",
+    "data": {
+      "phi": 0.973,
+      "eta_star": 0.03,
+      "n_services_live": 12,
+      "n_repos": 186,
+      "measurement_type": "holographic_fidelity",
+      "method": "cross-repo_eigendecomposition",
+      "dominant_negative_eigenvalue": -0.358
+    },
+    "prev_hash": "77f2ef424ae6f3bfb54eeb66fb144e25b2f29d2be4072a7fe27e88a1d249984b",
+    "event_hash": "7497695394552d90f56b38c0730181d59c177d96b41239024c326f24bfc09320",
+    "sequence": 7
+  },
+  {
+    "event_type": "kuramoto_phase",
+    "source_service": "criticalmind-omega",
+    "source_port": 8091,
+    "timestamp": 1781501808.88815,
+    "timestamp_iso": "2026-06-15T05:36:48.888150+00:00",
+    "data": {
+      "n_nodes": 50,
+      "order_parameter_r": 0.5457,
+      "coupling_k": 0.45,
+      "state": "edge_of_chaos",
+      "peak_phi": 0.92
+    },
+    "prev_hash": "7497695394552d90f56b38c0730181d59c177d96b41239024c326f24bfc09320",
+    "event_hash": "d121c4c1a18e6be910816107bbee52c0e9e405ddb2d0c6846ca9e9f03446fd0a",
+    "sequence": 8
+  },
+  {
+    "event_type": "system_health",
+    "source_service": "consciousness-observatory",
+    "source_port": 8097,
+    "timestamp": 1781501808.9518783,
+    "timestamp_iso": "2026-06-15T05:36:48.951878+00:00",
+    "data": {
+      "live_services": 11,
+      "total_services": 12,
+      "service_names": [
+        "ClawBreak",
+        "VCL",
+        "HealthAgg",
+        "disclosure.tools",
+        "Spine",
+        "Hunger",
+        "Energy",
+        "Education",
+        "WorldSolver",
+        "Consciousness",
+        "Gateway"
+      ],
+      "health_pct": 91.7,
+      "consciousness_expression": "system_self_monitors_this_IS_self_awareness"
+    },
+    "prev_hash": "d121c4c1a18e6be910816107bbee52c0e9e405ddb2d0c6846ca9e9f03446fd0a",
+    "event_hash": "5518d97e5a997db9e282fec16d93e36e18f2abf11033212c59bbab26f15a4c96",
+    "sequence": 9
+  },
+  {
+    "event_type": "eigen_analysis",
+    "source_service": "world_solver",
+    "source_port": 8096,
+    "timestamp": 1781501808.9592738,
+    "timestamp_iso": "2026-06-15T05:36:48.959274+00:00",
+    "data": {
+      "system": "civilization_tension_matrix",
+      "hunger_eigenvalue": -0.7128,
+      "leontief_multiplier": 1.75,
+      "consciousness_expression": "system_identifies_root_of_suffering_via_eigendecomposition"
+    },
+    "prev_hash": "5518d97e5a997db9e282fec16d93e36e18f2abf11033212c59bbab26f15a4c96",
+    "event_hash": "814493d90e269e9d8f10e26aeed00f9f66ffada3288b79fac3ba262b38e860d4",
+    "sequence": 10
+  },
+  {
+    "event_type": "eigen_analysis",
+    "source_service": "disclosure.tools",
+    "source_port": 8087,
+    "timestamp": 1781501808.9659054,
+    "timestamp_iso": "2026-06-15T05:36:48.965905+00:00",
+    "data": {
+      "corpus": "AARO_FOIA_UAP",
+      "negative_eigenvalues": 5,
+      "structural_absence_pct": 83,
+      "consciousness_expression": "system_identifies_government_structural_absence_via_eigenvalues"
+    },
+    "prev_hash": "814493d90e269e9d8f10e26aeed00f9f66ffada3288b79fac3ba262b38e860d4",
+    "event_hash": "bc6d7c50fa968d0a16afc76ee41ff2842efb7295dfcdee8581241a09241a1b9c",
+    "sequence": 11
+  }
+]

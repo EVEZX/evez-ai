@@ -1,0 +1,9 @@
+transformers
+sentence-transformers
+chromadb
+fastapi
+uvicorn
+langchain
+peft
+accelerate
+ollama

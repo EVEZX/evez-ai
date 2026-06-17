@@ -1,0 +1,280 @@
+{
+  "name": "EVEZ Pure-Code Spine \u2014 ZERO COST \u2014 5min \u2014 24/7",
+  "nodes": [
+    {
+      "id": "SP1",
+      "name": "\u23f1 Every 5 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "SP2",
+      "name": "\ud83d\udd27 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "SP3",
+      "name": "\ud83e\ude7a Self-Test Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-SP3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-self-test",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "SP4",
+      "name": "\ud83d\udcca Status Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        600
+      ],
+      "webhookId": "evez-SP4",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-spine-status",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "SP5",
+      "name": "\ud83d\udea8 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        800
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "SP6",
+      "name": "\ud83d\udc93 Spine Heartbeat",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst ts=new Date().toISOString();\nconst slot=Math.floor(Date.now()/300000);\n\n// Env audit\nconst vars={\n  GROQ_API_KEY:   {tier:'AI',   free:true,  get:'console.groq.com'},\n  GEMINI_API_KEY: {tier:'AI',   free:true,  get:'aistudio.google.com'},\n  OPENROUTER_API_KEY:{tier:'AI',free:true,  get:'openrouter.ai'},\n  CF_ACCOUNT_ID:  {tier:'L4',  free:true,  get:'dash.cloudflare.com'},\n  CF_API_TOKEN:   {tier:'L4',  free:true,  get:'dash.cloudflare.com \u2192 API Tokens'},\n  CF_ZONE_ID:     {tier:'L5',  free:true,  get:'dash.cloudflare.com \u2192 your domain'},\n  PHOENIX_BARE_METAL_IP:{tier:'L0',free:true,get:'Oracle Cloud console'},\n  SUPABASE_URL:   {tier:'DB',  free:true,  get:'supabase.com \u2192 project URL'},\n  SUPABASE_ANON_KEY:{tier:'DB',free:true, get:'supabase.com \u2192 API settings'},\n  N8N_API_KEY:    {tier:'OPS', free:true,  get:'n8n Settings \u2192 API'},\n};\n\nconst configured={},missing=[];\nconst free_ai=[];\nfor(const [k,v] of Object.entries(vars)){\n  const set=!!($env[k]||'');\n  configured[k]={set,...v};\n  if(!set) missing.push(k);\n  if(set&&v.tier==='AI') free_ai.push(k);\n}\n\n// Capital loop math\nconst seed=50,ltv=0.65,depth=5,apy=0.28;\nlet cap=seed,total_c=0,total_b=0;\nfor(let i=0;i<depth;i++){total_c+=cap;total_b+=cap*ltv;cap*=ltv;}\nconst hf=+(total_c/total_b).toFixed(3);\nconst net_apy=+((total_c*apy/seed-1)*100).toFixed(1);\n\nconst report={\n  event:'SPINE_HEARTBEAT',slot,ts,pid:335,\n  system:{\n    env_configured:Object.values(configured).filter(v=>v.set).length,\n    env_total:Object.keys(configured).length,\n    free_ai_ready:free_ai,\n    missing_critical:missing.filter(m=>['GROQ_API_KEY','CF_ACCOUNT_ID'].includes(m)),\n    missing_all:missing\n  },\n  capital_model:{seed,depth,health_factor:hf,net_apy_pct:net_apy,\n    status:hf>1.4?'SAFE':hf>1.2?'CAUTION':'DANGER'},\n  daily_budget:{\n    groq_calls_per_day:144,groq_limit:14400,groq_pct:'1%',\n    gemini_calls_per_day:96,gemini_limit:1500,gemini_pct:'6.4%',\n    openrouter:'unlimited :free models',\n    spine_heartbeats:288,spine_cost:'$0.00'\n  },\n  health:free_ai.length>0?'GREEN':'YELLOW',\n  entry_hash:H({slot,ts})\n};\n\nawait log('SPINE_HEARTBEAT',report);\nreturn [{json:report}];\n"
+      }
+    },
+    {
+      "id": "SP7",
+      "name": "\ud83e\uddea Self-Test",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        400
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nconst tests=[],ts=new Date().toISOString();\nlet pass=0,fail=0;\nconst t=(name,ok,detail='')=>{tests.push({name,pass:ok,detail});ok?pass++:fail++;};\n\nt('hash_determinism', H('x')===H('x'), H('x'));\nt('hash_uniqueness',  H('a')!==H('b'), `${H('a')} vs ${H('b')}`);\nt('env_object',       typeof $env==='object','$env accessible');\nt('fetch_fn',         typeof $fetch==='function','$fetch available');\n\n// Capital math sanity\nlet c=50,tc=0; for(let i=0;i<5;i++){tc+=c;c*=0.65;}\nconst hf=+(tc/(tc-50)).toFixed(3);\nt('capital_math',hf>1.0,`HF=${hf}`);\n\n// Provider keys configured\nconst ai=['GROQ_API_KEY','GEMINI_API_KEY','OPENROUTER_API_KEY'].filter(k=>!!($env[k]||''));\nt('free_ai_configured',ai.length>0,ai.length===0?'Set at least GROQ_API_KEY':ai.join('+'));\n\nreturn [{json:{self_test:true,passed:pass,failed:fail,score:`${pass}/${pass+fail}`,tests,ts,pid:335}}];\n"
+      }
+    },
+    {
+      "id": "SP8",
+      "name": "\ud83d\udcca Full Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nconst ai=['GROQ_API_KEY','GEMINI_API_KEY','OPENROUTER_API_KEY'].filter(k=>!!($env[k]||''));\nconst cf=['CF_ACCOUNT_ID','CF_API_TOKEN','CF_ZONE_ID'].every(k=>!!($env[k]||''));\nconst db=['SUPABASE_URL','SUPABASE_ANON_KEY'].every(k=>!!($env[k]||''));\nreturn [{json:{\n  version:'EVEZ-OS v3-free-stack',pid:335,ts:new Date().toISOString(),\n  ai_providers:{configured:ai,count:ai.length,cost:'$0',\n    get_keys:{groq:'console.groq.com',gemini:'aistudio.google.com',openrouter:'openrouter.ai'}},\n  infrastructure:{cf_ready:cf,supabase_ready:db},\n  webhooks:['/webhook/evez-groq-chat','/webhook/evez-gemini-defi','/webhook/evez-gemini-chat',\n    '/webhook/evez-openrouter-chat','/webhook/evez-self-test','/webhook/evez-spine-status',\n    '/webhook/evez-ledger','/webhook/evez-fire','/webhook/evez-sentinel-deploy'],\n  free_daily_calls:{groq_research:144,gemini_analysis:96,openrouter_agent:48,spine_heartbeats:288},\n  entry_hash:H({ts:new Date().toISOString()})\n}}];\n"
+      }
+    },
+    {
+      "id": "SP9",
+      "name": "\ud83e\ude79 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        800
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('SPINE_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true}}];"
+      }
+    },
+    {
+      "id": "SP10",
+      "name": "\u21a9 Heartbeat ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "SP11",
+      "name": "\u21a9 Test ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "SP12",
+      "name": "\u21a9 Status ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        600
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "\u23f1 Every 5 Minutes": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udc93 Spine Heartbeat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd27 Test Run": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udc93 Spine Heartbeat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83e\ude7a Self-Test Webhook": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\uddea Self-Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcca Status Webhook": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udcca Full Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udea8 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\ude79 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udc93 Spine Heartbeat": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Heartbeat ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83e\uddea Self-Test": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Test ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcca Full Status": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Status ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "zero-cost"
+    },
+    {
+      "name": "spine"
+    }
+  ]
+}

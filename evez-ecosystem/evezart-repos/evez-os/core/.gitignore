@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+
+# Env / secrets
+.env
+.env.*
+
+# Logs / traces
+*.log
+spine/*.jsonl
+
+# Build artifacts
+out/

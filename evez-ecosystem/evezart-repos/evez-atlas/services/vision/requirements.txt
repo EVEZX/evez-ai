@@ -1,0 +1,2 @@
+google-cloud-vision>=3.7.0
+hyperbrowser  # for screenshot capture before Vision annotation

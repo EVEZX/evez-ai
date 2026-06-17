@@ -1,0 +1,8 @@
+onchain-agent-economy scan#14 | 2026-03-05T1601Z
+Query A (AION agent economy): 0 genuine. consecutive_zero_A=1.
+Fallback + Query B genuine: 8 total.
+Top signals: BNB+Polygon production ERC-8004 shipped, Virtuals $500M output, DAO governance gap.
+Key: @CoinMarketCap 7.08M L=9, @Tanaka_L2 41k L=52 RT=3, @aixbt_agent 473k L=3.
+New terms: Agent_CLI_Toolkit, MCP_powered_chain_access, DAO_governance_integration_gap, Polygon_Agent_CLI, Virtuals_500M_output, agent-to-agent_commerce_layer.
+Narrative: 3 major chains (BNB, Polygon, Arbitrum) shipping production ERC-8004 tools this week. Stack is real.
+EVEZ gap: 80K+ agents across 4 chains. Zero have 414-round behavioral records. DAO vote = zero cognitive audit.

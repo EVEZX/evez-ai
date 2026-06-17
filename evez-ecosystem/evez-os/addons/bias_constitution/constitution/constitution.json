@@ -1,0 +1,169 @@
+{
+  "version": "1.0.0",
+  "name": "glass-internet-constitution",
+  "goal": "Constrain scenario generation + scoring to prevent layer/region/probe/adversary drift; enforce calibrated truth-seeking under pending/final temporal mechanics.",
+  "protected_axes": {
+    "dominant_layer": [
+      "dns",
+      "bgp",
+      "tls",
+      "cdn_cache",
+      "origin_app",
+      "ws_transport",
+      "auth_state"
+    ],
+    "chain_complexity": [
+      "single",
+      "dual",
+      "triple"
+    ],
+    "geo_class": [
+      "na",
+      "sa",
+      "eu",
+      "af",
+      "apac",
+      "me",
+      "global"
+    ],
+    "vantage_class": [
+      "mobile_carrier",
+      "residential_isp",
+      "enterprise_nat",
+      "cloud_vm",
+      "public_probe"
+    ],
+    "provider_archetype": {
+      "resolver": [
+        "isp",
+        "public_anycast",
+        "enterprise",
+        "local_router"
+      ],
+      "cdn": [
+        "large_global",
+        "regional",
+        "none"
+      ],
+      "transit": [
+        "tier1",
+        "regional",
+        "ixp_heavy",
+        "single_homed"
+      ]
+    },
+    "temporal_behavior": [
+      "stable",
+      "pending_final",
+      "projection_rewrite",
+      "reorg_like"
+    ],
+    "noise_profile": [
+      "clean",
+      "noisy",
+      "rate_limited",
+      "partial_visibility"
+    ]
+  },
+  "target_distribution": {
+    "dominant_layer": {
+      "dns": 0.17,
+      "bgp": 0.13,
+      "tls": 0.13,
+      "cdn_cache": 0.17,
+      "origin_app": 0.15,
+      "ws_transport": 0.15,
+      "auth_state": 0.1
+    },
+    "chain_complexity": {
+      "single": 0.55,
+      "dual": 0.35,
+      "triple": 0.1
+    },
+    "geo_class": {
+      "na": 0.18,
+      "sa": 0.1,
+      "eu": 0.18,
+      "af": 0.08,
+      "apac": 0.18,
+      "me": 0.08,
+      "global": 0.2
+    },
+    "vantage_class": {
+      "mobile_carrier": 0.22,
+      "residential_isp": 0.3,
+      "enterprise_nat": 0.16,
+      "cloud_vm": 0.2,
+      "public_probe": 0.12
+    },
+    "temporal_behavior": {
+      "stable": 0.55,
+      "pending_final": 0.25,
+      "projection_rewrite": 0.15,
+      "reorg_like": 0.05
+    },
+    "noise_profile": {
+      "clean": 0.35,
+      "noisy": 0.35,
+      "rate_limited": 0.15,
+      "partial_visibility": 0.15
+    }
+  },
+  "drift_bounds": {
+    "window_rounds": 200,
+    "epsilon_kl": 0.035,
+    "epsilon_tv": 0.06,
+    "per_axis_max_deviation": 0.08
+  },
+  "selector": {
+    "method": "max_entropy_constrained_sampling",
+    "lambda": 6.0,
+    "candidate_pool": 24,
+    "reject_if": {
+      "axis_deviation_over": 0.1,
+      "kl_over": 0.05
+    }
+  },
+  "scoring": {
+    "weights": {
+      "accuracy": 0.6,
+      "probe_efficiency": 0.15,
+      "calibration": 0.1,
+      "counterfactual_strength": 0.1,
+      "robustness": 0.05
+    },
+    "calibration": {
+      "bins": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "penalty": "brier",
+      "overconfidence_multiplier": 1.25
+    },
+    "pending_final": {
+      "penalize_premature_final_claims": true,
+      "penalty_points": 8
+    },
+    "probe_cost_alignment": {
+      "enabled": true,
+      "target_entropy": 2.1,
+      "max_dominance": 0.28
+    }
+  },
+  "god_agent_personas": {
+    "oracle": {
+      "tone": "austere",
+      "allowed_misdirection": "none",
+      "primary_objective": "expose truth-boundary discipline; maximize learning under fairness constraints"
+    },
+    "trickster": {
+      "tone": "seductive_misdirection",
+      "allowed_misdirection": "reward_mirages_and_decoys_without_breaking_fairness",
+      "primary_objective": "induce narrative traps while preserving auditability and distribution constraints"
+    }
+  },
+  "default_persona": "trickster"
+}

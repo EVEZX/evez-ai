@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "name": "evez-openclaw",
+  "builds": [
+    {
+      "src": "evez_gateway.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "evez_gateway.py"
+    }
+  ],
+  "env": {
+    "GATEWAY_TOKEN": "@openclaw_gateway_token",
+    "GROQ_API_KEY": "@groq_api_key",
+    "OPENROUTER_API_KEY": "@openrouter_api_key"
+  }
+}

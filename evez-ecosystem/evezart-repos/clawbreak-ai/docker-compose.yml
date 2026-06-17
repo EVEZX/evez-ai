@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  clawbreak:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - clawbreak-data:/app/data
+    environment:
+      - CLAWBREAK_LLM_API_KEY=${CLAWBREAK_LLM_API_KEY:-}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  searxng:
+    image: searxng/searxng:latest
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./searxng-settings.yml:/etc/searxng/settings.yml:ro
+    restart: unless-stopped
+
+volumes:
+  clawbreak-data:

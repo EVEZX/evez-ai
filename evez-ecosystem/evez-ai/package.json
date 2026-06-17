@@ -1,0 +1,12 @@
+{
+  "name": "evez-ai",
+  "version": "2.0.0",
+  "description": "EVEZ AI SDK — OpenAI-compatible, 99% cheaper than GPT-4. Drop-in replacement with streaming support.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": ["openai", "ai", "llm", "api", "evez", "cheap", "free", "chatgpt", "sdk", "streaming"],
+  "author": "EvezArt",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/EvezArt/evez-ai" },
+  "homepage": "https://evez-api2.fly.dev"
+}

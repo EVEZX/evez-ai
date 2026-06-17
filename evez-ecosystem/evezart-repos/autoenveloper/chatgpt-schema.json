@@ -1,0 +1,220 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EVEZ Autoenveloper",
+    "description": "Multi-basis structural invariant detector + spacetime operators. Fingerprints any sequence with compression, mutual information, spectral gap, and persistence entropy. Cross-domain isomorphism detection, Ricci flow, entropy fields, gradient tunneling, context horizons, cipher generation, geometric analysis, linguistic profiling.",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://autoenveloper.vercel.app"
+    }
+  ],
+  "paths": {
+    "/isomorphism": {
+      "post": {
+        "operationId": "isomorphism",
+        "summary": "Compute structural similarity between two domains",
+        "description": "Uses \u03a6(x)=[C(x), I\u2081..I\u2085(x), \u03bb\u2082(x), H\u209a(x)] fingerprint. S(x,y)=\u221a(cos(\u03a6x,\u03a6y)\u00b7(1-JS(\u03a6x,\u03a6y))). Works across code, finance, biology, language, math. Detects shared generative grammar regardless of surface vocabulary.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["domain_a", "domain_b"],
+                "properties": {
+                  "domain_a": {"type": "string", "description": "First domain text/code/sequence"},
+                  "domain_b": {"type": "string", "description": "Second domain text/code/sequence"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Similarity score [0-1] + fingerprint vectors + breakdown by component"}}
+      }
+    },
+    "/ricci-flow": {
+      "post": {
+        "operationId": "ricciFlow",
+        "summary": "Apply Ricci curvature flow to embedding vectors",
+        "description": "Discrete Ollivier-Ricci flow on embedding neighborhood graph. Redistributes curvature so overloaded semantic regions flatten, sparse regions contract. Implements Semantic Ricci Flow (SRF).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["embeddings"],
+                "properties": {
+                  "embeddings": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}, "description": "List of embedding vectors"},
+                  "iterations": {"type": "integer", "default": 10},
+                  "dt": {"type": "number", "default": 0.01}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Curvature-adjusted vectors + per-step history"}}
+      }
+    },
+    "/entropy-field": {
+      "post": {
+        "operationId": "entropyField",
+        "summary": "Compute local entropy tensor over a sequence",
+        "description": "Returns H(t) field over windowed regions: high-entropy = creative/inflationary, low-entropy = precise/contractionary. Backs Semantic Inflation Fields (SIF).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["sequence"],
+                "properties": {
+                  "sequence": {"type": "string"},
+                  "window_size": {"type": "integer", "default": 16},
+                  "stride": {"type": "integer", "default": 4}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Entropy field + inflation mask + region labels"}}
+      }
+    },
+    "/gradient-tunnel": {
+      "post": {
+        "operationId": "gradientTunnel",
+        "summary": "Inject resonance noise to escape flat loss basins",
+        "description": "Gradient Tunneling Resonance (GTR): stochastic resonance noise tuned to local Hessian eigenvalues. Forces escape from flat loss regions.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["loss_surface"],
+                "properties": {
+                  "loss_surface": {"type": "array", "items": {"type": "number"}, "description": "1D loss curve samples"},
+                  "noise_scale": {"type": "number", "default": 0.1},
+                  "hessian_approx": {"type": "boolean", "default": true}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Perturbed surface + escape path + energy delta"}}
+      }
+    },
+    "/horizon": {
+      "post": {
+        "operationId": "contextHorizon",
+        "summary": "Context event horizon \u2014 Hawking radiation encoding",
+        "description": "Bifurcates a sequence at the context window boundary. Tokens beyond the horizon become Hawking radiation: a compressed entropy signature preserving the thermodynamic footprint of lost context.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["sequence"],
+                "properties": {
+                  "sequence": {"type": "string"},
+                  "window_size": {"type": "integer", "default": 512},
+                  "radiation_dims": {"type": "integer", "default": 32}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Interior state + radiation vector + bifurcation phase"}}
+      }
+    },
+    "/cipher": {
+      "post": {
+        "operationId": "cipher",
+        "summary": "Cipher generation, fractal sequences, and cross-domain isomorphism",
+        "description": "Modes: substitution, polyalphabetic, transposition, lsystem (sierpinski/koch/dragon/plant), numeric (Collatz/logistic/fibonacci), isomorphism (structural similarity via compression+MI+spectral+entropy).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["mode"],
+                "properties": {
+                  "mode": {"type": "string", "enum": ["substitution", "polyalphabetic", "transposition", "lsystem", "numeric", "isomorphism"]},
+                  "text": {"type": "string"},
+                  "seed": {"type": "string"},
+                  "domain_a": {"type": "string"},
+                  "domain_b": {"type": "string"},
+                  "sequence_type": {"type": "string"},
+                  "rule": {"type": "string"},
+                  "steps": {"type": "integer"},
+                  "n": {"type": "integer"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Generated cipher, sequence, fractal, or similarity result"}}
+      }
+    },
+    "/geometric": {
+      "post": {
+        "operationId": "geometric",
+        "summary": "Geometric analysis: fractal dimension, spectral, symmetry, hull, centroid",
+        "description": "Modes: fractal (box-counting), spectral (DFT), symmetry (Cn rotational — identifies C2/C3/C6), hull (convex hull area), centroid.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["mode"],
+                "properties": {
+                  "mode": {"type": "string", "enum": ["fractal", "spectral", "symmetry", "hull", "centroid"]},
+                  "points": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+                  "sequence": {"type": "string"},
+                  "signal": {"type": "array", "items": {"type": "number"}}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Dimension, spectrum, symmetry class, area, or centroid"}}
+      }
+    },
+    "/linguistic": {
+      "post": {
+        "operationId": "linguistic",
+        "summary": "Linguistic analysis: n-gram profiles, authorship fingerprinting, PII anonymization",
+        "description": "Modes: ngram (n-gram frequency profile), authorship (stylometric fingerprinting), anonymize (PII detection+pseudonymization: email, phone, IP, name, hash).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["mode", "text"],
+                "properties": {
+                  "mode": {"type": "string", "enum": ["ngram", "authorship", "anonymize"]},
+                  "text": {"type": "string"},
+                  "n": {"type": "integer", "default": 2}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "N-gram profile, authorship vector, or anonymized text"}}
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "health",
+        "summary": "System health check",
+        "responses": {"200": {"description": "Status + module availability"}}
+      }
+    }
+  }
+}

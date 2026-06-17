@@ -1,0 +1,50 @@
+name: EVEZ FIRE Video Auto-Upload
+# Triggered after each FIRE event Veo 3 render
+# Uploads to @lordevez YouTube channel automatically
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: 'Presigned MP4 URL to upload'
+        required: true
+      round:
+        description: 'Round number (e.g. 460)'
+        required: true
+      tau:
+        description: 'Tau value'
+        required: false
+        default: '0'
+      fire_type:
+        description: 'FIRE type (FIRE, HIGH_FIRE, EXTREME_FIRE)'
+        required: false
+        default: 'FIRE'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests google-auth google-auth-oauthlib google-api-python-client
+
+      - name: Upload FIRE video to YouTube
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          VIDEO_URL: ${{ github.event.inputs.video_url }}
+          ROUND: ${{ github.event.inputs.round }}
+          TAU: ${{ github.event.inputs.tau }}
+          FIRE_TYPE: ${{ github.event.inputs.fire_type }}
+        run: python .github/scripts/upload_fire_video.py
+
+      - name: Report result
+        if: always()
+        run: cat fire_upload_result.json 2>/dev/null || echo 'No result file'

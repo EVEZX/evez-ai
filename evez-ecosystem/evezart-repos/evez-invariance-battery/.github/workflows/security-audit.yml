@@ -1,0 +1,18 @@
+name: Security Audit
+on:
+  schedule:
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Security scan
+        run: |
+          pip install bandit safety
+          if [ -f requirements.txt ]; then safety check -r requirements.txt || true; fi
+          find . -name '*.py' -not -path './.git/*' | head -50 | xargs bandit -f json -o bandit-report.json || true

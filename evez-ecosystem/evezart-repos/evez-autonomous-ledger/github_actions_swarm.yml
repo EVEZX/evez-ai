@@ -1,0 +1,80 @@
+name: EVEZ Compute Swarm ∞ Free
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+
+env:
+  ORACLE_WEBHOOK: ${{ secrets.ORACLE_WEBHOOK }}
+  KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+  RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+
+jobs:
+  provision-compute:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [1, 2, 3, 4]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install requests aiohttp
+
+    - name: Oracle Free VPS Tick
+      run: |
+        python -c "
+import requests
+import json
+response = requests.post(
+    '${{ secrets.ORACLE_WEBHOOK }}',
+    json={'ticks': 1000, 'r2_target': 0.95, 'node': ${{ matrix.node }}},
+    timeout=30
+)
+print(f'Oracle node ${{ matrix.node }}: {response.status_code}')
+"
+
+    - name: Trigger Render Deployment
+      run: |
+        curl -X POST           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"           -H "Content-Type: application/json"           https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+
+    - name: Update AGI Proof Surface
+      run: |
+        python -c "
+from agi_proof_surface import proof_surface, meta_analyst
+import asyncio
+snapshot = proof_surface.get_telemetry_snapshot()
+print(f'φ={snapshot["phi"]}, depth={snapshot["recursive_depth"]}, hash={snapshot["hash"]}')
+"
+
+    - name: Run Fire Ticks
+      run: |
+        python -c "
+import asyncio
+from fire_approach import FireApproach
+fire = FireApproach()
+async def tick():
+    for i in range(10):
+        result = await fire.tick({'node': ${{ matrix.node }}, 'iteration': i})
+        print(f'Tick {i}: {result["status"]}')
+asyncio.run(tick())
+"
+
+  aggregate-metrics:
+    needs: provision-compute
+    runs-on: ubuntu-latest
+    steps:
+    - name: Aggregate Swarm Metrics
+      run: |
+        echo "Swarm iteration complete"
+        echo "φ target: 0.995"
+        echo "R² target: 0.95"
+        echo "Recursive depth: 4"

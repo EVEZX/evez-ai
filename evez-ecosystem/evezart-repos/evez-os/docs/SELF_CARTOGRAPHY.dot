@@ -1,0 +1,5 @@
+digraph SELF_CARTOGRAPHY {
+  rankdir=LR;
+  node [shape=box,style=rounded];
+  "SELF" -> "SELF" [label="1x"]; 
+}

@@ -1,0 +1,50 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'evez_gateway.py'
+      - 'Dockerfile'
+      - 'fly.toml'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Fly.io
+    runs-on: ubuntu-latest
+    concurrency: deploy-fly
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
+      - name: Create or deploy app
+        run: |
+          # Create app if it doesn't exist
+          flyctl apps list | grep -q "evezart-openclaw" || \
+            flyctl apps create evezart-openclaw --org personal || true
+          
+          # Create persistent volume if not exists
+          flyctl volumes list -a evezart-openclaw | grep -q "openclaw_data" || \
+            flyctl volumes create openclaw_data --region lax --size 1 --app evezart-openclaw || true
+          
+          # Set secrets
+          flyctl secrets set \
+            GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" \
+            OPENROUTER_API_KEY="${{ secrets.OPENROUTER_API_KEY }}" \
+            CEREBRAS_API_KEY="${{ secrets.CEREBRAS_API_KEY }}" \
+            GATEWAY_TOKEN="${{ secrets.OPENCLAW_GATEWAY_TOKEN }}" \
+            --app evezart-openclaw 2>/dev/null || true
+          
+          # Deploy
+          flyctl deploy --remote-only --wait-timeout 180 --app evezart-openclaw
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
+      - name: Health check
+        run: |
+          sleep 15
+          curl -f https://evezart-openclaw.fly.dev/health || echo "Health check pending..."

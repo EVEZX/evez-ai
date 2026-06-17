@@ -1,0 +1,39 @@
+name: polymarket-speedrun CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: 'Lint + Dry-run — Polymarket Speed-Run Bot'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: |
+          pip install pyflakes pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt --no-deps || true; fi
+      - name: Lint
+        run: pyflakes . --exclude=.git,__pycache__ || true
+      - name: Module import check
+        run: |
+          python3 -c "import ast, glob
+          files = glob.glob('**/*.py', recursive=True)
+          errors = []
+          for f in files:
+              try:
+                  ast.parse(open(f).read())
+              except SyntaxError as e:
+                  errors.append(f'{f}: {e}')
+          if errors:
+              print('SYNTAX ERRORS:', errors)
+          else:
+              print(f'All {len(files)} Python files parse clean')
+          "

@@ -1,0 +1,1 @@
+# EVEZ Claw API — no external dependencies needed for serverless endpoint

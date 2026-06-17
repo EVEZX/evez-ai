@@ -1,0 +1,35 @@
+{
+  "loop_id": "loop_spawning_detector_6h",
+  "title": "EVEZ Loop Spawning -- semantic drift detector spawns new loops",
+  "task_id": "cd33bb4b-67c8-4b4d-b11c-3b6eeab4717e",
+  "spawned_at": "2026-02-25T14:04Z",
+  "trigger": {
+    "type": "cron",
+    "config": {
+      "expression": "0 */6 * * *",
+      "timezone": "America/Los_Angeles"
+    }
+  },
+  "executor": "ai",
+  "action_summary": "Read SYSTEM_STATE.json + LOOP_SPAWN_STATE.md. Run 3 Twitter queries (interpretability, AI agent economy, ABS/agent behavior). Extract terms. Groq drift analysis vs previous snapshot. Spawn new loop if threshold met (likes>3 OR RTs>1 OR followers>500) AND topic not in active_loops. Update LOOP_SPAWN_STATE.md. Gist BUILD or SENSE entry. GitHub commit.",
+  "run_count": 18,
+  "last_run": "2026-02-28T23:06Z",
+  "loops_spawned": [
+    {"loop_id": "interpretability_monitor_4h", "spawned_at": "2026-02-25T14:04Z"},
+    {"loop_id": "onchain_agent_economy_8h", "spawned_at": "2026-02-26T00:08Z"},
+    {"loop_id": "verifiable_ai_environments_12h", "spawned_at": "2026-02-26T08:00Z"},
+    {"loop_id": "behavioral_science_monitor", "spawned_at": "2026-02-27T16:12Z"}
+  ],
+  "active_queries": [
+    "A: AI interpretability OR explainable AI OR mechanistic interpretability -is:retweet [HEALTHY]",
+    "B: AI agent economy OR autonomous AI economy -is:retweet lang:en [RECOVERING 0/3]",
+    "C: Agentic Behavioral Science OR AI agent behavior OR agent decision bias -is:retweet lang:en [HEALTHY]"
+  ],
+  "run18_result": {
+    "spawn": false,
+    "drift_detected": true,
+    "new_terms": ["KYA_know_your_agent", "LLM_circuit_tracing", "alien_anatomy", "correctness_nondeterministic_AI_agents"],
+    "reason": "All new terms are sub-topics of existing active loops",
+    "query_b_recovery": true
+  }
+}

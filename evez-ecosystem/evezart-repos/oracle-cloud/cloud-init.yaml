@@ -1,0 +1,251 @@
+#cloud-config
+# EVEZ-OS Cloud-Init — Oracle Cloud ARM64 Free Tier
+# Boots into a fully operational EVEZ-OS stack
+# Architecture: aarch64 (Ampere A1)
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - git
+  - curl
+  - wget
+  - build-essential
+  - python3
+  - python3-pip
+  - python3-venv
+  - nginx
+  - certbot
+  - python3-certbot-nginx
+  - fail2ban
+  - ufw
+  - htop
+  - tmux
+  - jq
+  - unzip
+  - software-properties-common
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+  - lsb-release
+
+write_files:
+  # --- Mount block volume on first boot ---
+  - path: /opt/evez/scripts/mount-data.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      # Find the block volume (skip boot disk sda)
+      DATA_DISK=$(lsblk -dnpo NAME,SIZE | grep -v '/dev/sda' | head -1 | awk '{print $1}')
+      if [ -n "$DATA_DISK" ]; then
+        if ! blkid "$DATA_DISK" | grep -q 'TYPE='; then
+          mkfs.ext4 "$DATA_DISK"
+        fi
+        mkdir -p /mnt/evez-data
+        # Get UUID for fstab
+        UUID=$(blkid -s UUID -o value "$DATA_DISK")
+        if ! grep -q "$UUID" /etc/fstab; then
+          echo "UUID=$UUID /mnt/evez-data ext4 defaults 0 2" >> /etc/fstab
+        fi
+        mount /mnt/evez-data
+        echo "Block volume mounted at /mnt/evez-data"
+      else
+        echo "No block volume found — skipping mount"
+      fi
+
+  # --- Install Node.js 22 ---
+  - path: /opt/evez/scripts/install-node.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      apt-get install -y nodejs
+      npm install -g pnpm pm2
+      echo "Node.js $(node -v) installed"
+
+  # --- Install Python 3.12 ---
+  - path: /opt/evez/scripts/install-python.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      # Check if 3.12 is already available
+      if python3.12 --version &>/dev/null; then
+        echo "Python 3.12 already installed"
+        exit 0
+      fi
+      add-apt-repository -y ppa:deadsnakes/ppa
+      apt-get update
+      apt-get install -y python3.12 python3.12-venv python3.12-dev
+      update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+      echo "Python $(python3 --version) installed"
+      # Install pip for 3.12
+      curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
+      echo "pip installed for Python 3.12"
+
+  # --- Install Docker ---
+  - path: /opt/evez/scripts/install-docker.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+      echo "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+      apt-get update
+      apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+      systemctl enable docker
+      systemctl start docker
+      usermod -aG docker ubuntu
+      echo "Docker $(docker --version) installed"
+
+  # --- Clone and deploy EVEZ-OS ---
+  - path: /opt/evez/scripts/deploy-evez.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      export DEBIAN_FRONTEND=noninteractive
+      export NODE_ENV=production
+      export EVEZ_HOME=/opt/evez
+
+      # Clone EVEZ-OS main repo
+      if [ ! -d "$EVEZ_HOME/evez-os" ]; then
+        git clone https://github.com/EVEZ-OS/evez-os.git "$EVEZ_HOME/evez-os"
+      fi
+
+      cd "$EVEZ_HOME/evez-os"
+
+      # Run the full deployment if the script exists
+      if [ -f "deploy-full.sh" ]; then
+        bash deploy-full.sh --non-interactive
+      else
+        # Fallback: manual setup
+        echo "deploy-full.sh not found — running manual setup"
+
+        # Install deps
+        if [ -f "package.json" ]; then
+          pnpm install --prod
+        fi
+
+        # Build if needed
+        if [ -f "package.json" ] && grep -q '"build"' package.json; then
+          pnpm build
+        fi
+
+        # Start with pm2 if ecosystem config exists
+        if [ -f "ecosystem.config.js" ] || [ -f "ecosystem.config.cjs" ]; then
+          pm2 start ecosystem.config.js --env production
+          pm2 save
+          pm2 startup
+        fi
+      fi
+
+      echo "EVEZ-OS deployment complete"
+
+  # --- Firewall setup ---
+  - path: /opt/evez/scripts/setup-firewall.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -e
+      ufw default deny incoming
+      ufw default allow outgoing
+      ufw allow 22/tcp
+      ufw allow 80/tcp
+      ufw allow 443/tcp
+      ufw allow 8080:8100/tcp
+      ufw allow 18789/tcp
+      ufw --force enable
+      echo "UFW firewall configured"
+
+  # --- Health check service ---
+  - path: /etc/systemd/system/evez-healthcheck.service
+    permissions: '0644'
+    owner: root:root
+    content: |
+      [Unit]
+      Description=EVEZ-OS Health Check
+      After=network.target
+
+      [Service]
+      Type=simple
+      ExecStart=/bin/bash -c 'while true; do curl -sf http://localhost:18789/health || echo "HEALTH CHECK FAILED"; sleep 60; done'
+      Restart=always
+      RestartSec=10
+
+      [Install]
+      WantedBy=multi-user.target
+
+  # --- PM2 systemd service ---
+  - path: /etc/systemd/system/pm2-root.service
+    permissions: '0644'
+    owner: root:root
+    content: |
+      [Unit]
+      Description=PM2 process manager
+      After=network.target
+
+      [Service]
+      Type=forking
+      ExecStart=/usr/lib/node_modules/pm2/bin/pm2 resurrect
+      ExecStop=/usr/lib/node_modules/pm2/bin/pm2 kill
+      ExecReload=/usr/lib/node_modules/pm2/bin/pm2 reload all
+      Restart=always
+      RestartSec=10
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  # 1. Mount block volume
+  - bash /opt/evez/scripts/mount-data.sh
+
+  # 2. Install toolchains
+  - bash /opt/evez/scripts/install-node.sh
+  - bash /opt/evez/scripts/install-python.sh
+  - bash /opt/evez/scripts/install-docker.sh
+
+  # 3. Set up swap (24GB RAM but just in case)
+  - fallocate -l 4G /swapfile
+  - chmod 600 /swapfile
+  - mkswap /swapfile
+  - swapon /swapfile
+  - echo '/swapfile none swap sw 0 0' >> /etc/fstab
+
+  # 4. Configure system limits
+  - echo 'fs.file-max = 65535' >> /etc/sysctl.conf
+  - echo '* soft nofile 65535' >> /etc/security/limits.conf
+  - echo '* hard nofile 65535' >> /etc/security/limits.conf
+  - sysctl -p
+
+  # 5. Deploy EVEZ-OS
+  - bash /opt/evez/scripts/deploy-evez.sh
+
+  # 6. Firewall
+  - bash /opt/evez/scripts/setup-firewall.sh
+
+  # 7. Enable services
+  - systemctl enable evez-healthcheck
+  - systemctl start evez-healthcheck
+  - systemctl enable pm2-root
+  - systemctl start pm2-root
+
+  # 8. Final status
+  - echo "========================================="
+  - echo "EVEZ-OS DEPLOYMENT COMPLETE"
+  - echo "Node.js: $(node -v)"
+  - echo "Python: $(python3 --version)"
+  - echo "Docker: $(docker --version)"
+  - echo "UFW Status:"
+  - ufw status
+  - echo "Listening ports:"
+  - ss -tlnp
+  - echo "========================================="

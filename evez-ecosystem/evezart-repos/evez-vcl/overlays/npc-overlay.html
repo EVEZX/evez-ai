@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HONEYPOT NPC WITNESS REGISTRY — LIVE THREAT BOARD</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --bg: #000408;
+    --panel-bg: rgba(0, 8, 20, 0.88);
+    --border-dim: rgba(0, 200, 255, 0.18);
+    --border-active: rgba(0, 200, 255, 0.6);
+    --cyan: #00c8ff;
+    --cyan-dim: rgba(0, 200, 255, 0.45);
+    --red: #ff2244;
+    --orange: #ff8800;
+    --yellow: #ffe000;
+    --green: #00ff88;
+    --purple: #aa44ff;
+    --text: #c8e8ff;
+    --text-dim: rgba(200, 232, 255, 0.55);
+    --glow-high: 0 0 12px #ff2244, 0 0 28px rgba(255,34,68,0.5), 0 0 60px rgba(255,34,68,0.2);
+    --glow-med:  0 0 8px #ff8800, 0 0 20px rgba(255,136,0,0.4);
+    --glow-low:  0 0 6px #ffe000, 0 0 14px rgba(255,224,0,0.3);
+    --glow-safe: 0 0 6px #00ff88, 0 0 14px rgba(0,255,136,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: transparent;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── HEADER BAR ── */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    background: linear-gradient(90deg, rgba(0,8,20,0.97) 0%, rgba(0,20,40,0.92) 100%);
+    border-bottom: 1px solid var(--border-active);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    z-index: 100;
+  }
+
+  #header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pulse-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red), 0 0 16px rgba(255,34,68,0.6);
+    animation: dot-pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  #header-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+    text-transform: uppercase;
+  }
+
+  #header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+  }
+
+  #entity-count {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  #refresh-timer {
+    color: var(--text-dim);
+    font-size: 9px;
+  }
+
+  #last-update {
+    color: var(--text-dim);
+  }
+
+  /* ── CARD GRID ── */
+  #card-grid {
+    position: fixed;
+    top: 52px;
+    left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+    padding: 8px 12px 12px;
+    overflow: hidden;
+  }
+
+  /* ── NPC CARD ── */
+  .npc-card {
+    width: 260px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    padding: 10px 12px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    animation: card-enter 0.4s ease-out both;
+  }
+
+  @keyframes card-enter {
+    from { opacity: 0; transform: translateY(-10px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Corner brackets */
+  .npc-card::before,
+  .npc-card::after {
+    content: '';
+    position: absolute;
+    width: 10px; height: 10px;
+    border-color: var(--cyan-dim);
+    border-style: solid;
+  }
+  .npc-card::before { top: 3px; left: 3px; border-width: 1px 0 0 1px; }
+  .npc-card::after  { bottom: 3px; right: 3px; border-width: 0 1px 1px 0; }
+
+  /* Threat-level left bar */
+  .npc-card .threat-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .npc-card.threat-CRITICAL .threat-bar { background: var(--red); box-shadow: var(--glow-high); }
+  .npc-card.threat-HIGH     .threat-bar { background: var(--orange); box-shadow: var(--glow-med); }
+  .npc-card.threat-MEDIUM   .threat-bar { background: var(--yellow); box-shadow: var(--glow-low); }
+  .npc-card.threat-LOW      .threat-bar { background: var(--green); box-shadow: var(--glow-safe); }
+  .npc-card.threat-UNKNOWN  .threat-bar { background: var(--purple); }
+
+  /* High-confidence pulse */
+  .npc-card.high-confidence {
+    border-color: rgba(255,34,68,0.55);
+    animation: card-enter 0.4s ease-out both, hc-glow 2.8s ease-in-out infinite;
+  }
+
+  @keyframes hc-glow {
+    0%, 100% { box-shadow: 0 0 6px rgba(255,34,68,0.2), inset 0 0 12px rgba(255,34,68,0.04); }
+    50%       { box-shadow: 0 0 18px rgba(255,34,68,0.55), inset 0 0 22px rgba(255,34,68,0.10); }
+  }
+
+  /* Card header row */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 7px;
+    padding-left: 4px;
+  }
+
+  .archetype-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 4px rgba(0,200,255,0.5));
+  }
+
+  .card-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .codename {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 8px rgba(0,200,255,0.6);
+  }
+
+  .card-tags {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 3px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 7.5px;
+    letter-spacing: 1px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .tag-threat-CRITICAL { background: rgba(255,34,68,0.2); color: var(--red); border: 1px solid rgba(255,34,68,0.5); }
+  .tag-threat-HIGH     { background: rgba(255,136,0,0.2); color: var(--orange); border: 1px solid rgba(255,136,0,0.5); }
+  .tag-threat-MEDIUM   { background: rgba(255,224,0,0.15); color: var(--yellow); border: 1px solid rgba(255,224,0,0.4); }
+  .tag-threat-LOW      { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+  .tag-threat-UNKNOWN  { background: rgba(170,68,255,0.15); color: var(--purple); border: 1px solid rgba(170,68,255,0.4); }
+
+  .tag-country {
+    background: rgba(0,200,255,0.1);
+    color: var(--cyan);
+    border: 1px solid rgba(0,200,255,0.3);
+  }
+
+  .tag-hc {
+    background: rgba(255,34,68,0.15);
+    color: var(--red);
+    border: 1px solid rgba(255,34,68,0.4);
+    animation: hc-tag-flash 1.4s ease-in-out infinite;
+  }
+
+  @keyframes hc-tag-flash {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+  }
+
+  /* Behavior summary */
+  .behavior {
+    font-size: 8.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    padding-left: 4px;
+    border-left: 1px solid var(--border-dim);
+    margin-top: 2px;
+    max-height: 36px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  /* ── STATUS / EMPTY STATE ── */
+  #status-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(0,4,8,0.9);
+    z-index: 200;
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 2px;
+  }
+
+  #status-overlay.hidden { display: none; }
+
+  #status-icon { font-size: 36px; }
+  #status-msg  { font-size: 12px; color: var(--cyan); text-shadow: 0 0 12px var(--cyan); }
+  #status-sub  { font-size: 9px; color: var(--text-dim); }
+
+  /* ── SCAN LINE ANIMATION ── */
+  #scan-line {
+    position: fixed;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,200,255,0.4), transparent);
+    box-shadow: 0 0 10px rgba(0,200,255,0.3);
+    pointer-events: none;
+    z-index: 9998;
+    animation: scan 5s linear infinite;
+    top: 44px;
+  }
+
+  @keyframes scan {
+    0%   { top: 44px; opacity: 0.8; }
+    90%  { opacity: 0.8; }
+    100% { top: 100vh; opacity: 0; }
+  }
+
+  /* ── ARCHETYPE MAP ── */
+  /* handled in JS */
+
+  /* NEW entity flash */
+  .npc-card.is-new {
+    animation: card-enter 0.4s ease-out both, new-flash 0.9s ease-out 0.4s both;
+  }
+
+  @keyframes new-flash {
+    0%   { box-shadow: 0 0 0 2px rgba(0,200,255,0.9), 0 0 28px rgba(0,200,255,0.7); }
+    100% { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Scan line -->
+<div id="scan-line"></div>
+
+<!-- Header -->
+<div id="header">
+  <div id="header-left">
+    <div class="pulse-dot"></div>
+    <div id="header-title">⬡ HONEYPOT NPC — WITNESS REGISTRY</div>
+  </div>
+  <div id="header-right">
+    <span>ENTITIES: <span id="entity-count">—</span></span>
+    <span id="last-update">—</span>
+    <span id="refresh-timer">REFRESH IN <span id="countdown">60</span>s</span>
+  </div>
+</div>
+
+<!-- Status overlay (loading / error / empty) -->
+<div id="status-overlay">
+  <div id="status-icon">⬡</div>
+  <div id="status-msg">INITIALIZING FEED…</div>
+  <div id="status-sub">ENDPOINT: /witness-registry/api/entities.json</div>
+</div>
+
+<!-- Card grid -->
+<div id="card-grid"></div>
+
+<script>
+const ENDPOINT = 'https://evezart.github.io/witness-registry/api/entities.json';
+const REFRESH_MS = 60000;
+const HIGH_CONFIDENCE_THRESHOLD = 0.75; // entities with confidence >= this glow
+
+const ARCHETYPE_ICONS = {
+  honeypot:       '🕸',
+  disinfo:        '📡',
+  coordinator:    '🧠',
+  observer:       '👁',
+  provocateur:    '⚡',
+  collector:      '🗄',
+  impersonator:   '🎭',
+  amplifier:      '📢',
+  recruiter:      '🪤',
+  facilitator:    '🔗',
+  gatekeeper:     '🔒',
+  infiltrator:    '🐍',
+  analyst:        '🔬',
+  unknown:        '❓',
+  default:        '◈'
+};
+
+const THREAT_ORDER = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, UNKNOWN: 4 };
+
+let countdown = 60;
+let knownIds = new Set();
+
+function archetypeIcon(archetype) {
+  if (!archetype) return ARCHETYPE_ICONS.default;
+  const key = archetype.toLowerCase().replace(/[\s\-_]+/g, '');
+  for (const [k, v] of Object.entries(ARCHETYPE_ICONS)) {
+    if (key.includes(k)) return v;
+  }
+  return ARCHETYPE_ICONS.default;
+}
+
+function threatClass(level) {
+  const l = (level || '').toUpperCase();
+  return ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].includes(l) ? l : 'UNKNOWN';
+}
+
+function isHighConfidence(entity) {
+  const c = parseFloat(entity.confidence ?? entity.confidence_score ?? entity.score ?? 0);
+  return c >= HIGH_CONFIDENCE_THRESHOLD || entity.high_confidence === true;
+}
+
+function formatTime(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+  } catch { return iso; }
+}
+
+function buildCard(entity, isNew) {
+  const threat = threatClass(entity.threat_level || entity.threat || entity.risk_level);
+  const hc = isHighConfidence(entity);
+  const icon = archetypeIcon(entity.archetype || entity.type || entity.role);
+  const codename = entity.codename || entity.name || entity.id || 'UNKNOWN';
+  const country = entity.country || entity.origin || entity.nation || '';
+  const behavior = entity.behavior_summary || entity.behavior || entity.description || entity.summary || '';
+
+  const div = document.createElement('div');
+  div.className = [
+    'npc-card',
+    `threat-${threat}`,
+    hc ? 'high-confidence' : '',
+    isNew ? 'is-new' : ''
+  ].filter(Boolean).join(' ');
+
+  div.innerHTML = `
+    <div class="threat-bar"></div>
+    <div class="card-header">
+      <div class="archetype-icon">${icon}</div>
+      <div class="card-meta">
+        <div class="codename">${escHtml(codename)}</div>
+        <div class="card-tags">
+          <span class="tag tag-threat-${threat}">${threat}</span>
+          ${country ? `<span class="tag tag-country">${escHtml(country)}</span>` : ''}
+          ${hc ? `<span class="tag tag-hc">⚠ HI-CONF</span>` : ''}
+        </div>
+      </div>
+    </div>
+    ${behavior ? `<div class="behavior">${escHtml(behavior)}</div>` : ''}
+  `;
+  return div;
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function showStatus(icon, msg, sub) {
+  document.getElementById('status-icon').textContent = icon;
+  document.getElementById('status-msg').textContent = msg;
+  document.getElementById('status-sub').textContent = sub || '';
+  document.getElementById('status-overlay').classList.remove('hidden');
+}
+
+function hideStatus() {
+  document.getElementById('status-overlay').classList.add('hidden');
+}
+
+async function fetchAndRender() {
+  try {
+    const res = await fetch(ENDPOINT + '?_t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    let data = await res.json();
+
+    // Normalize: support { entities: [...] } or [ ... ] directly
+    let entities = Array.isArray(data) ? data : (data.entities || data.data || data.records || []);
+
+    if (!entities.length) {
+      showStatus('◌', 'NO ENTITIES INDEXED', 'Registry is empty or feed not yet populated');
+      document.getElementById('entity-count').textContent = '0';
+      document.getElementById('last-update').textContent = 'UPDATED ' + formatTime(data.updated_at || new Date().toISOString());
+      return;
+    }
+
+    hideStatus();
+
+    // Sort: CRITICAL → HIGH → MEDIUM → LOW → UNKNOWN, then high-confidence first
+    entities.sort((a, b) => {
+      const ta = THREAT_ORDER[threatClass(a.threat_level || a.threat || a.risk_level)] ?? 4;
+      const tb = THREAT_ORDER[threatClass(b.threat_level || b.threat || b.risk_level)] ?? 4;
+      if (ta !== tb) return ta - tb;
+      return (isHighConfidence(b) ? 1 : 0) - (isHighConfidence(a) ? 1 : 0);
+    });
+
+    const grid = document.getElementById('card-grid');
+    grid.innerHTML = '';
+
+    const newIds = new Set(entities.map(e => e.id || e.codename || e.name));
+    entities.forEach(entity => {
+      const id = entity.id || entity.codename || entity.name;
+      const isNew = !knownIds.has(id);
+      grid.appendChild(buildCard(entity, isNew));
+    });
+    knownIds = newIds;
+
+    document.getElementById('entity-count').textContent = entities.length;
+    document.getElementById('last-update').textContent =
+      'UPDATED ' + formatTime(data.updated_at || new Date().toISOString());
+
+  } catch (err) {
+    console.error('Feed fetch error:', err);
+    showStatus('⚠', 'FEED UNAVAILABLE', err.message);
+  }
+}
+
+// Countdown timer
+function startCountdown() {
+  countdown = 60;
+  const el = document.getElementById('countdown');
+  const tick = setInterval(() => {
+    countdown--;
+    el.textContent = countdown;
+    if (countdown <= 0) {
+      clearInterval(tick);
+      fetchAndRender().then(startCountdown);
+    }
+  }, 1000);
+}
+
+// Boot
+fetchAndRender().then(startCountdown);
+</script>
+</body>
+</html>

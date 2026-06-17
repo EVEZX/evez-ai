@@ -1,0 +1,25 @@
+{
+  "autonomous_expansion": {
+    "twitter_agent": {
+      "interval_minutes": 30,
+      "posts_per_hour": 2,
+      "target_accounts": ["evez666", "evezart", "evez_os"],
+      "content_style": "brutal_unfiltered"
+    },
+    "outreach_expansion": {
+      "daily_target": 100,
+      "channels": ["twitter_dm", "linkedin", "telegram_groups", "reddit"],
+      "conversion_target": 0.05
+    },
+    "github_auto": {
+      "commit_interval": 60,
+      "push_enabled": true,
+      "growth_tracking": true
+    },
+    "music_engine": {
+      "continuous": true,
+      "seed_rotation": "hourly",
+      "output_dir": "assets/music/"
+    }
+  }
+}

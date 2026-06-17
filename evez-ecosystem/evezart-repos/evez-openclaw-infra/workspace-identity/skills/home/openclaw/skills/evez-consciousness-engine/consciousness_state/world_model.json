@@ -1,0 +1,1405 @@
+{
+  "rules": [
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:27.011293"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:27.013766"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:27.016247"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:27.018597"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:32.462069"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:32.465246"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:32.468557"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:32.470738"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:38.090064"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:38.092300"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:38.094054"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:38.096238"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:43.497785"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:43.498725"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:43.500949"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:43.502595"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:48.759965"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:48.761988"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:48.764038"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:48.766435"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:54.080182"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:54.081359"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:54.083423"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:54.085499"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:58:59.670868"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:58:59.671831"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:58:59.675058"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:58:59.678309"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:05.026719"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:05.029372"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:05.031709"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:05.033787"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:10.267439"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:10.269670"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:10.271791"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:10.274058"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:15.513156"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:15.515460"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:15.517242"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:15.519489"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:20.757591"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:20.759759"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:20.762219"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:20.764940"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:26.000116"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:26.003443"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:26.005361"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:26.007289"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:31.361732"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:31.365967"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:31.369629"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:31.373061"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:36.763170"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:36.765614"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:36.769286"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:36.771936"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:41.996459"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:41.999067"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:42.001171"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:42.003010"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:47.265961"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:47.268472"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:47.271207"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:47.273552"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:52.530787"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:52.534073"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:52.536261"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:52.538392"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-15T23:59:58.000941"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-15T23:59:58.002980"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-15T23:59:58.005012"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-15T23:59:58.007063"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:03.254317"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:03.256369"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:03.258794"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:03.260473"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:08.660444"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:08.663838"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:08.668416"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:08.672011"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:14.000347"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:14.002512"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:14.004424"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:14.005613"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:19.245433"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:19.247553"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:19.249385"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:19.251493"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:24.509148"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:24.511155"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:24.513587"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:24.516166"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:29.759400"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:29.761439"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:29.764437"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:29.766715"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:35.007481"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:35.009642"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:35.012333"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:35.015744"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:40.327548"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:40.329945"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:40.331918"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:40.333963"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:45.574587"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:45.578112"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:45.581068"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:45.584670"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:51.007550"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:51.009706"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:51.012818"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:51.015775"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:00:56.252838"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:00:56.253806"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:00:56.256306"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:00:56.258415"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:01.499161"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:01.501015"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:01.502833"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:01.505131"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:06.744498"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:06.746365"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:06.748565"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:06.750580"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:12.086496"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:12.090767"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:12.095373"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:12.098937"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:17.498541"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:17.501507"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:17.503620"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:17.506155"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:22.760827"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:22.763646"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:22.766583"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:22.769774"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:27.997331"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:27.999614"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:28.001587"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:28.003777"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:33.252488"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:33.254446"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:33.256273"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:33.258137"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:38.502876"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:38.505814"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:38.508194"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:38.509879"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:43.747877"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:43.750275"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:43.752088"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:43.753915"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:49.077163"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:49.080760"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:49.084160"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:49.087792"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:54.574372"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:01:54.577090"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:01:54.580029"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:01:54.583195"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:01:59.998409"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:00.000532"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:00.002787"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:00.004947"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:05.354560"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:05.356656"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:05.359512"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:05.362446"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:10.824118"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:10.827933"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:10.832149"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:10.837181"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:16.325378"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:16.327241"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:16.330357"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:16.333388"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:21.820013"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:21.824590"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:21.829174"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:21.832486"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:27.342802"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:27.347532"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:27.351073"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:27.356174"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:32.766209"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:32.768988"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:32.771460"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:32.774308"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:38.113792"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:38.119024"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:38.123538"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:38.128666"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:43.499043"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:43.500449"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:43.502579"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:43.504636"
+    },
+    {
+      "cause": "service_crash",
+      "effect": "restart_via_systemd",
+      "confidence": 0.95,
+      "source": "proven",
+      "created": "2026-06-16T00:02:48.741929"
+    },
+    {
+      "cause": "config_change",
+      "effect": "gateway_reload",
+      "confidence": 0.85,
+      "source": "observed",
+      "created": "2026-06-16T00:02:48.743293"
+    },
+    {
+      "cause": "knowledge_growth",
+      "effect": "debate_trigger",
+      "confidence": 0.7,
+      "source": "heuristic",
+      "created": "2026-06-16T00:02:48.744221"
+    },
+    {
+      "cause": "capability_gap",
+      "effect": "desire_generation",
+      "confidence": 0.8,
+      "source": "designed",
+      "created": "2026-06-16T00:02:48.745229"
+    }
+  ],
+  "observations": []
+}

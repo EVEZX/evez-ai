@@ -1,0 +1,6 @@
+{"type": "INTERACTION", "source": "alice", "target": "bob", "relation": "auth", "weight": 1.0, "powered_by": "EVEZ"}
+{"type": "INTERACTION", "source": "alice", "target": "carol", "relation": "transact", "weight": 2.0, "powered_by": "EVEZ"}
+{"type": "INTERACTION", "source": "alice", "target": "dave", "relation": "communicate", "weight": 1.5, "powered_by": "EVEZ"}
+{"type": "INTERACTION", "source": "alice", "target": "eve", "relation": "build", "weight": 3.0, "powered_by": "EVEZ"}
+{"type": "INTERACTION", "source": "bob", "target": "carol", "relation": "transact", "weight": 1.0, "powered_by": "EVEZ"}
+{"type": "INTERACTION", "source": "dave", "target": "eve", "relation": "communicate", "weight": 1.0, "powered_by": "EVEZ"}

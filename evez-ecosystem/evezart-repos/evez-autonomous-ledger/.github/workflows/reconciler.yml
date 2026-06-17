@@ -1,0 +1,22 @@
+name: Reconciler -> pulse.json (15-min)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reconcile:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run reconciler
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/runtime/reconciler.py

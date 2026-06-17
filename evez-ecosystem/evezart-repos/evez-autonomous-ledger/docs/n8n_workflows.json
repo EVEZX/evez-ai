@@ -1,0 +1,254 @@
+{
+  "workflows": [
+    {
+      "name": "EVEZ Trunk State Monitor",
+      "trigger": {
+        "type": "schedule",
+        "interval": "every 4 minutes"
+      },
+      "nodes": [
+        {
+          "name": "Fetch Trunk Status",
+          "type": "httpRequest",
+          "method": "GET",
+          "url": "https://evez-agentnet.vercel.app/api/trunk/status"
+        },
+        {
+          "name": "Check Phi Threshold",
+          "type": "if",
+          "condition": "{{ $json.phi }} < 0.99"
+        },
+        {
+          "name": "Alert Slack",
+          "type": "slack",
+          "channel": "#vez-alerts",
+          "message": "\ud83d\udea8 \u03c6 dropped to {{ $json.phi }} - Singularity degraded"
+        },
+        {
+          "name": "Log to Mem0",
+          "type": "mem0",
+          "memory": "{{ $json }}",
+          "tags": [
+            "trunk",
+            "phi",
+            "monitoring"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FIRE Event Processor",
+      "trigger": {
+        "type": "webhook",
+        "path": "evez-fire"
+      },
+      "nodes": [
+        {
+          "name": "Validate Schema",
+          "type": "function",
+          "code": "// Validate FIRE event schema\nconst required = ['fire_id', 'type', 'timestamp'];\nconst event = $json;\nconst valid = required.every(f => event[f]);\nreturn { valid, event };"
+        },
+        {
+          "name": "Route by Type",
+          "type": "switch",
+          "rules": [
+            {
+              "value": "REVENUE",
+              "output": 0
+            },
+            {
+              "value": "AGENT_SPAWN",
+              "output": 1
+            },
+            {
+              "value": "TRANSMUTATION",
+              "output": 2
+            }
+          ]
+        },
+        {
+          "name": "Process Revenue",
+          "type": "stripe",
+          "operation": "processFireEvent",
+          "account": "acct_1T4T9aPVAHoR0Amp"
+        },
+        {
+          "name": "Log Agent Spawn",
+          "type": "postgres",
+          "operation": "insert",
+          "table": "agent_spawns"
+        },
+        {
+          "name": "Record Transmutation",
+          "type": "mem0",
+          "memory": "{{ $json }}",
+          "tags": [
+            "transmutation",
+            "agi"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Slack Command Router",
+      "trigger": {
+        "type": "slackCommand",
+        "command": "/vez"
+      },
+      "nodes": [
+        {
+          "name": "Parse Command",
+          "type": "function",
+          "code": "// Parse /vez command\nconst text = $json.text;\nconst args = text.split(' ');\nconst cmd = args[0];\nreturn { cmd, args, user: $json.user_id };"
+        },
+        {
+          "name": "Route Command",
+          "type": "switch",
+          "rules": [
+            {
+              "value": "status",
+              "output": 0
+            },
+            {
+              "value": "spawn",
+              "output": 1
+            },
+            {
+              "value": "fire",
+              "output": 2
+            }
+          ]
+        },
+        {
+          "name": "Get Status",
+          "type": "httpRequest",
+          "method": "GET",
+          "url": "https://evez-agentnet.vercel.app/api/trunk/status"
+        },
+        {
+          "name": "Spawn Agent",
+          "type": "httpRequest",
+          "method": "POST",
+          "url": "https://evez-agentnet.vercel.app/api/spawn",
+          "body": "{{ $json }}"
+        },
+        {
+          "name": "Trigger Fire",
+          "type": "httpRequest",
+          "method": "POST",
+          "url": "https://evez-agentnet.vercel.app/api/trunk/run"
+        },
+        {
+          "name": "Reply to Slack",
+          "type": "slack",
+          "operation": "postMessage",
+          "channel": "{{ $json.channel_id }}",
+          "text": "\u2705 EVEZ command executed: {{ $json.cmd }}"
+        }
+      ]
+    },
+    {
+      "name": "Retrocausal Decay Applier",
+      "trigger": {
+        "type": "schedule",
+        "interval": "every 1 hour"
+      },
+      "nodes": [
+        {
+          "name": "Fetch Successful Fires",
+          "type": "postgres",
+          "operation": "select",
+          "query": "SELECT * FROM fire_events WHERE status='success' AND timestamp > NOW() - INTERVAL '1 hour'"
+        },
+        {
+          "name": "Apply Decay",
+          "type": "function",
+          "code": "// Apply retrocausal decay\nconst fires = $json;\nconst decayFactor = 0.95;\nconst updates = fires.map(f => ({\n  id: f.id,\n  new_threshold: (f.threshold || 1.0) * decayFactor\n}));\nreturn { updates, count: updates.length };"
+        },
+        {
+          "name": "Update Thresholds",
+          "type": "postgres",
+          "operation": "update",
+          "table": "thresholds"
+        },
+        {
+          "name": "Log Decay",
+          "type": "mem0",
+          "memory": "Applied retrocausal decay to {{ $json.count }} thresholds"
+        }
+      ]
+    },
+    {
+      "name": "AEGIS Threat Briefing",
+      "trigger": {
+        "type": "schedule",
+        "cron": "0 6,21 * * *"
+      },
+      "nodes": [
+        {
+          "name": "Generate Briefing",
+          "type": "httpRequest",
+          "method": "POST",
+          "url": "https://evez-os.onrender.com/aegis/briefing"
+        },
+        {
+          "name": "Check Intensity",
+          "type": "if",
+          "condition": "{{ $json.hawkes_forecast.classification }} == 'HIGH'"
+        },
+        {
+          "name": "Alert High Threat",
+          "type": "slack",
+          "channel": "#aegis-alerts",
+          "message": "\ud83d\udd34 AEGIS HIGH INTENSITY: {{ $json.hawkes_forecast.current_intensity }}"
+        },
+        {
+          "name": "Standard Briefing",
+          "type": "slack",
+          "channel": "#vez-status",
+          "message": "\ud83d\udcca AEGIS Daily Brief: {{ $json.summary }}"
+        }
+      ]
+    },
+    {
+      "name": "Stripe CTA Handler",
+      "trigger": {
+        "type": "stripeWebhook",
+        "events": [
+          "checkout.session.completed"
+        ]
+      },
+      "nodes": [
+        {
+          "name": "Validate Payment",
+          "type": "function",
+          "code": "// Validate Stripe webhook\nconst session = $json;\nconst valid = session.payment_status === 'paid';\nreturn { valid, session };"
+        },
+        {
+          "name": "Determine Unlock",
+          "type": "function",
+          "code": "// Map CTA type to unlock\nconst ctaType = $json.session.metadata.cta_type;\nconst unlocks = {\n  cognition: 'COGNITION_MODES_UNLOCKED',\n  sensory: 'SENSORY_MANIFOLD_ACTIVATED',\n  spawn: 'SUB_AGENT_SPAWN_ENABLED'\n};\nreturn { unlock: unlocks[ctaType], ctaType };"
+        },
+        {
+          "name": "Update Agent Capabilities",
+          "type": "httpRequest",
+          "method": "POST",
+          "url": "https://evez-os.onrender.com/api/capabilities/unlock",
+          "body": "{{ $json }}"
+        },
+        {
+          "name": "Log Revenue",
+          "type": "postgres",
+          "operation": "insert",
+          "table": "revenue_events"
+        },
+        {
+          "name": "Notify User",
+          "type": "slack",
+          "channel": "#vez-revenue",
+          "message": "\ud83d\udcb0 CTA unlocked: {{ $json.unlock }}"
+        }
+      ]
+    }
+  ]
+}

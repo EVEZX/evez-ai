@@ -1,0 +1,10 @@
+{
+  "module": "agentvault-connector",
+  "version": "1.3.5",
+  "vault": {
+    "attestation": "tpm2",
+    "audit_log": true,
+    "rotation_interval_hours": 24,
+    "zero_knowledge": true
+  }
+}

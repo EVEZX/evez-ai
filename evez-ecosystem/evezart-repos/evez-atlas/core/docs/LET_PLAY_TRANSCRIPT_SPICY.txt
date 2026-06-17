@@ -1,0 +1,13 @@
+[2026-02-17T18:57:51.091992+00:00] PUBLIC_INTERNET — the world argues about truth at line-rate. you do not get one reality, you get convergence. the internet does not care about your story
+DNS split-brain observed: LTE resolves new A/AAAA, Wi‑Fi resolver returns stale record. Pending purge/TTL convergence.
+[2026-02-17T18:57:51.092214+00:00] PUBLIC_INTERNET — the world argues about truth at line-rate. you do not get one reality, you get convergence. the internet does not care about your story
+BGP flap: prefix path changed twice within 90s; traceroute indicates alternate transit. User-perceived 'past path' invalidated after withdrawal.
+[2026-02-17T18:57:51.092342+00:00] GAME_BACKEND — prediction makes it feel instant; authority makes it real. rollback is the price tag. authority beats feelings, every damn time
+Rollback window widened from 120ms to 220ms after RTT p95 rose. Client prediction divergence increased; server reconciliation patch applied.
+[2026-02-17T18:57:51.092411+00:00] FSC_FORGE — compression applied. the model cracked first at Σf=['pending_vs_final_confusion', 'single_vantage_diagnosis']. Ω survived as 'two-vantage probing + explicit pending labels'.
+measures: dsr=0.72 dc=0.61 stability=0.66 transfer=0.59 boundary=0.74 exploit=0.58
+anomaly: Players report 'hit markers' that vanish after rollback; blame shifts between netcode and server auth.
+[2026-02-17T18:57:51.092519+00:00] XRAY_ROOM::public_internet — Internet X-Ray: Naming is Reality provenance=1
+If your resolver lies, your world-map lies. Two vantages or you're worshipping one cache.
+[2026-02-17T18:57:51.092610+00:00] XRAY_ROOM::game_backend — Internet X-Ray: Rollback is Paid-For Illusion provenance=1
+Client-side prediction is a performance lie you ship on purpose. Label pending state like you mean it, or the player will call your truth a bug.

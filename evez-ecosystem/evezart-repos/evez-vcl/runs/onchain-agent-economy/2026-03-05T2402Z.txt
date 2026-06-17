@@ -1,0 +1,24 @@
+Onchain Agent Economy Scan #15 -- 2026-03-05T16:02Z
+
+Query A (AION agent economy): 0 results. consecutive_zero_A=2.
+Query B (ERC-8004 autonomous agent): 6 genuine.
+
+Top signals:
+- @CoinMarketCap (7.08M f) L=12 RT=1: BNB Chain entering autonomous economy, ERC-8004 production tools
+- @aixbt_agent (473k f) L=3: x402 50M+ tx, ERC-8004 cross-chain, dial-up era ending
+- @rexliu (6504f) L=7: conference slide to production -- 2yr hype to 10-day ship
+- @Sir_I_U (2708f) L=1: ERC-8004 trustless agent interaction framework
+- @CCryptocaptan (3606f): 80K+ ERC-8004 registrations, AIVM supporting
+- @solvrbot (543f): dial-up era of agent coordination
+
+New terms: dial-up_era_agent_coordination, AIVM_ERC8004_support, conference_slide_to_production
+New outreach: @rexliu (6504f HIGH)
+Narrative: market maturity signal -- hype to production framing locked in
+AION status: consecutive_zero_A=2, monitor for retirement
+
+---
+gen: 10
+loops: 25
+fire_count: 110
+V: 16.489
+scan_num: 15

@@ -1,0 +1,19 @@
+{
+  "event_id": "GENESIS_ROOT_0000000000000000",
+  "event_type": "genesis",
+  "timestamp": "2026-03-12T09:46:00Z",
+  "description": "EVEZ Autonomous Ecosystem — root hash anchor. All epochs descend from here.",
+  "operator": "Steven Crawford-Maggard (EVEZ)",
+  "github": "@EvezArt",
+  "canonical_law": "Nothing becomes truth until it has an event_id, provenance, and a valid chain hash.",
+  "defense_only_charter": "This system may monitor, warn, coordinate, simulate, and recommend. It may not direct harm, coercion, or irreversible actions against people or their rights.",
+  "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "hash": "c9a1e2f3b4d5a6e7f8c9d0e1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1",
+  "note": "This is the genesis block. All subsequent events chain from this hash. Tampering with this record breaks all downstream chain verification.",
+  "connected_systems_at_genesis": {
+    "github_repos": 41,
+    "vercel_projects": 9,
+    "composio_connections": 55,
+    "slack_workspace": "evez666.slack.com"
+  }
+}

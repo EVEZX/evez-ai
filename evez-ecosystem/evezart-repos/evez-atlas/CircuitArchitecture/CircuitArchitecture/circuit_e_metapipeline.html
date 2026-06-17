@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit E: Meta-Pipeline</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #fff; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #fff;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            z-index: 100;
+        }
+        .btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        .btn:active { background: rgba(255,255,255,0.5); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="hud">
+        <div style="font-weight:bold;">CIRCUIT E: META-PIPELINE</div>
+        <div id="path-info">Path: <span id="current-path">E1</span></div>
+        <div id="pipeline-info"></div>
+    </div>
+    <div id="controls">
+        <button class="btn" onclick="prevPath()">◄ PREV PATH</button>
+        <button class="btn" onclick="nextPath()">NEXT PATH ►</button>
+        <button class="btn" onclick="goToNavigator()">☰ NAVIGATOR</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        let width, height;
+
+        let currentPathIndex = 0;
+        const paths = ['E1_PIPELINE_DAG', 'E2_DATA_STRUCTURE_LATTICE'];
+
+        let scene, camera, renderer;
+        let pipelineNodes = [];
+        let dataflowEdges = [];
+        let packets = [];
+
+        const stages = [
+            {name: 'SENSOR_ACQUIRE', pos: {x: -8, y: 0, z: 0}, latency: 0, throughput: 0},
+            {name: 'FILTER', pos: {x: -4, y: 2, z: 0}, latency: 0, throughput: 0},
+            {name: 'FUSION', pos: {x: 0, y: 0, z: 0}, latency: 0, throughput: 0},
+            {name: 'SPATIAL_MAP', pos: {x: 4, y: -2, z: 0}, latency: 0, throughput: 0},
+            {name: 'PATTERN_DETECT', pos: {x: 8, y: 0, z: 0}, latency: 0, throughput: 0},
+            {name: 'RENDER', pos: {x: 12, y: 2, z: 0}, latency: 0, throughput: 0}
+        ];
+
+        const dataStructures = [
+            {name: 'raw_buffers', parent: 0},
+            {name: 'filtered_streams', parent: 1},
+            {name: 'fused_state', parent: 2},
+            {name: 'locality_grid', parent: 3},
+            {name: 'clusters', parent: 4},
+            {name: 'frame_metrics', parent: 5}
+        ];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            if (renderer) {
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 5, 20);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setClearColor(0x000000, 1);
+
+            const ambient = new THREE.AmbientLight(0x404040);
+            scene.add(ambient);
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+        }
+
+        function initSensors() {
+            // Simulate pipeline activity
+            setInterval(() => {
+                stages.forEach(stage => {
+                    stage.latency = 2 + Math.random() * 10;
+                    stage.throughput = 20 + Math.random() * 30;
+                });
+            }, 100);
+        }
+
+        // PATH E1: PIPELINE DAG
+        function renderPipelineDAG() {
+            if (!pipelineNodes.length) buildPipelineDAG();
+
+            // Update node colors based on latency
+            stages.forEach((stage, i) => {
+                if (pipelineNodes[i]) {
+                    const hue = (1 - stage.latency / 15) * 0.3;
+                    pipelineNodes[i].material.color.setHSL(hue, 1, 0.5);
+                    pipelineNodes[i].material.emissive.setHSL(hue, 1, 0.3);
+
+                    const scale = 1 + (stage.throughput / 100);
+                    pipelineNodes[i].scale.set(scale, scale, scale);
+                }
+            });
+
+            // Update edge thickness based on throughput
+            dataflowEdges.forEach((edge, i) => {
+                if (i < stages.length - 1) {
+                    const avgThroughput = (stages[i].throughput + stages[i+1].throughput) / 2;
+                    edge.material.linewidth = 1 + avgThroughput / 50;
+                    edge.material.opacity = 0.3 + avgThroughput / 100;
+                }
+            });
+
+            // Animate packets
+            packets.forEach((packet, i) => {
+                packet.position.x += 0.1;
+                if (packet.position.x > 15) {
+                    packet.position.x = -10;
+                }
+            });
+
+            camera.position.x = Math.sin(Date.now() * 0.0005) * 10;
+            camera.position.y = 5 + Math.cos(Date.now() * 0.0003) * 3;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function buildPipelineDAG() {
+            // Create stage nodes
+            stages.forEach(stage => {
+                const geometry = new THREE.SphereGeometry(0.8, 16, 16);
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0x00ff00,
+                    emissive: 0x004400
+                });
+                const node = new THREE.Mesh(geometry, material);
+                node.position.set(stage.pos.x, stage.pos.y, stage.pos.z);
+                scene.add(node);
+                pipelineNodes.push(node);
+
+                // Add label
+                // (Note: Text rendering would require additional library)
+            });
+
+            // Create edges
+            for (let i = 0; i < stages.length - 1; i++) {
+                const geometry = new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(stages[i].pos.x, stages[i].pos.y, stages[i].pos.z),
+                    new THREE.Vector3(stages[i+1].pos.x, stages[i+1].pos.y, stages[i+1].pos.z)
+                ]);
+                const material = new THREE.LineBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.5
+                });
+                const edge = new THREE.Line(geometry, material);
+                scene.add(edge);
+                dataflowEdges.push(edge);
+            }
+
+            // Create data packets
+            for (let i = 0; i < 5; i++) {
+                const geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3);
+                const material = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+                const packet = new THREE.Mesh(geometry, material);
+                packet.position.set(-10 + i * 5, 0, 0);
+                scene.add(packet);
+                packets.push(packet);
+            }
+        }
+
+        // PATH E2: DATA STRUCTURE LATTICE
+        function renderDataStructureLattice() {
+            if (!pipelineNodes.length) buildPipelineDAG();
+
+            // Add secondary nodes for data structures
+            dataStructures.forEach((ds, i) => {
+                const parentPos = stages[ds.parent].pos;
+                const offset = {
+                    x: parentPos.x,
+                    y: parentPos.y - 3,
+                    z: parentPos.z + 2
+                };
+
+                // Check if secondary node exists
+                const existingNode = scene.getObjectByName(`ds_${i}`);
+                if (!existingNode) {
+                    const geometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
+                    const material = new THREE.MeshPhongMaterial({ 
+                        color: 0x00ffff,
+                        transparent: true,
+                        opacity: 0.7
+                    });
+                    const node = new THREE.Mesh(geometry, material);
+                    node.position.set(offset.x, offset.y, offset.z);
+                    node.name = `ds_${i}`;
+                    scene.add(node);
+
+                    // Link to parent
+                    const linkGeometry = new THREE.BufferGeometry().setFromPoints([
+                        new THREE.Vector3(parentPos.x, parentPos.y, parentPos.z),
+                        new THREE.Vector3(offset.x, offset.y, offset.z)
+                    ]);
+                    const linkMaterial = new THREE.LineBasicMaterial({
+                        color: 0x00ffff,
+                        transparent: true,
+                        opacity: 0.4
+                    });
+                    const link = new THREE.Line(linkGeometry, linkMaterial);
+                    scene.add(link);
+                } else {
+                    existingNode.rotation.y += 0.02;
+                }
+            });
+
+            camera.position.y = 8;
+            camera.position.z = 15 + Math.sin(Date.now() * 0.001) * 5;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function render() {
+            const path = paths[currentPathIndex];
+
+            if (!renderer) initThree();
+
+            if (path === 'E1_PIPELINE_DAG') {
+                renderPipelineDAG();
+            } else if (path === 'E2_DATA_STRUCTURE_LATTICE') {
+                renderDataStructureLattice();
+            }
+
+            updateHUD();
+            requestAnimationFrame(render);
+        }
+
+        function updateHUD() {
+            document.getElementById('current-path').textContent = paths[currentPathIndex];
+            const totalLatency = stages.reduce((sum, s) => sum + s.latency, 0);
+            const avgThroughput = stages.reduce((sum, s) => sum + s.throughput, 0) / stages.length;
+            document.getElementById('pipeline-info').innerHTML = `
+                Total Latency: ${totalLatency.toFixed(1)}ms | Avg Throughput: ${avgThroughput.toFixed(1)} Hz | Stages: ${stages.length}
+            `;
+        }
+
+        function nextPath() {
+            currentPathIndex = (currentPathIndex + 1) % paths.length;
+        }
+
+        function prevPath() {
+            currentPathIndex = (currentPathIndex - 1 + paths.length) % paths.length;
+        }
+
+        function goToNavigator() {
+            window.location.href = 'circuit_navigator.html';
+        }
+
+        window.addEventListener('load', () => {
+            resize();
+            initThree();
+            initSensors();
+            render();
+        });
+        window.addEventListener('resize', resize);
+    </script>
+</body>
+</html>

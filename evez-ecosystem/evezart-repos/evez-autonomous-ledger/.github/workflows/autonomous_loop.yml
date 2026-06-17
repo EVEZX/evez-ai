@@ -1,0 +1,32 @@
+name: Autonomous Heartbeat Loop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  autonomous-cycle:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install anthropic requests python-dateutil
+
+      - name: Run autonomous cycle
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+          REPO_OWNER: EvezArt
+        run: python agents/cycle.py

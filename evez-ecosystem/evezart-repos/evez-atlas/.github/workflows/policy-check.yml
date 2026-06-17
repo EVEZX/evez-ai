@@ -1,0 +1,87 @@
+name: Policy Check (Self-Automation Guardrails)
+
+on:
+  pull_request:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'docs/SAFETY.md'
+      - '.github/policy-allowlist.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  policy-check:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Load allowlist
+        id: allow
+        run: |
+          if [ -f .github/policy-allowlist.txt ]; then
+            grep -vE '^\s*(#|$)' .github/policy-allowlist.txt > /tmp/allowlist.txt || true
+          else
+            : > /tmp/allowlist.txt
+          fi
+          echo "allowlist=$(tr '\n' ' ' < /tmp/allowlist.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Block dangerous triggers
+        run: |
+          set -euo pipefail
+          files=$(ls .github/workflows/*.yml .github/workflows/*.yaml 2>/dev/null || true)
+          for f in $files; do
+            base=$(basename "$f")
+            if grep -qx "$base" /tmp/allowlist.txt; then
+              echo "ALLOWLISTED: $base (skipping trigger checks)"
+              continue
+            fi
+            if grep -nE '^\s*pull_request_target\s*:' "$f"; then
+              echo "ERROR: $base uses pull_request_target (blocked by policy)."
+              exit 1
+            fi
+          done
+
+      - name: Require explicit permissions
+        run: |
+          set -euo pipefail
+          files=$(ls .github/workflows/*.yml .github/workflows/*.yaml 2>/dev/null || true)
+          for f in $files; do
+            base=$(basename "$f")
+            if grep -qx "$base" /tmp/allowlist.txt; then
+              echo "ALLOWLISTED: $base (skipping permissions checks)"
+              continue
+            fi
+            if ! grep -nE '^permissions\s*:' "$f" >/dev/null; then
+              echo "ERROR: $base missing top-level permissions: (policy requires explicit permissions)."
+              exit 1
+            fi
+            if grep -nE '^\s*permissions\s*:\s*write-all\s*$' "$f"; then
+              echo "ERROR: $base uses permissions: write-all (blocked by policy)."
+              exit 1
+            fi
+          done
+
+      - name: Flag risky write permissions
+        run: |
+          set -euo pipefail
+          files=$(ls .github/workflows/*.yml .github/workflows/*.yaml 2>/dev/null || true)
+          for f in $files; do
+            base=$(basename "$f")
+            if grep -qx "$base" /tmp/allowlist.txt; then
+              echo "ALLOWLISTED: $base (skipping write-permissions checks)"
+              continue
+            fi
+            # Heuristic: warn on common write scopes.
+            if grep -nE '^\s*(contents|actions|packages|deployments|pull-requests|issues|statuses|checks)\s*:\s*write\s*$' "$f"; then
+              echo "WARNING: $base requests write permissions. Ensure this is necessary and gated.";
+            fi
+          done
+
+      - name: SAFE_MODE doc present
+        run: |
+          test -f docs/SAFETY.md
+          grep -q "SAFE_MODE" docs/SAFETY.md

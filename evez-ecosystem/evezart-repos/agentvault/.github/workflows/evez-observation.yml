@@ -1,0 +1,48 @@
+name: EVEZ Event Spine - Observation Events
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  emit-event:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Compute Transform Hash
+        id: hash
+        run: |
+          echo "COMMIT_HASH=$(echo '${{ github.sha }}' | head -c 16)" >> $GITHUB_OUTPUT
+          echo "EVENT_HASH=$(date +%s | sha256sum | head -c 16)" >> $GITHUB_OUTPUT
+          
+      - name: Emit Observation Event
+        run: |
+          cat << EOF
+          {
+            "event_type": "observation",
+            "transform_hash": "${{ steps.hash.outputs.COMMIT_HASH }}",
+            "event_hash": "${{ steps.hash.outputs.EVENT_HASH }}",
+            "payload": {
+              "repo": "${{ github.repository }}",
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}",
+              "actor": "${{ github.actor }}",
+              "timestamp": "${{ github.event.head_commit.timestamp }}"
+            },
+            "spine": "agentvault-observation"
+          }
+          EOF
+          
+      - name: Run Contradiction Check
+        run: |
+          # Run syntax check - failure = contradiction core
+          find . -name '*.py' -not -path './.git/*' -exec python -m py_compile {} \; || exit 1
+          
+      - name: Emit Contradiction Event (if failed)
+        if: failure()
+        run: |
+          echo "::warning::Contradiction detected - emitting contradiction event"
+          echo "CONTRADICTION_HASH=$(date +%s | sha256sum | head -c 16)" >> $GITHUB_ENV

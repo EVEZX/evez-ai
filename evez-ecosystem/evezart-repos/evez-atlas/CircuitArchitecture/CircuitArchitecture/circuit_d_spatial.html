@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit D: Space & Locality</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #ff0; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #ff0;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            z-index: 100;
+        }
+        .btn {
+            background: rgba(255,255,0,0.2);
+            border: 1px solid #ff0;
+            color: #ff0;
+            padding: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        .btn:active { background: rgba(255,255,0,0.5); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="hud">
+        <div style="font-weight:bold;">CIRCUIT D: SPACE & LOCALITY</div>
+        <div id="path-info">Path: <span id="current-path">D1</span></div>
+        <div id="spatial-info"></div>
+    </div>
+    <div id="controls">
+        <button class="btn" onclick="prevPath()">◄ PREV PATH</button>
+        <button class="btn" onclick="nextPath()">NEXT PATH ►</button>
+        <button class="btn" onclick="goToNavigator()">☰ NAVIGATOR</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        const GRID_RES = 20;
+        let localityGrid = [];
+        let trajectory = [];
+        let heading = 0;
+
+        let currentPathIndex = 0;
+        const paths = ['D1_HEATMAP_EXTRUDED', 'D2_RADAR_SHELL', 'D3_TRAJECTORY_LATTICE'];
+
+        let scene, camera, renderer;
+        let bars = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            if (renderer) {
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+
+            initGrid();
+        }
+
+        function initGrid() {
+            const cols = Math.ceil(width / GRID_RES);
+            const rows = Math.ceil(height / GRID_RES);
+            localityGrid = Array(rows).fill().map(() => 
+                Array(cols).fill().map(() => ({ density: 0, activity: 0 }))
+            );
+        }
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 15, 25);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setClearColor(0x000000, 1);
+
+            const ambient = new THREE.AmbientLight(0x404040);
+            scene.add(ambient);
+            const light = new THREE.DirectionalLight(0xffff00, 1);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+        }
+
+        function initSensors() {
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    heading = e.alpha || 0;
+                });
+            }
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                updateGrid(touch.clientX, touch.clientY);
+                trajectory.push({x: touch.clientX, y: touch.clientY, t: Date.now()});
+                if (trajectory.length > 200) trajectory.shift();
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                updateGrid(e.clientX, e.clientY);
+                trajectory.push({x: e.clientX, y: e.clientY, t: Date.now()});
+                if (trajectory.length > 200) trajectory.shift();
+            });
+        }
+
+        function updateGrid(x, y) {
+            const col = Math.floor(x / GRID_RES);
+            const row = Math.floor(y / GRID_RES);
+
+            if (localityGrid[row] && localityGrid[row][col]) {
+                localityGrid[row][col].density += 1;
+                localityGrid[row][col].activity = 1;
+            }
+        }
+
+        // PATH D1: EXTRUDED HEATMAP (3D bars)
+        function renderExtrudedHeatmap() {
+            if (!renderer) initThree();
+            if (!bars.length) buildBars();
+
+            // Update bar heights from grid
+            localityGrid.forEach((row, r) => {
+                row.forEach((cell, c) => {
+                    const idx = r * row.length + c;
+                    if (bars[idx]) {
+                        const height = cell.density * 0.1 + 0.1;
+                        bars[idx].scale.y = height;
+                        bars[idx].position.y = height / 2;
+
+                        const hue = Math.min(cell.density / 20, 1);
+                        bars[idx].material.color.setHSL(hue * 0.3, 1, 0.5);
+                    }
+
+                    cell.activity *= 0.95;
+                    cell.density *= 0.99;
+                });
+            });
+
+            // Draw trajectory as spline
+            if (trajectory.length > 2) {
+                const points = trajectory.map(p => new THREE.Vector3(
+                    (p.x / width) * 20 - 10,
+                    2,
+                    (p.y / height) * 20 - 10
+                ));
+
+                const curve = new THREE.CatmullRomCurve3(points);
+                const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.1, 8, false);
+                const tubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+
+                const existingTube = scene.getObjectByName('trajectory');
+                if (existingTube) scene.remove(existingTube);
+
+                const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+                tube.name = 'trajectory';
+                scene.add(tube);
+            }
+
+            camera.position.x = Math.sin(Date.now() * 0.001) * 20;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function buildBars() {
+            localityGrid.forEach((row, r) => {
+                row.forEach((cell, c) => {
+                    const geometry = new THREE.BoxGeometry(0.8, 1, 0.8);
+                    const material = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+                    const bar = new THREE.Mesh(geometry, material);
+                    bar.position.x = (c / row.length) * 20 - 10;
+                    bar.position.z = (r / localityGrid.length) * 20 - 10;
+                    bar.position.y = 0.5;
+                    scene.add(bar);
+                    bars.push(bar);
+                });
+            });
+        }
+
+        // PATH D2: IMMERSIVE RADAR SHELL
+        function renderRadarShell() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+            const maxRadius = Math.min(width, height) * 0.45;
+
+            // Draw radar shells
+            ctx.strokeStyle = 'rgba(255,255,0,0.4)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, maxRadius * i / 4, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Heading indicator
+            ctx.strokeStyle = '#f00';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            const headingRad = (heading - 90) * Math.PI / 180;
+            ctx.lineTo(
+                cx + Math.cos(headingRad) * maxRadius,
+                cy + Math.sin(headingRad) * maxRadius
+            );
+            ctx.stroke();
+
+            // Grid clusters as targets
+            localityGrid.forEach((row, r) => {
+                row.forEach((cell, c) => {
+                    if (cell.density > 5) {
+                        const px = (c * GRID_RES) - cx;
+                        const py = (r * GRID_RES) - cy;
+                        const dist = Math.sqrt(px*px + py*py);
+                        const angle = Math.atan2(py, px);
+
+                        const x = cx + Math.cos(angle) * Math.min(dist, maxRadius);
+                        const y = cy + Math.sin(angle) * Math.min(dist, maxRadius);
+
+                        ctx.fillStyle = `rgba(255,255,0,${Math.min(cell.density/20, 1)})`;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+            });
+
+            // Trajectory
+            ctx.strokeStyle = '#0ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            trajectory.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.stroke();
+        }
+
+        // PATH D3: TRAJECTORY LATTICE
+        function renderTrajectoryLattice() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw past trajectories with different opacities
+            for (let layer = 0; layer < 3; layer++) {
+                ctx.strokeStyle = `rgba(255,255,0,${0.3 - layer*0.1})`;
+                ctx.lineWidth = 2 - layer * 0.5;
+                ctx.beginPath();
+
+                const offset = layer * 10;
+                trajectory.forEach((p, i) => {
+                    const x = p.x + Math.sin(i * 0.1 + layer) * offset;
+                    const y = p.y + Math.cos(i * 0.1 + layer) * offset;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+            }
+
+            // Main trajectory
+            ctx.strokeStyle = '#ff0';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            trajectory.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+
+                // Draw nodes
+                if (i % 10 === 0) {
+                    ctx.fillStyle = '#ff0';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            ctx.stroke();
+        }
+
+        function render() {
+            const path = paths[currentPathIndex];
+
+            if (path === 'D1_HEATMAP_EXTRUDED') {
+                renderExtrudedHeatmap();
+            } else if (path === 'D2_RADAR_SHELL') {
+                renderRadarShell();
+            } else if (path === 'D3_TRAJECTORY_LATTICE') {
+                renderTrajectoryLattice();
+            }
+
+            updateHUD();
+            requestAnimationFrame(render);
+        }
+
+        function updateHUD() {
+            document.getElementById('current-path').textContent = paths[currentPathIndex];
+            document.getElementById('spatial-info').innerHTML = `
+                Trajectory: ${trajectory.length} pts | Heading: ${heading.toFixed(1)}° | Grid: ${localityGrid.length}×${localityGrid[0]?.length || 0}
+            `;
+        }
+
+        function nextPath() {
+            currentPathIndex = (currentPathIndex + 1) % paths.length;
+        }
+
+        function prevPath() {
+            currentPathIndex = (currentPathIndex - 1 + paths.length) % paths.length;
+        }
+
+        function goToNavigator() {
+            window.location.href = 'circuit_navigator.html';
+        }
+
+        window.addEventListener('load', () => {
+            resize();
+            initSensors();
+            render();
+        });
+        window.addEventListener('resize', resize);
+
+        document.addEventListener('click', () => {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

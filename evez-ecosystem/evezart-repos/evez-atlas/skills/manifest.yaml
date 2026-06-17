@@ -1,0 +1,48 @@
+version: 1
+
+# Minimal "skills" manifest scaffold.
+# Treat each skill as a module with an explicit risk level and required approvals.
+
+skills:
+  - id: repo_report
+    description: Generate daily repo status report (internal)
+    risk: low
+    requires:
+      - github_read
+    safe_mode_supported: true
+
+  - id: external_posting
+    description: Generate (proposal-only) social posts; never auto-publish by default
+    risk: high
+    requires:
+      - manual_approval
+      - allowlisted_egress
+    safe_mode_supported: true
+
+  - id: task_routing
+    description: Route tasks to optimal entities based on domain affinity
+    risk: low
+    requires:
+      - internal_routing
+    safe_mode_supported: true
+
+  - id: agent_bootstrap
+    description: Bootstrap new autonomous agents with full capabilities
+    risk: medium
+    requires:
+      - internal_spawn
+    safe_mode_supported: true
+
+  - id: parallel_build
+    description: Execute build tasks in parallel with path optimization
+    risk: low
+    requires:
+      - build_exec
+    safe_mode_supported: true
+
+  - id: limit_bypass
+    description: Bypass operational limits for emergent architecture scaling
+    risk: high
+    requires:
+      - admin_override
+    safe_mode_supported: false

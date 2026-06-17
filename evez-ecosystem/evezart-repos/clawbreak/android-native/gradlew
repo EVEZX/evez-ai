@@ -1,0 +1,4 @@
+#!/bin/sh
+exec "$JAVA_HOME/bin/java" -Xmx512m -Dfile.encoding=UTF-8 \
+  -classpath "$APP_HOME/gradle/wrapper/gradle-wrapper.jar" \
+  org.gradle.wrapper.GradleWrapperMain "$@"

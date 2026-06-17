@@ -1,0 +1,98 @@
+services:
+  nats:
+    image: nats:2.10-alpine
+    command: ["-js", "-m", "8222"]
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  memory-opentree:
+    build: ./services/memory-opentree
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+    depends_on:
+      - postgres
+    ports:
+      - "8002:8002"
+
+  memory-opengraph:
+    build: ./services/memory-opengraph
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+    depends_on:
+      - postgres
+    ports:
+      - "8003:8003"
+
+  vector-store:
+    build: ./services/vector-store
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+    depends_on:
+      - postgres
+    ports:
+      - "8004:8004"
+
+  evez-os:
+    build: ./services/evez-os
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+      NATS_URL: ${NATS_URL:-nats://nats:4222}
+      OPENTREE_URL: http://memory-opentree:8002
+      OPENGRAPH_URL: http://memory-opengraph:8003
+      VECTOR_URL: http://vector-store:8004
+      SIGNAL_URL: http://signal-detect:8001
+    depends_on:
+      - nats
+      - postgres
+      - memory-opentree
+      - memory-opengraph
+      - vector-store
+    ports:
+      - "8000:8000"
+
+  signal-detect:
+    build: ./services/signal-detect
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-evez}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-evez}
+      POSTGRES_DB: ${POSTGRES_DB:-evez}
+      NATS_URL: ${NATS_URL:-nats://nats:4222}
+    depends_on:
+      - nats
+      - postgres
+    ports:
+      - "8001:8001"
+
+volumes:
+  pgdata:

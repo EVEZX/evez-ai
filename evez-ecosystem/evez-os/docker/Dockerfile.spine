@@ -1,0 +1,11 @@
+# evez-os-spine — Ably-Spine + Backendless-Registry
+FROM node:20-alpine AS spine-base
+WORKDIR /app
+COPY core/package*.json ./
+RUN npm ci --only=production
+COPY core/ .
+EXPOSE 3001
+ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD wget -qO- http://localhost:3001/health || exit 1
+CMD ["node", "ably-spine.mjs"]

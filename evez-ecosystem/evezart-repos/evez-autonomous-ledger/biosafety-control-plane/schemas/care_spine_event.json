@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evez.art/schemas/care_spine_event.json",
+  "title": "CareSpineEvent",
+  "type": "object",
+  "required": ["event_id","timestamp_utc","event_type","subject_id","reporter_id","intensity_0_10","valence_neg1_pos1","claim_category","provenance","prev_hash","hash"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "timestamp_utc": {"type": "string", "format": "date-time"},
+    "event_type": {
+      "type": "string",
+      "enum": ["prayer","scripture_reading","dream","vision_report","grief_wave","panic_episode","grounding_exercise","community_contact","sleep_log","nutrition_log","movement_log","network_anomaly","rf_anomaly","agent_interaction","policy_decision"]
+    },
+    "subject_id": {"type": "string"},
+    "reporter_id": {"type": "string"},
+    "intensity_0_10": {"type": "number", "minimum": 0, "maximum": 10},
+    "valence_neg1_pos1": {"type": "number", "minimum": -1, "maximum": 1},
+    "claim_category": {
+      "type": "string",
+      "enum": ["everyday","psychological","medical_symptom","social_conflict","metaphysical","afterlife","deity_intrusion","uncertain"]
+    },
+    "narrative": {"type": "string", "maxLength": 20000},
+    "risk_flags": {
+      "type": "object",
+      "properties": {
+        "self_harm_intent": {"type": "boolean"},
+        "harm_to_others_intent": {"type": "boolean"},
+        "sleep_deprivation": {"type": "boolean"},
+        "command_hallucination_risk": {"type": "boolean"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source","method"],
+      "properties": {
+        "source": {"type": "string", "enum": ["human","agent","sensor","imported"]},
+        "method": {"type": "string"}
+      }
+    },
+    "prev_hash": {"type": "string"},
+    "hash": {"type": "string"}
+  }
+}

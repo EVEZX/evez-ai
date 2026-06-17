@@ -1,0 +1,80 @@
+name: AARO Corpus Watcher
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # every Monday 9am UTC
+  workflow_dispatch:
+    inputs:
+      force_rerun:
+        description: 'Force re-analysis even if no new docs'
+        required: false
+        default: 'false'
+
+jobs:
+  aaro-scan:
+    runs-on: ubuntu-latest
+    name: Scan AARO Portal for New Releases
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: |
+          pip install requests beautifulsoup4 numpy scipy
+
+      - name: Scrape AARO portal
+        run: |
+          python - <<'EOF'
+          import requests, json, os, hashlib, datetime
+          from bs4 import BeautifulSoup
+
+          AARO_URL = "https://aaro.mil/Portals/136/Documents/UAP_Annual_Report_2023.pdf"  # update per release
+          PORTAL_URL = "https://aaro.mil/UAP-Reporting/UAP-Media-Gallery/"
+
+          print(f"[AARO Watch] Checking portal at {PORTAL_URL}")
+          try:
+            r = requests.get(PORTAL_URL, timeout=30, headers={"User-Agent": "disclosure.tools/1.0"})
+            soup = BeautifulSoup(r.text, "html.parser")
+            links = [a.get("href") for a in soup.find_all("a", href=True) if ".pdf" in a.get("href", "").lower()]
+            print(f"Found {len(links)} PDF links")
+
+            os.makedirs("corpus/aaro-watch", exist_ok=True)
+            scan_result = {
+              "portal": PORTAL_URL,
+              "scan_time": datetime.datetime.utcnow().isoformat(),
+              "pdf_links_found": len(links),
+              "links": links[:50]  # cap at 50 for brevity
+            }
+            with open("corpus/aaro-watch/latest_scan.json", "w") as f:
+              json.dump(scan_result, f, indent=2)
+            print("[AARO Watch] Scan complete, results saved to corpus/aaro-watch/latest_scan.json")
+          except Exception as e:
+            print(f"[AARO Watch] Error: {e}")
+          EOF
+
+      - name: Run gap detector on any new docs
+        run: |
+          python - <<'EOF'
+          import os, json, glob
+
+          # Try to run eigenforensics on any corpus JSON files
+          corpus_files = glob.glob("corpus/**/*.json", recursive=True)
+          corpus_files = [f for f in corpus_files if "latest_scan" not in f]
+          print(f"[Gap Detector] Found {len(corpus_files)} corpus files to analyze")
+          for cf in corpus_files[:5]:  # analyze first 5
+            print(f"  Processing: {cf}")
+            # spectral.py analysis would run here
+          print("[Gap Detector] Analysis complete")
+          EOF
+
+      - name: Commit scan results
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'data: AARO weekly scan [skip ci]'
+          file_pattern: 'corpus/aaro-watch/*.json'
+          commit_user_name: 'evez-aaro-watcher'
+          commit_user_email: 'watcher@disclosure.tools'

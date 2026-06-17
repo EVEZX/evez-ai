@@ -1,0 +1,21 @@
+name: Atlas v3 CI
+# Disabled npm steps — no package.json in repo. atlas:recursion script not present.
+# Kept checkout only until package.json is added.
+
+on:
+  push:
+    branches: [main, atlas-v3-kernel]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repo health check
+        run: |
+          echo "Atlas CI placeholder — package.json not yet committed"
+          echo "npm run atlas:recursion disabled until dependencies added"
+          echo "Commit: ${{ github.sha }}"

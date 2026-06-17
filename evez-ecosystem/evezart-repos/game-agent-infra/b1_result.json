@@ -1,0 +1,24 @@
+{
+  "proof_cycle_id": "B1-0001",
+  "proof_type": "canonical_reproducibility",
+  "status": "FAIL",
+  "cases": [
+    {
+      "input": "test_input.json",
+      "hashes": {
+        "python": null,
+        "node": null,
+        "go": null
+      },
+      "all_equal": false,
+      "full_witness": false,
+      "passed": false,
+      "error": "[Errno 2] No such file or directory: 'test_input.json'"
+    }
+  ],
+  "summary": {
+    "total_cases": 1,
+    "passed_cases": 0,
+    "all_fully_witnessed": false
+  }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.EvezOpenClaw" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#00ff88</item>
+        <item name="colorPrimaryVariant">#00b865</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSecondary">#00b8ff</item>
+        <item name="colorSurface">#111111</item>
+        <item name="android:windowBackground">#0a0a0a</item>
+        <item name="android:statusBarColor">#0a0a0a</item>
+        <item name="android:navigationBarColor">#0a0a0a</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

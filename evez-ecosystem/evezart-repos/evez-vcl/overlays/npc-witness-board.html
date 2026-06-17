@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EVEZ-OS NPC Threat Board</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: transparent;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      width: 360px;
+    }
+    .board {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      width: 350px;
+    }
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #00ff41;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(0,255,65,0.25);
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+    .header-left { display: flex; align-items: center; gap: 7px; }
+    .live-dot {
+      width: 7px; height: 7px;
+      background: #ff3333;
+      border-radius: 50%;
+      animation: livePulse 1s infinite;
+    }
+    @keyframes livePulse {
+      0%,100%  { opacity: 1; box-shadow: 0 0 4px #ff3333; }
+      50%      { opacity: 0.4; box-shadow: none; }
+    }
+    .refresh-timer { color: rgba(0,255,65,0.45); font-size: 8px; }
+    .cards { display: flex; flex-direction: column; gap: 6px; }
+    .npc-card {
+      background: rgba(0,0,0,0.82);
+      border: 1px solid rgba(0,255,65,0.18);
+      border-radius: 4px;
+      padding: 9px 11px 8px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .npc-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+    .npc-card.threat-CRITICAL::before { background: #ff3333; }
+    .npc-card.threat-HIGH::before     { background: #ff8800; }
+    .npc-card.threat-MEDIUM::before   { background: #ffcc00; }
+    .npc-card.threat-LOW::before      { background: #4488ff; }
+    .npc-card.threat-CRITICAL {
+      border-color: rgba(255,51,51,0.55);
+      animation: critGlow 1.8s ease-in-out infinite;
+    }
+    @keyframes critGlow {
+      0%,100% { box-shadow: 0 0 6px rgba(255,51,51,0.35), inset 0 0 6px rgba(255,51,51,0.04); }
+      50%     { box-shadow: 0 0 22px rgba(255,51,51,0.7), inset 0 0 14px rgba(255,51,51,0.10); }
+    }
+    .npc-card.threat-HIGH {
+      border-color: rgba(255,136,0,0.45);
+      animation: highGlow 2.5s ease-in-out infinite;
+    }
+    @keyframes highGlow {
+      0%,100% { box-shadow: 0 0 5px rgba(255,136,0,0.25); }
+      50%     { box-shadow: 0 0 14px rgba(255,136,0,0.55); }
+    }
+    .card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .arch-icon { font-size: 15px; width: 20px; text-align: center; }
+    .codename {
+      flex: 1; color: #00ff41; font-size: 11px; font-weight: bold;
+      letter-spacing: 1.5px; text-shadow: 0 0 8px rgba(0,255,65,0.55);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .threat-badge { font-size: 8px; font-weight: bold; letter-spacing: 1px; padding: 2px 6px; border-radius: 2px; flex-shrink: 0; }
+    .badge-CRITICAL { background: #ff3333; color: #fff; }
+    .badge-HIGH     { background: #ff8800; color: #fff; }
+    .badge-MEDIUM   { background: #ffcc00; color: #000; }
+    .badge-LOW      { background: #2255cc; color: #fff; }
+    .card-meta { display: flex; gap: 10px; font-size: 8.5px; color: rgba(0,255,65,0.55); margin-bottom: 3px; }
+    .meta-arch { color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: .8px; }
+    .card-behavior { font-size: 8px; color: rgba(255,255,255,0.28); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .conf-bar { height: 2px; background: rgba(255,255,255,0.08); border-radius: 1px; margin-top: 6px; overflow: hidden; }
+    .conf-fill { height: 100%; border-radius: 1px; transition: width .6s; }
+    .fill-CRITICAL { background: linear-gradient(90deg,#ff3333,#ff6666); }
+    .fill-HIGH     { background: linear-gradient(90deg,#ff8800,#ffaa44); }
+    .fill-MEDIUM   { background: linear-gradient(90deg,#ffcc00,#ffe066); }
+    .fill-LOW      { background: linear-gradient(90deg,#4488ff,#88aaff); }
+    .empty { color: rgba(0,255,65,0.35); font-size: 10px; text-align: center; padding: 18px 0; letter-spacing: 1px; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,255,65,0.25); border-radius: 2px; }
+  </style>
+</head>
+<body>
+<div class="board">
+  <div class="board-header">
+    <div class="header-left">
+      <div class="live-dot"></div>
+      <span>⚡ NPC WITNESS BOARD</span>
+    </div>
+    <span class="refresh-timer" id="timer">—</span>
+  </div>
+  <div class="cards" id="cards">
+    <div class="empty">scanning intruders…</div>
+  </div>
+</div>
+<script>
+const ENDPOINT   = 'https://evezart.github.io/witness-registry/api/entities.json';
+const REFRESH_MS = 60_000;
+const MAX_CARDS  = 8;
+const ARCH_ICON = { SCANNER:'🔍', BOT:'🤖', APT:'🎯', BRUTE:'💥', EXFIL:'📤', RECON:'👁️', CRAWLER:'🕷️', C2:'📡', UNKNOWN:'\u2753' };
+const FLAGS = { US:'🇺🇸',CN:'🇨🇳',RU:'🇷🇺',DE:'🇩🇪',NL:'🇳🇱',GB:'🇬🇧',IN:'🇮🇳',FR:'🇫🇷',BR:'🇧🇷',KR:'🇰🇷',JP:'🇯🇵',CA:'🇨🇦',AU:'🇦🇺',SG:'🇸🇬',UA:'🇺🇦',IR:'🇮🇷',TR:'🇹🇷',PL:'🇵🇱',SE:'🇸🇪',NO:'🇳🇴' };
+const THREAT_ORDER = { CRITICAL:4, HIGH:3, MEDIUM:2, LOW:1 };
+function getLevel(e) {
+  const arch = (e.archetype||'').toUpperCase();
+  const conf = parseFloat(e.confidence||e.confidence_score||0);
+  if (['APT','EXFIL','C2'].includes(arch)) return conf>=0.65?'CRITICAL':'HIGH';
+  if (arch==='BRUTE') return conf>=0.75?'HIGH':'MEDIUM';
+  if (conf>=0.88) return 'HIGH';
+  if (conf>=0.55) return 'MEDIUM';
+  return 'LOW';
+}
+function card(e) {
+  const arch = (e.archetype||'UNKNOWN').toUpperCase();
+  const icon = ARCH_ICON[arch]||'\u2753';
+  const name = e.codename||e.npc_codename||e.id||'ENTITY_???';
+  const cc   = ((e.country_code||e.country||'??').toUpperCase()).slice(0,2);
+  const flag = FLAGS[cc]||'\ud83c\udf10';
+  const conf = parseFloat(e.confidence||e.confidence_score||0);
+  const pct  = Math.round(conf*100);
+  const beh  = (e.behavior||e.description||'').slice(0,64);
+  const lv   = getLevel(e);
+  return `<div class="npc-card threat-${lv}"><div class="card-top"><span class="arch-icon">${icon}</span><span class="codename">${name}</span><span class="threat-badge badge-${lv}">${lv}</span></div><div class="card-meta"><span>${flag} ${cc}</span><span class="meta-arch">${arch}</span><span>${pct}% conf</span>${e.ip?`<span>${e.ip}</span>`:''}</div>${beh?`<div class="card-behavior">${beh}</div>`:''}<div class="conf-bar"><div class="conf-fill fill-${lv}" style="width:${pct}%"></div></div></div>`;
+}
+let nextAt = 0;
+async function refresh() {
+  try {
+    const r = await fetch(ENDPOINT+'?_='+Date.now(), {cache:'no-store'});
+    const raw = await r.json();
+    const list = (Array.isArray(raw)?raw:(raw.entities||raw.data||[]))
+      .sort((a,b)=>(THREAT_ORDER[getLevel(b)]||0)-(THREAT_ORDER[getLevel(a)]||0))
+      .slice(0,MAX_CARDS);
+    document.getElementById('cards').innerHTML = list.length ? list.map(card).join('') : '<div class="empty">network quiet — no active threats</div>';
+  } catch(err) { console.warn('witness-registry fetch failed', err); }
+  nextAt = Date.now() + REFRESH_MS;
+}
+function tick() {
+  const s = Math.max(0, Math.round((nextAt - Date.now()) / 1000));
+  const el = document.getElementById('timer');
+  if (el) el.textContent = 'refresh ' + s + 's';
+}
+refresh();
+setInterval(refresh, REFRESH_MS);
+setInterval(tick, 1000);
+<\/script>
+</body>
+</html>

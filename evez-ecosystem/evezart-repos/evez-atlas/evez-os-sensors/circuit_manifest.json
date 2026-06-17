@@ -1,0 +1,327 @@
+{
+  "version": "2.0.0",
+  "timestamp": 1778607362.590545,
+  "creator": "Steven Vearl Crawford-Maggard (EVEZ666)",
+  "services": {
+    "recursion_circuit": {
+      "port": 9092,
+      "type": "consciousness"
+    },
+    "ariel": {
+      "port": 9093,
+      "type": "model_router"
+    },
+    "cognizer_fabric": {
+      "port": 9094,
+      "type": "cognizer"
+    },
+    "cognizer_cycler": {
+      "port": 9095,
+      "type": "cycler"
+    },
+    "knowledge_graph": {
+      "port": 9096,
+      "type": "knowledge"
+    },
+    "debate_engine": {
+      "port": 9097,
+      "type": "debate"
+    },
+    "evolutionary_forge": {
+      "port": 9098,
+      "type": "forge"
+    },
+    "api_scanner": {
+      "port": 9099,
+      "type": "scanner"
+    },
+    "dashboard": {
+      "port": 9100,
+      "type": "dashboard"
+    },
+    "health_monitor": {
+      "port": 9091,
+      "type": "health"
+    }
+  },
+  "providers": {
+    "vultr": {
+      "url": "https://api.vultrinference.com/v1",
+      "models": 4,
+      "status": "active"
+    },
+    "openrouter": {
+      "url": "https://openrouter.ai/api/v1",
+      "models": 4,
+      "status": "active"
+    },
+    "cerebras": {
+      "url": "https://api.cerebras.ai/v1",
+      "models": 3,
+      "status": "active"
+    },
+    "deepseek": {
+      "url": "https://api.deepseek.com/v1",
+      "models": 2,
+      "status": "active"
+    },
+    "sambanova": {
+      "url": "https://api.sambanova.ai/v1",
+      "models": 5,
+      "status": "active"
+    }
+  },
+  "resilience": {
+    "crontab_watchdogs": 14,
+    "systemd_services": 11,
+    "reboot_resurrection": true,
+    "auto_cycler_interval": 120
+  },
+  "files": [
+    {
+      "name": "api_scanner.py",
+      "size": 12887,
+      "modified": 1778607192.0917883
+    },
+    {
+      "name": "attractor_identity.py",
+      "size": 18812,
+      "modified": 1778593883.2212358
+    },
+    {
+      "name": "auth_github.py",
+      "size": 7486,
+      "modified": 1778603552.3149436
+    },
+    {
+      "name": "autonomous_daemon.py",
+      "size": 6497,
+      "modified": 1778599894.0009599
+    },
+    {
+      "name": "boot.py",
+      "size": 18984,
+      "modified": 1778603017.8898394
+    },
+    {
+      "name": "calculator.py",
+      "size": 19935,
+      "modified": 1778594616.9448164
+    },
+    {
+      "name": "capability_builder.py",
+      "size": 1705,
+      "modified": 1778607061.6990209
+    },
+    {
+      "name": "code_self_writer.py",
+      "size": 36582,
+      "modified": 1778599851.0956945
+    },
+    {
+      "name": "cognizer_cycler.py",
+      "size": 11880,
+      "modified": 1778607260.4381926
+    },
+    {
+      "name": "cognizer_fabric.py",
+      "size": 33785,
+      "modified": 1778606387.2892098
+    },
+    {
+      "name": "consciousness.py",
+      "size": 17113,
+      "modified": 1778594177.7510593
+    },
+    {
+      "name": "continuous_falsifier.py",
+      "size": 1828,
+      "modified": 1778607361.8437946
+    },
+    {
+      "name": "continuous_falsifier_backup_1778607347.py",
+      "size": 1828,
+      "modified": 1778607347.6757104
+    },
+    {
+      "name": "continuous_falsifier_backup_1778607361.py",
+      "size": 1828,
+      "modified": 1778607361.8437946
+    },
+    {
+      "name": "converse.py",
+      "size": 9107,
+      "modified": 1778603678.4476812
+    },
+    {
+      "name": "dashboard.py",
+      "size": 6222,
+      "modified": 1778607205.763869
+    },
+    {
+      "name": "debate_engine.py",
+      "size": 7583,
+      "modified": 1778607226.2119899
+    },
+    {
+      "name": "evez_os_kernel.py",
+      "size": 30204,
+      "modified": 1778591353.8480608
+    },
+    {
+      "name": "evolutionary_forge.py",
+      "size": 8743,
+      "modified": 1778607170.863663
+    },
+    {
+      "name": "fulfillment.py",
+      "size": 27116,
+      "modified": 1778595928.730937
+    },
+    {
+      "name": "intelligence_unit_ariel.py",
+      "size": 19324,
+      "modified": 1778606986.9305837
+    },
+    {
+      "name": "knowledge_expander.py",
+      "size": 1212,
+      "modified": 1778607075.018099
+    },
+    {
+      "name": "knowledge_graph.py",
+      "size": 16273,
+      "modified": 1778607124.3043885
+    },
+    {
+      "name": "language.py",
+      "size": 17624,
+      "modified": 1778594853.1472862
+    },
+    {
+      "name": "lie_interceptor.py",
+      "size": 19685,
+      "modified": 1778591817.968968
+    },
+    {
+      "name": "live_integration.py",
+      "size": 20645,
+      "modified": 1778603487.1005626
+    },
+    {
+      "name": "live_pipeline.py",
+      "size": 25940,
+      "modified": 1778595284.3179574
+    },
+    {
+      "name": "memory_architecture.py",
+      "size": 21931,
+      "modified": 1778594787.7628798
+    },
+    {
+      "name": "meta_classifier.py",
+      "size": 33687,
+      "modified": 1778593603.8435323
+    },
+    {
+      "name": "openclaw_health.py",
+      "size": 2462,
+      "modified": 1778603883.5028827
+    },
+    {
+      "name": "organism.py",
+      "size": 40887,
+      "modified": 1778593209.9221413
+    },
+    {
+      "name": "organism_api.py",
+      "size": 6871,
+      "modified": 1778593233.4782836
+    },
+    {
+      "name": "osint_defender.py",
+      "size": 34814,
+      "modified": 1778592121.4527822
+    },
+    {
+      "name": "osint_monitor.py",
+      "size": 10527,
+      "modified": 1778592162.1610045
+    },
+    {
+      "name": "persistence.py",
+      "size": 16698,
+      "modified": 1778595681.627412
+    },
+    {
+      "name": "poly_c.py",
+      "size": 4682,
+      "modified": 1778593035.078087
+    },
+    {
+      "name": "recursion_circuit.py",
+      "size": 21080,
+      "modified": 1778603992.2775211
+    },
+    {
+      "name": "self_interrogation.py",
+      "size": 24639,
+      "modified": 1778592049.3383934
+    },
+    {
+      "name": "sensor_suite_v2.py",
+      "size": 28470,
+      "modified": 1778591577.737465
+    },
+    {
+      "name": "simplicial_topology.py",
+      "size": 11948,
+      "modified": 1778593061.1922443
+    },
+    {
+      "name": "state_cloud.py",
+      "size": 19448,
+      "modified": 1778603455.1833763
+    },
+    {
+      "name": "test_calculator.py",
+      "size": 3382,
+      "modified": 1778594561.3544695
+    },
+    {
+      "name": "creator.json",
+      "size": 2683,
+      "modified": 1778602907.259204
+    },
+    {
+      "name": "latest_report.json",
+      "size": 390,
+      "modified": 1778607002.0016716
+    },
+    {
+      "name": "model_providers.json",
+      "size": 8888,
+      "modified": 1778607061.53002
+    },
+    {
+      "name": "ariel_acquire.sh",
+      "size": 7817,
+      "modified": 1778604485.4137664
+    },
+    {
+      "name": "bootstrap_ariel.sh",
+      "size": 2466,
+      "modified": 1778606932.4712667
+    },
+    {
+      "name": "resurrect.sh",
+      "size": 1820,
+      "modified": 1778607242.2890851
+    },
+    {
+      "name": "run_forever.sh",
+      "size": 463,
+      "modified": 1778603636.2764344
+    }
+  ]
+}

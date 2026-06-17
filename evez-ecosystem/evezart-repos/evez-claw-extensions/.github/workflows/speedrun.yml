@@ -1,0 +1,15 @@
+name: Speedrun
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # every 5 minutes
+
+jobs:
+  run-speedrun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run speedrun script
+        run: |
+          chmod +x deploy.sh
+          ./deploy.sh

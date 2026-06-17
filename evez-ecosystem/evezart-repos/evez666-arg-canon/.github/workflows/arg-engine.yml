@@ -1,0 +1,65 @@
+name: EVEZ666 ARG Engine
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      fire_round:
+        description: 'FIRE round number'
+        required: false
+      fire_tau:
+        description: 'tau depth'
+        required: false
+      fire_type:
+        description: 'FIRE, HIGH_FIRE, EXTREME_FIRE'
+        required: false
+        default: 'FIRE'
+      fire_hash:
+        description: 'Spine hash hex'
+        required: false
+      fire_n:
+        description: 'N value'
+        required: false
+      fire_p:
+        description: 'p_fire value 0-1'
+        required: false
+jobs:
+  arg_cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+      TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
+      TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}
+      TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+      TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      FIRE_ROUND: ${{ github.event.inputs.fire_round }}
+      FIRE_TAU: ${{ github.event.inputs.fire_tau }}
+      FIRE_TYPE: ${{ github.event.inputs.fire_type }}
+      FIRE_HASH: ${{ github.event.inputs.fire_hash }}
+      FIRE_N: ${{ github.event.inputs.fire_n }}
+      FIRE_P: ${{ github.event.inputs.fire_p }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install groq requests eth-account web3 tweepy
+      - name: Run ARG cycle
+        run: python arg_engine.py
+      - name: Post Twitter thread
+        if: always()
+        run: python agents/twitter_poster.py 2>/dev/null || echo 'Twitter post skipped'
+      - name: Commit state
+        if: always()
+        run: |
+          git config --local user.email 'evez-arg@github-actions'
+          git config --local user.name 'EVEZ ARG Engine'
+          git add -f arg_state.json engagement_state.json wallets/ realms/ pending_tweets.json posted_threads.jsonl 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "arg: cycle $(date -u +%Y%m%dT%H%M%S)"
+          git push 2>/dev/null || true

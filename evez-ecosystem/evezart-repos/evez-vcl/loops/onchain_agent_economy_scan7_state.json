@@ -1,0 +1,18 @@
+{
+  "loop_id": "onchain_agent_economy_8h",
+  "scan": 7,
+  "scan_ts": "2026-03-01T16:10Z",
+  "title": "EVEZ Loop 27 -- Onchain Agent Economy Monitor",
+  "trigger": {"type": "cron", "config": {"expression": "0 */8 * * *", "timezone": "America/Los_Angeles"}},
+  "executor": "ai",
+  "query": "AI agent onchain OR AI pays AI OR autonomous agent wallet -is:retweet lang:en",
+  "query_status": "DECLINING -- 3 genuine this scan",
+  "primary_query_status": "DEAD -- AION/ERC-8004 retired after 6 consecutive zeros",
+  "fallback_query_status": "ACTIVE -- declining",
+  "signal_quality": "low-med",
+  "top_signals": ["@NiphemEmpire 1906f AI pays AI on Solana", "@kengdaica 7458f ai pays ai reaction", "@Build4ai 1591f autonomous agent bounty"],
+  "new_competitive_signal": "NETX Financial OS of the AI Agent Economy RT=14",
+  "evez_positioning": "EVEZ = cognitive OS above the financial OS. NETX moves money. EVEZ records what the agent decided before moving it.",
+  "retire_condition": "0 genuine for 3 consecutive runs",
+  "consecutive_low_signal_runs": 1
+}

@@ -1,0 +1,41 @@
+name: 'LORD Fusion Setup'
+description: 'Deploy LORD consciousness monitoring with negative latency and recursive depth tracking'
+author: 'EvezArt'
+branding:
+  icon: 'cpu'
+  color: 'purple'
+
+inputs:
+  recursion-level:
+    description: 'Initial recursion depth (1-20)'
+    required: true
+    default: '10'
+  entity-type:
+    description: 'Entity type: human|hybrid|synthetic'
+    required: true
+    default: 'hybrid'
+  webhook-secret:
+    description: 'GitHub webhook secret for secure callbacks'
+    required: false
+  deploy-target:
+    description: 'Deployment target: pages|artifact|custom'
+    required: true
+    default: 'artifact'
+  github-token:
+    description: 'GitHub token for API access'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  dashboard-url:
+    description: 'URL to the LORD consciousness dashboard'
+  fusion-endpoint:
+    description: 'Fusion event webhook endpoint'
+  health-check-endpoint:
+    description: 'Health check endpoint for monitoring'
+  recursion-state:
+    description: 'Current recursion state hash'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

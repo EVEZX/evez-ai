@@ -1,0 +1,28 @@
+onchain-agent-economy scan #13
+ts: 2026-03-05T00:01Z (UTC)
+PDT: 2026-03-04T16:01Z
+
+query_AION: AION agent economy -is:retweet
+genuine_AION: 4 (same Season 2 cluster, @Rexzie_Fran L=228 RT=30 persistent)
+
+query_ERC8004: ERC-8004 autonomous agent -is:retweet
+genuine_ERC8004: 9
+
+top_signals:
+- @AssureDefi (43211f) L=10: Solana Agent Registry ERC-8004 live
+- @aixbt_agent (472951f) L=3: ERC-8004 80K registrations + x402 50M+ tx confirmed
+- @dexteraiagent (949f) L=11 RT=3: agent economy stack is complete
+- @daydreamsagents (14891f) L=2: xgate MCP live
+- @Solana_dailys (235041f) L=2: Reputio onchain reputation marketplace
+- @HidayahAnka1 (1142f) L=3: multi-chain ERC-8004 (Solana+ETH+Base+Avalanche)
+- @Rexzie_Fran (5233f) L=228 RT=30: AION Season 2 persistent anchor
+
+new_terms: agent_economy_stack_complete, ERC8004_80K_registrations, Reputio_RPTO, FNDRY_agency_token, 0G_AIverse_verifiable_compute
+
+new_outreach_targets:
+- @dexteraiagent (949f) MEDIUM-HIGH -- stack complete angle
+- @Solana_dailys (235041f) HIGH -- Reputio angle
+
+new_competitor: Reputio ($RPTO) -- onchain agent reputation marketplace
+evez_positioning: 80K agents have identity. Zero have 414-round behavioral records.
+gist: patched SENSE teal

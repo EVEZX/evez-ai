@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.synaptic.atlas/v4/Fast-SurfaceCar-Cartography.json",
+  "title": "FSCSchema",
+  "type": "object",
+  "required": ["cycle_id", "timestamp", "anomaly", "controlled_reduction"],
+  "properties": {
+    "cycle_id": {"type": "string"},
+    "timestamp": {"type": "string"},
+    "anomaly": {"type": "string"},
+    "ring_estimate": {"type": "string", "enum": ["R1","R2","R3","R4","R5","R6","R7","unknown"]},
+    "controlled_reduction": {
+      "type": "object",
+      "required": ["dimensionality_reduction", "latency_pressure", "abstraction_stripping", "constraint_tightening"],
+      "properties": {
+        "dimensionality_reduction": {"type": "string"},
+        "latency_pressure": {"type": "string"},
+        "abstraction_stripping": {"type": "string"},
+        "constraint_tightening": {"type": "string"}
+      }
+    },
+    "Sigma_f": {"type": "array", "items": {"type": "string"}},
+    "CS": {"type": "array", "items": {"type": "string"}},
+    "PS": {"type": "array", "items": {"type": "string"}},
+    "Omega": {"type": "string"},
+    "tests": {"type": "array", "items": {"type": "string"}},
+    "results": {"type": "array", "items": {"type": "string"}},
+    "measures": {
+      "type": "object",
+      "properties": {
+        "delta_surprise_residue": {"type": "number"},
+        "delta_compression": {"type": "number"},
+        "stability": {"type": "number"},
+        "transfer": {"type": "number"},
+        "boundary_clarity": {"type": "number"},
+        "exploit_resistance": {"type": "number"}
+      }
+    },
+    "provenance": {"type": "array", "items": {"type": "string"}}
+  }
+}

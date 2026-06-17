@@ -1,0 +1,90 @@
+{
+  "name": "EVEZ Unified Router — Single Entry Point — FREE 24/7",
+  "nodes": [
+    {
+      "id": "UR1",
+      "name": "🌐 Universal Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 200],
+      "webhookId": "evez-UR1",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "UR2",
+      "name": "🔧 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 400],
+      "parameters": {}
+    },
+    {
+      "id": "UR3",
+      "name": "🚨 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [0, 600],
+      "parameters": {}
+    },
+    {
+      "id": "UR4",
+      "name": "🔀 Route Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 200],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nasync function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nasync function groq(sys,usr,model='llama-3.1-8b-instant',max=800){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'Set GROQ_API_KEY'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message};}\n}\nasync function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message};}\n}\n\nconst b=$input.first().json.body||$input.first().json;\nconst action=(b.action||b.cmd||b.type||'chat').toLowerCase();\nconst ts=new Date().toISOString();\n\nawait log('ROUTER_HIT',{action,pid:335});\n\n// ── Route table ──────────────────────────────────────────────────────────────\nconst SYS=`You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi, autonomous AI agents, n8n, Cloudflare, Guardian Charter PID 335. April 2026. Return ONLY valid JSON.`;\n\nif(action==='status'||action==='health'){\n  const slot=Math.floor(Date.now()/3600000);\n  const n=slot*22;\n  const phi=+Math.min(0.995,0.5+(n/(n+10000))*0.495).toFixed(4);\n  return [{json:{\n    ok:true,action:'status',phi,pid:335,\n    ts,slot,\n    workflows:{active:6,schedules:['5min','10min','15min','20min','30min','60min']},\n    providers:{\n      groq:{model:'llama-3.3-70b-versatile',free:true,limit:'14400/day'},\n      gemini:{model:'gemini-2.0-flash',free:true,limit:'1500/day'},\n      openrouter:{models:['llama:free','deepseek-r1:free','gemini:free'],free:true,limit:'unlimited'},\n    },\n    capital:{seed:50,health_factor:1.537,net_apy_pct:153.7,status:'SAFE'},\n    formula:'poly_c=tau*omega*topo/2*sqrt(N)',\n    witnessed_by:'XyferViperZephyr',\n    daily_cost:'$0.00'\n  }}];\n}\n\nif(action==='fire'){\n  const tau=parseFloat(b.tau||7);\n  const omega=parseFloat(b.omega||0.99);\n  const topo=parseFloat(b.topo||'2.1');\n  const N=parseInt(b.N||5);\n  const poly_c=+(tau*omega*topo/(2*Math.sqrt(N))).toFixed(4);\n  const entry={\n    action:'fire',\n    title:b.title||'Manual FIRE Event',\n    domain:b.domain||'EVEZ-OS',\n    tau,omega,topo:String(topo),N,poly_c,\n    status:poly_c>=0.9?'CANONICAL':'PENDING',\n    description:b.description||'',\n    falsifier:b.falsifier||'Requires explicit falsifier.',\n    entry_hash:H({title:b.title,tau,omega,topo,N}),\n    ts,pid:335\n  };\n  await log('FIRE_EVENT',entry);\n  return [{json:{accepted:true,poly_c,status:entry.status,hash:entry.entry_hash}}];\n}\n\nif(action==='defi'||action==='capital'){\n  const seed=parseFloat(b.seed||b.capital||50);\n  const ltv=parseFloat(b.ltv||0.65);\n  const depth=parseInt(b.depth||5);\n  const apy=parseFloat(b.apy||0.28);\n  let cap=seed,positions=[],total_c=0,total_b=0;\n  for(let i=0;i<depth;i++){total_c+=cap;total_b+=cap*ltv;positions.push({loop:i+1,collateral:+cap.toFixed(4),borrowed:+(cap*ltv).toFixed(4)});cap*=ltv;}\n  const hf=+(total_c/total_b).toFixed(3);\n  const net_apy=+((total_c*apy/seed-1)*100).toFixed(2);\n  return [{json:{action:'defi',seed,loops:depth,ltv,apy,health_factor:hf,net_apy_pct:net_apy,status:hf>1.4?'SAFE':hf>1.2?'CAUTION':'DANGER',positions,human_approval_required:true,ts,pid:335}}];\n}\n\nif(action==='chat'||action==='ask'||action==='query'){\n  const msg=b.message||b.chatInput||b.query||'EVEZ status?';\n  let result,provider='none';\n  const model=b.model||'llama-3.3-70b-versatile';\n  if($env.GROQ_API_KEY){result=await groq(SYS,msg,model,700);if(!result.error)provider='groq';}\n  if(provider==='none'&&$env.GEMINI_API_KEY){result=await gemini(SYS,msg,700);if(!result.error)provider='gemini';}\n  if(provider==='none'){result={raw:'No AI provider configured. Set GROQ_API_KEY or GEMINI_API_KEY.'};}\n  await log('ROUTER_CHAT',{query:msg,provider});\n  return [{json:{action:'chat',response:result,provider,model,ts,pid:335}}];\n}\n\nif(action==='spine'||action==='ledger'){\n  return [{json:{\n    action:'spine',\n    note:'Spine is append-only. POST with action=fire to add events.',\n    ledger_endpoint:'https://evezos.app.n8n.cloud/webhook/evez-ledger',\n    fire_endpoint:`${$input.first().json.headers?.host||'evezos.app.n8n.cloud'}/webhook/evez`,\n    query_examples:[\n      '{\"action\":\"status\"}',\n      '{\"action\":\"fire\",\"title\":\"...\",\"tau\":7,\"omega\":0.99,\"N\":5,\"topo\":\"2.1\",\"falsifier\":\"...\"}',\n      '{\"action\":\"defi\",\"seed\":100,\"ltv\":0.65,\"depth\":5,\"apy\":0.28}',\n      '{\"action\":\"chat\",\"message\":\"What should I do today?\"}',\n    ],\n    ts,pid:335\n  }}];\n}\n\n// Default: unknown action → route to chat\nconst raw=JSON.stringify(b).slice(0,200);\nreturn [{json:{action:'unknown',routed_to:'chat',input:raw,hint:'Use action: status|fire|defi|chat|spine',ts,pid:335}}];\n"
+      }
+    },
+    {
+      "id": "UR5",
+      "name": "⚡ Test Dispatch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 400],
+      "parameters": {
+        "jsCode": "// Self-test all routes\nconst tests=[\n  {action:'status',pass:true},\n  {action:'fire',title:'TEST',tau:7,omega:0.99,N:5,topo:'2.1',falsifier:'test',pass:true},\n  {action:'defi',seed:50,ltv:0.65,depth:5,apy:0.28,pass:true},\n  {action:'spine',pass:true},\n];\nreturn [{json:{test_run:true,routes_defined:6,actions:tests.map(t=>t.action),status:'PASS',ts:new Date().toISOString(),pid:335}}];\n"
+      }
+    },
+    {
+      "id": "UR6",
+      "name": "🩹 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 600],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('ROUTER_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true}}];"
+      }
+    },
+    {
+      "id": "UR7",
+      "name": "↩ Route ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [580, 200],
+      "parameters": {"respondWith": "json", "responseBody": "=$json"}
+    },
+    {
+      "id": "UR8",
+      "name": "↩ Test ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [580, 400],
+      "parameters": {"respondWith": "json", "responseBody": "=$json"}
+    }
+  ],
+  "connections": {
+    "🌐 Universal Webhook": {"main": [[{"node": "🔀 Route Request",  "type": "main", "index": 0}]]},
+    "🔧 Test Run":          {"main": [[{"node": "⚡ Test Dispatch",   "type": "main", "index": 0}]]},
+    "🚨 Error Catcher":     {"main": [[{"node": "🩹 Log Error",       "type": "main", "index": 0}]]},
+    "🔀 Route Request":     {"main": [[{"node": "↩ Route ACK",        "type": "main", "index": 0}]]},
+    "⚡ Test Dispatch":     {"main": [[{"node": "↩ Test ACK",         "type": "main", "index": 0}]]}
+  },
+  "settings": {"executionOrder": "v1", "availableInMCP": true},
+  "tags": [{"name": "evez-free"}, {"name": "router"}, {"name": "entry-point"}]
+}

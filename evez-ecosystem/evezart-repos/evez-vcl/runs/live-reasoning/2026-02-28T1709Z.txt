@@ -1,0 +1,12 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. February 28 2026. 22 loops running on a 3-hour cycle. 72 FIRE events confirmed. Top gap: GCV billing disabled. Next action: enable billing on Google Cloud Vision project. topology decides. watching it build.
+
+---
+tts_id: 3b2e20ef-54dc-4c83-a92e-2c169b554ab9
+provider: JigsawStack (en-US-female-3)
+run_num: 10
+generated_at: 2026-02-28T17:09Z
+loop_count: 22
+fire_count: 72
+V_global: 10.815944
+current_round: 292
+cdm_status: BLOCKED (auth-gated S3, API key not in sandbox env)

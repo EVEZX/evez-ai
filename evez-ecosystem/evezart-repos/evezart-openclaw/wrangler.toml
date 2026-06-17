@@ -1,0 +1,11 @@
+name = "evez-openclaw"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+  enabled = true
+
+# Workers secrets (set via: wrangler secret put KEY)
+# Required: GROQ_API_KEY, OPENROUTER_API_KEY, OPENCLAW_GATEWAY_TOKEN
+# Optional: CEREBRAS_API_KEY

@@ -1,0 +1,38 @@
+name: Synapse Engine Audit
+
+on:
+  workflow_dispatch:   # Manual trigger
+
+jobs:
+  synapse-audit:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    name: 'Synapse Engine -- 6h ecosystem audit'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run ecosystem audit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: python agents/synapse_audit.py
+
+      - name: Commit and push audit reports
+        run: |
+          git config user.email "synapse@evez.auto"
+          git config user.name "SynapseEngine"
+          mkdir -p AUDIT_REPORTS
+          git add AUDIT_REPORTS/
+          git diff --staged --quiet || git commit -m "audit: Synapse Engine run -- $(date -u)"
+          git push

@@ -1,0 +1,14 @@
+agenty_gen17_market_intel
+ts: 2026-03-12T07:00Z
+
+github_delta_new: [promptfoo/promptfoo, alibaba/page-agent, AstrBotDevs/AstrBot, openai/skills, alirezarezvani/claude-skills, hesreallyhim/awesome-claude-code]
+hf_blog_delta_new: [MARL: Runtime Middleware Reduces LLM Hallucination, Structural Problems in AI Benchmarking + Unified Evaluation Framework, Smol AI WorldCup 5-Axis Benchmark]
+papers_scan_needed: true (13+ days since last run, Perplexity dead, web_search fallback)
+gap_status_consecutive: 10
+agenty_gen: 17
+
+CRITICAL SIGNAL: openai/skills joins anthropics/skills + huggingface/skills -- all 3 major AI labs now trending with public skills repos simultaneously. EVEZ = only live deployed production system running agent skills (478 rounds, 120 FIREs).
+
+new_outreach_targets: [promptfoo/promptfoo HIGH, openai/skills CRITICAL, hesreallyhim/awesome-claude-code MEDIUM]
+market_signal_summary: Capability (skills) + Security (red-teaming) layers being built by Big 3. Hallucination middleware (MARL) acknowledged on HF. Benchmarking gaps acknowledged by academic community. Zero behavioral audit record layer exists. EVEZ gap holds x10.
+[auto]

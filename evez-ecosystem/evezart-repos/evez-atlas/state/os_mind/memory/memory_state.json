@@ -1,0 +1,1176 @@
+{
+  "total_recorded": 73,
+  "consolidation_count": 5,
+  "episodic": [
+    {
+      "id": "EP-0-1778595019",
+      "content": "PATTERN: {\"type\": \"PATTERN\", \"sensor\": \"internal\", \"intensity\": 0.49830628766130064, \"confidence\": 0.57711364",
+      "importance": 0.49830628766130064,
+      "emotion": "neutral",
+      "strength": 0.7473,
+      "consolidated": true,
+      "associations": [
+        "EP-39-1778595020",
+        "EP-43-1778595020"
+      ]
+    },
+    {
+      "id": "EP-1-1778595019",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8988,
+      "consolidated": true,
+      "associations": [
+        "EP-2-1778595019",
+        "EP-3-1778595019",
+        "EP-4-1778595019",
+        "EP-5-1778595019",
+        "EP-6-1778595019",
+        "EP-7-1778595019",
+        "EP-8-1778595019",
+        "EP-9-1778595019",
+        "EP-11-1778595019",
+        "EP-12-1778595019"
+      ]
+    },
+    {
+      "id": "EP-2-1778595019",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8988,
+      "consolidated": true,
+      "associations": [
+        "EP-1-1778595019",
+        "EP-3-1778595019",
+        "EP-4-1778595019",
+        "EP-5-1778595019",
+        "EP-6-1778595019",
+        "EP-7-1778595019",
+        "EP-8-1778595019",
+        "EP-9-1778595019",
+        "EP-11-1778595019",
+        "EP-12-1778595019"
+      ]
+    },
+    {
+      "id": "EP-3-1778595019",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8988,
+      "consolidated": true,
+      "associations": [
+        "EP-1-1778595019",
+        "EP-2-1778595019",
+        "EP-4-1778595019",
+        "EP-5-1778595019",
+        "EP-6-1778595019",
+        "EP-7-1778595019",
+        "EP-8-1778595019",
+        "EP-9-1778595019",
+        "EP-11-1778595019",
+        "EP-12-1778595019"
+      ]
+    },
+    {
+      "id": "EP-4-1778595019",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-1-1778595019",
+        "EP-2-1778595019",
+        "EP-3-1778595019",
+        "EP-18-1778595019",
+        "EP-22-1778595019",
+        "EP-26-1778595020",
+        "EP-70-1778595021"
+      ]
+    },
+    {
+      "id": "EP-5-1778595019",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-1-1778595019",
+        "EP-2-1778595019",
+        "EP-3-1778595019",
+        "EP-19-1778595019",
+        "EP-23-1778595019",
+        "EP-27-1778595020",
+        "EP-71-1778595021"
+      ]
+    },
+    {
+      "id": "EP-6-1778595019",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-3-1778595019",
+        "EP-20-1778595019",
+        "EP-24-1778595019",
+        "EP-28-1778595020",
+        "EP-72-1778595021"
+      ]
+    },
+    {
+      "id": "EP-7-1778595019",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8099,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-11-1778595019",
+        "EP-14-1778595019",
+        "EP-48-1778595020",
+        "EP-51-1778595020",
+        "EP-54-1778595020",
+        "EP-58-1778595020"
+      ]
+    },
+    {
+      "id": "EP-8-1778595019",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8099,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-12-1778595019",
+        "EP-15-1778595019",
+        "EP-49-1778595020",
+        "EP-52-1778595020",
+        "EP-55-1778595020",
+        "EP-59-1778595020"
+      ]
+    },
+    {
+      "id": "EP-9-1778595019",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.8099,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-13-1778595019",
+        "EP-16-1778595019",
+        "EP-50-1778595020",
+        "EP-53-1778595020",
+        "EP-56-1778595020",
+        "EP-60-1778595020"
+      ]
+    },
+    {
+      "id": "EP-10-1778595019",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-11-1778595019",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-14-1778595019",
+        "EP-48-1778595020",
+        "EP-51-1778595020",
+        "EP-54-1778595020",
+        "EP-58-1778595020"
+      ]
+    },
+    {
+      "id": "EP-12-1778595019",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-15-1778595019",
+        "EP-49-1778595020",
+        "EP-52-1778595020",
+        "EP-55-1778595020",
+        "EP-59-1778595020"
+      ]
+    },
+    {
+      "id": "EP-13-1778595019",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-16-1778595019",
+        "EP-50-1778595020",
+        "EP-53-1778595020",
+        "EP-56-1778595020",
+        "EP-60-1778595020"
+      ]
+    },
+    {
+      "id": "EP-14-1778595019",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-11-1778595019",
+        "EP-48-1778595020",
+        "EP-51-1778595020",
+        "EP-54-1778595020",
+        "EP-58-1778595020"
+      ]
+    },
+    {
+      "id": "EP-15-1778595019",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-12-1778595019",
+        "EP-49-1778595020",
+        "EP-52-1778595020",
+        "EP-55-1778595020",
+        "EP-59-1778595020"
+      ]
+    },
+    {
+      "id": "EP-16-1778595019",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-13-1778595019",
+        "EP-50-1778595020",
+        "EP-53-1778595020",
+        "EP-56-1778595020",
+        "EP-60-1778595020"
+      ]
+    },
+    {
+      "id": "EP-17-1778595019",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-18-1778595019",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.72,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-4-1778595019",
+        "EP-22-1778595019",
+        "EP-26-1778595020",
+        "EP-70-1778595021"
+      ]
+    },
+    {
+      "id": "EP-19-1778595019",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.72,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-5-1778595019",
+        "EP-23-1778595019",
+        "EP-27-1778595020",
+        "EP-71-1778595021"
+      ]
+    },
+    {
+      "id": "EP-20-1778595019",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.72,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-6-1778595019",
+        "EP-24-1778595019",
+        "EP-28-1778595020",
+        "EP-72-1778595021"
+      ]
+    },
+    {
+      "id": "EP-21-1778595019",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-22-1778595019",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-4-1778595019",
+        "EP-18-1778595019"
+      ]
+    },
+    {
+      "id": "EP-23-1778595019",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-5-1778595019",
+        "EP-19-1778595019"
+      ]
+    },
+    {
+      "id": "EP-24-1778595019",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-6-1778595019",
+        "EP-20-1778595019"
+      ]
+    },
+    {
+      "id": "EP-25-1778595020",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-26-1778595020",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-4-1778595019",
+        "EP-18-1778595019"
+      ]
+    },
+    {
+      "id": "EP-27-1778595020",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-5-1778595019",
+        "EP-19-1778595019"
+      ]
+    },
+    {
+      "id": "EP-28-1778595020",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-6-1778595019",
+        "EP-20-1778595019"
+      ]
+    },
+    {
+      "id": "EP-29-1778595020",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.81,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-32-1778595020",
+        "EP-36-1778595020",
+        "EP-40-1778595020",
+        "EP-44-1778595020",
+        "EP-62-1778595021",
+        "EP-66-1778595021"
+      ]
+    },
+    {
+      "id": "EP-30-1778595020",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.81,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-33-1778595020",
+        "EP-37-1778595020",
+        "EP-41-1778595020",
+        "EP-45-1778595020",
+        "EP-63-1778595021",
+        "EP-67-1778595021"
+      ]
+    },
+    {
+      "id": "EP-31-1778595020",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.81,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-34-1778595020",
+        "EP-38-1778595020",
+        "EP-42-1778595020",
+        "EP-46-1778595020",
+        "EP-64-1778595021",
+        "EP-68-1778595021"
+      ]
+    },
+    {
+      "id": "EP-32-1778595020",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-36-1778595020",
+        "EP-40-1778595020",
+        "EP-44-1778595020",
+        "EP-62-1778595021",
+        "EP-66-1778595021"
+      ]
+    },
+    {
+      "id": "EP-33-1778595020",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-37-1778595020",
+        "EP-41-1778595020",
+        "EP-45-1778595020",
+        "EP-63-1778595021",
+        "EP-67-1778595021"
+      ]
+    },
+    {
+      "id": "EP-34-1778595020",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.78,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-38-1778595020",
+        "EP-42-1778595020",
+        "EP-46-1778595020",
+        "EP-64-1778595021",
+        "EP-68-1778595021"
+      ]
+    },
+    {
+      "id": "EP-35-1778595020",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-36-1778595020",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-32-1778595020",
+        "EP-40-1778595020",
+        "EP-44-1778595020",
+        "EP-62-1778595021",
+        "EP-66-1778595021"
+      ]
+    },
+    {
+      "id": "EP-37-1778595020",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-33-1778595020",
+        "EP-41-1778595020",
+        "EP-45-1778595020",
+        "EP-63-1778595021",
+        "EP-67-1778595021"
+      ]
+    },
+    {
+      "id": "EP-38-1778595020",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.75,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-34-1778595020",
+        "EP-42-1778595020",
+        "EP-46-1778595020",
+        "EP-64-1778595021",
+        "EP-68-1778595021"
+      ]
+    },
+    {
+      "id": "EP-39-1778595020",
+      "content": "PATTERN: {\"type\": \"PATTERN\", \"sensor\": \"internal\", \"intensity\": 0.6937035349765339, \"confidence\": 0.584455424",
+      "importance": 0.6937035349765339,
+      "emotion": "neutral",
+      "strength": 1.0405,
+      "consolidated": true,
+      "associations": [
+        "EP-0-1778595019",
+        "EP-43-1778595020"
+      ]
+    },
+    {
+      "id": "EP-40-1778595020",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-32-1778595020",
+        "EP-36-1778595020"
+      ]
+    },
+    {
+      "id": "EP-41-1778595020",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-33-1778595020",
+        "EP-37-1778595020"
+      ]
+    },
+    {
+      "id": "EP-42-1778595020",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-34-1778595020",
+        "EP-38-1778595020"
+      ]
+    },
+    {
+      "id": "EP-43-1778595020",
+      "content": "PATTERN: {\"type\": \"PATTERN\", \"sensor\": \"internal\", \"intensity\": 0.6404501109208154, \"confidence\": 0.578019883",
+      "importance": 0.6404501109208154,
+      "emotion": "neutral",
+      "strength": 0.8646,
+      "consolidated": true,
+      "associations": [
+        "EP-39-1778595020",
+        "EP-0-1778595019"
+      ]
+    },
+    {
+      "id": "EP-44-1778595020",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-32-1778595020",
+        "EP-36-1778595020"
+      ]
+    },
+    {
+      "id": "EP-45-1778595020",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-33-1778595020",
+        "EP-37-1778595020"
+      ]
+    },
+    {
+      "id": "EP-46-1778595020",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-34-1778595020",
+        "EP-38-1778595020"
+      ]
+    },
+    {
+      "id": "EP-47-1778595020",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-48-1778595020",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-11-1778595019",
+        "EP-14-1778595019"
+      ]
+    },
+    {
+      "id": "EP-49-1778595020",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-12-1778595019",
+        "EP-15-1778595019"
+      ]
+    },
+    {
+      "id": "EP-50-1778595020",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-13-1778595019",
+        "EP-16-1778595019"
+      ]
+    },
+    {
+      "id": "EP-51-1778595020",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-11-1778595019",
+        "EP-14-1778595019"
+      ]
+    },
+    {
+      "id": "EP-52-1778595020",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-12-1778595019",
+        "EP-15-1778595019"
+      ]
+    },
+    {
+      "id": "EP-53-1778595020",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-13-1778595019",
+        "EP-16-1778595019"
+      ]
+    },
+    {
+      "id": "EP-54-1778595020",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-11-1778595019",
+        "EP-14-1778595019"
+      ]
+    },
+    {
+      "id": "EP-55-1778595020",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-12-1778595019",
+        "EP-15-1778595019"
+      ]
+    },
+    {
+      "id": "EP-56-1778595020",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-13-1778595019",
+        "EP-16-1778595019"
+      ]
+    },
+    {
+      "id": "EP-57-1778595020",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-58-1778595020",
+      "content": "Action: DIAGNOSE_FAILURE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-7-1778595019",
+        "EP-11-1778595019",
+        "EP-14-1778595019"
+      ]
+    },
+    {
+      "id": "EP-59-1778595020",
+      "content": "Action: DEVELOP_FIX",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-8-1778595019",
+        "EP-12-1778595019",
+        "EP-15-1778595019"
+      ]
+    },
+    {
+      "id": "EP-60-1778595020",
+      "content": "Action: IMPLEMENT",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-9-1778595019",
+        "EP-13-1778595019",
+        "EP-16-1778595019"
+      ]
+    },
+    {
+      "id": "EP-61-1778595021",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-62-1778595021",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-32-1778595020",
+        "EP-36-1778595020"
+      ]
+    },
+    {
+      "id": "EP-63-1778595021",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-33-1778595020",
+        "EP-37-1778595020"
+      ]
+    },
+    {
+      "id": "EP-64-1778595021",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-34-1778595020",
+        "EP-38-1778595020"
+      ]
+    },
+    {
+      "id": "EP-65-1778595021",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-66-1778595021",
+      "content": "Action: IDENTIFY_UNKNOWN",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-29-1778595020",
+        "EP-32-1778595020",
+        "EP-36-1778595020"
+      ]
+    },
+    {
+      "id": "EP-67-1778595021",
+      "content": "Action: INVESTIGATE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-30-1778595020",
+        "EP-33-1778595020",
+        "EP-37-1778595020"
+      ]
+    },
+    {
+      "id": "EP-68-1778595021",
+      "content": "Action: CLASSIFY",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-31-1778595020",
+        "EP-34-1778595020",
+        "EP-38-1778595020"
+      ]
+    },
+    {
+      "id": "EP-69-1778595021",
+      "content": "ANOMALY: {\"type\": \"ANOMALY\", \"sensor\": \"memory\", \"intensity\": 0.2, \"confidence\": 0.4}",
+      "importance": 0.2,
+      "emotion": "neutral",
+      "strength": 0.2,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-70-1778595021",
+      "content": "Action: FIND_CONTRADICTION",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-4-1778595019",
+        "EP-18-1778595019"
+      ]
+    },
+    {
+      "id": "EP-71-1778595021",
+      "content": "Action: GATHER_EVIDENCE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-5-1778595019",
+        "EP-19-1778595019"
+      ]
+    },
+    {
+      "id": "EP-72-1778595021",
+      "content": "Action: RESOLVE",
+      "importance": 0.6,
+      "emotion": "neutral",
+      "strength": 0.6,
+      "consolidated": true,
+      "associations": [
+        "EP-3-1778595019",
+        "EP-2-1778595019",
+        "EP-1-1778595019",
+        "EP-6-1778595019",
+        "EP-20-1778595019"
+      ]
+    }
+  ],
+  "procedures": {},
+  "lt_concepts": [
+    "pattern:",
+    "{\"type\":",
+    "\"pattern\",",
+    "type",
+    "sensor",
+    "intensity",
+    "confidence",
+    "action:",
+    "find_contradiction",
+    "desire",
+    "gather_evidence",
+    "resolve",
+    "diagnose_failure",
+    "develop_fix",
+    "implement",
+    "identify_unknown",
+    "investigate",
+    "classify"
+  ]
+}

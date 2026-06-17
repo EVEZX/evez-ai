@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVEZ666 Revenue Dashboard</title>
+    <meta http-equiv="refresh" content="300">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff, #f78166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header .subtitle {
+            color: #8b949e;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: #58a6ff; }
+        .card h2 {
+            font-size: 14px;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .big-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+        .big-number.green { color: #3fb950; }
+        .big-number.orange { color: #f78166; }
+        .big-number.purple { color: #bc8cff; }
+        .channel-list { list-style: none; }
+        .channel-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #21262d;
+        }
+        .channel-list li:last-child { border-bottom: none; }
+        .channel-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .channel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-github { background: #3fb950; }
+        .dot-kofi { background: #ff5f5f; }
+        .dot-paypal { background: #00457c; }
+        .channel-amount { font-weight: 600; color: #e6edf3; }
+        .tier-list { list-style: none; }
+        .tier-list li {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: #0d1117;
+            border-radius: 8px;
+            border-left: 3px solid;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tier-supporter { border-color: #3fb950; }
+        .tier-backer { border-color: #58a6ff; }
+        .tier-champion { border-color: #bc8cff; }
+        .tier-patron { border-color: #f78166; }
+        .asset-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .asset-item {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .asset-item .label { font-size: 12px; color: #8b949e; }
+        .asset-item .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+        .trend-bar {
+            height: 4px;
+            background: #21262d;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .trend-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s;
+        }
+        .links { margin-top: 16px; }
+        .links a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            background: #21262d;
+            color: #58a6ff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid #30363d;
+            transition: all 0.2s;
+        }
+        .links a:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+        .wide { grid-column: span 2; }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-active { background: #0d3320; color: #3fb950; }
+        .status-setup { background: #3d2200; color: #f78166; }
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #30363d;
+            color: #484f58;
+            font-size: 12px;
+        }
+        @media (max-width: 640px) {
+            .wide { grid-column: span 1; }
+            .asset-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>EVEZ666 Wealth Engine Dashboard</h1>
+        <p class="subtitle">Autonomous Revenue System for Steven Crawford-Maggard &mdash; Auto-refreshes every 5 minutes</p>
+    </div>
+
+    <div class="grid">
+        <!-- Total Revenue -->
+        <div class="card">
+            <h2>Total Revenue (All Time)</h2>
+            <div class="big-number" id="total-revenue">$0.00</div>
+            <div class="trend-bar"><div class="trend-fill" style="width: 0%; background: #58a6ff;"></div></div>
+        </div>
+
+        <!-- Monthly Revenue -->
+        <div class="card">
+            <h2>Monthly Revenue</h2>
+            <div class="big-number green" id="monthly-revenue">$0.00</div>
+            <div class="trend-bar"><div class="trend-fill" style="width: 0%; background: #3fb950;"></div></div>
+        </div>
+
+        <!-- Weekly Revenue -->
+        <div class="card">
+            <h2>Weekly Revenue</h2>
+            <div class="big-number orange" id="weekly-revenue">$0.00</div>
+            <div class="trend-bar"><div class="trend-fill" style="width: 0%; background: #f78166;"></div></div>
+        </div>
+
+        <!-- Revenue by Channel -->
+        <div class="card">
+            <h2>Revenue by Channel</h2>
+            <ul class="channel-list">
+                <li>
+                    <span class="channel-name"><span class="channel-dot dot-github"></span> GitHub Sponsors</span>
+                    <span class="channel-amount" id="ch-github">$0.00</span>
+                </li>
+                <li>
+                    <span class="channel-name"><span class="channel-dot dot-kofi"></span> Ko-fi</span>
+                    <span class="channel-amount" id="ch-kofi">$0.00</span>
+                </li>
+                <li>
+                    <span class="channel-name"><span class="channel-dot dot-paypal"></span> PayPal</span>
+                    <span class="channel-amount" id="ch-paypal">$0.00</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Sponsor Tiers -->
+        <div class="card">
+            <h2>Sponsor Tiers</h2>
+            <ul class="tier-list">
+                <li class="tier-supporter"><span>Supporter</span><span>$3/mo</span></li>
+                <li class="tier-backer"><span>Backer</span><span>$7/mo</span></li>
+                <li class="tier-champion"><span>Champion</span><span>$15/mo</span></li>
+                <li class="tier-patron"><span>Patron</span><span>$30/mo</span></li>
+            </ul>
+        </div>
+
+        <!-- Channel Status -->
+        <div class="card">
+            <h2>Channel Status</h2>
+            <ul class="channel-list">
+                <li>
+                    <span>GitHub Sponsors</span>
+                    <span class="status-badge status-active">Active</span>
+                </li>
+                <li>
+                    <span>Ko-fi</span>
+                    <span class="status-badge status-active">Active</span>
+                </li>
+                <li>
+                    <span>PayPal</span>
+                    <span class="status-badge status-active">Active</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Asset Inventory -->
+        <div class="card wide">
+            <h2>Digital Asset Inventory</h2>
+            <div class="asset-grid">
+                <div class="asset-item">
+                    <div class="label">GitHub Repos</div>
+                    <div class="value" id="asset-repos" style="color: #58a6ff;">--</div>
+                </div>
+                <div class="asset-item">
+                    <div class="label">Total Stars</div>
+                    <div class="value" id="asset-stars" style="color: #e3b341;">--</div>
+                </div>
+                <div class="asset-item">
+                    <div class="label">Vercel Deployments</div>
+                    <div class="value" id="asset-vercel" style="color: #3fb950;">9</div>
+                </div>
+                <div class="asset-item">
+                    <div class="label">IP Assets</div>
+                    <div class="value" id="asset-ip" style="color: #bc8cff;">5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card wide">
+            <h2>Revenue Links</h2>
+            <div class="links">
+                <a href="https://github.com/sponsors/EvezArt" target="_blank">GitHub Sponsors</a>
+                <a href="https://ko-fi.com/evez666" target="_blank">Ko-fi</a>
+                <a href="https://www.paypal.me/rubikspubes70" target="_blank">PayPal</a>
+                <a href="https://github.com/EvezArt" target="_blank">GitHub Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        EVEZ666 Autonomous Wealth Engine v1.0 &mdash; Last updated: <span id="last-updated"></span>
+    </div>
+
+    <script>
+        // Load data from JSON reports if available
+        async function loadData() {
+            try {
+                const resp = await fetch('../revenue/reports/latest_report.json');
+                if (resp.ok) {
+                    const data = await resp.json();
+                    const rev = data.revenue || {};
+                    document.getElementById('total-revenue').textContent = '$' + (rev.total_all_time || 0).toFixed(2);
+                    document.getElementById('monthly-revenue').textContent = '$' + (rev.monthly || 0).toFixed(2);
+                    document.getElementById('weekly-revenue').textContent = '$' + (rev.weekly || 0).toFixed(2);
+
+                    const ch = rev.by_channel || {};
+                    document.getElementById('ch-github').textContent = '$' + (ch.github_sponsors || 0).toFixed(2);
+                    document.getElementById('ch-kofi').textContent = '$' + (ch.ko_fi || 0).toFixed(2);
+                    document.getElementById('ch-paypal').textContent = '$' + (ch.paypal || 0).toFixed(2);
+
+                    const rm = data.repo_metrics || {};
+                    document.getElementById('asset-repos').textContent = rm.total_repos || '--';
+                    document.getElementById('asset-stars').textContent = rm.total_stars || '--';
+                }
+            } catch (e) {
+                console.log('Revenue data not yet available — run the orchestrator first.');
+            }
+
+            try {
+                const resp = await fetch('../revenue/assets.json');
+                if (resp.ok) {
+                    const data = await resp.json();
+                    const summary = data.summary || {};
+                    const gh = summary.github || {};
+                    document.getElementById('asset-repos').textContent = gh.total_repos || '--';
+                    document.getElementById('asset-stars').textContent = gh.total_stars || '--';
+                    document.getElementById('asset-vercel').textContent = (summary.vercel || {}).total_deployments || '9';
+                    document.getElementById('asset-ip').textContent = (summary.intellectual_property || {}).total_ip_assets || '5';
+                }
+            } catch (e) {
+                console.log('Asset data not yet available — run the asset tracker first.');
+            }
+
+            document.getElementById('last-updated').textContent = new Date().toISOString();
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

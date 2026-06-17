@@ -1,0 +1,13 @@
+revenue_loop_gen18
+ts: 2026-03-12T07:00Z
+
+github_trending_1: msitarzewski/agency-agents
+
+thread_status: BLOCKED (Twitter 403 account locked -- login required at twitter.com to unlock)
+tweet1_queued: @msitarzewski Can agents explain themselves? #EVEZ
+tweet2_queued: FIRE #120: 2x3^2x31, V=17.479675. EVEZ OS cracks the interpretability gap with 478 rounds of behavioral records.
+tweet3_queued: $49/mo. evez-autonomizer.vercel.app. Explain your AI.
+
+FIRE_reference: FIRE #120 N=558=2x3^2x31 V=17.479675 R=478
+new_net_repos: promptfoo/promptfoo, openai/skills, alibaba/page-agent, AstrBotDevs/AstrBot
+[auto]

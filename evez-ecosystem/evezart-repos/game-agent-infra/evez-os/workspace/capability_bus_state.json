@@ -1,0 +1,13 @@
+{
+  "health": "PASS",
+  "connections": {
+    "twitter": {"status": "ACTIVE", "evidence": "tweet 2026255116970393691 posted R171"},
+    "github": {"status": "ACTIVE", "evidence": "commit ef6aa6bb R172"},
+    "hyperbrowser": {"status": "ACTIVE", "evidence": "R173 probe 4371dc89 completed, R174 probe da681d91 completed"},
+    "youtube": {"status": "UNKNOWN", "evidence": "no upload attempted this cycle"}
+  },
+  "note": "twitter/github/hyperbrowser ACTIVE. youtube UNKNOWN.",
+  "blocked_apps": [],
+  "last_run": "2026-02-24T12:35:00+00:00",
+  "last_round": 173
+}

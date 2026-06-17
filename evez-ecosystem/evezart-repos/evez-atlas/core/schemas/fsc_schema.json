@@ -1,0 +1,124 @@
+{
+  "title": "Failure-Surface Cartography Schema",
+  "type": "object",
+  "properties": {
+    "cycle_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "anomaly": {
+      "type": "string"
+    },
+    "ring_estimate": {
+      "type": "string",
+      "enum": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "unknown"
+      ]
+    },
+    "controlled_reduction": {
+      "type": "object",
+      "properties": {
+        "dimensionality_reduction": {
+          "type": "string"
+        },
+        "latency_pressure": {
+          "type": "string"
+        },
+        "abstraction_stripping": {
+          "type": "string"
+        },
+        "constraint_tightening": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "dimensionality_reduction",
+        "latency_pressure",
+        "abstraction_stripping",
+        "constraint_tightening"
+      ]
+    },
+    "Sigma_f": {
+      "description": "Failure surface: minimal perturbations that induce breakdown",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "CS": {
+      "description": "Collapse sequence",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "PS": {
+      "description": "Preservation set",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Omega": {
+      "description": "Candidate identity operator invariant",
+      "type": "string"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "measures": {
+      "type": "object",
+      "properties": {
+        "delta_surprise_residue": {
+          "type": "number"
+        },
+        "delta_compression": {
+          "type": "number"
+        },
+        "stability": {
+          "type": "number"
+        },
+        "transfer": {
+          "type": "number"
+        },
+        "boundary_clarity": {
+          "type": "number"
+        },
+        "exploit_resistance": {
+          "type": "number"
+        }
+      }
+    },
+    "provenance": {
+      "description": "Where each claim came from (tool output, file path, citation, user report).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "cycle_id",
+    "timestamp",
+    "anomaly",
+    "controlled_reduction"
+  ]
+}

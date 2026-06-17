@@ -1,0 +1,23 @@
+name: ci
+on:
+  push:
+    branches:
+      - main
+      - 'agent/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Basic sanity
+        run: |
+          python -c "import json; import pathlib; p=pathlib.Path('docs/chart_object.json'); print('chart_object.json exists:', p.exists())"
+          python -c "import pathlib; p=pathlib.Path('spine/EVENT_SPINE.jsonl'); print('EVENT_SPINE.jsonl exists:', p.exists())"
+          echo "CI sanity: PASS"

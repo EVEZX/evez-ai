@@ -1,0 +1,211 @@
+{
+  "name": "EVEZ Multi-Model Rotator \u2014 Groq+Gemini+OpenRouter \u2014 FREE 24/7",
+  "nodes": [
+    {
+      "id": "RO1",
+      "name": "\u23f1 Every 20 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 20
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "RO2",
+      "name": "\ud83d\udd27 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "RO3",
+      "name": "\ud83d\udd0d Provider Check",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-RO3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-provider-status",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "RO4",
+      "name": "\ud83d\udea8 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        600
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "RO5",
+      "name": "\ud83d\udd04 Multi-Model Cycle",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function groq(sys,usr,model='llama-3.1-8b-instant',max=800){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'Set GROQ_API_KEY in n8n Settings \u2192 Environment Variables. Free key: console.groq.com'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'groq'};}\n}async function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY. Free key: aistudio.google.com'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'gemini'};}\n}async function openrouter(sys,usr,model='meta-llama/llama-3.3-70b-instruct:free',max=800){\n  const k=$env.OPENROUTER_API_KEY||'';\n  if(!k)return{error:'Set OPENROUTER_API_KEY. Free key: openrouter.ai'};\n  try{\n    const r=await $fetch('https://openrouter.ai/api/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json','HTTP-Referer':'https://evezos.app.n8n.cloud'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'openrouter'};}\n}\nconst slot=Math.floor(Date.now()/1200000);\nconst order=['groq','gemini','openrouter'];\nconst primary=order[slot%3];\n\nconst MISSIONS=[\n  {role:'strategist', q:'EVEZ March 2026: $50 seed, free AI stack, n8n 3 workflows, CF Sentinel pending. Top 3 wealth-maximizing actions this week?'},\n  {role:'defi_scout',  q:'DeFi scan: Morpho Base 4.5%, Kamino Solana 28%, EigenLayer 5%, Pendle 30-42%. Optimal $50-500 capital allocation?'},\n  {role:'architect',   q:'EVEZ-OS gaps: CF Sentinel undeployed, Supabase empty, OpenAI credits gone (free providers active). Minimum viable path to full autonomous operation?'},\n  {role:'analyst',     q:'Health check: Guardian Charter PID 335, Trunk-and-Branch, 17-agent target, free AI providers only. Confidence score and top gap?'},\n  {role:'opportunist', q:'Agentic Summer 2026: Base $12.6B TVL, MCP live, AI agent economy. Zero-cost market position for EVEZ next 7 days?'},\n];\nconst mission=MISSIONS[slot%MISSIONS.length];\nconst sys=`${SYS_EVEZ_SHORT} Role: ${mission.role}. Return JSON: {\"insight\":\"3-sentence insight\",\"action\":\"specific next step\",\"confidence\":0.8,\"wealth_signal\":{\"opportunity\":\"\",\"expected_return\":\"\"}}`;\n\n// Cascade: primary \u2192 fallbacks\nlet result,provider='none';\nconst SYS_EVEZ_SHORT=`You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON.`;\n\nif(primary==='groq'&&$env.GROQ_API_KEY){result=await groq(sys,mission.q,'llama-3.3-70b-versatile',600);if(!result.error)provider='groq';}\nif(provider==='none'&&primary==='gemini'&&$env.GEMINI_API_KEY){result=await gemini(sys,mission.q,600);if(!result.error)provider='gemini';}\nif(provider==='none'&&$env.GROQ_API_KEY){result=await groq(sys,mission.q,'llama-3.1-8b-instant',600);if(!result.error)provider='groq-fallback';}\nif(provider==='none'&&$env.GEMINI_API_KEY){result=await gemini(sys,mission.q,600);if(!result.error)provider='gemini-fallback';}\nif(provider==='none'&&$env.OPENROUTER_API_KEY){result=await openrouter(sys,mission.q,'meta-llama/llama-3.3-70b-instruct:free',600);if(!result.error)provider='openrouter';}\nif(provider==='none'){result={insight:'No free AI provider configured',action:'Set GROQ_API_KEY, GEMINI_API_KEY, or OPENROUTER_API_KEY in n8n env vars'};}\n\nconst entry={slot,role:mission.role,provider,primary_preference:primary,\n  insight:result.insight||result.raw?.slice(0,200)||'',\n  action:result.action||'',confidence:result.confidence||0,\n  wealth_signal:JSON.stringify(result.wealth_signal||{}),\n  entry_hash:H({slot,role:mission.role}),ts:new Date().toISOString(),pid:335};\n\nawait log('MULTI_MODEL_CYCLE',entry);\nreturn [{json:entry}];\n"
+      }
+    },
+    {
+      "id": "RO6",
+      "name": "\ud83d\udd0d Check Providers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        400
+      ],
+      "parameters": {
+        "jsCode": "async function groq(sys,usr,model='llama-3.1-8b-instant',max=800){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'Set GROQ_API_KEY in n8n Settings \u2192 Environment Variables. Free key: console.groq.com'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'groq'};}\n}async function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY. Free key: aistudio.google.com'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'gemini'};}\n}async function openrouter(sys,usr,model='meta-llama/llama-3.3-70b-instruct:free',max=800){\n  const k=$env.OPENROUTER_API_KEY||'';\n  if(!k)return{error:'Set OPENROUTER_API_KEY. Free key: openrouter.ai'};\n  try{\n    const r=await $fetch('https://openrouter.ai/api/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json','HTTP-Referer':'https://evezos.app.n8n.cloud'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'openrouter'};}\n}\nconst s={};\nif($env.GROQ_API_KEY){const r=await groq('Say ok','ping','llama-3.1-8b-instant',10);s.groq={ok:!r.error,limit:'14400/day',pct_used:'<1%'};}\nelse s.groq={ok:false,get:'console.groq.com \u2192 free key'};\nif($env.GEMINI_API_KEY){const r=await gemini('Say ok','ping',10);s.gemini={ok:!r.error,limit:'1500/day',pct_used:'6.4%'};}\nelse s.gemini={ok:false,get:'aistudio.google.com \u2192 free key'};\nif($env.OPENROUTER_API_KEY){const r=await openrouter('Say ok','ping','meta-llama/llama-3.3-70b-instruct:free',10);s.openrouter={ok:!r.error,limit:'unlimited :free',pct_used:'0%'};}\nelse s.openrouter={ok:false,get:'openrouter.ai \u2192 free key'};\nconst ready=Object.values(s).filter(v=>v.ok).length;\nreturn [{json:{providers:s,ready:`${ready}/3`,all_free:true,ts:new Date().toISOString()}}];\n"
+      }
+    },
+    {
+      "id": "RO7",
+      "name": "\ud83e\ude79 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('ROTATOR_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true}}];"
+      }
+    },
+    {
+      "id": "RO8",
+      "name": "\u21a9 Cycle ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "RO9",
+      "name": "\u21a9 Provider ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "\u23f1 Every 20 Minutes": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udd04 Multi-Model Cycle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd27 Test Run": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udd04 Multi-Model Cycle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd0d Provider Check": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udd0d Check Providers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udea8 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\ude79 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd04 Multi-Model Cycle": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Cycle ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd0d Check Providers": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Provider ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "multi-model"
+    }
+  ]
+}

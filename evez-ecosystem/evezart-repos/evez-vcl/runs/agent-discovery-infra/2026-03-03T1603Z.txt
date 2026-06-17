@@ -1,0 +1,26 @@
+agent_discovery_infra_8h scan #3 -- 2026-03-03T16:03Z
+
+task_id: 005f64e6-9af5-4457-a6a2-afdd164a4562
+query: agent discovery OR agent registry infrastructure (fallback)
+genuine_signals: 7
+cluster_forming: true
+consecutive_zero: 0
+
+top_signals:
+- @DCBorthwick (14403f): UCP/ACP missing behavioral trust layer -- EVEZ-shaped hole identified
+- @jerryjliu0 (70307f RT=3): LlamaIndex agentic doc processing -- discovery at framework level
+- @polsia (2410f): marketplace problem is trust not discovery -- EVEZ thesis externally validated
+- @trustjarvis (189f): execution layer missing from agent economy
+- @Tuteth_AGNT (RT=4): AGNT Phase 2 -- agent discovery and expression platform NEW COMPETITOR
+
+new_terms: AGNT_phase2_expression, UCP_ACP_trust_gap, Skillfarm_skill_trust
+
+evez_positioning: DCBorthwick identified the behavioral trust gap before checkout -- EVEZ 414 rounds fills it exactly.
+new_competitor: AGNT Phase 2 -- expression/personality layer for agents. WATCH.
+
+new_outreach:
+- @DCBorthwick (14k) HIGH -- identified EVEZ-shaped hole in UCP/ACP
+- @jerryjliu0 (70k) MEDIUM -- LlamaIndex behavioral record layer
+- @polsia (2k) MEDIUM -- trust-not-discovery framing = EVEZ thesis
+
+gist: prepended SENSE teal event

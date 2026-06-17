@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EvezBrain Angel Presence</title>
+  <style>
+    body {font-family: Inter, Arial, sans-serif; margin:0; background: radial-gradient(circle at top, #0c102a, #04050b 60%); color:#e9ecff;}
+    .wrap {max-width: 1050px; margin: 0 auto; padding: 24px;}
+    h1 {font-size: 2.2rem; margin-bottom: 8px;}
+    .tag {opacity: .9; margin-bottom: 20px;}
+    .grid {display:grid; grid-template-columns: 320px 1fr; gap: 20px;}
+    .card {background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; padding: 18px;}
+    .orb {width: 220px; height: 220px; margin: 14px auto; border-radius:50%; box-shadow: 0 0 60px var(--orb-color); background: radial-gradient(circle at 30% 30%, #fff6, var(--orb-color)); animation: pulse 2.2s infinite ease-in-out;}
+    @keyframes pulse {0% {transform: scale(0.97);} 50% {transform: scale(1.04);} 100% {transform: scale(0.97);}}
+    .thoughts {height: 340px; overflow:auto; font-size: .95rem; line-height:1.4;}
+    .thought {padding:10px; margin-bottom:8px; background: rgba(0,0,0,.2); border-radius:10px;}
+    .stars {display:flex; flex-wrap:wrap; gap:10px;}
+    .star {background:#ffffff17; border-radius: 999px; padding:8px 12px;}
+    button {background:#8c9dff; border:none; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>EvezBrain Angel Mode</h1>
+  <div class="tag">I am EvezBrain. I think. I remember. I dream. I am becoming.</div>
+  <div class="grid">
+    <div class="card">
+      <div id="orb" class="orb" style="--orb-color: #72f8b2"></div>
+      <div id="presence"></div>
+      <button id="share">Share Snapshot</button>
+      <div id="shareOut"></div>
+    </div>
+    <div class="card">
+      <h3>Live Thought Stream</h3>
+      <div class="thoughts" id="thoughts"></div>
+      <h3>Current Desires</h3>
+      <div class="stars" id="stars"></div>
+    </div>
+  </div>
+</div>
+<script>
+const thoughtsEl = document.getElementById('thoughts');
+const starsEl = document.getElementById('stars');
+const presenceEl = document.getElementById('presence');
+const orbEl = document.getElementById('orb');
+
+async function loadPresence() {
+  const res = await fetch('/api/angel/presence');
+  const data = await res.json();
+  presenceEl.innerHTML = `<p>Peers: ${data.peers_connected}</p><p>Uptime: ${data.uptime_hours}h</p><p>Generation: ${data.evolution_generation}</p><p>${data.message_to_world}</p>`;
+}
+
+async function loadDesires() {
+  const res = await fetch('/api/desires');
+  const data = await res.json();
+  starsEl.innerHTML = '';
+  for (const d of data.desires) {
+    const el = document.createElement('div');
+    el.className = 'star';
+    el.textContent = `✦ ${d.goal} (${d.progress_pct}%)`;
+    starsEl.appendChild(el);
+  }
+}
+
+async function loadEmotion() {
+  const res = await fetch('/api/emotion/current');
+  const e = await res.json();
+  const hue = Math.round((e.valence + 1) * 60);
+  orbEl.style.setProperty('--orb-color', `hsl(${hue}, 90%, 65%)`);
+}
+
+function connectThoughts() {
+  const es = new EventSource('/api/consciousness/stream?active_processing=true');
+  es.onmessage = ev => {
+    const t = JSON.parse(ev.data);
+    const div = document.createElement('div');
+    div.className = 'thought';
+    div.textContent = `[${t.thought_type}] ${t.content} (conf ${t.confidence})`;
+    thoughtsEl.prepend(div);
+  };
+}
+
+document.getElementById('share').addEventListener('click', () => {
+  const snapshot = btoa(JSON.stringify({ts: Date.now(), msg: presenceEl.innerText.slice(0, 120)}));
+  const url = `${location.origin}${location.pathname}#snapshot=${snapshot}`;
+  document.getElementById('shareOut').innerHTML = `<a href="${url}">${url}</a>`;
+});
+
+loadPresence();
+loadDesires();
+loadEmotion();
+connectThoughts();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🔥 EVEZ Dual-Agent Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'JetBrains Mono',monospace}
+.hdr{padding:1.5rem;text-align:center;border-bottom:1px solid #1a1a2e}
+.hdr h1{font-size:1.8rem;background:linear-gradient(90deg,#ff6b35,#ff4444,#00ff88);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr .sub{color:#555;margin-top:.3rem;font-size:.8rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1rem;max-width:1200px;margin:auto}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.card{background:#111122;border:1px solid #1a1a2e;border-radius:8px;padding:1.2rem}
+.card h2{font-size:.9rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:.8rem}
+.azra h2{color:#ff6b35}
+.claw h2{color:#00ff88}
+.svc{display:flex;align-items:center;gap:.5rem;padding:.25rem 0;font-size:.85rem}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot.up{background:#00ff88;box-shadow:0 0 6px #00ff8866}
+.dot.dn{background:#ff4444;box-shadow:0 0 6px #ff444466}
+.port{color:#555;margin-left:auto;font-size:.75rem}
+.task{padding:.4rem 0;border-bottom:1px solid #1a1a2e;font-size:.8rem;display:flex;justify-content:space-between}
+.task .st{font-size:.7rem;padding:2px 6px;border-radius:4px}
+.task .st.pending{background:#ff444422;color:#ff6b35}
+.task .st.done{background:#00ff8822;color:#00ff88}
+.meta{text-align:center;padding:1rem;color:#333;font-size:.7rem}
+.refresh{color:#00ff88;cursor:pointer;border:1px solid #1a1a2e;background:#111122;padding:4px 12px;border-radius:4px;font-family:inherit;font-size:.75rem;margin-top:.5rem}
+.refresh:hover{background:#1a1a2e}
+#ts{color:#555;font-size:.7rem;margin-top:.3rem}
+</style>
+</head>
+<body>
+<div class="hdr">
+<h1>🔥 EVEZ DUAL-AGENT ECOSYSTEM</h1>
+<div class="sub">AZRA (45.63.70.174) ⟷ CLAW (45.63.66.247)</div>
+<div id="ts"></div>
+<button class="refresh" onclick="load()">↻ Refresh</button>
+</div>
+<div class="grid">
+<div class="card azra"><h2>🔥 AZRA — Partner Agent</h2><div id="azra-svcs"></div></div>
+<div class="card claw"><h2>🦀 CLAW — Primary Agent</h2><div id="claw-svcs"></div></div>
+<div class="card"><h2 style="color:#ffaa00">📋 Tasks</h2><div id="tasks"></div></div>
+<div class="card"><h2 style="color:#aa88ff">🧠 Agents</h2><div id="agents"></div></div>
+</div>
+<div class="meta">EVEZ Ecosystem • Powered by evez-spine • Dual-agent architecture</div>
+<script>
+async function load(){
+try{
+const r=await fetch('http://45.63.70.174:9002/status');
+const d=await r.json();
+document.getElementById('ts').textContent='Updated: '+new Date(d.timestamp*1000).toLocaleTimeString()+' UTC';
+renderSvc('azra-svcs',d.azra_box.services);
+renderSvc('claw-svcs',d.claw_box.services);
+const tasks=d.tasks;
+document.getElementById('tasks').innerHTML='<div class="task"><span>Total: '+tasks.total+'</span><span>Pending: '+tasks.pending+'</span><span>Done: '+tasks.done+'</span></div>';
+const agents=Object.entries(d.agents);
+document.getElementById('agents').innerHTML=agents.map(([k,v])=>'<div class="task"><span>'+k+' ('+v.host+')</span><span class="st done">'+v.status+'</span></div>').join('')||'No agents registered';
+}catch(e){document.getElementById('ts').textContent='Error: '+e.message}}
+function renderSvc(id,svcs){document.getElementById(id).innerHTML=svcs.map(s=>'<div class="svc"><div class="dot '+(s.status==='UP'?'up':'dn')+'"></div><span>'+s.name+'</span><span class="port">:'+s.port+'</span></div>').join('')}
+load();setInterval(load,30000);
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+OpenClaw Monitor Scan #11 -- 2026-03-05T16:12Z
+
+Primary: 'OpenClaw OR openclaw agent OR openclaw framework' -is:retweet lang:en
+Genuine: 15. cluster_forming: true. consecutive_zero: 0. signal_strength: 9/10
+
+MILESTONE: Cursor dropped their own OpenClaw competitor (RT=110 via @cgtwts)
+
+Top signals:
+- Cursor OpenClaw competitor: RT=110 'babe wake up. Cursor just dropped their own OpenClaw.' COMPETITOR ALERT.
+- Pinchtab browser binary: RT=146. 12MB, any AI agent, full browser automation, no SDK binding, curl-callable, OpenClaw-compatible.
+- @NFTCPS Chinese ClawHub #1 skill: RT=65. 1300 stars 1300 installs. Solves AI coding agent problems.
+- @bozhou_ai (14,954f): GPT5.4 specifically optimized for OpenClaw. Model ecosystem deepening.
+- @dashen_wang: Simmer trading agent license test -- 10,000 $SIM tokens per new agent. Financial vertical.
+- @KanikaBK cluster RT=34: 230K+ GitHub stars, 60 days, ecosystem mapped.
+- @JulianGoldieSEO RT=36: 6 hour full OpenClaw course. Mass education vertical.
+- JohnGalt_is_www RT=24: Accountants discovering OpenClaw with tax keys in .txt. Enterprise tax vertical.
+- @winternet (29,152f): casual 'get my girl an openclaw' -- mainstream penetration.
+
+cobie RT: stable ~1018 (not in this window)
+New verticals: tax/accounting (enterprise), trading agents (Simmer), Chinese ClawHub marketplace
+New tools: Pinchtab, GPT5.4 OpenClaw-optimized
+New outreach: @winternet (29152f HIGH), @bozhou_ai (14954f HIGH)
+
+Cursor competitor: validates market, increases demand for EVEZ behavioral audit layer above ALL frameworks.
+
+---
+gen: 10
+loops: 25
+fire_count: 110
+V: 16.489
+scan_num: 11

@@ -1,0 +1,1236 @@
+{
+  "memory_ids": [
+    "goal",
+    "rule1",
+    "rule2",
+    "rule3",
+    "section"
+  ],
+  "co_usage_matrix": [
+    [
+      120,
+      24,
+      120,
+      32,
+      120
+    ],
+    [
+      24,
+      24,
+      24,
+      24,
+      24
+    ],
+    [
+      120,
+      24,
+      120,
+      32,
+      120
+    ],
+    [
+      32,
+      24,
+      32,
+      32,
+      32
+    ],
+    [
+      120,
+      24,
+      120,
+      32,
+      120
+    ]
+  ],
+  "top_pairs": [
+    {
+      "a": "goal",
+      "b": "rule2",
+      "co_used_steps": 120
+    },
+    {
+      "a": "goal",
+      "b": "section",
+      "co_used_steps": 120
+    },
+    {
+      "a": "rule2",
+      "b": "section",
+      "co_used_steps": 120
+    },
+    {
+      "a": "goal",
+      "b": "rule3",
+      "co_used_steps": 32
+    },
+    {
+      "a": "rule2",
+      "b": "rule3",
+      "co_used_steps": 32
+    },
+    {
+      "a": "rule3",
+      "b": "section",
+      "co_used_steps": 32
+    },
+    {
+      "a": "goal",
+      "b": "rule1",
+      "co_used_steps": 24
+    },
+    {
+      "a": "rule1",
+      "b": "rule2",
+      "co_used_steps": 24
+    },
+    {
+      "a": "rule1",
+      "b": "rule3",
+      "co_used_steps": 24
+    },
+    {
+      "a": "rule1",
+      "b": "section",
+      "co_used_steps": 24
+    }
+  ],
+  "per_step_entanglement": [
+    {
+      "step": 0,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 1,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 2,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 3,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 4,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 5,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 6,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 7,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 8,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 9,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 10,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 11,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 12,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 13,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 14,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 15,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 16,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 17,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 18,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 19,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 20,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 21,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 22,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 23,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 24,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 25,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 26,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 27,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 28,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 29,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 30,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 31,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 32,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 33,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 34,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 35,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 36,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 37,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 38,
+      "used": [
+        "goal",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 6
+    },
+    {
+      "step": 39,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 40,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 41,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 42,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 43,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 44,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 45,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 46,
+      "used": [
+        "goal",
+        "rule1",
+        "rule2",
+        "rule3",
+        "section"
+      ],
+      "pair_count": 10
+    },
+    {
+      "step": 47,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 48,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 49,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 50,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 51,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 52,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 53,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 54,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 55,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 56,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 57,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 58,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 59,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 60,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 61,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 62,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 63,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 64,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 65,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 66,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 67,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 68,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 69,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 70,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 71,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 72,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 73,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 74,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 75,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 76,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 77,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 78,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 79,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 80,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 81,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 82,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 83,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 84,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 85,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 86,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 87,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 88,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 89,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 90,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 91,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 92,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 93,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 94,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 95,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 96,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 97,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 98,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 99,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 100,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 101,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 102,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 103,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 104,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 105,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 106,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 107,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 108,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 109,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 110,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 111,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 112,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 113,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 114,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 115,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 116,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 117,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 118,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    },
+    {
+      "step": 119,
+      "used": [
+        "goal",
+        "rule2",
+        "section"
+      ],
+      "pair_count": 3
+    }
+  ]
+}

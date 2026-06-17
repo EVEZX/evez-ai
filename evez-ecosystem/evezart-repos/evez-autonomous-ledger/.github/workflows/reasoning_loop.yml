@@ -1,0 +1,116 @@
+name: Reasoning Loop (2-hour)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reasoning:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Gather problems
+        id: gather
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -c "
+          import os, json, requests
+          GH_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+          HEADERS = {
+              'Authorization': f'Bearer {GH_TOKEN}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+          }
+          OWNER = 'EvezArt'
+          problems = []
+
+          # Open issues
+          try:
+              r = requests.get(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/issues?state=open&per_page=5',
+                  headers=HEADERS, timeout=15)
+              if r.status_code == 200:
+                  for issue in r.json():
+                      problems.append({'source': 'issue', 'title': issue.get('title', ''), 'id': issue.get('number')})
+          except Exception as e:
+              print(f'Warning: {e}')
+
+          # Failing workflows
+          try:
+              r = requests.get(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/actions/runs?status=failure&per_page=5',
+                  headers=HEADERS, timeout=15)
+              if r.status_code == 200:
+                  for run in r.json().get('workflow_runs', []):
+                      problems.append({'source': 'workflow_failure', 'title': run.get('name', ''), 'id': run.get('id')})
+          except Exception as e:
+              print(f'Warning: {e}')
+
+          if not problems:
+              problems.append({'source': 'default', 'title': 'How can the system improve its capabilities?', 'id': 0})
+
+          with open('problems.json', 'w') as f:
+              json.dump(problems, f)
+          print(f'Gathered {len(problems)} problems')
+          "
+
+      - name: Reason
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/reasoning/engine.py
+
+      - name: Communicate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/reasoning/protocol.py
+
+      - name: Learn
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/reasoning/meta_learner.py
+
+      - name: Innovate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/reasoning/innovator.py
+
+      - name: Write to ledger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -c "
+          import os, json, hashlib, datetime, base64, requests
+          GH_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+          HEADERS = {
+              'Authorization': f'Bearer {GH_TOKEN}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+          }
+          OWNER = 'EvezArt'
+          ts = datetime.datetime.utcnow().isoformat().replace(':', '-').replace('.', '-') + 'Z'
+          record = {
+              'type': 'reasoning_loop',
+              'source': 'reasoning_loop.yml',
+              'timestamp': ts,
+              'phases': ['gather', 'reason', 'communicate', 'learn', 'innovate'],
+              'hash': hashlib.sha256(ts.encode()).hexdigest()[:16],
+          }
+          content = base64.b64encode(json.dumps(record, indent=2).encode()).decode()
+          try:
+              requests.put(
+                  f'https://api.github.com/repos/{OWNER}/evez-autonomous-ledger/contents/DECISIONS/reasoning/{ts}_loop.json',
+                  headers=HEADERS,
+                  json={'message': f'reasoning loop @ {ts}', 'content': content},
+                  timeout=15,
+              )
+              print(f'Ledger write: {ts}_loop.json')
+          except Exception as e:
+              print(f'Warning: ledger write failed: {e}')
+          "

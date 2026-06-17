@@ -1,0 +1,36 @@
+app = "evez-openclaw-mesh"
+primary_region = "ord"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "18789"
+  NODE_ENV = "production"
+  OPENCLAW_PROFILE = "goblin"
+
+[http_service]
+  internal_port = 18789
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/health"
+    timeout = "5s"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[mounts]
+  source = "evez_data"
+  destination = "/data"
+
+[processes]
+  app = "node /app/node_modules/.bin/openclaw --profile goblin --port 18789"

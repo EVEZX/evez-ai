@@ -1,0 +1,111 @@
+services:
+  - type: web
+    name: evez-os
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn os-evez.opengarden.app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: EVEZ_FROM_EMAIL
+        value: rubikspubes69@gmail.com
+      - key: METAROM_URL
+        sync: false
+      - key: N8N_FIRE_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: AIRTABLE_API_KEY
+        sync: false
+      - key: AIRTABLE_BASE_ID
+        sync: false
+      - key: TWITTER_API_KEY
+        sync: false
+      - key: TWITTER_ACCESS_TOKEN
+        sync: false
+      - key: TIKTOK_ACCESS_TOKEN
+        sync: false
+      - key: RENDER_API_KEY
+        sync: false
+      - key: INVARIANCE_PASS_THRESHOLD
+        value: "0.80"
+      - key: SPAWN_THRESHOLD
+        value: "5"
+      - key: MAX_CHILDREN_PER_AGENT
+        value: "3"
+      - key: CHILD_TTL_MINUTES
+        value: "30"
+      - key: OG_CREATOR_NAME
+        value: Steven Crawford-Maggard
+      - key: OG_CREATOR_HANDLE
+        value: EVEZ666
+      - key: OG_CREATOR_REPO
+        value: github.com/EvezArt/evez-os
+    autoDeploy: true
+
+  - type: cron
+    name: evez-wormhole
+    env: python
+    schedule: "0 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -c "import asyncio; from app.wormhole import run_wormhole_cycle; asyncio.run(run_wormhole_cycle())"
+    envVars:
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: GROQ_API_KEY
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: METAROM_URL
+
+  - type: cron
+    name: evez-a011-meme-bus
+    env: python
+    schedule: "0 */4 * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -c "import asyncio; from app.a011_meme_bus import run_meme_cycle; asyncio.run(run_meme_cycle())"
+    envVars:
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: GROQ_API_KEY
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: TWITTER_API_KEY
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: TWITTER_ACCESS_TOKEN
+
+  - type: cron
+    name: evez-trunk-nightly
+    env: python
+    schedule: "0 2 * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.trunk_runner sda_spread 10
+    envVars:
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: GROQ_API_KEY
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: METAROM_URL
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: TELEGRAM_BOT_TOKEN
+      - fromService:
+          type: web
+          name: evez-os
+          envVarKey: TELEGRAM_CHAT_ID

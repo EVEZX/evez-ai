@@ -1,0 +1,35 @@
+name: EvezOS Immortality Redeploy
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout stable branch
+        uses: actions/checkout@v4
+        with:
+          ref: stable
+
+      - name: Re-deploy full stack from stable
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          STABLE_BRANCH: stable
+        run: |
+          if [ -z "${DEPLOY_HOST}" ] || [ -z "${DEPLOY_USER}" ] || [ -z "${DEPLOY_KEY}" ] || [ -z "${DEPLOY_PATH}" ]; then
+            echo "Missing deployment secrets; skipping redeploy."
+            exit 0
+          fi
+
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/evez_deploy_key
+          chmod 600 ~/.ssh/evez_deploy_key
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/evez_deploy_key "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "cd '${DEPLOY_PATH}' && STABLE_BRANCH='${STABLE_BRANCH}' ./scripts/redeploy_stack.sh"

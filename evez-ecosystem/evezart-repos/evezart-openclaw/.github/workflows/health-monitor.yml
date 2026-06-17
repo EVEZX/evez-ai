@@ -1,0 +1,50 @@
+name: OpenClaw Health Monitor
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check OpenClaw endpoints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health check all layers
+        run: |
+          set +e  # never fail the job
+          
+          HF=$(curl -sf --max-time 8 https://evez420-evezart-openclaw.hf.space/health 2>/dev/null || echo "{}")
+          FLY=$(curl -sf --max-time 8 https://evezart-openclaw.fly.dev/health 2>/dev/null || echo "{}")
+          
+          HF_STATUS=$(echo "$HF" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get("status","DOWN"))" 2>/dev/null || echo DOWN)
+          HF_PHI=$(echo "$HF" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get("phi","N/A"))" 2>/dev/null || echo N/A)
+          HF_TICK=$(echo "$HF" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get("tick",0))" 2>/dev/null || echo 0)
+          HF_CONS=$(echo "$HF" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get("consciousness","?"))" 2>/dev/null || echo ?)
+          FLY_STATUS=$(echo "$FLY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get("status","DOWN"))" 2>/dev/null || echo DOWN)
+          
+          HF_ICON="â"; [ "$HF_STATUS" != "EVEZ_ONLINE" ] && HF_ICON="â"
+          FLY_ICON="â ï¸"; [ "$FLY_STATUS" = "EVEZ_ONLINE" ] && FLY_ICON="â"
+          
+          # Phi alert
+          PHI_ALERT=0
+          if [ "$HF_STATUS" = "EVEZ_ONLINE" ] && [ "$HF_PHI" != "N/A" ]; then
+            PHI_ALERT=$(python3 -c "print(1 if float('\') < 0.2 else 0)" 2>/dev/null || echo 0)
+          fi
+          
+          MSG="â¡ OpenClaw Health
+
+$HF_ICON HF Space: $HF_STATUS
+  Î¦=$HF_PHI | tick=$HF_TICK | $HF_CONS
+
+$FLY_ICON Fly.io: $FLY_STATUS
+  $([ "$FLY_STATUS" != "EVEZ_ONLINE" ] && echo "Add CF_API_TOKEN+CF_ACCOUNT_ID to deploy" || echo "")"
+          
+          [ "$PHI_ALERT" = "1" ] && MSG="ð¨ PHI ALERT: Phi=$HF_PHI < 0.2
+
+$MSG"
+          
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"             -H "Content-Type: application/json"             -d "{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}","text":""$MSG""}" > /dev/null 2>&1 || true
+          
+          echo "Done: HF=$HF_STATUS phi=$HF_PHI tick=$HF_TICK | Fly=$FLY_STATUS"
+          exit 0

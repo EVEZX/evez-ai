@@ -1,0 +1,11 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. 2026-02-28. 22 loops running on a 3-hour cycle. 72 FIRE events confirmed. Top gap: GCV billing disabled -- 72 fires untagged, art metadata layer broken. Next action: Enable billing at console.developers.google.com/billing/enable?project=396530773558. topology decides. watching it build.
+
+tts_id: 4472d138-2957-4582-8f10-0b6c28ae63df
+provider: JigsawStack en-US-female-3
+run: 9
+ts: 2026-02-28T14:04Z
+fire_count: 72
+loop_count: 22
+generation: 10
+V_global: 10.815944
+round: 292

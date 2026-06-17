@@ -1,0 +1,7 @@
+{
+  "name": "evez-invariance-battery",
+  "version": "1.0.0",
+  "description": "Systematic stress-testing for autonomous agent outputs. Run any agent output through 5 invariance tests to catch drift before production.",
+  "author": "EVEZ-ART",
+  "tags": ["agent", "testing", "quality", "invariance", "stress-test"]
+}

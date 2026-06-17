@@ -1,0 +1,17 @@
+{
+  "name": "evez-os-automation",
+  "version": "1.0.0",
+  "description": "EVEZ-OS Revenue + Agent Orchestration + Daily Digest + GitHub Auto-Sync",
+  "main": "evez-automation-orchestrator.js",
+  "scripts": {
+    "start": "node evez-automation-orchestrator.js",
+    "dashboard": "node evez-monitoring-dashboard.js",
+    "deploy:full": "bash deploy.sh",
+    "test:stripe": "node -e \"const {handleStripePayment}=require('./evez-automation-orchestrator');handleStripePayment({id:'evt_test_'+Date.now(),type:'charge.succeeded',data:{object:{id:'ch_test',amount:10000,currency:'usd',billing_details:{email:'test@evezos.app'}}}}).then(()=>console.log('OK'))\"",
+    "logs:queue": "node -e \"const https=require('https');const h=process.env.SUPABASE_URL.replace('https://','').split('/')[0];https.get({hostname:h,path:'/rest/v1/agent_queue?select=status,count&order=created_at.desc&limit=20',headers:{'Authorization':'Bearer '+process.env.SUPABASE_KEY,'apikey':process.env.SUPABASE_KEY}},(r)=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>console.log(d))}).on('error',e=>console.error(e))\""
+  },
+  "engines": { "node": ">=18" },
+  "keywords": ["evez", "automation", "stripe", "supabase", "linear", "github"],
+  "author": "EvezArt",
+  "license": "MIT"
+}

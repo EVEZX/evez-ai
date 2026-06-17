@@ -1,0 +1,86 @@
+{
+  "organism_migrated": 13,
+  "organism_tiers": {
+    "tmp": true,
+    "mirror": true,
+    "spine": true,
+    "snapshots": true
+  },
+  "organism_spines": [
+    "TAMPERED (1 breaks)",
+    "TAMPERED (5 breaks)",
+    "TAMPERED (104 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (4 breaks)",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "TAMPERED (11 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (1 breaks)"
+  ],
+  "organism_inconsistencies": 0,
+  "consciousness_migrated": 13,
+  "consciousness_tiers": {
+    "tmp": true,
+    "mirror": true,
+    "spine": true,
+    "snapshots": true
+  },
+  "consciousness_spines": [
+    "TAMPERED (1 breaks)",
+    "TAMPERED (5 breaks)",
+    "TAMPERED (104 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (4 breaks)",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "TAMPERED (11 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (1 breaks)"
+  ],
+  "consciousness_inconsistencies": 0,
+  "live_migrated": 15,
+  "live_tiers": {
+    "tmp": true,
+    "mirror": true,
+    "spine": true,
+    "snapshots": true
+  },
+  "live_spines": [
+    "TAMPERED (1 breaks)",
+    "TAMPERED (5 breaks)",
+    "TAMPERED (104 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (4 breaks)",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "TAMPERED (11 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (1 breaks)"
+  ],
+  "live_inconsistencies": 0,
+  "os_mind_migrated": 14,
+  "os_mind_tiers": {
+    "tmp": true,
+    "mirror": true,
+    "spine": true,
+    "snapshots": true
+  },
+  "os_mind_spines": [
+    "TAMPERED (1 breaks)",
+    "TAMPERED (5 breaks)",
+    "TAMPERED (104 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (4 breaks)",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "INTACT \u2713",
+    "TAMPERED (11 breaks)",
+    "INTACT \u2713",
+    "TAMPERED (1 breaks)"
+  ],
+  "os_mind_inconsistencies": 0
+}

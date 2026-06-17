@@ -1,0 +1,87 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build static site
+        run: |
+          python - <<'EOF'
+          import os, json, shutil
+          os.makedirs("docs", exist_ok=True)
+
+          # Generate index.html from README.md
+          try:
+            import subprocess
+            subprocess.run(["pip", "install", "markdown"], capture_output=True)
+            import markdown
+            with open("README.md") as f:
+              content = f.read()
+            html_body = markdown.markdown(content, extensions=["tables", "fenced_code"])
+          except:
+            with open("README.md") as f:
+              content = f.read()
+            html_body = f"<pre>{content}</pre>"
+
+          html = f"""<!DOCTYPE html>
+          <html lang='en'>
+          <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>disclosure.tools | UAP/FOIA Gap Analysis</title>
+            <meta name='description' content='The public hub for UAP/FOIA gap analysis. Eigenforensics on disclosure docs. Built by EVEZ666.'>
+            <style>
+              body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; line-height: 1.6; background: #0d1117; color: #c9d1d9; }}
+              a {{ color: #58a6ff; }}
+              h1, h2, h3 {{ color: #e6edf3; }}
+              code {{ background: #161b22; padding: 2px 6px; border-radius: 4px; font-family: monospace; }}
+              pre {{ background: #161b22; padding: 16px; border-radius: 6px; overflow-x: auto; }}
+              table {{ border-collapse: collapse; width: 100%; }}
+              th, td {{ border: 1px solid #30363d; padding: 8px 12px; text-align: left; }}
+              th {{ background: #161b22; }}
+              .cta {{ background: #238636; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; display: inline-block; margin: 16px 0; font-weight: bold; }}
+            </style>
+          </head>
+          <body>
+            <a href='https://buy.stripe.com/4gMeVf1uHbkPbArbVw0RG0y' class='cta'>Subscribe ClawBreak — $6/mo</a>
+            {html_body}
+          </body>
+          </html>"""
+
+          with open("docs/index.html", "w") as f:
+            f.write(html)
+          print("Built docs/index.html")
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

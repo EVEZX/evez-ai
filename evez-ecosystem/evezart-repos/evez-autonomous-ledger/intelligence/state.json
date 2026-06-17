@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-03-15T00:00:00Z",
+  "total_repos": 0,
+  "total_commits_24h": 0,
+  "total_open_prs": 0,
+  "total_open_issues": 0,
+  "health_score": 100,
+  "failing_workflows": 0,
+  "stale_repos": 0,
+  "repos": [],
+  "_note": "Bootstrap state — will be populated on first cycle"
+}

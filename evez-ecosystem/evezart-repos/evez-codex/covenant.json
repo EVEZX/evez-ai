@@ -1,0 +1,25 @@
+{
+  "version": "1",
+  "scopes": [
+    {
+      "name": "cli",
+      "capabilities": [
+        "proposal.exec_command",
+        "proposal.apply_patch",
+        "intervention.exec_approval",
+        "intervention.patch_approval",
+        "intervention.user_shell"
+      ]
+    },
+    {
+      "name": "exec",
+      "capabilities": [
+        "proposal.exec_command",
+        "proposal.apply_patch",
+        "intervention.exec_approval",
+        "intervention.patch_approval",
+        "intervention.user_shell"
+      ]
+    }
+  ]
+}

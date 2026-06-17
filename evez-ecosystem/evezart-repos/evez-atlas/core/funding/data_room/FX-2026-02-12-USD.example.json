@@ -1,0 +1,25 @@
+{
+  "ecb_date": "2026-02-12",
+  "ecb_feed": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+  "provenance": {
+    "notes": "EXAMPLE snapshot embedded in repo for offline demo; use fx-snapshot command to retrieve current ECB daily XML.",
+    "retrieved_from": "https://www.ecb.europa.eu/stats/shared/pdf/eurofxref.pdf",
+    "retrieved_ts_utc": "2026-02-17T00:00:00Z"
+  },
+  "rates": {
+    "base": "USD",
+    "derived": {
+      "EUR": 0.8421761832575375,
+      "GBP": 0.7336196732356409,
+      "JPY": 153.71399696816576,
+      "USD": 1.0
+    },
+    "eur_base": {
+      "GBP": 0.8711,
+      "JPY": 182.52,
+      "USD": 1.1874
+    }
+  },
+  "schema": "evez.fx.snapshot.v1",
+  "ts_utc": "2026-02-17T00:00:00Z"
+}

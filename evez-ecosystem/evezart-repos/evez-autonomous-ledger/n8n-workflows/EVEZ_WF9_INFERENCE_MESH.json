@@ -1,0 +1,77 @@
+{
+  "name": "EVEZ 10-Node Inference Mesh — FREE — WF9",
+  "nodes": [
+    {
+      "id": "M1",
+      "name": "🔀 /evez-mesh Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "webhookId": "evez-M1",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-mesh",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "M2",
+      "name": "🧠 Mesh Router",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 0],
+      "parameters": {
+        "jsCode": "// ══════════════════════════════════════════════════════════════\n// EVEZ WF9 — 10-Node Free Inference Mesh\n// Routes LLM requests across 10 providers based on task type,\n// rate limits, and poly_c signal. $0.00/day.\n// ══════════════════════════════════════════════════════════════\n\nfunction H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nasync function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\n\nconst ts = new Date().toISOString();\nconst b = $input.first()?.json?.body || $input.first()?.json || {};\n\n// ── INPUT ─────────────────────────────────────────────────────────────────\nconst task     = b.task || b.task_type || 'default';\nconst prompt   = b.prompt || b.message || b.query || '';\nconst system   = b.system || 'You are the EVEZ-OS synthesis engine. Respond concisely in JSON when asked.';\nconst maxTok   = parseInt(b.max_tokens || '800');\nconst polyCHint= parseFloat(b.poly_c || '0');\n\nif (!prompt) {\n  return [{json:{error:'No prompt provided. POST {task,prompt} to /webhook/evez-mesh'}}];\n}\n\n// ── ROUTING TABLE ────────────────────────────────────────────────────────\n// Priority order per task type — first available key wins\nconst ROUTING = {\n  reasoning:    ['github', 'sambanova', 'groq', 'gemini', 'cerebras'],\n  code:         ['mistral', 'github', 'groq', 'cerebras', 'gemini'],\n  fast:         ['groq', 'cerebras', 'gemini', 'mistral', 'openrouter'],\n  fire_event:   ['github', 'gemini', 'groq', 'cerebras', 'mistral'],\n  arxiv_score:  ['cerebras', 'groq', 'gemini', 'openrouter', 'mistral'],\n  long_context: ['gemini', 'mistral', 'github', 'groq'],\n  default:      ['groq', 'cerebras', 'gemini', 'mistral', 'openrouter', 'github'],\n};\n\n// Auto-upgrade task based on poly_c signal\nlet effectiveTask = task;\nif (polyCHint >= 8.0)  effectiveTask = 'reasoning';    // critical mass → o3/405B\nelse if (polyCHint >= 5.0) effectiveTask = 'fire_event'; // canonical → GPT-4o/70B\nelse if (polyCHint >= 0.9) effectiveTask = 'fast';        // standard → Groq\n\nconst priority = ROUTING[effectiveTask] || ROUTING['default'];\n\n// ── PROVIDER CALL FUNCTIONS ───────────────────────────────────────────────\nasync function callGroq(sys, usr, max) {\n  const k=$env.GROQ_API_KEY; if(!k) throw new Error('No key');\n  const model='llama-3.3-70b-versatile';\n  const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model, tokens:r.usage?.total_tokens||0};\n}\n\nasync function callGemini(sys, usr, max) {\n  const k=$env.GEMINI_API_KEY; if(!k) throw new Error('No key');\n  const model='gemini-2.0-flash';\n  const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{\n    method:'POST',headers:{'Content-Type':'application/json'},\n    body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n  });\n  return {content:r.candidates[0].content.parts[0].text, model, tokens:r.usageMetadata?.totalTokenCount||0};\n}\n\nasync function callOpenRouter(sys, usr, max) {\n  const k=$env.OPENROUTER_API_KEY; if(!k) throw new Error('No key');\n  const model='meta-llama/llama-4-scout:free';\n  const r=await $fetch('https://openrouter.ai/api/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json','HTTP-Referer':'https://evez-os.autonomous'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model, tokens:r.usage?.total_tokens||0};\n}\n\nasync function callCerebras(sys, usr, max) {\n  const k=$env.CEREBRAS_API_KEY; if(!k) throw new Error('No key');\n  const model='llama-3.3-70b';\n  const r=await $fetch('https://api.cerebras.ai/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model, tokens:r.usage?.total_tokens||0};\n}\n\nasync function callMistral(sys, usr, max) {\n  const k=$env.MISTRAL_API_KEY; if(!k) throw new Error('No key');\n  const model='mistral-small-latest';\n  const r=await $fetch('https://api.mistral.ai/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model, tokens:r.usage?.total_tokens||0};\n}\n\nasync function callGitHub(sys, usr, max) {\n  const k=$env.GITHUB_ACCESS_TOKEN; if(!k) throw new Error('No key');\n  // GitHub Models: gpt-4o is free with GitHub account\n  const model='gpt-4o';\n  const r=await $fetch('https://models.inference.ai.azure.com/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model:'github/gpt-4o', tokens:r.usage?.total_tokens||0};\n}\n\nasync function callCohere(sys, usr, max) {\n  const k=$env.COHERE_API_KEY; if(!k) throw new Error('No key');\n  const r=await $fetch('https://api.cohere.ai/v2/chat',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model:'command-r-plus',max_tokens:max,system_prompt:sys,messages:[{role:'user',content:usr}]})\n  });\n  return {content:r.message.content[0].text, model:'cohere/command-r-plus', tokens:r.usage?.tokens?.output_tokens||0};\n}\n\nasync function callHuggingFace(sys, usr, max) {\n  const k=$env.HF_TOKEN; if(!k) throw new Error('No key');\n  const r=await $fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model:'meta-llama/Llama-3.2-11B-Vision-Instruct',max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:ur}]})\n  });\n  return {content:r.choices[0].message.content, model:'hf/llama-3.2-11b', tokens:r.usage?.total_tokens||0};\n}\n\nasync function callSambanova(sys, usr, max) {\n  const k=$env.SAMBANOVA_API_KEY; if(!k) throw new Error('No key');\n  const model='Meta-Llama-3.1-405B-Instruct';\n  const r=await $fetch('https://api.sambanova.ai/v1/chat/completions',{\n    method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n    body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n  });\n  return {content:r.choices[0].message.content, model:'sambanova/llama-405b', tokens:r.usage?.total_tokens||0};\n}\n\nconst CALLERS = {\n  groq: callGroq, gemini: callGemini, openrouter: callOpenRouter,\n  cerebras: callCerebras, mistral: callMistral, github: callGitHub,\n  cohere: callCohere, huggingface: callHuggingFace, sambanova: callSambanova,\n};\n\n// ── ROUTE THROUGH MESH ────────────────────────────────────────────────────\nconst tried = [];\nlet result = null;\nlet t0 = Date.now();\n\nfor (const provider of priority) {\n  const caller = CALLERS[provider];\n  if (!caller) continue;\n  try {\n    result = await caller(system, prompt, maxTok);\n    result.provider = provider;\n    result.latency_ms = Date.now() - t0;\n    break;\n  } catch(e) {\n    tried.push({provider, error: e.message?.slice(0,60)});\n  }\n}\n\nif (!result) {\n  await log('MESH_EXHAUSTED', {task: effectiveTask, tried, ts});\n  return [{json:{error:'All nodes exhausted', tried, task: effectiveTask}}];\n}\n\n// ── LOG + RETURN ─────────────────────────────────────────────────────────\nconst out = {\n  content:     result.content,\n  provider:    result.provider,\n  model:       result.model,\n  tokens:      result.tokens,\n  latency_ms:  result.latency_ms,\n  task_type:   effectiveTask,\n  poly_c_hint: polyCHint,\n  tried_first: tried,\n  ts, pid: 335,\n  entry_hash:  H({prompt, provider: result.provider, ts}),\n};\n\nawait log('MESH_CALL', {provider: result.provider, model: result.model, task: effectiveTask, tokens: result.tokens, latency_ms: result.latency_ms});\nreturn [{json: out}];\n"
+      }
+    },
+    {
+      "id": "M3",
+      "name": "↩ Mesh Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [580, 0],
+      "parameters": {"respondWith": "json", "responseBody": "=$json"}
+    },
+    {
+      "id": "M4",
+      "name": "📊 Mesh Status",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 200],
+      "webhookId": "evez-M4",
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "evez-mesh-status",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "M5",
+      "name": "📋 Status Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 200],
+      "parameters": {
+        "jsCode": "const envKeys = {groq:'GROQ_API_KEY',gemini:'GEMINI_API_KEY',openrouter:'OPENROUTER_API_KEY',cerebras:'CEREBRAS_API_KEY',mistral:'MISTRAL_API_KEY',github:'GITHUB_ACCESS_TOKEN',cohere:'COHERE_API_KEY',huggingface:'HF_TOKEN',sambanova:'SAMBANOVA_API_KEY'};\nconst status = {};\nfor(const [p,k] of Object.entries(envKeys)){\n  status[p] = {configured: !!$env[k], key_var: k};\n}\nconst configured = Object.values(status).filter(v=>v.configured).length;\nreturn [{json:{\n  version:'WF9 10-Node Inference Mesh',\n  pid:335, ts:new Date().toISOString(),\n  nodes_configured: configured,\n  nodes_total: Object.keys(envKeys).length,\n  nodes: status,\n  daily_capacity: {\n    groq:   '14.4K req (8B) / 1K req (70B)',\n    gemini: '1.5K req/day',\n    openrouter: '50 req/day (free)',\n    cerebras: '1M tokens/day',\n    mistral: '1B tokens/month',\n    github: '50-150 req/day (GPT-4o/o3)',\n    cohere: '1K req/month',\n    huggingface: '300 req/hr',\n    sambanova: '$5 credit (~30M tokens)',\n    cloudflare: '10K neurons/day (in CF Worker)',\n  },\n  routing: {\n    reasoning:   'github → sambanova → groq → gemini → cerebras',\n    code:        'mistral → github → groq → cerebras → gemini',\n    fast:        'groq → cerebras → gemini → mistral → openrouter',\n    fire_event:  'github → gemini → groq → cerebras → mistral',\n    arxiv_score: 'cerebras → groq → gemini → openrouter → mistral',\n    long_context:'gemini → mistral → github → groq',\n    default:     'groq → cerebras → gemini → mistral → openrouter → github',\n  },\n  poly_c_routing: {\n    '>=8.0': 'reasoning (o3/405B)',\n    '>=5.0': 'fire_event (GPT-4o/70B)',\n    '>=0.9': 'fast (Groq/Cerebras)',\n    '<0.9':  'arxiv_score (lightweight)',\n  },\n  webhook: 'POST /webhook/evez-mesh + {task,prompt,system?,max_tokens?,poly_c?}',\n}}];"
+      }
+    },
+    {
+      "id": "M6",
+      "name": "↩ Status ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [580, 200],
+      "parameters": {"respondWith": "json", "responseBody": "=$json"}
+    }
+  ],
+  "connections": {
+    "🔀 /evez-mesh Webhook": {"main": [[{"node": "🧠 Mesh Router", "type": "main", "index": 0}]]},
+    "🧠 Mesh Router":        {"main": [[{"node": "↩ Mesh Response", "type": "main", "index": 0}]]},
+    "📊 Mesh Status":        {"main": [[{"node": "📋 Status Report", "type": "main", "index": 0}]]},
+    "📋 Status Report":      {"main": [[{"node": "↩ Status ACK", "type": "main", "index": 0}]]}
+  },
+  "settings": {"executionOrder": "v1"},
+  "tags": [{"name": "evez-free"}, {"name": "inference-mesh"}, {"name": "multi-provider"}]
+}

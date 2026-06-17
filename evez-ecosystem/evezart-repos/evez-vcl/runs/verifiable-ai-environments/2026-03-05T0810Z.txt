@@ -1,0 +1,20 @@
+Verifiable AI Environments Scan #19 -- 2026-03-05T08:10Z
+
+Query A: "trustworthy AI" OR "AI reasoning transparency" -is:retweet lang:en
+Query B: "AI transparency" OR "AI accountability" OR "interpretable AI" -is:retweet lang:en
+
+Query A: 20 results. ~85% PerleLabs crypto campaign spam.
+Genuine: @_QtyJ (1823f) L=19 RT=1 -- "Ritual Academy #5: Correctness-Oriented Programming with AI -- building AI systems we can trust at scale." EVEZ angle: correctness-oriented programming = behavioral record proof.
+
+Query B: 20 results. ~60% crypto/spam (DGRID RT=6 campaign, @refrip98 RT=70 spam, Kurrco Apple Music RT=217).
+Genuine signals:
+- @Kurrco RT=217: "Apple Music introducing AI transparency tags for new releases" -- mainstream AI transparency disclosure signal. EVEZ angle: music gets labels; AI decisions need labels too. 414 rounds = the label.
+- @_QtyJ (1823f) L=19: Ritual correctness-oriented programming (same account)
+
+Spam flags: Query A >80% PerleLabs campaign (1 run -- monitor, retire at 3 consecutive). Query B DGRID campaign subsiding.
+
+Standalone tweet posted: referencing Apple Music AI transparency tags -> EVEZ 414 rounds behavioral record.
+
+New outreach targets: @_QtyJ (1823f, correctness-oriented AI trust) -- MEDIUM.
+
+Genuine signals: 2. consecutive_zero: 0. cluster_forming: true (Apple Music mainstream signal).

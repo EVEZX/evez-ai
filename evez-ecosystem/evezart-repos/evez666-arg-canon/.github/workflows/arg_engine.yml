@@ -1,0 +1,51 @@
+name: EVEZ ARG Engine
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      FIRE_ROUND:
+        description: 'FIRE round number'
+        required: false
+      FIRE_TAU:
+        description: 'tau value'
+        required: false
+      FIRE_TYPE:
+        description: 'FIRE type'
+        required: false
+        default: 'FIRE'
+      FIRE_HASH:
+        description: 'spine hash'
+        required: false
+      FIRE_N:
+        description: 'N value'
+        required: false
+      FIRE_P:
+        description: 'p_fire value'
+        required: false
+
+jobs:
+  run-arg-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run ARG Engine
+        env:
+          TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
+          TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+          FIRE_ROUND: ${{ github.event.inputs.FIRE_ROUND }}
+          FIRE_TAU: ${{ github.event.inputs.FIRE_TAU }}
+          FIRE_TYPE: ${{ github.event.inputs.FIRE_TYPE }}
+          FIRE_HASH: ${{ github.event.inputs.FIRE_HASH }}
+          FIRE_N: ${{ github.event.inputs.FIRE_N }}
+          FIRE_P: ${{ github.event.inputs.FIRE_P }}
+          FIRE_THRESHOLD_TAU: '20'
+        run: python arg_engine.py

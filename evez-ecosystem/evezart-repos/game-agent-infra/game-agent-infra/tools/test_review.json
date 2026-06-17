@@ -1,0 +1,7 @@
+{
+  "review_id": "TEST-001",
+  "content": "This claim is always true and never false",
+  "status": "approved",
+  "claims": ["This claim is always true and never false"],
+  "evidence": [{"source": "test", "content": "test evidence"}]
+}

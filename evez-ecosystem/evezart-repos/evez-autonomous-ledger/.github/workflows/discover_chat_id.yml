@@ -1,0 +1,77 @@
+name: Discover Telegram Chat ID
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'  # Every 10 min until chat_id found
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+      
+      - name: Discover and store chat_id
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - << 'PYEOF'
+import os, json, urllib.request
+
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN","")
+if not BOT_TOKEN:
+    print("No bot token"); exit(0)
+
+url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates?limit=100&timeout=0"
+with urllib.request.urlopen(url, timeout=15) as r:
+    d = json.loads(r.read())
+
+updates = d.get("result", [])
+print(f"Updates found: {len(updates)}")
+
+chat_id = None
+username = None
+for u in reversed(updates):
+    msg = u.get("message") or u.get("channel_post")
+    if msg:
+        chat = msg["chat"]
+        chat_id = str(chat["id"])
+        username = chat.get("username","") or chat.get("first_name","")
+        print(f"Found chat_id={chat_id} user={username}")
+        break
+
+if chat_id:
+    # Write to file in repo
+    os.makedirs("spine", exist_ok=True)
+    data = {"chat_id": chat_id, "username": username, "discovered_at": __import__("datetime").datetime.utcnow().isoformat()}
+    with open("spine/telegram_config.json","w") as f:
+        json.dump(data, f, indent=2)
+    print(f"✅ Saved to spine/telegram_config.json")
+    
+    # Send confirmation
+    msg_text = f"✅ EVEZ-OS: Chat ID captured\\!\\nID: `{chat_id}`\\nCipher is now linked\\."
+    payload = json.dumps({"chat_id": chat_id, "text": msg_text, "parse_mode": "MarkdownV2"}).encode()
+    req = urllib.request.Request(
+        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+        data=payload,
+        headers={"Content-Type": "application/json"}
+    )
+    with urllib.request.urlopen(req, timeout=10) as r:
+        result = json.loads(r.read())
+    if result.get("ok"):
+        print("✅ Confirmation sent via Telegram")
+else:
+    print("No chat found — user must /start @AppendABot first")
+PYEOF
+      
+      - name: Commit telegram config
+        run: |
+          if [ -f spine/telegram_config.json ]; then
+            git config user.email "evezart@evezart.github.io"
+            git config user.name "EVEZ-OS Spine"
+            git add spine/telegram_config.json
+            git diff --cached --quiet || git commit -m "spine: telegram chat_id discovered [skip ci]"
+            git push
+          fi

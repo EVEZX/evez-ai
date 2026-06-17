@@ -1,0 +1,45 @@
+name: Evolution Engine
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  evolve:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run OODA self-evolution loop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/evolution/self_evolve.py
+
+      - name: Generate visual dashboard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/evolution/visual_tracker.py
+
+      - name: Commit and push evolution results
+        run: |
+          git config user.name "evez-evolution-engine"
+          git config user.email "evolution@evez.art"
+          git add evolution/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "evolution: cycle $(cat evolution/state.json | python3 -c 'import sys,json; print(json.load(sys.stdin).get(\"cycle\",0))')"
+            git push
+          fi

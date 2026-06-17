@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.synaptic.atlas/v4/QuantumToolCall.json",
+  "title": "QuantumToolCall",
+  "type": "object",
+  "required": ["call_id", "ansatz", "backend", "shots", "measurements", "mitigation", "limits"],
+  "properties": {
+    "call_id": {"type": "string"},
+    "ansatz": {
+      "type": "object",
+      "required": ["family", "params"],
+      "properties": {
+        "family": {"type": "string", "enum": ["hardware_efficient", "qaoa", "vqe", "iqp", "qnn"]},
+        "params": {"type": "array", "items": {"type": "number"}}
+      }
+    },
+    "backend": {"type": "string", "enum": ["statevector_sim", "tensor_sim", "qpu"]},
+    "shots": {"type": "integer", "minimum": 1},
+    "measurements": {"type": "array", "items": {"type": "string"}},
+    "mitigation": {
+      "type": "object",
+      "properties": {
+        "zne": {"type": "boolean"},
+        "readout_correction": {"type": "boolean"}
+      }
+    },
+    "limits": {
+      "type": "object",
+      "required": ["max_depth", "max_shots", "max_runtime_ms"],
+      "properties": {
+        "max_depth": {"type": "integer", "minimum": 1},
+        "max_shots": {"type": "integer", "minimum": 1},
+        "max_runtime_ms": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "root_hash": "f4dad9343fc6bf89ae1efac7aad20c9b8d48678ed40efe5aaee5bbf1784ef29c",
+  "event_count": 3,
+  "timestamp": 1771817339.6209526,
+  "creator": "Steven Crawford-Maggard",
+  "handle": "EVEZ666",
+  "repo": "github.com/EvezArt/evez-os",
+  "license": "AGPL-3.0",
+  "round": 105,
+  "V_global": 2.020003,
+  "ensemble_providers": [
+    "groq/llama-3.3-70b",
+    "aiml/deepseek-r1"
+  ],
+  "ensemble_ok": 0,
+  "verify_cmd": "python3 -c \"import json,hashlib; e=json.load(open('events.json')); print(hashlib.sha256(json.dumps(e,sort_keys=True).encode()).hexdigest())\""
+}

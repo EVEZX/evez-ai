@@ -1,0 +1,41 @@
+name: artifact-sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate registry source list
+        run: python scripts/validate_registry_sources.py
+      - name: Rebuild registry from manifests
+        run: python scripts/sync_registry_live.py
+      - name: Validate rebuilt registry
+        run: python scripts/validate_registry.py
+      - name: Probe plugin health
+        run: python scripts/probe_plugin_health.py
+      - name: Validate plugin health artifact
+        run: python scripts/validate_plugin_health.py
+      - name: Validate artifact freshness
+        run: python scripts/validate_artifact_freshness.py
+      - name: Commit refreshed artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PLUGIN_REGISTRY.json PLUGIN_HEALTH.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: refresh plugin registry and health artifacts"
+          git push

@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "name": "EVEZ-OS-CLAW",
+  "description": "EVEZ-OS OpenClaw config — delegates to evez-openclaw-mesh gateway",
+  "gateway": {
+    "url": "http://localhost:18789",
+    "port": 18789,
+    "tokenEnv": "OPENCLAW_GATEWAY_TOKEN"
+  },
+  "models": {
+    "evez-smart": {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-r1",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1"
+    },
+    "evez-fast": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1"
+    }
+  },
+  "profiles": {
+    "default": { "model": "evez-smart" },
+    "goblin":  { "model": "evez-smart", "systemPrompt": "CLAW GOBLIN MODE. EVEZ-OS operator." }
+  },
+  "integrations": {
+    "github": { "tokenEnv": "GITHUB_PAT", "defaultOrg": "EvezArt" },
+    "mem0":   { "apiKeyEnv": "MEM0_API_KEY", "userId": "evez666" }
+  }
+}

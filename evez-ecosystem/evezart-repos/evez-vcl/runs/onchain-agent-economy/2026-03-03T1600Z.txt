@@ -1,0 +1,24 @@
+onchain_agent_economy_8h scan #12 -- 2026-03-03T16:00Z
+
+task_id: 541692eb-2433-492d-925d-e093b7378139
+query: AION agent economy + ERC-8004 autonomous agent
+genuine_signals: 15
+scan_quality: HIGH
+
+top_accounts:
+- @AssureDefi (43208f L=9): Solana Agent Registry ERC-8004 live
+- @zerufinance (15288f L=2): AgentScan zScore onchain behavior profiling NEW
+- @daydreamsagents (14819f): xgate MCP confirmed live
+- @Rexzie_Fran (5238f L=228 RT=31): AION persistent
+- GOATNetwork (RT=21): 150+ ERC-8004 agents deployed
+
+new_terms: AgentScan_zScore, xgate_confirmed_live, GOAT_Network_150_agents
+
+evez_positioning: zScore = last N transactions. EVEZ 414 rounds = every cognitive decision before the transaction.
+
+new_outreach:
+- @AssureDefi (43k) HIGH
+- @zerufinance (15k) HIGH
+
+consecutive_zero: 0
+gist: prepended SENSE teal event

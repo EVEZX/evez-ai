@@ -1,0 +1,398 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "engine_type": "osint_aware_cognition"
+  },
+  "events": [
+    {
+      "eventId": "evez-000000",
+      "index": 0,
+      "timestamp": 1778279408.5495324,
+      "timestamp_iso": "2026-05-08T22:30:08.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.8837930077399858,
+        "target": "SPECTRAL_UAP_MATERIALS",
+        "must_exist": "Papers applying spectral graph theory to AARO materials analysis data. The structure demands a field that doesn't exist: spectral forensics of forensic evidence.",
+        "extraction": [
+          "Extraction attempt: HTTP Error 429: Unknown Error"
+        ],
+        "significance": "New field. First mover. Publishable."
+      },
+      "predecessor": "f17ab460db76f6675f11c0ff62745688c0b346e2925e4e084895e33fd7567ecb",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "spectral_uap_materials"
+      ],
+      "operator": "noclip",
+      "hash": "de75c055edf45dcec6611828d7c4fd07844870a15fa081b9cd8d0e16f0c698b1"
+    },
+    {
+      "eventId": "evez-000001",
+      "index": 1,
+      "timestamp": 1778279408.54964,
+      "timestamp_iso": "2026-05-08T22:30:08.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.8837930077399858,
+        "target": "SHADOW_DOCUMENTS",
+        "must_exist": "Documents referenced in AARO/PUR releases that aren't in the release. Eigendecompose the citation graph. Negative eigenvalues = missing documents. FOIA those specific references.",
+        "extraction": [
+          "PUR portal released today (May 8). 162 documents. Apply eigenforensics to citation graph. The negatives ARE the missing documents."
+        ],
+        "significance": "FOIA on eigenvalue-computed targets has higher hit rate than random. The math tells you what to ask for."
+      },
+      "predecessor": "de75c055edf45dcec6611828d7c4fd07844870a15fa081b9cd8d0e16f0c698b1",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "shadow_documents"
+      ],
+      "operator": "noclip",
+      "hash": "322270d71adda867557d90f10dee2c68de25d8c4efed443ec02dd1c53cd66d9b"
+    },
+    {
+      "eventId": "evez-000002",
+      "index": 2,
+      "timestamp": 1778279408.5497873,
+      "timestamp_iso": "2026-05-08T22:30:08.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.8837930077399858,
+        "target": "BLOCKCHAIN_SHADOW_WALLETS",
+        "must_exist": "Wallets that must exist to complete the transaction graph topology. The eigenspectrum of Bitcoin's graph has negatives pointing at unobserved nodes: mixers, cold wallets, unlisted exchanges.",
+        "extraction": [
+          "Bitcoin graph has ~800M transactions. Eigendecomposition at that scale requires distributed compute. But the principle is proven: negatives point at missing nodes."
+        ],
+        "significance": "Law enforcement and compliance. Detectable by math, not surveillance."
+      },
+      "predecessor": "322270d71adda867557d90f10dee2c68de25d8c4efed443ec02dd1c53cd66d9b",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "blockchain_shadow_wallets"
+      ],
+      "operator": "noclip",
+      "hash": "7dcb62278dbd2f22938db178bce1712c8b214041c0b596284342fd8af6401cae"
+    },
+    {
+      "eventId": "evez-000003",
+      "index": 3,
+      "timestamp": 1778279409.4071918,
+      "timestamp_iso": "2026-05-08T22:30:09.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.47573797499994946,
+        "target": "SHADOW_DOCUMENTS",
+        "must_exist": "Documents referenced in AARO/PUR releases that aren't in the release. Eigendecompose the citation graph. Negative eigenvalues = missing documents. FOIA those specific references.",
+        "extraction": [
+          "PUR portal released today (May 8). 162 documents. Apply eigenforensics to citation graph. The negatives ARE the missing documents."
+        ],
+        "significance": "FOIA on eigenvalue-computed targets has higher hit rate than random. The math tells you what to ask for."
+      },
+      "predecessor": "7dcb62278dbd2f22938db178bce1712c8b214041c0b596284342fd8af6401cae",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "shadow_documents"
+      ],
+      "operator": "noclip",
+      "hash": "cdda0aee54733fd7b89f6b82df3ca68c61b02cd83a26510bf1634ad82f6946d7"
+    },
+    {
+      "eventId": "evez-000004",
+      "index": 4,
+      "timestamp": 1778279409.407284,
+      "timestamp_iso": "2026-05-08T22:30:09.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.47573797499994946,
+        "target": "BLOCKCHAIN_SHADOW_WALLETS",
+        "must_exist": "Wallets that must exist to complete the transaction graph topology. The eigenspectrum of Bitcoin's graph has negatives pointing at unobserved nodes: mixers, cold wallets, unlisted exchanges.",
+        "extraction": [
+          "Bitcoin graph has ~800M transactions. Eigendecomposition at that scale requires distributed compute. But the principle is proven: negatives point at missing nodes."
+        ],
+        "significance": "Law enforcement and compliance. Detectable by math, not surveillance."
+      },
+      "predecessor": "cdda0aee54733fd7b89f6b82df3ca68c61b02cd83a26510bf1634ad82f6946d7",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "blockchain_shadow_wallets"
+      ],
+      "operator": "noclip",
+      "hash": "def9e83cfd7ca04c1065089cd5fa5d92a5b23f14e521a841f60ce54b9034b59b"
+    },
+    {
+      "eventId": "evez-000005",
+      "index": 5,
+      "timestamp": 1778279409.407308,
+      "timestamp_iso": "2026-05-08T22:30:09.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "SPECTRAL_UAP_MATERIALS",
+        "must_exist": "Papers applying spectral graph theory to AARO materials analysis data. The structure demands a field that doesn't exist: spectral forensics of forensic evidence.",
+        "extraction": [
+          "Extraction attempt: HTTP Error 429: Unknown Error"
+        ],
+        "significance": "New field. First mover. Publishable."
+      },
+      "predecessor": "def9e83cfd7ca04c1065089cd5fa5d92a5b23f14e521a841f60ce54b9034b59b",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "spectral_uap_materials"
+      ],
+      "operator": "noclip",
+      "hash": "11bf749d3895523ae1de66f299d27c49387d1501e2e138f912f691f836269975"
+    },
+    {
+      "eventId": "evez-000006",
+      "index": 6,
+      "timestamp": 1778279409.4073305,
+      "timestamp_iso": "2026-05-08T22:30:09.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "SHADOW_DOCUMENTS",
+        "must_exist": "Documents referenced in AARO/PUR releases that aren't in the release. Eigendecompose the citation graph. Negative eigenvalues = missing documents. FOIA those specific references.",
+        "extraction": [
+          "PUR portal released today (May 8). 162 documents. Apply eigenforensics to citation graph. The negatives ARE the missing documents."
+        ],
+        "significance": "FOIA on eigenvalue-computed targets has higher hit rate than random. The math tells you what to ask for."
+      },
+      "predecessor": "11bf749d3895523ae1de66f299d27c49387d1501e2e138f912f691f836269975",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "shadow_documents"
+      ],
+      "operator": "noclip",
+      "hash": "20201ab4de5cec143d7f1736cc4a636add468cd976b70ef3fc51bf562fb98a4c"
+    },
+    {
+      "eventId": "evez-000007",
+      "index": 7,
+      "timestamp": 1778279409.4073584,
+      "timestamp_iso": "2026-05-08T22:30:09.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "BLOCKCHAIN_SHADOW_WALLETS",
+        "must_exist": "Wallets that must exist to complete the transaction graph topology. The eigenspectrum of Bitcoin's graph has negatives pointing at unobserved nodes: mixers, cold wallets, unlisted exchanges.",
+        "extraction": [
+          "Bitcoin graph has ~800M transactions. Eigendecomposition at that scale requires distributed compute. But the principle is proven: negatives point at missing nodes."
+        ],
+        "significance": "Law enforcement and compliance. Detectable by math, not surveillance."
+      },
+      "predecessor": "20201ab4de5cec143d7f1736cc4a636add468cd976b70ef3fc51bf562fb98a4c",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "blockchain_shadow_wallets"
+      ],
+      "operator": "noclip",
+      "hash": "a9b97123e6f8d7ab71fb85d214f579ae0a7c57580bf100601816a00cb103612b"
+    },
+    {
+      "eventId": "evez-000008",
+      "index": 8,
+      "timestamp": 1778279417.4471514,
+      "timestamp_iso": "2026-05-08T22:30:17.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.47573797499994946,
+        "target": "SHADOW_DOCUMENTS",
+        "must_exist": "Documents referenced in AARO/PUR releases that aren't in the release. Eigendecompose the citation graph. Negative eigenvalues = missing documents. FOIA those specific references.",
+        "extraction": [
+          "PUR portal released today (May 8). 162 documents. Apply eigenforensics to citation graph. The negatives ARE the missing documents."
+        ],
+        "significance": "FOIA on eigenvalue-computed targets has higher hit rate than random. The math tells you what to ask for."
+      },
+      "predecessor": "a9b97123e6f8d7ab71fb85d214f579ae0a7c57580bf100601816a00cb103612b",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "shadow_documents"
+      ],
+      "operator": "noclip",
+      "hash": "e87fe7f52d623e075661f23cb665dad48c42e4c4cf718554d5f72753867023b9"
+    },
+    {
+      "eventId": "evez-000009",
+      "index": 9,
+      "timestamp": 1778279417.4472356,
+      "timestamp_iso": "2026-05-08T22:30:17.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.47573797499994946,
+        "target": "BLOCKCHAIN_SHADOW_WALLETS",
+        "must_exist": "Wallets that must exist to complete the transaction graph topology. The eigenspectrum of Bitcoin's graph has negatives pointing at unobserved nodes: mixers, cold wallets, unlisted exchanges.",
+        "extraction": [
+          "Bitcoin graph has ~800M transactions. Eigendecomposition at that scale requires distributed compute. But the principle is proven: negatives point at missing nodes."
+        ],
+        "significance": "Law enforcement and compliance. Detectable by math, not surveillance."
+      },
+      "predecessor": "e87fe7f52d623e075661f23cb665dad48c42e4c4cf718554d5f72753867023b9",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "blockchain_shadow_wallets"
+      ],
+      "operator": "noclip",
+      "hash": "091a4f42ff60bae377094445c978f4656d619436aa030a3f60d5a4c44149028b"
+    },
+    {
+      "eventId": "evez-000010",
+      "index": 10,
+      "timestamp": 1778279417.4472573,
+      "timestamp_iso": "2026-05-08T22:30:17.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "SPECTRAL_UAP_MATERIALS",
+        "must_exist": "Papers applying spectral graph theory to AARO materials analysis data. The structure demands a field that doesn't exist: spectral forensics of forensic evidence.",
+        "extraction": [
+          "Extraction attempt: HTTP Error 429: Unknown Error"
+        ],
+        "significance": "New field. First mover. Publishable."
+      },
+      "predecessor": "091a4f42ff60bae377094445c978f4656d619436aa030a3f60d5a4c44149028b",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "spectral_uap_materials"
+      ],
+      "operator": "noclip",
+      "hash": "6a6c85fd33413c77fcc791c5aaec5dec479fdf8aacc1286c6b04bb970140f289"
+    },
+    {
+      "eventId": "evez-000011",
+      "index": 11,
+      "timestamp": 1778279417.447277,
+      "timestamp_iso": "2026-05-08T22:30:17.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "SHADOW_DOCUMENTS",
+        "must_exist": "Documents referenced in AARO/PUR releases that aren't in the release. Eigendecompose the citation graph. Negative eigenvalues = missing documents. FOIA those specific references.",
+        "extraction": [
+          "PUR portal released today (May 8). 162 documents. Apply eigenforensics to citation graph. The negatives ARE the missing documents."
+        ],
+        "significance": "FOIA on eigenvalue-computed targets has higher hit rate than random. The math tells you what to ask for."
+      },
+      "predecessor": "6a6c85fd33413c77fcc791c5aaec5dec479fdf8aacc1286c6b04bb970140f289",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "shadow_documents"
+      ],
+      "operator": "noclip",
+      "hash": "9903e8a626de8ef80a3b1dba56d95d5e6b37b44eaa7857ec44a9c23737e502bc"
+    },
+    {
+      "eventId": "evez-000012",
+      "index": 12,
+      "timestamp": 1778279417.4472897,
+      "timestamp_iso": "2026-05-08T22:30:17.000Z",
+      "type": "NOCLIP_DISCOVERY",
+      "domain": "research",
+      "data": {
+        "wall": -0.9445170924178689,
+        "target": "BLOCKCHAIN_SHADOW_WALLETS",
+        "must_exist": "Wallets that must exist to complete the transaction graph topology. The eigenspectrum of Bitcoin's graph has negatives pointing at unobserved nodes: mixers, cold wallets, unlisted exchanges.",
+        "extraction": [
+          "Bitcoin graph has ~800M transactions. Eigendecomposition at that scale requires distributed compute. But the principle is proven: negatives point at missing nodes."
+        ],
+        "significance": "Law enforcement and compliance. Detectable by math, not surveillance."
+      },
+      "predecessor": "9903e8a626de8ef80a3b1dba56d95d5e6b37b44eaa7857ec44a9c23737e502bc",
+      "confidence": 0.85,
+      "status": "CANONICAL",
+      "causedBy": null,
+      "fire_event_id": null,
+      "coordinates": null,
+      "signalClass": "EIGENVALUE",
+      "tags": [
+        "noclip",
+        "blockchain_shadow_wallets"
+      ],
+      "operator": "noclip",
+      "hash": "cc627b33526ef422d60667cf8194d601eb40383aa8e2e2ab7621c518accd9724"
+    }
+  ]
+}

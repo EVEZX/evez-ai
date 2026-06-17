@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>EVEZ OpenClaw</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111;
+            --border: #222;
+            --text: #e0e0e0;
+            --dim: #888;
+            --accent: #00ff88;
+            --accent2: #0088ff;
+            --error: #ff4444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .header .logo {
+            width: 32px; height: 32px;
+            background: conic-gradient(var(--accent), var(--accent2), var(--accent));
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 14px; color: #000;
+        }
+        .header .title { font-weight: 600; font-size: 16px; flex: 1; }
+        .header .status {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+            transition: background 0.3s;
+        }
+        .header .status.connected { background: var(--accent); }
+        .header .settings-btn {
+            background: none; border: none; color: var(--dim);
+            font-size: 20px; cursor: pointer; padding: 4px;
+        }
+        
+        /* Chat Area */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            animation: fadeIn 0.2s;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: var(--accent2);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.assistant {
+            align-self: flex-start;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+        .message.system {
+            align-self: center;
+            background: transparent;
+            color: var(--dim);
+            font-size: 12px;
+            text-align: center;
+        }
+        .message pre {
+            background: #000;
+            padding: 8px 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 6px 0;
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .message code {
+            background: rgba(255,255,255,0.1);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .typing {
+            align-self: flex-start;
+            padding: 12px 16px;
+        }
+        .typing span {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: var(--dim);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        
+        /* Input Area */
+        .input-area {
+            display: flex;
+            padding: 12px 16px;
+            gap: 8px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .input-area textarea {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            max-height: 120px;
+            outline: none;
+        }
+        .input-area textarea:focus { border-color: var(--accent); }
+        .input-area .send-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            align-self: flex-end;
+        }
+        .input-area .send-btn:disabled {
+            background: var(--border);
+            color: var(--dim);
+        }
+        
+        /* Settings Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .modal h2 { margin-bottom: 16px; font-size: 18px; }
+        .modal label { display: block; margin-bottom: 4px; color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .modal input, .modal select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 16px;
+            outline: none;
+        }
+        .modal input:focus { border-color: var(--accent); }
+        .modal .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+        .modal button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .modal .btn-primary { background: var(--accent); color: #000; font-weight: 600; }
+        .modal .btn-secondary { background: var(--border); color: var(--text); }
+        .model-info {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--dim);
+        }
+        .model-info .model-name { color: var(--accent); font-weight: 600; }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            padding: 8px 16px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+        .quick-actions button {
+            white-space: nowrap;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 6px 14px;
+            color: var(--dim);
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .quick-actions button:hover { border-color: var(--accent); color: var(--accent); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚡</div>
+        <div class="title">EVEZ OpenClaw</div>
+        <div class="status" id="status"></div>
+        <button class="settings-btn" onclick="openSettings()">⚙</button>
+    </div>
+    
+    <div class="chat-container" id="chat">
+        <div class="message system">Connect to your OpenClaw gateway to start</div>
+    </div>
+    
+    <div class="quick-actions" id="quickActions" style="display:none;">
+        <button onclick="sendQuick('What can you do?')">What can you do?</button>
+        <button onclick="sendQuick('Search the web for latest AI news')">🔍 AI News</button>
+        <button onclick="sendQuick('List my available tools')">🛠 Tools</button>
+        <button onclick="sendQuick('Check my memory')">🧠 Memory</button>
+        <button onclick="sendQuick('Help me code something')">💻 Code</button>
+    </div>
+    
+    <div class="input-area">
+        <textarea id="input" placeholder="Message OpenClaw..." rows="1" 
+            oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>▶</button>
+    </div>
+    
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <h2>⚡ Gateway Settings</h2>
+            <label>Gateway URL</label>
+            <input id="urlInput" placeholder="http://192.168.1.100:18789" />
+            <label>Auth Token</label>
+            <input id="tokenInput" placeholder="evez2026" type="password" />
+            <label>Model</label>
+            <select id="modelSelect">
+                <option value="">Default (from config)</option>
+                <option value="groq/llama-3.3-70b-versatile">Groq: Llama 3.3 70B (fastest)</option>
+                <option value="groq/llama-3.1-8b-instant">Groq: Llama 3.1 8B (ultra-fast)</option>
+                <option value="openrouter/anthropic/claude-sonnet-4">Claude Sonnet 4</option>
+                <option value="openrouter/google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+                <option value="openrouter/deepseek/deepseek-r1">DeepSeek R1</option>
+                <option value="openrouter/openai/gpt-4o">GPT-4o</option>
+            </select>
+            <div class="model-info" id="modelInfo">
+                <div>Default: <span class="model-name">groq/llama-3.3-70b-versatile</span></div>
+                <div>Fallbacks: Claude → Gemini → DeepSeek → Llama 8B</div>
+            </div>
+            <div class="btn-row">
+                <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn-primary" onclick="saveSettings()">Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gatewayUrl = localStorage.getItem('oc_url') || '';
+        let authToken = localStorage.getItem('oc_token') || 'evez2026';
+        let selectedModel = localStorage.getItem('oc_model') || '';
+        let connected = false;
+        let ws = null;
+        let threadId = null;
+        
+        // Show settings on first load
+        if (!gatewayUrl) openSettings();
+        else connect();
+        
+        function openSettings() {
+            document.getElementById('urlInput').value = gatewayUrl;
+            document.getElementById('tokenInput').value = authToken;
+            document.getElementById('modelSelect').value = selectedModel;
+            document.getElementById('settingsModal').classList.add('open');
+        }
+        
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('open');
+        }
+        
+        function saveSettings() {
+            gatewayUrl = document.getElementById('urlInput').value.trim().replace(/\/$/, '');
+            authToken = document.getElementById('tokenInput').value.trim();
+            selectedModel = document.getElementById('modelSelect').value;
+            localStorage.setItem('oc_url', gatewayUrl);
+            localStorage.setItem('oc_token', authToken);
+            localStorage.setItem('oc_model', selectedModel);
+            closeSettings();
+            connect();
+        }
+        
+        async function connect() {
+            if (!gatewayUrl) return;
+            addMessage('system', 'Connecting to ' + gatewayUrl + '...');
+            
+            try {
+                const res = await fetch(gatewayUrl + '/healthz');
+                const data = await res.json();
+                if (data.ok) {
+                    setConnected(true);
+                    addMessage('system', '🟢 Connected! Agent ready.');
+                    document.getElementById('quickActions').style.display = 'flex';
+                }
+            } catch (e) {
+                setConnected(false);
+                addMessage('system', '🔴 Cannot reach gateway. Tap ⚙ to configure.');
+            }
+        }
+        
+        function setConnected(state) {
+            connected = state;
+            document.getElementById('status').classList.toggle('connected', state);
+            document.getElementById('sendBtn').disabled = !state;
+        }
+        
+        function addMessage(role, text) {
+            const chat = document.getElementById('chat');
+            const div = document.createElement('div');
+            div.className = 'message ' + role;
+            
+            // Basic markdown rendering
+            text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+            text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            text = text.replace(/\n/g, '<br>');
+            
+            div.innerHTML = text;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+            return div;
+        }
+        
+        function showTyping() {
+            const chat = document.getElementById('chat');
+            const div = document.createElement('div');
+            div.className = 'message assistant typing';
+            div.id = 'typing';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        function hideTyping() {
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('input');
+            const text = input.value.trim();
+            if (!text || !connected) return;
+            
+            input.value = '';
+            autoResize(input);
+            addMessage('user', text);
+            showTyping();
+            
+            try {
+                const body = {
+                    message: text,
+                    stream: false
+                };
+                if (selectedModel) body.model = selectedModel;
+                if (threadId) body.threadId = threadId;
+                
+                const res = await fetch(gatewayUrl + '/v1/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + authToken
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await res.json();
+                hideTyping();
+                
+                if (data.threadId) threadId = data.threadId;
+                
+                const reply = data.reply?.text || data.reply?.content || 
+                              data.text || data.content || JSON.stringify(data);
+                addMessage('assistant', reply);
+                
+            } catch (e) {
+                hideTyping();
+                addMessage('system', '⚠️ Error: ' + e.message);
+            }
+        }
+        
+        function sendQuick(text) {
+            document.getElementById('input').value = text;
+            sendMessage();
+        }
+        
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+        }
+        
+        function handleKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

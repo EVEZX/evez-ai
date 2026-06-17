@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EvezBrain Mesh Globe</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #020611; color: #dce8ff; font-family: system-ui, sans-serif; }
+    #hud { position: fixed; top: 12px; left: 12px; background: rgba(2,8,22,0.8); padding: 8px 12px; border: 1px solid #244; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div id="hud">EvezBrain 3D Mesh Globe · update cadence 5s</div>
+  <script src="https://unpkg.com/three@0.161.0/build/three.min.js"></script>
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(4, 64, 64),
+      new THREE.MeshBasicMaterial({ color: 0x0a2d66, wireframe: true })
+    );
+    scene.add(earth);
+
+    const statusColor = {
+      healthy: 0x4da3ff,
+      syncing: 0xffd84d,
+      degraded: 0xff4d4d,
+      evolved: 0xffffff,
+    };
+
+    const points = new Map();
+    const arcs = [];
+
+    function latLonToVec3(lat, lon, r = 4.08) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      return new THREE.Vector3(
+        -(r * Math.sin(phi) * Math.cos(theta)),
+        r * Math.cos(phi),
+        r * Math.sin(phi) * Math.sin(theta)
+      );
+    }
+
+    function drawNodes(nodes) {
+      nodes.forEach((n) => {
+        if (points.has(n.node_id)) {
+          scene.remove(points.get(n.node_id));
+        }
+        const point = new THREE.Mesh(
+          new THREE.SphereGeometry(0.08, 8, 8),
+          new THREE.MeshBasicMaterial({ color: statusColor[n.status] || statusColor.healthy })
+        );
+        point.position.copy(latLonToVec3(n.lat, n.lon));
+        scene.add(point);
+        points.set(n.node_id, point);
+      });
+    }
+
+    function drawArcs(connections) {
+      arcs.forEach((a) => scene.remove(a));
+      arcs.length = 0;
+      connections.forEach((c) => {
+        const from = points.get(c.from);
+        const to = points.get(c.to);
+        if (!from || !to) return;
+        const curve = new THREE.QuadraticBezierCurve3(
+          from.position,
+          from.position.clone().add(to.position).normalize().multiplyScalar(5.5),
+          to.position
+        );
+        const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(32));
+        const material = new THREE.LineBasicMaterial({ color: 0x7fd0ff });
+        const line = new THREE.Line(geometry, material);
+        scene.add(line);
+        arcs.push(line);
+      });
+    }
+
+    function connectWs() {
+      const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      const ws = new WebSocket(`${proto}://${location.host}/ws/mesh_globe`);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        drawNodes(data.nodes || []);
+        drawArcs(data.connections || []);
+      };
+      ws.onclose = () => setTimeout(connectWs, 2000);
+    }
+
+    camera.position.z = 10;
+    (function animate() {
+      requestAnimationFrame(animate);
+      earth.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    })();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    connectWs();
+  </script>
+</body>
+</html>

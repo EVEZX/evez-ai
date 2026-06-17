@@ -1,0 +1,13 @@
+{
+  "name": "igre-speedrun",
+  "version": "1.0.0",
+  "description": "EVEZ-OS Internet Genetic Reverse Engineering & Speedrun Outcome Projecteering",
+  "scripts": {
+    "start": "uvicorn web_server:app --host 0.0.0.0 --port 8099",
+    "dev": "uvicorn web_server:app --host 0.0.0.0 --port 8099 --reload"
+  },
+  "dependencies": {},
+  "python": {
+    "requires": ["numpy>=1.24", "scipy>=1.10", "fastapi>=0.100", "uvicorn>=0.20", "httpx>=0.24"]
+  }
+}

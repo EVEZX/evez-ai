@@ -1,0 +1,43 @@
+{
+  "id": "evez-channel",
+  "kind": "channel",
+  "name": "EvezArt Channel",
+  "description": "EvezArt OpenClaw mesh integration — Telegram bot control, GitHub Synapse Engine, GCP Cloud Functions bridge.",
+  "channels": ["evez-channel"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "synapseUrl": {
+        "type": "string",
+        "description": "URL of deployed GCP evez-synapse-broker Cloud Function"
+      },
+      "telegramToken": {
+        "type": "string",
+        "description": "Telegram bot token (store in nomad_vault, reference here)"
+      },
+      "githubOrg": {
+        "type": "string",
+        "description": "GitHub organization (e.g. EvezArt)",
+        "default": "EvezArt"
+      },
+      "defaultRepo": {
+        "type": "string",
+        "description": "Default GitHub repo for Synapse actions",
+        "default": "EvezArt/evez-os"
+      }
+    }
+  },
+  "channelConfigs": {
+    "evez-channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "token": { "type": "string" },
+        "allowFrom": { "type": "array", "items": { "type": "string" } },
+        "synapseUrl": { "type": "string" },
+        "defaultRepo": { "type": "string" }
+      }
+    }
+  }
+}

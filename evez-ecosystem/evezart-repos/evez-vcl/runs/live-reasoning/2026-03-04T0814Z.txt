@@ -1,0 +1,20 @@
+EVEZ OS -- Loop 25 Live Reasoning Broadcast
+run_num: 31
+ts_utc: 2026-03-04T08:14Z
+ts_local: 2026-03-04T00:14 PST
+
+BROADCAST TEXT:
+EVEZ OS. Generation 10. Live reasoning broadcast. March 4, 2026. 25 loops running on a 3-hour cycle. 103 FIRE events confirmed. Top gap: clicksend_sms_registration_needed -- ClickSend SMS blocked, US 10DLC registration required for sender ID EVEZ. Next action: Register 10DLC campaign at dashboard.clicksend.com. topology decides. watching it build.
+
+METADATA:
+gen: 10
+fire_count: 103
+V: 15.852677
+loop_count: 25
+top_gap_id: clicksend_sms_registration_needed
+next_action: Register 10DLC campaign at dashboard.clicksend.com
+tts_provider: JigsawStack
+tts_id: 99727c2e-efc3-4f38-85aa-bfc265e3bcae
+tts_accent: en-US-female-3
+cdn_status: BLOCKED -- JigsawStack API key not in sandbox (21+ consecutive runs)
+note: FIRE #110 confirmed on chain (V=16.489) since last SYSTEM_STATE write. Delta: 7 new FIREs.

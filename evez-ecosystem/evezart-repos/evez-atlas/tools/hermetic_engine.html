@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hermetic Biofeedback Console (Local-Only)</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #0c1116;
+      color: #e6f1ff;
+    }
+    header {
+      padding: 24px;
+      background: #121a22;
+      border-bottom: 1px solid #1f2a36;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    .warning {
+      background: #2a1414;
+      border: 1px solid #5a2525;
+      padding: 12px;
+      border-radius: 8px;
+      color: #ffbdbd;
+      margin-top: 12px;
+    }
+    main {
+      padding: 24px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+    textarea, input {
+      width: 100%;
+      background: #111820;
+      color: #e6f1ff;
+      border: 1px solid #1f2a36;
+      border-radius: 6px;
+      padding: 8px;
+    }
+    button {
+      background: #1d6eea;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-top: 8px;
+    }
+    button.secondary {
+      background: #233245;
+    }
+    .card {
+      background: #121a22;
+      border: 1px solid #1f2a36;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .metric {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    pre {
+      background: #0c1116;
+      border: 1px solid #1f2a36;
+      padding: 12px;
+      border-radius: 8px;
+      max-height: 220px;
+      overflow: auto;
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .tag {
+      background: #1d2b3a;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #97c5ff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hermetic Biofeedback Console (Local-Only)</h1>
+    <div class="warning">
+      For personal experimentation only. Not medical. Do not use to influence or manipulate others.
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Identity Seed (in-memory only)</h2>
+      <textarea id="identitySeed" rows="6" placeholder='Paste IDENTITY_SEED JSON here'></textarea>
+      <div class="row">
+        <button id="simulateOnce">SIMULATE EEG</button>
+        <button id="toggleStream" class="secondary">START</button>
+        <button id="exportSession" class="secondary">EXPORT SESSION</button>
+      </div>
+      <p class="tag">No network writes. Seed stays in this page memory.</p>
+    </section>
+
+    <section class="card">
+      <h2>EEG Stream (Simulated)</h2>
+      <div class="row">
+        <div>Alpha: <span id="alphaValue">0.00</span></div>
+        <div>Beta: <span id="betaValue">0.00</span></div>
+        <div>Theta: <span id="thetaValue">0.00</span></div>
+      </div>
+      <h3>Φ Proxy Metrics (non-medical)</h3>
+      <div class="row">
+        <div class="metric">Entropy: <span id="entropyValue">0.00</span></div>
+        <div class="metric">Coherence: <span id="coherenceValue">0.00</span></div>
+        <div class="metric">Phi Proxy: <span id="phiValue">0.00</span></div>
+      </div>
+      <pre id="sessionLog">Session log will appear here...</pre>
+    </section>
+
+    <section class="card">
+      <h2>Optional Local API Telemetry</h2>
+      <label>API Base URL</label>
+      <input id="apiBase" value="http://localhost:8000" />
+      <label>API Key</label>
+      <input id="apiKey" value="tier3_director" />
+      <div class="row">
+        <button id="fetchStatus" class="secondary">Fetch /legion-status</button>
+        <span class="tag">Read-only, tier-aware</span>
+      </div>
+      <pre id="statusOutput">Telemetry output will appear here...</pre>
+    </section>
+  </main>
+
+  <script>
+    const session = {
+      startedAt: new Date().toISOString(),
+      seed: null,
+      samples: []
+    };
+
+    let streamInterval = null;
+
+    function hashSeed(seedText) {
+      let hash = 2166136261;
+      for (let i = 0; i < seedText.length; i++) {
+        hash ^= seedText.charCodeAt(i);
+        hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+      }
+      return hash >>> 0;
+    }
+
+    function mulberry32(a) {
+      return function() {
+        let t = (a += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function getSeedData() {
+      const text = document.getElementById("identitySeed").value.trim();
+      session.seed = text || null;
+      return text;
+    }
+
+    function simulateSample() {
+      const seedText = getSeedData();
+      const seedValue = hashSeed(seedText || "default-seed");
+      const rand = mulberry32(seedValue + session.samples.length);
+
+      const alpha = 0.5 + rand() * 0.5;
+      const beta = 0.4 + rand() * 0.6;
+      const theta = 0.3 + rand() * 0.7;
+
+      const sample = {
+        timestamp: new Date().toISOString(),
+        alpha: Number(alpha.toFixed(3)),
+        beta: Number(beta.toFixed(3)),
+        theta: Number(theta.toFixed(3))
+      };
+
+      session.samples.push(sample);
+      updateDisplay(sample);
+    }
+
+    function computeMetrics({ alpha, beta, theta }) {
+      const values = [alpha, beta, theta];
+      const sum = values.reduce((a, b) => a + b, 0) || 1;
+      const probs = values.map(v => v / sum);
+
+      const entropy = -probs.reduce((acc, p) => acc + (p ? p * Math.log2(p) : 0), 0);
+      const normalizedEntropy = entropy / Math.log2(3);
+
+      const mean = sum / values.length;
+      const variance = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / values.length;
+      const coherence = 1 - Math.sqrt(variance) / mean;
+
+      const phiProxy = Math.max(0, Math.min(1, (normalizedEntropy + coherence) / 2));
+
+      return {
+        entropy: normalizedEntropy,
+        coherence: Math.max(0, Math.min(1, coherence)),
+        phiProxy
+      };
+    }
+
+    function updateDisplay(sample) {
+      document.getElementById("alphaValue").textContent = sample.alpha.toFixed(2);
+      document.getElementById("betaValue").textContent = sample.beta.toFixed(2);
+      document.getElementById("thetaValue").textContent = sample.theta.toFixed(2);
+
+      const metrics = computeMetrics(sample);
+      document.getElementById("entropyValue").textContent = metrics.entropy.toFixed(2);
+      document.getElementById("coherenceValue").textContent = metrics.coherence.toFixed(2);
+      document.getElementById("phiValue").textContent = metrics.phiProxy.toFixed(2);
+
+      const log = document.getElementById("sessionLog");
+      log.textContent = JSON.stringify({ sample, metrics }, null, 2);
+    }
+
+    function toggleStream() {
+      const button = document.getElementById("toggleStream");
+      if (streamInterval) {
+        clearInterval(streamInterval);
+        streamInterval = null;
+        button.textContent = "START";
+        return;
+      }
+      streamInterval = setInterval(simulateSample, 1000);
+      button.textContent = "STOP";
+    }
+
+    function exportSession() {
+      const payload = {
+        startedAt: session.startedAt,
+        exportedAt: new Date().toISOString(),
+        seed: session.seed,
+        samples: session.samples
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "hermetic-session.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function fetchStatus() {
+      const apiBase = document.getElementById("apiBase").value.trim();
+      const apiKey = document.getElementById("apiKey").value.trim();
+      const output = document.getElementById("statusOutput");
+      output.textContent = "Loading...";
+      try {
+        const response = await fetch(`${apiBase}/legion-status`, {
+          headers: { "X-API-Key": apiKey }
+        });
+        const data = await response.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    document.getElementById("simulateOnce").addEventListener("click", simulateSample);
+    document.getElementById("toggleStream").addEventListener("click", toggleStream);
+    document.getElementById("exportSession").addEventListener("click", exportSession);
+    document.getElementById("fetchStatus").addEventListener("click", fetchStatus);
+  </script>
+</body>
+</html>

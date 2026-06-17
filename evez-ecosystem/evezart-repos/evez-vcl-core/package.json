@@ -1,0 +1,12 @@
+{
+  "name": "evez-vcl-core",
+  "version": "2.0.0",
+  "description": "EVEZ VCL — pure FFmpeg generative math, no native deps",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": { "start": "node src/main.js" },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "node-fetch": "^3.3.2"
+  }
+}

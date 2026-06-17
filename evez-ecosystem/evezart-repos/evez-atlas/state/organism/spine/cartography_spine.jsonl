@@ -1,0 +1,5 @@
+{"type": "FIRE_EVENT", "event_id": "fire-0001", "node": "eigenvalue_closure", "fire_number": 1, "intensity": 0.92, "topology_shift": 0.368, "terrain": "VOLCANO", "hash": "0c2fe345bee5", "powered_by": "EVEZ"}
+{"type": "FIRE_EVENT", "event_id": "fire-0002", "node": "eigenvalue_closure", "fire_number": 2, "intensity": 0.87, "topology_shift": 0.348, "terrain": "VOLCANO", "hash": "d5e5876530c2", "powered_by": "EVEZ"}
+{"type": "FIRE_EVENT", "event_id": "fire-0003", "node": "betweenness_gravity", "fire_number": 1, "intensity": 0.75, "topology_shift": 0.5, "terrain": "PEAK", "hash": "dc97642bda5c", "powered_by": "EVEZ"}
+{"type": "FIRE_EVENT", "event_id": "fire-0004", "node": "recursion_47", "fire_number": 1, "intensity": 0.99, "topology_shift": 0.2528, "terrain": "VOLCANO", "hash": "bacebd346b81", "powered_by": "EVEZ"}
+{"type": "FIRE_EVENT", "event_id": "fire-0005", "node": "shadow_commutator", "fire_number": 1, "intensity": 0.34, "topology_shift": 0.051, "terrain": "OCEAN", "hash": "0b6a856ab731", "powered_by": "EVEZ"}

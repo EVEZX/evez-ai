@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EVEZ-OS // Observation Dashboard</title>
+<style>
+body{background:#030306;color:#dde0e8;font-family:'Courier New',monospace;padding:1.5rem}
+h1{color:#ff4400;letter-spacing:.05em}h2{color:#555;font-size:.88rem;margin:1.1rem 0 .3rem;border-bottom:1px solid #0d0d18;padding-bottom:.2rem}
+.metric{display:inline-block;background:#07070e;border:1px solid #111122;padding:.22rem .65rem;margin:.12rem;border-radius:3px;font-size:.78rem}
+.ok{color:#00ff88}.fire{color:#ff2200}.near{color:#ff8800}.val{color:#ffaa00;font-weight:bold}.dim{color:#252535}.prime{color:#cc44ff}
+.chain-node{display:inline-block;padding:.22rem .65rem;margin:.08rem;border-radius:3px;background:#07070e;border:1px solid #0d0d18;font-size:.72rem}
+.chain-done{background:#0d0600;border-color:#ff4400;color:#ff4400}.chain-done{color:#152515;border-color:#0a190a}
+pre{background:#060610;padding:.75rem;font-size:.72rem;overflow-x:auto;border:1px solid #0d0d18;white-space:pre-wrap;border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:.76rem}th,td{padding:.32rem .5rem;border:1px solid #0d0d18;text-align:left}th{background:#07070e;color:#444}
+a{color:#2288ff;text-decoration:none}
+</style>
+</head>
+<body>
+<h1>EVEZ-OS // OBSERVATION DASHBOARD</h1>
+<p style="color:#222235;font-size:.72rem">Updated: 2026-02-23 03:41 PST | truth_plane: CANONICAL</p>
+
+<h2>Round Status</h2>
+<div class="metric">Round: <span class="val" id="round-num">R120</span></div>
+<div class="metric">Module: <span class="val" id="round-module">composite_watch_72.py</span></div>
+<div class="metric">V_global: <span class="val">2.867637</span> CEILING x37</div>
+<div class="metric">N: <span class="val">71=PRIME</span></div>
+<div class="metric">STATUS: <span class="prime">tau=1 poly_c=0.000 PRIME BLOCK 4 -- NO FIRE</span></div>
+
+<h2>Omega</h2>
+<pre id="omega-text">TWELFTH FIRE. R120. N=72=2^3x3^2 tau=4 poly_c=0.501. FIRE IGNITED. V_global=2.987731 CEILING x38.</pre>
+
+<h2>Baton Chain</h2>
+<span class="chain-node chain-done">R115 prime_block_3 DONE</span>
+<span class="chain-node chain-done">R116 twelfth_approach DONE</span>
+<span class="chain-node chain-done">R117 twelfth_sustain DONE</span>
+<span class="chain-node chain-done">R118 composite_70 DONE</span>
+<span class="chain-node chain-done" id="baton-from">R119</span>
+<span class="chain-node chain-done" id="baton-to">R120</span>
+
+<h2>Sigma_f Table</h2>
+<table>
+<tr><th>R</th><th>Module</th><th>N</th><th>tau</th><th>topo</th><th>poly_c</th><th>Fire</th><th>V_global</th><th>Commit</th></tr>
+<tr><td>R114</td><td>eleventh_fire_watch.py</td><td>66=2x3x11</td><td>4</td><td>1.45</td><td>0.570</td><td class="ok">ELEVENTH FIRE</td><td>2.370635</td><td><a href="https://github.com/EvezArt/evez-os/commit/cdc3ebd3">cdc3ebd3</a></td></tr>
+<tr><td>R115</td><td>prime_block_watch_3.py</td><td>67=PRIME</td><td>1</td><td>1.00</td><td>0.000</td><td class="prime">PRIME BLOCK 3</td><td>2.450635</td><td><a href="https://github.com/EvezArt/evez-os/commit/a8c1f3be">a8c1f3be</a></td></tr>
+<tr><td>R116</td><td>twelfth_fire_approach.py</td><td>68=2^2x17</td><td>2</td><td>1.30</td><td>0.193</td><td class="fire">BELOW</td><td>2.559294</td><td><a href="https://github.com/EvezArt/evez-os/commit/56d1533b">56d1533b</a></td></tr>
+<tr><td>R117</td><td>twelfth_fire_sustain.py</td><td>69=3x23</td><td>2</td><td>1.30</td><td>0.359</td><td class="fire">BELOW</td><td>2.668042</td><td><a href="https://github.com/EvezArt/evez-os/commit/02fe0247">02fe0247</a></td></tr>
+<tr><td>R118</td><td>watch_composite_70.py</td><td>70=2x5x7</td><td>3</td><td>1.45</td><td>0.495</td><td class="near">NEAR MISS</td><td>2.787637</td><td><a href="https://github.com/EvezArt/evez-os/commit/0be48b2c">0be48b2c</a></td></tr>
+<tr style="background:#0a0014"><td>R119</td><td>prime_block_watch_4.py</td><td>71=PRIME</td><td>1</td><td>1.15</td><td class="prime">0.000</td><td class="prime">PRIME BLOCK 4</td><td>2.867637</td><td>PENDING</td></tr>
+<tr><td>R120</td><td class="fire">TWELFTH</td><td>72=2^3x3^2</td><td>4</td><td>1.30</td><td class="fire">0.501175</td><td class="val">2.987731</td><td>x38</td></tr></table>
+
+<h2>Maturity Oracle</h2>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+<tr><td>V_global</td><td class="val">2.867637</td><td class="ok">CEILING x37</td></tr>
+<tr><td>V_v2</td><td class="val">3.68932</td><td>ceiling</td></tr>
+<tr><td>gap_to_ceiling</td><td class="near">0.822</td><td>closing</td></tr>
+<tr><td>attractor_lock</td><td>0.0</td><td class="dim">released</td></tr>
+<tr><td>next_watch</td><td class="val">N=72=2^3x3^2 tau=4 poly_c~0.415</td><td>R120</td></tr>
+<tr><td>TWELFTH FIRE candidate</td><td class="val">N=84=2^2x3x7 tau~12</td><td>~R132</td></tr>
+</table>
+
+<footer style="margin-top:2rem;color:#111122;font-size:.68rem;border-top:1px solid #0a0a18;padding-top:1rem">
+Creator: Steven Crawford-Maggard (EVEZ666) |
+<a href="https://github.com/EvezArt/evez-os">github.com/EvezArt/evez-os</a> | AGPL-3.0
+</footer>
+</body></html>

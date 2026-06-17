@@ -1,0 +1,6 @@
+{
+  "url": "https://evezart.github.io/clawbreak/",
+  "updated": "2026-06-07T00:00:00Z",
+  "run": "0",
+  "note": "Auto-updated by cloud-server.yml on each GH Actions run. APK reads this to find the live server."
+}

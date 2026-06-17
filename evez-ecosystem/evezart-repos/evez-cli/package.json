@@ -1,0 +1,10 @@
+{
+  "name": "evez-cli",
+  "version": "1.0.0",
+  "description": "EVEZ AI CLI — Chat with AI from your terminal",
+  "bin": { "evez": "./cli.js" },
+  "keywords": ["cli","ai","chat","openai","evez"],
+  "author": "EvezArt",
+  "license": "MIT",
+  "homepage": "https://evez-api2.fly.dev"
+}

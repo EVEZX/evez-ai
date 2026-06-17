@@ -1,0 +1,27 @@
+# Default-deny policy (template). Expand deliberately.
+capabilities:
+  FS_READ:
+    allow_paths:
+      - "./runs"
+      - "./fixtures"
+      - "./state"
+  FS_WRITE:
+    allow_paths:
+      - "./runs"
+      - "./state"
+  SHELL:
+    allow_commands:
+      - "ls"
+      - "cat"
+      - "echo"
+      - "python"
+      - "ffmpeg"
+    workdir_jail: "./sandboxes"
+  NET_OUT:
+    enabled: false
+kill_switch:
+  stop_file: "./state/STOP"
+budgets:
+  max_runtime_seconds: 1800
+  max_disk_mb: 512
+  max_net_mb: 0

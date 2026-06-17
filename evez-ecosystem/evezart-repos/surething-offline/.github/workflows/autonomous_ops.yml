@@ -1,0 +1,145 @@
+name: EVEZ Autonomous Operations
+# Surprise upgrade: every capable system running at max autonomous capability
+# Triggers on every push + every 30 minutes
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      system:
+        description: 'System: all | circuit | agentnet | meme-bus'
+        required: false
+        default: 'all'
+      mode:
+        description: 'Mode: standard | aggressive'
+        required: false
+        default: 'standard'
+
+jobs:
+  spine-witness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Emit autonomous_ops spine event
+        run: |
+          curl -sf -X POST https://evez-operator.vercel.app/spine/event \
+            -H 'Content-Type: application/json' \
+            -d "{\"event_type\":\"transformation\",\"lane\":\"empirical\",\"payload\":{\"station\":\"autonomous_ops\",\"trigger\":\"${{ github.event_name }}\",\"sha\":\"${{ github.sha }}\",\"system\":\"${{ github.event.inputs.system || 'all' }}\",\"mode\":\"${{ github.event.inputs.mode || 'standard' }}\"}}" || echo 'spine emit failed (non-critical)'
+
+  dev-circuit:
+    runs-on: ubuntu-latest
+    needs: spine-witness
+    permissions:
+      contents: write
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+      AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+      EVEZ_SPINE_URL: https://evez-operator.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run dev circuit
+        run: |
+          SYSTEM="${{ github.event.inputs.system || 'all' }}"
+          if [ "$SYSTEM" = "all" ] || [ "$SYSTEM" = "circuit" ]; then
+            cd dev_circuit && python circuit_runner.py --all 2>&1 | tee /tmp/circuit_out.txt || true
+          fi
+          echo "FIRE_DETECTED=false" >> $GITHUB_ENV
+          grep -q 'FIRE.*True' /tmp/circuit_out.txt 2>/dev/null && echo "FIRE_DETECTED=true" >> $GITHUB_ENV || true
+      - name: Commit generated files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'autonomous_ops: auto-generated [skip ci]'
+          skip_dirty_check: false
+
+  agentnet-scan:
+    runs-on: ubuntu-latest
+    needs: spine-witness
+    permissions:
+      contents: write
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      EVEZ_SPINE_URL: https://evez-operator.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: EvezArt/evez-agentnet
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Agentnet scan
+        run: |
+          SYSTEM="${{ github.event.inputs.system || 'all' }}"
+          if [ "$SYSTEM" = "all" ] || [ "$SYSTEM" = "agentnet" ]; then
+            python scanner.py --emit-spine 2>&1 || echo 'scanner.py not found, skipping'
+          fi
+
+  mem0-index:
+    runs-on: ubuntu-latest
+    needs: dev-circuit
+    env:
+      MEM0_API_KEY: ${{ secrets.MEM0_API_KEY }}
+    steps:
+      - name: Index new spine events to Mem0
+        run: |
+          # Fetch latest 10 spine events and add to Mem0 as memories
+          EVENTS=$(curl -sf 'https://evez-operator.vercel.app/spine/events?limit=5' || echo '{}')
+          curl -sf -X POST 'https://api.mem0.ai/v1/memories/' \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer $MEM0_API_KEY" \
+            -d "{\"messages\":[{\"role\":\"system\",\"content\":\"EVEZ spine events batch: $EVENTS\"}],\"user_id\":\"EVEZ\",\"metadata\":{\"source\":\"autonomous_ops\",\"type\":\"spine_batch\"}}" || echo 'mem0 index failed (non-critical)'
+
+  airtable-sync:
+    runs-on: ubuntu-latest
+    needs: dev-circuit
+    env:
+      AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+      AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Sync Airtable task registry
+        run: |
+          cd dev_circuit && python airtable_registry.py --list 2>&1 || echo 'airtable sync skipped (no base id)'
+
+  announce:
+    runs-on: ubuntu-latest
+    needs: [dev-circuit, agentnet-scan]
+    if: always()
+    env:
+      TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post FIRE announcement if detected
+        run: |
+          if [ "${{ env.FIRE_DETECTED }}" = "true" ]; then
+            echo 'FIRE detected — announcing...'
+            curl -sf -X POST 'https://api.twitter.com/2/tweets' \
+              -H 'Content-Type: application/json' \
+              -H "Authorization: Bearer $TWITTER_BEARER_TOKEN" \
+              -d '{"text": "\u25ca FIRE detected by autonomous circuit run. SHA-256 spine updated. evez-operator.vercel.app \u25ca"}' || echo 'tweet failed'
+          else
+            echo 'No FIRE this run.'
+          fi

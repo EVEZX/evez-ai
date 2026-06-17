@@ -1,0 +1,25 @@
+{
+  "project": "LORD Monitor",
+  "repo": "EvezArt/lord-evez",
+  "base_path": "/lord-monitor/",
+  "artifacts": [
+    {"name": "entry", "path": "index.html", "role": "landing"},
+    {"name": "control_center", "path": "control-center.html", "role": "state-broadcaster"},
+    {"name": "polygon_display", "path": "recursive-polygon.html", "role": "event-listener"},
+    {"name": "audio_view", "path": "audio-viz.html", "role": "event-listener"},
+    {"name": "three_d_view", "path": "polygon-3d.html", "role": "event-listener"},
+    {"name": "bridge_test", "path": "bridge-test.html", "role": "browser-verification"},
+    {"name": "ops_checklist", "path": "ops-checklist.html", "role": "publish-checklist"}
+  ],
+  "deployment": {
+    "target": "lord-evez-monitor",
+    "publish_dir": "public",
+    "static_config": ["netlify.toml", "public/_redirects", "public/_headers"],
+    "status": "publish_pending"
+  },
+  "event_contract": {
+    "type": "fusion-update",
+    "transport": ["postMessage", "WebSocket"],
+    "bridge_socket": "ws://127.0.0.1:8765"
+  }
+}

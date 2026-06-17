@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test eigenforensics engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install numpy scipy
+
+      - name: Smoke test gap_detector
+        run: |
+          python - <<'EOF'
+          import sys
+          sys.path.insert(0, ".")
+          import json, tempfile, os
+          from gap_detector.spectral import build_reference_graph, compute_laplacian, detect_gaps
+
+          # Build a toy incomplete document graph
+          sections = ["Executive Summary", "Case Files", "Appendix A", "Missing Section"]
+          references = [(0, 1), (1, 2)]  # Missing section has no connections -> gap
+          adj = build_reference_graph(sections, references)
+          lap = compute_laplacian(adj)
+          report = detect_gaps(lap, "TEST_DOC", sections)
+
+          print(json.dumps(report.to_dict(), indent=2))
+          assert report.gap_score >= 0, "Gap score must be non-negative"
+          print("[CI] All tests passed")
+          EOF

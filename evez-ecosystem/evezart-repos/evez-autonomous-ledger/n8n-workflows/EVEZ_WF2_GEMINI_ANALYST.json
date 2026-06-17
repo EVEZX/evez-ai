@@ -1,0 +1,277 @@
+{
+  "name": "EVEZ Gemini Analyst \u2014 gemini-2.0-flash \u2014 FREE 24/7",
+  "nodes": [
+    {
+      "id": "M1",
+      "name": "\u23f1 Every 15 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "M2",
+      "name": "\ud83d\udd27 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "M3",
+      "name": "\ud83d\udcb0 DeFi Simulate",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-M3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-gemini-defi",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "M4",
+      "name": "\ud83d\udcac Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        600
+      ],
+      "webhookId": "evez-M4",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-gemini-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "M5",
+      "name": "\ud83d\udea8 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        800
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "M6",
+      "name": "\u2728 Gemini Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY. Free key: aistudio.google.com'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'gemini'};}\n}\nconst slot=Math.floor(Date.now()/900000);\nconst objectives=[\n  \"Analyze optimal Morpho recursive loop: $50 seed, 65% LTV, 5 loops, 28% Kamino APY. Give exact numbers: total collateral, health factor, net APY.\",\n  \"EVEZ-OS strategic gaps: free AI stack active, Cloudflare Sentinel undeployed, Supabase empty. What are the 3 highest-leverage actions?\",\n  \"DeFi opportunity scan: Morpho Base, Kamino Solana, EigenLayer, Pendle YT March 2026. Best risk-adjusted yield for $50-500?\",\n  \"Design 24/7 zero-cost autonomous intelligence loop using Groq (14k/day free) + Gemini (1500/day free) + OpenRouter (unlimited free).\",\n];\nconst obj=objectives[slot%objectives.length];\n\nconst result=await gemini(\n  `You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON. Return JSON: {\"analysis\":\"3-sentence analysis\",\"recommendation\":\"specific action\",\"numbers\":{},\"risk\":\"low|med|high\",\"confidence\":0.85}`,\n  obj, 900\n);\n\nconst entry={objective:obj,slot,provider:'gemini/gemini-2.0-flash',\n  analysis:result.analysis||result.raw?.slice(0,300)||'',\n  recommendation:result.recommendation||'',\n  numbers:JSON.stringify(result.numbers||{}),\n  risk:result.risk||'unknown',confidence:result.confidence||0,\n  entry_hash:H({obj,slot}),ts:new Date().toISOString(),pid:335};\n\nawait log('GEMINI_ANALYSIS',entry);\nreturn [{json:entry}];\n"
+      }
+    },
+    {
+      "id": "M7",
+      "name": "\ud83d\udcb0 DeFi + AI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        400
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY. Free key: aistudio.google.com'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'gemini'};}\n}\nconst b=$input.first().json.body||$input.first().json;\nconst seed=parseFloat(b.capital||b.seed||50);\nconst ltv=parseFloat(b.ltv||0.65);\nconst depth=parseInt(b.depth||5);\nconst apy=parseFloat(b.apy||0.28);\n\n// Pure math simulation \u2014 zero cost\nlet cap=seed,loops=[];\nfor(let i=0;i<depth;i++){\n  const borrow=cap*ltv,yield_m=cap*apy/12;\n  loops.push({loop:i+1,collateral:+cap.toFixed(4),borrowed:+borrow.toFixed(4),yield_monthly:+yield_m.toFixed(4)});\n  cap=borrow;\n}\nconst totalC=loops.reduce((a,p)=>a+p.collateral,0);\nconst totalB=loops.reduce((a,p)=>a+p.borrowed,0);\nconst hf=+(totalC/totalB).toFixed(3);\nconst netApy=+((totalC*apy/seed-1)*100).toFixed(2);\nconst sim={seed_capital:seed,loops:depth,health_factor:hf,net_apy_pct:netApy,\n  status:hf>1.4?'SAFE':hf>1.2?'CAUTION':'DANGER',positions:loops,human_approval_required:true,pid:335};\n\n// AI risk layer\nconst ai=await gemini(\n  'You are EVEZ DeFi risk assessor. Return JSON: {\"verdict\":\"safe|caution|reject\",\"key_risks\":[],\"optimization\":\"one improvement\",\"emergency_threshold\":\"\"}',\n  `Assess: ${JSON.stringify({hf,netApy,seed,depth,ltv})}`,300\n);\nawait log('DEFI_SIMULATION',{...sim,ai_assessment:ai});\nreturn [{json:{...sim,ai_assessment:ai,provider:'gemini'}}];\n"
+      }
+    },
+    {
+      "id": "M8",
+      "name": "\ud83d\udcac Gemini Chat",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "function H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}async function gemini(sys,usr,max=800){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'Set GEMINI_API_KEY. Free key: aistudio.google.com'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message,provider:'gemini'};}\n}\nconst b=$input.first().json.body||$input.first().json;\nconst msg=b.chatInput||b.message||b.query||'EVEZ status?';\nconst result=await gemini(`You are EVEZ666, sovereign operator of EVEZ-OS. Expert in DeFi (Morpho/Kamino/EigenLayer/Pendle), autonomous AI agents, Cloudflare edge, n8n orchestration, Guardian Charter PID 335. March 2026. Return ONLY valid JSON.`,msg,700);\nawait log('GEMINI_CHAT',{query:msg});\nreturn [{json:{response:result,model:'gemini-2.0-flash',provider:'gemini',ts:new Date().toISOString()}}];\n"
+      }
+    },
+    {
+      "id": "M9",
+      "name": "\ud83e\ude79 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        800
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('GEMINI_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true,hint:'Get free key: aistudio.google.com'}}];"
+      }
+    },
+    {
+      "id": "M10",
+      "name": "\u21a9 Analysis ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "M11",
+      "name": "\u21a9 DeFi ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "M12",
+      "name": "\u21a9 Chat ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        600
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "\u23f1 Every 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "\u2728 Gemini Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udd27 Test Run": {
+      "main": [
+        [
+          {
+            "node": "\u2728 Gemini Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcb0 DeFi Simulate": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udcb0 DeFi + AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac Chat": {
+      "main": [
+        [
+          {
+            "node": "\ud83d\udcac Gemini Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udea8 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "\ud83e\ude79 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u2728 Gemini Analysis": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Analysis ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcb0 DeFi + AI": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 DeFi ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83d\udcac Gemini Chat": {
+      "main": [
+        [
+          {
+            "node": "\u21a9 Chat ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "gemini"
+    }
+  ]
+}

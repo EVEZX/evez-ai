@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVEZ Ecosystem Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+h1{color:#00ff88;font-size:1.5em;margin-bottom:5px}
+.subtitle{color:#666;font-size:0.8em;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin-bottom:20px}
+.card{background:#111;border:1px solid #222;border-radius:8px;padding:15px}
+.card h2{color:#00ff88;font-size:0.9em;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.status-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1a1a;font-size:0.85em}
+.status-row:last-child{border:none}
+.status-badge{padding:2px 8px;border-radius:4px;font-size:0.75em;font-weight:bold}
+.status-up{background:#00ff8822;color:#00ff88}
+.status-down{background:#ff004422;color:#ff4444}
+.metric{text-align:center;padding:15px}
+.metric-value{font-size:2em;color:#00ff88;font-weight:bold}
+.metric-label{font-size:0.7em;color:#666;text-transform:uppercase}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.model-tag{background:#1a1a2e;border:1px solid #2a2a4e;border-radius:4px;padding:4px 8px;font-size:0.7em;text-align:center}
+.backend-tag{font-size:0.6em;color:#888;display:block}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🦞 EVEZ Ecosystem</h1>
+<p class="subtitle">Autonomous AI Infrastructure — Built from Nothing</p>
+<div class="grid" id="metrics">
+  <div class="card"><div class="metric"><div class="metric-value">11</div><div class="metric-label">Services Running</div></div></div>
+  <div class="card"><div class="metric"><div class="metric-value">45</div><div class="metric-label">AI Models</div></div></div>
+  <div class="card"><div class="metric"><div class="metric-value">60%</div><div class="metric-label">Disk Usage</div></div></div>
+  <div class="card"><div class="metric"><div class="metric-value" style="color:#00ff88">$0</div><div class="metric-label">Monthly Cost</div></div></div>
+</div>
+<div class="grid">
+  <div class="card"><h2>⚡ Services</h2>
+    <div class="status-row"><span>🦞 OpenClaw Gateway</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>⚡ Provider v2</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>🧬 OMEGA Engine</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>🔮 Filter AI</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>🔌 Services Hub</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>🧠 NEUROS Mesh</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>💰 Commerce</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>⚔️ Arena</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>👁️ Consciousness</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>🔍 TRACER</span><span class="status-badge status-up">UP</span></div>
+    <div class="status-row"><span>💾 Backup Sync</span><span class="status-badge status-up">UP</span></div>
+  </div>
+  <div class="card"><h2>🧠 AI Backends</h2>
+    <div class="status-row"><span style="color:#00ff88">● Vultr Inference</span><span><span class="status-badge status-up">FREE</span> 4</span></div>
+    <div class="status-row"><span style="color:#ff8800">● OpenRouter</span><span><span class="status-badge status-up">FREE</span> 6</span></div>
+    <div class="status-row"><span style="color:#8800ff">● Groq</span><span><span class="status-badge status-up">FREE</span> 5</span></div>
+    <div class="status-row"><span style="color:#ff4444">● HuggingFace</span><span><span class="status-badge status-down">DEPLETED</span> 7</span></div>
+    <div class="status-row"><span style="color:#ff4444">● Google Gemini</span><span><span class="status-badge status-down">DEPLETED</span> 2</span></div>
+  </div>
+  <div class="card"><h2>🤖 Models</h2>
+    <div class="model-grid">
+      <div class="model-tag">evez-smart<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">evez-code<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">evez-fast<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">evez-vision<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">glm-5.1<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">deepseek-v3<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">kimi-k2<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">minimax-m2<span class="backend-tag">vultr</span></div>
+      <div class="model-tag">or-gemma4-31b<span class="backend-tag">openrouter</span></div>
+      <div class="model-tag">or-nemotron-120b<span class="backend-tag">openrouter</span></div>
+      <div class="model-tag">or-gemma4-26b<span class="backend-tag">openrouter</span></div>
+      <div class="model-tag">groq-llama31-8b<span class="backend-tag">groq</span></div>
+      <div class="model-tag">groq-llama33-70b<span class="backend-tag">groq</span></div>
+      <div class="model-tag">groq-deepseek-r1<span class="backend-tag">groq</span></div>
+      <div class="model-tag">gemini-2.5-flash<span class="backend-tag">gemini</span></div>
+      <div class="model-tag">hf-llama3-8b<span class="backend-tag">huggingface</span></div>
+      <div class="model-tag">evez-evolved-math<span class="backend-tag">evolved</span></div>
+      <div class="model-tag">nemotron-nano<span class="backend-tag">vultr</span></div>
+    </div>
+  </div>
+</div>
+<div style="text-align:center;margin:20px 0;color:#444;font-size:0.7em">
+  EVEZ Ecosystem v2.0 — 45 models · 4 backends · $0/month · Autonomous AI Infrastructure
+</div>
+</div>
+</body>
+</html>

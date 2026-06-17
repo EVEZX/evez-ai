@@ -1,0 +1,19 @@
+[Unit]
+Description=EVEZ OpenClaw Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=%h/.openclaw/openclaw.env
+# Set OPENCLAW_SKIP_CHANNELS=1 in ~/.openclaw/openclaw.env only when you intentionally want gateway-only mode.
+ExecStartPre=/usr/bin/env bash -lc 'cd %h/evez-openclaw-deploy && ./scripts/evez-openclaw-onboard.sh'
+ExecStart=/usr/bin/env bash -lc 'exec ${OPENCLAW_BIN:-openclaw} gateway --port ${OPENCLAW_PORT:-18789} --bind ${OPENCLAW_BIND:-loopback} --token ${OPENCLAW_GATEWAY_TOKEN}'
+Restart=always
+RestartSec=5
+WorkingDirectory=%h/evez-openclaw-deploy
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

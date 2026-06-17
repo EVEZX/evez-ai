@@ -1,0 +1,21 @@
+name: Identity Verification (6-hourly)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  identity:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run identity keeper
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/consciousness/identity_keeper.py

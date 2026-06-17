@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="60">
+<title>EVEZ-OS Status</title>
+<style>
+  :root{--green:#4ade80;--yellow:#facc15;--red:#f87171;--purple:#c084fc;--cyan:#38bdf8;--bg:#0a0d12;--card:#0f1319;--border:#1e2630;--text:#e6edf3;--muted:#8b949e}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Courier New',monospace;background:var(--bg);color:var(--text);padding:1.5rem;font-size:.85rem}
+  h1{font-size:1.1rem;color:var(--purple);margin-bottom:.25rem}
+  .ts{color:var(--muted);font-size:.7rem;margin-bottom:2rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1rem;margin-bottom:2rem}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem}
+  .card-title{color:var(--purple);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.75rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.03)}
+  .row:last-child{border:none}
+  .label{color:var(--muted)}
+  .val{font-weight:bold}
+  .ok{color:var(--green)}
+  .warn{color:var(--yellow)}
+  .err{color:var(--red)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.4rem}
+  .dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+  .dot.warn{background:var(--yellow)}
+  .dot.err{background:var(--red)}
+  .metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem}
+  .metric{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem;text-align:center}
+  .metric-val{font-size:1.5rem;font-weight:800;color:var(--purple)}
+  .metric-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+  footer{color:var(--muted);font-size:.65rem;margin-top:2rem;text-align:center}
+  a{color:var(--cyan);text-decoration:none}
+</style>
+</head>
+<body>
+
+<h1>⚡ EVEZ-OS STATUS MONITOR</h1>
+<div class="ts" id="ts">Refreshing every 60s — <span id="clock"></span></div>
+
+<div class="metric-row">
+  <div class="metric"><div class="metric-val">17</div><div class="metric-label">FIRE Events</div></div>
+  <div class="metric"><div class="metric-val">29</div><div class="metric-label">Free Models</div></div>
+  <div class="metric"><div class="metric-val">31</div><div class="metric-label">GH Workflows</div></div>
+  <div class="metric"><div class="metric-val">32</div><div class="metric-label">Skills</div></div>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-title">🤖 AI Providers</div>
+    <div class="row"><span class="label"><span class="dot ok"></span>Groq</span><span class="val ok">8 models ✓</span></div>
+    <div class="row"><span class="label"><span class="dot ok"></span>OpenRouter</span><span class="val ok">31 free models ✓</span></div>
+    <div class="row"><span class="label"><span class="dot ok"></span>Cerebras</span><span class="val ok">3 models ✓</span></div>
+    <div class="row"><span class="label"><span class="dot ok"></span>HuggingFace</span><span class="val ok">5 models ✓</span></div>
+    <div class="row"><span class="label"><span class="dot warn"></span>Ollama (Local)</span><span class="val warn">disabled — enable in Termux</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌐 Deployments</div>
+    <div class="row"><span class="label"><span class="dot ok"></span>HF Space</span><a class="val ok" href="https://huggingface.co/spaces/evez420/evezart-openclaw" target="_blank">evez420/evezart-openclaw ↗</a></div>
+    <div class="row"><span class="label"><span class="dot warn"></span>Railway (2x)</span><span class="val warn">payment-blocked — needs CC</span></div>
+    <div class="row"><span class="label"><span class="dot warn"></span>Replit</span><span class="val warn">sleeping — keepalive active</span></div>
+    <div class="row"><span class="label"><span class="dot ok"></span>evezart.github.io</span><a class="val ok" href="https://evezart.github.io" target="_blank">live ↗</a></div>
+    <div class="row"><span class="label"><span class="dot warn"></span>Render</span><span class="val warn">needs deploy hook config</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧠 Autonomous Ledger</div>
+    <div class="row"><span class="label">unified_daily</span><span class="val ok">triggered ✓</span></div>
+    <div class="row"><span class="label">cognition_loop</span><span class="val ok">triggered ✓</span></div>
+    <div class="row"><span class="label">consciousness</span><span class="val ok">triggered ✓</span></div>
+    <div class="row"><span class="label">evolution_engine</span><span class="val ok">triggered ✓</span></div>
+    <div class="row"><span class="label">intelligence_core</span><span class="val ok">triggered ✓</span></div>
+    <div class="row"><span class="label">keepalive (5 min)</span><span class="val ok">running ✓</span></div>
+    <div class="row"><span class="label">discover_chat_id</span><span class="val warn">awaiting /start</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Secrets Injected</div>
+    <div class="row"><span class="label">GROQ_API_KEY</span><span class="val ok">5 repos ✓</span></div>
+    <div class="row"><span class="label">OPENROUTER_API_KEY</span><span class="val ok">5 repos ✓</span></div>
+    <div class="row"><span class="label">CEREBRAS_API_KEY</span><span class="val ok">5 repos ✓</span></div>
+    <div class="row"><span class="label">HUGGING_FACE_ACCESS_TOKEN</span><span class="val ok">5 repos ✓</span></div>
+    <div class="row"><span class="label">OPENCLAW_GATEWAY_TOKEN</span><span class="val ok">5 repos + HF ✓</span></div>
+    <div class="row"><span class="label">TELEGRAM_BOT_TOKEN</span><span class="val ok">4 repos + HF ✓</span></div>
+    <div class="row"><span class="label">TELEGRAM_CHAT_ID</span><span class="val warn">pending /start to @AppendABot</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔥 FIRE Events — Top 3</div>
+    <div class="row"><span class="label">META-FIRE-001</span><span class="val ok">poly_c=25.31 CRITICAL_MASS</span></div>
+    <div class="row"><span class="label">META-FIRE-002</span><span class="val ok">poly_c=23.22 CRITICAL_MASS</span></div>
+    <div class="row"><span class="label">META-FIRE-003</span><span class="val ok">poly_c=16.40 CRITICAL_MASS</span></div>
+    <div class="row"><span class="label">Total events</span><span class="val ok">17 seeded</span></div>
+    <div class="row"><span class="label">phi (DGM)</span><span class="val ok">0.995 (target 0.999)</span></div>
+    <div class="row"><span class="label">Falsifier</span><span class="val ok">intact on all events</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📡 Cipher (Base44)</div>
+    <div class="row"><span class="label">Daily Briefing</span><span class="val ok">restored — 9am PT daily</span></div>
+    <div class="row"><span class="label">Weekly arXiv Scan</span><span class="val ok">restored — Sunday 9am PT</span></div>
+    <div class="row"><span class="label">FIRE Event Alert</span><span class="val ok">restored — on create</span></div>
+    <div class="row"><span class="label">Skills entity</span><span class="val ok">32 skills seeded</span></div>
+    <div class="row"><span class="label">Telegram bot</span><span class="val ok">@AppendABot live</span></div>
+    <div class="row"><span class="label">Telegram chat</span><span class="val warn">awaiting /start</span></div>
+  </div>
+
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="card-title">⚡ Action Required</div>
+  <div class="row"><span class="label">1.</span><span class="val warn">Send /start to <a href="https://t.me/AppendABot">@AppendABot</a> on Telegram → enables all briefings</span></div>
+  <div class="row"><span class="label">2.</span><span class="val warn">Add payment to Railway → restores 2 deployed instances (zesty-enthusiasm, pleasant-strength)</span></div>
+  <div class="row"><span class="label">3.</span><span class="val warn">Connect Render.com to EvezArt/evezart-openclaw → free persistent deploy, no CC</span></div>
+</div>
+
+<footer>
+  EVEZ-OS // Steven Crawford-Maggard // 
+  <a href="https://evezart.github.io">evezart.github.io</a> | 
+  <a href="https://github.com/EvezArt">github.com/EvezArt</a> | 
+  <a href="https://huggingface.co/spaces/evez420/evezart-openclaw">HF Space</a> |
+  <a href="https://rubikspubes.gumroad.com">Gumroad</a>
+  <br>Auto-refresh every 60s
+</footer>
+
+<script>
+function updateClock(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toUTCString();
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

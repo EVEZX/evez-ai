@@ -1,0 +1,50 @@
+REALITY MAP — GLASS INTERNET x GAME AGENT INFRA (ASCII)
+Legend:
+  [ ] node/component        ( ) truth-plane / state
+  ==> primary flow          --x--> failure/attack surface
+  ~~> observability tap     { } governance/constitution
+
+(PERCEPTION) vs (CANON) vs (PENDING) vs (FINAL)
+Raw Log is immutable. Views/Projections are mutable but must carry provenance.
+
+                               {BIAS CONSTITUTION}
+                         (target dist + drift bounds + audits)
+                                      |
+                                      v
+[Players] -> [Client/Game] -> [Edge/CDN] -> [DNS/Resolvers] -> [BGP/Routing] -> [Origin/API GW]
+   |            |               |             |                 |                 |
+   |            |               |             |                 |                 +--> [Auth/Identity] --x--> clock skew / key rotation
+   |            |               |             |                 |
+   |            |               |             +--x--> staleness / split horizon
+   |            |               +--x--> stale object / wrong config / inconsistent cache
+   |            +--x--> prediction divergence / local clock / NAT rebinding
+   |
+   +== realtime ==> [WS Gateway] ==> [Authoritative Game Server] ==> [Matchmaking/Econ/Anti-cheat]
+                          |                 |                           |
+                          |                 |                           +--x--> reward hacking / metric gaming / grief loops
+                          |                 +--x--> desync / rollback storms / replay divergence
+                          |
+                          +== events ==> [EVENT SPINE (append-only)] ==> [Projection Store (Redis/DB)]
+                                              |                             |
+                                              |                             +-- (PERCEPTION) UI reads mutable views
+                                              |                             +-- (FINAL) after finality gate / rebuild
+                                              v
+                                       [FSC ENGINE]
+                         (Controlled Reduction -> Σf / CS / PS / Ω)
+                                              |
+                                              v
+                                     [Agent Orchestrator]
+                              (LLM tools; probes; runbooks)
+                                              |
+                                              v
+                                    [Diagnostics + Actions]
+                         (mitigations, compensations, rollbacks)
+
+~~> Observability taps everything (OTel logs/metrics/traces)
+    - every signal labeled PENDING/FINAL
+    - every rewrite tagged with provenance (why it changed)
+
+MIXED REALITY COUPLING (the true board):
+  Public-layer turbulence (DNS/BGP/TLS/CDN) can masquerade as backend bugs.
+  Backend compensations/rollbacks can masquerade as public instability.
+  Your job: collapse ambiguity by isolating the layer producing ALL observed reflections.

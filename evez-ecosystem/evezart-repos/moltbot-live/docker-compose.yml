@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  moltbot-live:
+    build: .
+    container_name: moltbot-live
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"  # Optional: webhook receiver
+    volumes:
+      - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G

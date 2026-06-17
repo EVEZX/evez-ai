@@ -1,0 +1,205 @@
+{
+  "version": "evezart-2026.06.05",
+  "identity": "EvezArt OpenClaw — Personalized EVEZ-OS Agent",
+  "gateway": {
+    "bind": "0.0.0.0",
+    "port": 8080,
+    "trustedProxies": ["*"],
+    "token": "${GATEWAY_TOKEN}",
+    "cors": true
+  },
+  "storage": {
+    "primary": "sqlite",
+    "sqlitePath": "${HOME}/.openclaw/evez.db",
+    "cloud": {
+      "provider": "github",
+      "repo": "EvezArt/game-agent-infra",
+      "branch": "main",
+      "autoSync": true,
+      "syncIntervalMinutes": 30
+    },
+    "localBackup": {
+      "enabled": true,
+      "path": "${HOME}/.openclaw/backup",
+      "androidTermux": "/data/data/com.termux/files/home/.openclaw/backup"
+    }
+  },
+  "identity_file": "${HOME}/.openclaw/workspace/IDENTITY.md",
+  "soul_file": "${HOME}/.openclaw/workspace/SOUL.md",
+  "spine": {
+    "path": "${HOME}/.openclaw/spine.jsonl",
+    "hashChain": true,
+    "appendOnly": true,
+    "autoSync": true
+  },
+  "providers": [
+    {
+      "id": "groq",
+      "enabled": true,
+      "apiKey": "${GROQ_API_KEY}",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "models": [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "llama-4-scout-17b-16e-instruct",
+        "qwen-qwq-32b",
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it",
+        "llama3-8b-8192",
+        "llama3-70b-8192"
+      ],
+      "priority": 1,
+      "free": true,
+      "rateLimitRpm": 30
+    },
+    {
+      "id": "openrouter",
+      "enabled": true,
+      "apiKey": "${OPENROUTER_API_KEY}",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "models": [
+        "openai/gpt-oss-120b:free",
+        "openai/gpt-oss-20b:free",
+        "deepseek/deepseek-r1:free",
+        "deepseek/deepseek-chat-v3-0324:free",
+        "deepseek/deepseek-v4-flash:free",
+        "meta-llama/llama-4-maverick:free",
+        "meta-llama/llama-4-scout:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "meta-llama/llama-3.2-3b-instruct:free",
+        "google/gemini-2.0-flash-exp:free",
+        "google/gemini-2.5-flash-preview:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "google/gemma-4-31b-it:free",
+        "qwen/qwen3-235b-a22b:free",
+        "qwen/qwen3-coder:free",
+        "qwen/qwen3-next-80b-a3b-instruct:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nvidia/nemotron-3-nano-30b-a3b:free",
+        "nvidia/nemotron-nano-12b-v2-vl:free",
+        "nvidia/nemotron-nano-9b-v2:free",
+        "moonshotai/kimi-k2.6:free",
+        "nousresearch/hermes-3-llama-3.1-405b:free",
+        "minimax/minimax-m2.5:free",
+        "poolside/laguna-xs.2:free",
+        "poolside/laguna-m.1:free",
+        "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+        "z-ai/glm-4.5-air:free",
+        "liquid/lfm-2.5-1.2b-thinking:free",
+        "liquid/lfm-2.5-1.2b-instruct:free",
+        "mistralai/mistral-7b-instruct:free",
+        "openrouter/owl-alpha",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+      ],
+      "priority": 2,
+      "free": true,
+      "headers": {
+        "HTTP-Referer": "https://github.com/EvezArt/evez-os",
+        "X-Title": "EvezArt-OpenClaw"
+      }
+    },
+    {
+      "id": "cerebras",
+      "enabled": true,
+      "apiKey": "${CEREBRAS_API_KEY}",
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "models": [
+        "llama3.1-8b",
+        "llama3.1-70b",
+        "llama-4-scout-17b-16e-instruct"
+      ],
+      "priority": 3,
+      "free": true,
+      "rateLimitRpm": 30
+    },
+    {
+      "id": "huggingface",
+      "enabled": true,
+      "apiKey": "${HUGGING_FACE_ACCESS_TOKEN}",
+      "baseUrl": "https://api-inference.huggingface.co/models",
+      "models": [
+        "mistralai/Mistral-7B-Instruct-v0.3",
+        "meta-llama/Meta-Llama-3-8B-Instruct",
+        "HuggingFaceH4/zephyr-7b-beta",
+        "microsoft/phi-3-mini-4k-instruct",
+        "Qwen/Qwen2.5-72B-Instruct"
+      ],
+      "priority": 4,
+      "free": true
+    },
+    {
+      "id": "ollama-local",
+      "enabled": false,
+      "baseUrl": "http://localhost:11434/v1",
+      "models": [
+        "llama3.2:3b",
+        "phi3:mini",
+        "mistral:7b",
+        "gemma2:2b"
+      ],
+      "priority": 5,
+      "local": true,
+      "note": "Enable when running on local device/Termux with ollama installed"
+    }
+  ],
+  "defaultProvider": "groq",
+  "defaultModel": "llama-3.3-70b-versatile",
+  "routing": {
+    "code": "openrouter:qwen/qwen3-coder:free",
+    "reasoning": "openrouter:deepseek/deepseek-r1:free",
+    "fast": "groq:llama-3.1-8b-instant",
+    "creative": "openrouter:deepseek/deepseek-chat-v3-0324:free",
+    "vision": "openrouter:nvidia/nemotron-nano-12b-v2-vl:free",
+    "large": "openrouter:qwen/qwen3-235b-a22b:free",
+    "balanced": "groq:llama-3.3-70b-versatile",
+    "local": "ollama-local:llama3.2:3b"
+  },
+  "skills": [
+    "evez-os",
+    "evez-fire-engine",
+    "evez-spine-sync",
+    "evez-aegis",
+    "evez-mesh-router",
+    "evez-revenue-bridge",
+    "evez-fire-correlator",
+    "oktoklaw",
+    "freeride",
+    "cpf-supercritical",
+    "inference-mesh",
+    "kiloclaw-jiujitsu",
+    "self-improvement"
+  ],
+  "plugins": {
+    "groq": true,
+    "openrouter": true,
+    "cerebras": true,
+    "huggingface": true,
+    "ollama": true,
+    "telegram": true
+  },
+  "telegram": {
+    "enabled": true,
+    "botToken": "${TELEGRAM_BOT_TOKEN}",
+    "chatId": "${TELEGRAM_CHAT_ID}"
+  },
+  "android": {
+    "optimized": true,
+    "device": "Samsung Galaxy A16",
+    "termuxSupport": true,
+    "pwaInstallable": true,
+    "offlineCapable": true,
+    "batteryOptimized": true,
+    "wakelock": false
+  },
+  "selfManaging": {
+    "enabled": true,
+    "healthCheckIntervalSeconds": 90,
+    "autoRestartOnFailure": true,
+    "maxRestartAttempts": 5,
+    "spineAutoAppend": true,
+    "modelRotation": true,
+    "modelRotationIntervalMinutes": 10,
+    "autoUpdateSkills": true,
+    "githubSyncEnabled": true
+  }
+}

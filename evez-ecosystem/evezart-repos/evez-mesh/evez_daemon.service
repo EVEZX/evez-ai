@@ -1,0 +1,20 @@
+[Unit]
+Description=EvezArt Digital Twin Neural Mesh
+After=network.target
+
+[Service]
+# Run as your user, not root, for security
+User=YOUR_USER
+Group=YOUR_USER
+WorkingDirectory=/home/YOUR_USER/evez_stack/evez-mesh
+Environment="PATH=/home/YOUR_USER/evez_stack/evez-mesh/venv/bin"
+
+# Command to start the Telegram Listener (which can spawn other processes)
+ExecStart=/home/YOUR_USER/evez_stack/evez-mesh/venv/bin/python3 tele_cortex.py
+
+# Auto-restart if it crashes
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

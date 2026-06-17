@@ -1,0 +1,32 @@
+# EVEZ Configuration - Constitutional Root
+version: "0.3.0"
+
+# Event Spine
+spine:
+  path: "memory/spine.jsonl"
+  immutable: true
+
+# Vector Store
+vector:
+  dim: 768
+  index: "memory/vectors.index"
+
+# Hash Laws
+hash_laws:
+  transform_hash: "sha256:content"
+  event_hash: "sha256:state+timestamp"
+  contradiction_hash: "sha256:failed_assertion"
+
+# Repositories
+federation:
+  constitutional_root: "evez"
+  proving_ground: "agentvault"
+  observation: "crawhub"
+  analysis: "codeql"
+
+# Modules
+modules:
+  - logic
+  - temporal
+  - vector
+  - code

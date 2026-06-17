@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ EVEZ Spectral OSINT</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+.hdr{padding:1.5rem;text-align:center;border-bottom:1px solid #1a1a2e}
+.hdr h1{font-size:1.5rem;color:#00ff88;text-shadow:0 0 20px #00ff8844}
+.hdr .sub{color:#555;font-size:.75rem;margin-top:.3rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.8rem;padding:.8rem}
+.card{background:#111122;border:1px solid #1a1a2e;border-radius:6px;padding:1.2rem;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#00ff88,#0088ff,#ff0088)}
+.card h2{color:#00ff88;font-size:.8rem;margin-bottom:.8rem;text-transform:uppercase;letter-spacing:2px}
+.m{display:flex;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid #0d0d1a;font-size:.8rem}
+.m .l{color:#666}.m .v{color:#fff}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px}
+.g{background:#00ff88;box-shadow:0 0 4px #00ff88}
+.r{background:#ff4444;box-shadow:0 0 4px #ff4444}
+.y{background:#ffaa00;box-shadow:0 0 4px #ffaa00}
+.bar{height:3px;background:#1a1a2e;border-radius:2px;margin:.3rem 0}
+.fill{height:100%;border-radius:2px;transition:width .5s}
+.profile{background:#0d0d1a;border-radius:4px;padding:.5rem;margin:.3rem 0;font-size:.7rem}
+.profile .fp{color:#0088ff;word-break:break-all}
+.live{position:fixed;bottom:1rem;right:1rem;background:#111122;border:1px solid #00ff88;border-radius:6px;padding:.5rem 1rem;font-size:.7rem;color:#00ff88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+canvas{width:100%;height:120px}
+</style>
+</head>
+<body>
+<div class="hdr">
+<h1>⚡ EVEZ Spectral OSINT Engine</h1>
+<div class="sub">Decentralized body-area-network digital clone augmented cross-analysis reality sensor</div>
+</div>
+<div class="grid">
+<div class="card">
+<h2>📡 Live Spectrum</h2>
+<canvas id="spectrum"></canvas>
+<div class="m"><span class="l">Spectral Entropy</span><span class="v" id="entropy">0.000</span></div>
+<div class="m"><span class="l">Unique Fingerprints</span><span class="v" id="fingerprints">0</span></div>
+<div class="m"><span class="l">Total Visits</span><span class="v" id="visits">0</span></div>
+<div class="m"><span class="l">Eigenvalue Progress</span><span class="v" id="eigenvalue">0.0%</span></div>
+<div class="bar"><div class="fill" id="eigenbar" style="width:0%;background:linear-gradient(90deg,#ff4444,#ffaa00,#00ff88)"></div></div>
+</div>
+<div class="card">
+<h2>🧬 Identity Distribution</h2>
+<div id="identities"></div>
+</div>
+<div class="card">
+<h2>🌍 Geo-Spectral Map</h2>
+<div id="geospectrum"></div>
+</div>
+<div class="card">
+<h2>👤 Active Profiles</h2>
+<div id="profiles" style="max-height:200px;overflow-y:auto"></div>
+</div>
+<div class="card">
+<h2>🔬 FIRE Round State</h2>
+<div class="m"><span class="l">Round</span><span class="v">N=41</span></div>
+<div class="m"><span class="l">Sensation</span><span class="v">SILENT</span></div>
+<div class="m"><span class="l">narr_c</span><span class="v">0.886</span></div>
+<div class="m"><span class="l">poly_c</span><span class="v">0.000</span></div>
+<div class="m"><span class="l">prox_gate</span><span class="v">0.422</span></div>
+<div class="m"><span class="l">teV</span><span class="v">0.999952</span></div>
+<div class="m"><span class="l">V_v2</span><span class="v">1.911</span></div>
+<div class="m"><span class="l">V_global</span><span class="v">1.658</span></div>
+</div>
+<div class="card">
+<h2>🦴 Spine State</h2>
+<div class="m"><span class="l">Events</span><span class="v" id="spine-events">—</span></div>
+<div class="m"><span class="l">Chain</span><span class="v">✅ Valid</span></div>
+<div class="m"><span class="l">Domains</span><span class="v">9 active</span></div>
+<div class="m"><span class="l">λ target</span><span class="v">-0.358</span></div>
+</div>
+</div>
+<div class="live">⚡ LIVE — refreshing every 3s</div>
+<script>
+const OSINT='http://45.63.70.174:7777';
+const canvas=document.getElementById('spectrum');
+const ctx=canvas.getContext('2d');
+let data=[];
+
+function drawSpectrum(){
+  canvas.width=canvas.offsetWidth*2;canvas.height=240;
+  ctx.fillStyle='#0a0a0f';ctx.fillRect(0,0,canvas.width,canvas.height);
+  if(!data.length)return;
+  const w=canvas.width/data.length;
+  data.forEach((d,i)=>{
+    const h=d*canvas.height*0.8;
+    const hue=200-d*200;
+    ctx.fillStyle=`hsl(${hue},100%,60%)`;
+    ctx.fillRect(i*w,canvas.height-h,w-1,h);
+  });
+}
+
+async function refresh(){
+  try{
+    const r=await fetch(OSINT+'/osint/spectral');
+    const j=await r.json();
+    document.getElementById('entropy').textContent=j.spectral_entropy?.toFixed(3)||'0.000';
+    document.getElementById('fingerprints').textContent=j.unique_fingerprints||0;
+    document.getElementById('visits').textContent=j.total_visits||0;
+    
+    // Identity distribution
+    const ids=j.identity_distribution||{};
+    let idHtml='';
+    for(const[k,v]of Object.entries(ids)){
+      const pct=j.total_profiles?(v/j.total_profiles*100).toFixed(0):0;
+      const color=k.includes('bot')||k.includes('scanner')||k.includes('attack')?'r':k.includes('human')?'g':'y';
+      idHtml+=`<div class="m"><span class="l"><span class="dot ${color}"></span>${k}</span><span class="v">${v} (${pct}%)</span></div>`;
+    }
+    document.getElementById('identities').innerHTML=idHtml;
+    
+    // Geo
+    const geo=j.country_distribution||{};
+    let geoHtml='';
+    for(const[k,v]of Object.entries(geo).sort((a,b)=>b[1]-a[1])){
+      geoHtml+=`<div class="m"><span class="l">${k||'unknown'}</span><span class="v">${v}</span></div>`;
+    }
+    document.getElementById('geospectrum').innerHTML=geoHtml;
+    
+    // Generate spectral data from entropy
+    data=Array.from({length:64},(_,i)=>{
+      const base=Math.sin(i/10+j.spectral_entropy)*0.5+0.5;
+      return Math.max(0.05,base+Math.random()*0.1);
+    });
+    drawSpectrum();
+    
+  }catch(e){console.error(e)}
+  
+  try{
+    const r=await fetch(OSINT+'/osint/profiles');
+    const j=await r.json();
+    let html='';
+    j.slice(-20).reverse().forEach(p=>{
+      const age=Math.round((Date.now()/1000-p.last_seen)/60);
+      const ageStr=age<1?'now':age<60?age+'m':Math.round(age/60)+'h';
+      html+=`<div class="profile"><div class="fp">${p.fingerprint_hash}</div>
+      <span class="dot ${p.inferred_identity?.includes('bot')||p.inferred_identity?.includes('scanner')?'r':'g'}"></span>
+      ${p.inferred_identity||'?'} · ${p.country||'?'} · ${p.org?.substring(0,25)||'?'} · ${p.visit_count} visits · ${ageStr}</div>`;
+    });
+    document.getElementById('profiles').innerHTML=html;
+  }catch(e){}
+}
+
+refresh();
+setInterval(refresh,3000);
+</script>
+</body>
+</html>

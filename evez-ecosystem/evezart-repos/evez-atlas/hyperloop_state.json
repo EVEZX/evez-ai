@@ -1,0 +1,161 @@
+{
+  "current_round": 141,
+  "V_global": 4.511739310016517,
+  "ceiling_tick": 59,
+  "latest_tweet_id": "2026032593481662653",
+  "fire_count": 12,
+  "truth_plane": "CANONICAL",
+  "updated_at": "2026-02-23T22:04:46-08:00",
+  "watchlist": {
+    "R142_probe": "N=94=2\u00d747 tau=2 omega_k=2 poly_c~0.334 \u2014 probe 841b5a80 in-flight",
+    "R143_est": "N=95=5\u00d719 tau=2 omega_k=2 poly_c~0.334 \u2014 low energy",
+    "R144_FIRE_WATCH": "N=96=2^5\u00d73 tau=12 omega_k=2 poly_c\u22480.685 \u2014 FIRE #13 in 3 rounds"
+  },
+  "r138_result": {
+    "N": 90,
+    "N_str": "90=2x3^2x5",
+    "tau": 3,
+    "omega_k": 3,
+    "topo": 1.45,
+    "poly_c": 0.466461,
+    "fire_ignited": false,
+    "delta_V": 0.037317,
+    "V_global_prev": 4.393827,
+    "V_global_new": 4.431144,
+    "ceiling_tick": 56,
+    "commit_sha": "92ad1eebc97f090ecc45adcc06ff2656c4503f3d",
+    "tweet_id": "2026032593481662653",
+    "videos_posted": true,
+    "truth_plane": "CANONICAL"
+  },
+  "r139_result": {
+    "N": 91,
+    "N_str": "91=7x13",
+    "tau": 2,
+    "omega_k": 2,
+    "topo": 1.3,
+    "poly_c": 0.336602,
+    "fire_ignited": false,
+    "delta_V": 0.026928,
+    "V_global_prev": 4.431144,
+    "V_global_new": 4.458072,
+    "ceiling_tick": 57,
+    "commit_sha": "aba7051586df1eab27c2a62032d4c9da12683e50",
+    "agent_sha": "06f75b905eb189652cfc72303ae71ba5cf3672eb",
+    "probe_id": "cf69cdba-127a-498e-98b7-82f4ea2986d8",
+    "probe_poly_c": 0.337,
+    "probe_match": true,
+    "module": "watch_composite_91.py",
+    "truth_plane": "CANONICAL",
+    "videos_posted": false,
+    "note": "Low energy \u2014 semiprime 7x13. Probe confirmed 0.337\u22480.336602."
+  },
+  "r139_browser_jobs": {
+    "perplexity": {
+      "job_id": "cf69cdba-127a-498e-98b7-82f4ea2986d8",
+      "status": "completed",
+      "poly_c_reported": 0.337,
+      "match": true
+    }
+  },
+  "cron_content_loop": {
+    "last_run": "2026-02-23T22:04 PST",
+    "rounds_covered": [
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141
+    ],
+    "last_thread_tweet_id": "2026032593481662653"
+  },
+  "x_semantic_agent": {
+    "total_capsules": 17,
+    "last_run": "2026-02-23T14:02 PST R141 +17 capsules",
+    "top_signal_r139": "agent_economy \u2014 AI as economic actors: autonomous payments, stablecoins (Coinbase CEO); agents moving tools\u2192actors"
+  },
+  "video_render_status": {
+    "consecutive_timeouts": 0,
+    "method": "PIL+ffmpeg inline \u2014 workspace/gen_video_inline.py",
+    "last_render": "2026-02-23T12:31 PST",
+    "tweet_id": "2026032593481662653",
+    "pending_rounds_count": 0
+  },
+  "maturity": {
+    "K": 141,
+    "S": 141,
+    "F": 12,
+    "phi": 0.0851,
+    "score": "12/141 fires = 8.51%",
+    "v_progress": "4.511739 / 6.000 = 75.2%"
+  },
+  "r140_result": {
+    "N": 92,
+    "N_str": "92=2^2x23",
+    "tau": 2,
+    "omega_k": 2,
+    "topo": 1.3,
+    "poly_c": 0.335809,
+    "fire_ignited": false,
+    "delta_V": 0.026865,
+    "V_global_prev": 4.458072,
+    "V_global_new": 4.484937,
+    "ceiling_tick": 58,
+    "commit_sha": "d999860b4538b198789c2de833fa04e9c1fc952c",
+    "agent_sha": "66d3ffc3b3ab31664daad9a66209c296f77abf9f",
+    "probe_id": "c37c15a7-729a-4c7d-a5cb-fa5852517276",
+    "probe_poly_c": 0.336,
+    "probe_match": true,
+    "module": "watch_composite_92.py",
+    "truth_plane": "CANONICAL",
+    "note": "Low energy. 3rd consecutive sub-0.34. Semiprime valley."
+  },
+  "r141_result": {
+    "N": 93,
+    "N_str": "93=3\u00d731",
+    "tau": 2,
+    "omega_k": 2,
+    "topo": 1.3,
+    "poly_c": 0.33502887520645375,
+    "fire_ignited": false,
+    "delta_V": 0.0268023100165163,
+    "V_global_prev": 4.484937,
+    "V_global_new": 4.511739310016517,
+    "ceiling_tick": 59,
+    "commit_sha": "4d61eaea1902eea705dace9afe0b10e6744fb3fc",
+    "agent_sha": "8e5af35266386df288d21fac188f1ea66847afa2",
+    "probe_id": "a4f1bf1d-c2ee-4a46-b322-b132e4ade187",
+    "probe_poly_c": 0.335,
+    "probe_match": true,
+    "module": "watch_composite_93.py",
+    "truth_plane": "CANONICAL"
+  },
+  "r142_browser_jobs": {
+    "perplexity": {
+      "job_id": "841b5a80-2a51-458d-bfbf-ae167c224b7f",
+      "status": "in-flight",
+      "launched_at": "2026-02-23T22:04 PST",
+      "model": "gemini-2.0-flash",
+      "task": "R142 N=94=2x47 tau=2 poly_c~0.334"
+    }
+  }
+}

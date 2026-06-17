@@ -1,0 +1,8 @@
+.env
+*.flv
+*.mp4
+__pycache__/
+*.pyc
+logs/
+preview_output.*
+.DS_Store

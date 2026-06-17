@@ -1,0 +1,6 @@
+digraph SELF_CARTOGRAPHY {
+  rankdir=LR;
+  node [shape=box,style=rounded];
+  "SELF" -> "SELF" [label="1x"]; 
+  NOTE [shape=note,label="anomaly=Players report 'hit markers' that vanish after rollback; blame shifts between netcode and server auth. | Σf=pending_vs_final_confusion, single_vantage_diagnosis | Ω=two-vantage probing + explicit pending labels"]; 
+}

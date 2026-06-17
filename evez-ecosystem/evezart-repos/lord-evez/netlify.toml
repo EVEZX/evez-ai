@@ -1,0 +1,24 @@
+[build]
+  publish = "public"
+  command = "echo 'Netlify static publish ready'"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/lord-monitor"
+  to = "/lord-monitor/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/lord-monitor/*"
+  to = "/lord-monitor/:splat"
+  status = 200
+
+[[headers]]
+  for = "/lord-monitor/*"
+  [headers.values]
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"

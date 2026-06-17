@@ -1,0 +1,55 @@
+name: Revenue Engine
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  revenue-engine:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Revenue Orchestrator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m revenue.orchestrator
+
+      - name: Run Content Engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m revenue.content_engine
+
+      - name: Run Market Intelligence
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m revenue.market_intel
+
+      - name: Run Sponsor Optimization
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m revenue.sponsors
+
+      - name: Run Asset Tracker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m revenue.assets
+
+      - name: Commit updated reports and data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add revenue/reports/ revenue/content/ revenue/intel/ revenue/assets.json revenue/sponsors.json
+          git diff --staged --quiet || git commit -m "chore: update revenue reports and data [skip ci]"
+          git push

@@ -1,0 +1,43 @@
+{
+  "name": "OpenClaw + Atlas v3 Environment",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "npm install -g openclaw@latest clawhub@latest",
+  "postAttachCommand": ".devcontainer/postAttach.sh",
+  "forwardPorts": [3000, 8080, 7777],
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "QUICKSTART.md",
+        "DEPLOYMENT.md"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "remoteUser": "node",
+  "secrets": {
+    "ANTHROPIC_API_KEY": {
+      "description": "Anthropic API key for Claude"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API key for ChatGPT"
+    },
+    "PERPLEXITY_API_KEY": {
+      "description": "Perplexity API key"
+    },
+    "GITHUB_TOKEN": {
+      "description": "GitHub Personal Access Token"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+[package]
+name = "gb-core"
+version = "0.7.0"
+edition = "2021"
+description = "MetaROM Game Boy emulator core — Phase 7 (full CGB, live replay, network crystallizer)"
+
+[[bin]]
+name = "letsplay"
+path = "src/bin/letsplay.rs"
+
+[[bin]]
+name = "letsplay_train"
+path = "src/bin/letsplay_train.rs"
+
+[[bin]]
+name = "letsplay_batch"
+path = "src/bin/letsplay_batch.rs"
+
+[[bin]]
+name = "letsplay_live"
+path = "src/bin/letsplay_live.rs"
+
+[lib]
+name = "gb_core"
+path = "src/lib.rs"
+
+[dependencies]

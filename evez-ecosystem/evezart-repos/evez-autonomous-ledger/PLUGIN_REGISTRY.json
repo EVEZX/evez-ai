@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "ecosystem": "evez",
+  "updated_at": "2026-03-19",
+  "plugins": [
+    {
+      "id": "evez-agentnet",
+      "repo": "EvezArt/evez-agentnet",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8001/health",
+      "skills_endpoint": "http://localhost:8001/skills",
+      "status": "scaffolded"
+    },
+    {
+      "id": "lord-evez",
+      "repo": "EvezArt/lord-evez",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:3000/api/live",
+      "skills_endpoint": "http://localhost:3000/api/live",
+      "status": "bridge-added"
+    },
+    {
+      "id": "evez-vcl",
+      "repo": "EvezArt/evez-vcl",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8002/health",
+      "skills_endpoint": "http://localhost:8002/skills",
+      "status": "service-added"
+    },
+    {
+      "id": "metarom",
+      "repo": "EvezArt/metarom",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8003/health",
+      "skills_endpoint": "http://localhost:8003/skills",
+      "status": "sidecar-added"
+    },
+    {
+      "id": "surething-offline",
+      "repo": "EvezArt/surething-offline",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8420/health",
+      "skills_endpoint": "http://localhost:8420/skills",
+      "status": "manifested"
+    },
+    {
+      "id": "evez-meme-bus",
+      "repo": "EvezArt/evez-meme-bus",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8004/healthz",
+      "skills_endpoint": "http://localhost:8004/queue-status",
+      "status": "manifested"
+    },
+    {
+      "id": "polymarket-speedrun",
+      "repo": "EvezArt/polymarket-speedrun",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8005/health",
+      "skills_endpoint": "http://localhost:8005/skills",
+      "status": "manifested"
+    },
+    {
+      "id": "evez-autonomous-ledger",
+      "repo": "EvezArt/evez-autonomous-ledger",
+      "manifest_path": "SKILL.md",
+      "health_endpoint": "http://localhost:8006/health",
+      "skills_endpoint": "http://localhost:8006/skills",
+      "status": "registry-host"
+    }
+  ]
+}

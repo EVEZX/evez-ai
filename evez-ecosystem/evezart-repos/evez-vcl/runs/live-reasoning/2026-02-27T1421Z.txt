@@ -1,0 +1,9 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. 2026-02-27. 26 loops running on a 3-hour cycle. 55 FIRE events confirmed. Top gap: 2chat WhatsApp trial expires 2026-03-01 -- outreach loop at risk. Next action: AI/ML API TTS audio CDN wire. topology decides. watching it build.
+
+---
+Audio: JigsawStack TTS (en-US-female-3) -- generated 2026-02-27T14:21Z
+Audio s3key: 897d5e0f-00d7-41a5-9190-36f20c1bea87
+Audio S3 URL: https://api.jigsawstack.com/v1/store/file/read/897d5e0f-00d7-41a5-9190-36f20c1bea87 (auth-gated)
+Public CDN: pending surething file url resolution
+Provider fallback order: JigsawStack (PRIMARY) > AI/ML API > Text-only
+Loop: 25 | Run: 3 | Gen: 10

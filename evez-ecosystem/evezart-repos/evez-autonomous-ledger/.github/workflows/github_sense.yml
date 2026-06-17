@@ -1,0 +1,22 @@
+name: GitHub Ecosystem Sense (20-min)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gh-sense:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run GitHub sensory agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+        run: python agents/sensory/github_sense.py

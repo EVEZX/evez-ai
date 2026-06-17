@@ -1,0 +1,21 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}" | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    print('Deploy triggered:', d)
+except:
+    print('Response:', sys.stdin.read()[:200])
+"

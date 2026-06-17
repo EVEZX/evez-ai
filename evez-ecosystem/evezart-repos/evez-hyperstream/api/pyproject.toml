@@ -1,0 +1,5 @@
+[project]
+name = "evez-hyperstream"
+version = "1.0.0"
+description = "EVEZ HyperStream — Live stream status and control plane for hypergeometric visualizers"
+requires-python = ">=3.9"

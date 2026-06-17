@@ -1,0 +1,1174 @@
+{
+  "total_recorded": 192,
+  "consolidation_count": 6,
+  "episodic": [
+    {
+      "id": "EP-92-1778595253",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"express\", \"latest\": \"5.2.1\", \"version_count\": 288, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-93-1778595253",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"react\", \"latest\": \"19.2.6\", \"version_count\": 2804, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-94-1778595253",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"tensorflow\", \"latest\": \"0.7.0\", \"version_count\": 8, \"intensity\": ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-95-1778595253",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"openai\", \"latest\": \"6.37.0\", \"version_count\": 357, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-96-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdt\", \"name\": \"Tether\", \"price\": 0.999619, \"mcap\": 189758017046",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-97-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"btc\", \"name\": \"Bitcoin\", \"price\": 80660, \"mcap\": 1615247733730, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-98-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"eth\", \"name\": \"Ethereum\", \"price\": 2278.18, \"mcap\": 274915069553",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-99-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdc\", \"name\": \"USDC\", \"price\": 0.999732, \"mcap\": 77242678040, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-100-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sol\", \"name\": \"Solana\", \"price\": 94.99, \"mcap\": 54876585411, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-101-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"xrp\", \"name\": \"XRP\", \"price\": 1.44, \"mcap\": 88874878808, \"volume",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-102-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"doge\", \"name\": \"Dogecoin\", \"price\": 0.108956, \"mcap\": 1679021111",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-103-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"bnb\", \"name\": \"BNB\", \"price\": 657.64, \"mcap\": 88636357264, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-104-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sui\", \"name\": \"Sui\", \"price\": 1.24, \"mcap\": 5007917817, \"volume\"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-105-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"zec\", \"name\": \"Zcash\", \"price\": 553.38, \"mcap\": 9239952136, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-106-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usd1\", \"name\": \"USD1\", \"price\": 0.99855, \"mcap\": 4414419149, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-107-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ton\", \"name\": \"Toncoin\", \"price\": 2.35, \"mcap\": 6268050506, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-108-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"trx\", \"name\": \"TRON\", \"price\": 0.347956, \"mcap\": 32982948676, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-109-1778595350",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4966,
+      "consolidated": true,
+      "associations": [
+        "EP-112-1778595350",
+        "EP-113-1778595350",
+        "EP-118-1778595350",
+        "EP-120-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-141-1778595351",
+        "EP-144-1778595351",
+        "EP-145-1778595351"
+      ]
+    },
+    {
+      "id": "EP-110-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-111-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ada\", \"name\": \"Cardano\", \"price\": 0.272344, \"mcap\": 10073946735,",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-112-1778595350",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4966,
+      "consolidated": true,
+      "associations": [
+        "EP-109-1778595350",
+        "EP-113-1778595350",
+        "EP-118-1778595350",
+        "EP-120-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-141-1778595351",
+        "EP-144-1778595351",
+        "EP-145-1778595351"
+      ]
+    },
+    {
+      "id": "EP-113-1778595350",
+      "content": "[crypto] PUMP_DUMP_SIGNAL: {\"type\": \"PUMP_DUMP_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4966,
+      "consolidated": true,
+      "associations": [
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-118-1778595350",
+        "EP-120-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-141-1778595351",
+        "EP-144-1778595351",
+        "EP-145-1778595351"
+      ]
+    },
+    {
+      "id": "EP-114-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-115-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ltc\", \"name\": \"Litecoin\", \"price\": 57.47, \"mcap\": 4434393398, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-116-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"link\", \"name\": \"Chainlink\", \"price\": 10.27, \"mcap\": 7467040111, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-117-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"aave\", \"name\": \"Aave\", \"price\": 96.84, \"mcap\": 1469809360, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-118-1778595350",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 12769",
+      "importance": 0.5249917851468202,
+      "emotion": "insight",
+      "strength": 0.7874,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-120-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-150-1778595351",
+        "EP-152-1778595351",
+        "EP-153-1778595351"
+      ]
+    },
+    {
+      "id": "EP-119-1778595350",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 127692483, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-120-1778595350",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"Variational Inference for L\\u00e9vy Process-Driven SDEs via ",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.7497,
+      "consolidated": true,
+      "associations": [
+        "EP-118-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-150-1778595351",
+        "EP-152-1778595351",
+        "EP-153-1778595351"
+      ]
+    },
+    {
+      "id": "EP-121-1778595350",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs a",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.7498,
+      "consolidated": true,
+      "associations": [
+        "EP-120-1778595350",
+        "EP-118-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-152-1778595351",
+        "EP-153-1778595351",
+        "EP-184-1778595352"
+      ]
+    },
+    {
+      "id": "EP-122-1778595350",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"151.101.0.0/16\", \"domains\": [\"arxiv.org\", \"arxiv.org\", \"ar",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4965,
+      "consolidated": true,
+      "associations": [
+        "EP-120-1778595350",
+        "EP-118-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-121-1778595350",
+        "EP-123-1778595350",
+        "EP-141-1778595351",
+        "EP-144-1778595351",
+        "EP-145-1778595351"
+      ]
+    },
+    {
+      "id": "EP-123-1778595350",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"104.16.0.0/16\", \"domains\": [\"cloudflare.com\", \"cloudflare.",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.7249,
+      "consolidated": true,
+      "associations": [
+        "EP-122-1778595350",
+        "EP-120-1778595350",
+        "EP-118-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-121-1778595350",
+        "EP-154-1778595351",
+        "EP-155-1778595351"
+      ]
+    },
+    {
+      "id": "EP-124-1778595350",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"express\", \"latest\": \"5.2.1\", \"version_count\": 288, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-125-1778595350",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"react\", \"latest\": \"19.2.6\", \"version_count\": 2804, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-126-1778595350",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"tensorflow\", \"latest\": \"0.7.0\", \"version_count\": 8, \"intensity\": ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-127-1778595350",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"openai\", \"latest\": \"6.37.0\", \"version_count\": 357, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-128-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdt\", \"name\": \"Tether\", \"price\": 0.999619, \"mcap\": 189758017046",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-129-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"btc\", \"name\": \"Bitcoin\", \"price\": 80660, \"mcap\": 1615247733730, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-130-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"eth\", \"name\": \"Ethereum\", \"price\": 2278.18, \"mcap\": 274915069553",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-131-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdc\", \"name\": \"USDC\", \"price\": 0.999732, \"mcap\": 77242678040, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-132-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sol\", \"name\": \"Solana\", \"price\": 94.99, \"mcap\": 54876585411, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-133-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"xrp\", \"name\": \"XRP\", \"price\": 1.44, \"mcap\": 88874878808, \"volume",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-134-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"doge\", \"name\": \"Dogecoin\", \"price\": 0.108956, \"mcap\": 1679021111",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-135-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"bnb\", \"name\": \"BNB\", \"price\": 657.64, \"mcap\": 88636357264, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-136-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sui\", \"name\": \"Sui\", \"price\": 1.24, \"mcap\": 5007917817, \"volume\"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-137-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"zec\", \"name\": \"Zcash\", \"price\": 553.38, \"mcap\": 9239952136, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-138-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usd1\", \"name\": \"USD1\", \"price\": 0.99855, \"mcap\": 4414419149, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-139-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ton\", \"name\": \"Toncoin\", \"price\": 2.35, \"mcap\": 6268050506, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-140-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"trx\", \"name\": \"TRON\", \"price\": 0.347956, \"mcap\": 32982948676, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-141-1778595351",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4982,
+      "consolidated": true,
+      "associations": [
+        "EP-109-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-122-1778595350",
+        "EP-144-1778595351",
+        "EP-150-1778595351",
+        "EP-152-1778595351",
+        "EP-153-1778595351",
+        "EP-154-1778595351",
+        "EP-155-1778595351"
+      ]
+    },
+    {
+      "id": "EP-142-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-143-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ada\", \"name\": \"Cardano\", \"price\": 0.272344, \"mcap\": 10073946735,",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-144-1778595351",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.1,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-141-1778595351",
+        "EP-122-1778595350",
+        "EP-145-1778595351"
+      ]
+    },
+    {
+      "id": "EP-145-1778595351",
+      "content": "[crypto] PUMP_DUMP_SIGNAL: {\"type\": \"PUMP_DUMP_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.3,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-144-1778595351",
+        "EP-109-1778595350",
+        "EP-122-1778595350",
+        "EP-176-1778595352",
+        "EP-177-1778595352"
+      ]
+    },
+    {
+      "id": "EP-146-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-147-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ltc\", \"name\": \"Litecoin\", \"price\": 57.47, \"mcap\": 4434393398, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-148-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"link\", \"name\": \"Chainlink\", \"price\": 10.27, \"mcap\": 7467040111, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-149-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"aave\", \"name\": \"Aave\", \"price\": 96.84, \"mcap\": 1469809360, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-150-1778595351",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 12769",
+      "importance": 0.5249917851468202,
+      "emotion": "insight",
+      "strength": 0.525,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-141-1778595351",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-120-1778595350"
+      ]
+    },
+    {
+      "id": "EP-151-1778595351",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 127692483, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-152-1778595351",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"Variational Inference for L\\u00e9vy Process-Driven SDEs via ",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.7499,
+      "consolidated": true,
+      "associations": [
+        "EP-120-1778595350",
+        "EP-121-1778595350",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351",
+        "EP-113-1778595350",
+        "EP-109-1778595350",
+        "EP-112-1778595350",
+        "EP-153-1778595351",
+        "EP-154-1778595351"
+      ]
+    },
+    {
+      "id": "EP-153-1778595351",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs a",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.5,
+      "consolidated": true,
+      "associations": [
+        "EP-121-1778595350",
+        "EP-120-1778595350",
+        "EP-152-1778595351",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351",
+        "EP-109-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350"
+      ]
+    },
+    {
+      "id": "EP-154-1778595351",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"151.101.0.0/16\", \"domains\": [\"arxiv.org\", \"arxiv.org\", \"ar",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.4989,
+      "consolidated": true,
+      "associations": [
+        "EP-122-1778595350",
+        "EP-123-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-152-1778595351",
+        "EP-113-1778595350",
+        "EP-155-1778595351",
+        "EP-173-1778595352"
+      ]
+    },
+    {
+      "id": "EP-155-1778595351",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"104.16.0.0/16\", \"domains\": [\"cloudflare.com\", \"cloudflare.",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.5,
+      "consolidated": true,
+      "associations": [
+        "EP-122-1778595350",
+        "EP-154-1778595351",
+        "EP-123-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-152-1778595351"
+      ]
+    },
+    {
+      "id": "EP-156-1778595351",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"express\", \"latest\": \"5.2.1\", \"version_count\": 288, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-157-1778595351",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"react\", \"latest\": \"19.2.6\", \"version_count\": 2804, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-158-1778595351",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"tensorflow\", \"latest\": \"0.7.0\", \"version_count\": 8, \"intensity\": ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-159-1778595351",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"openai\", \"latest\": \"6.37.0\", \"version_count\": 357, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-160-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdt\", \"name\": \"Tether\", \"price\": 0.999619, \"mcap\": 189758017046",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-161-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"btc\", \"name\": \"Bitcoin\", \"price\": 80660, \"mcap\": 1615247733730, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-162-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"eth\", \"name\": \"Ethereum\", \"price\": 2278.18, \"mcap\": 274915069553",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-163-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usdc\", \"name\": \"USDC\", \"price\": 0.999732, \"mcap\": 77242678040, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-164-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sol\", \"name\": \"Solana\", \"price\": 94.99, \"mcap\": 54876585411, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-165-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"xrp\", \"name\": \"XRP\", \"price\": 1.44, \"mcap\": 88874878808, \"volume",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-166-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"doge\", \"name\": \"Dogecoin\", \"price\": 0.108956, \"mcap\": 1679021111",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-167-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"bnb\", \"name\": \"BNB\", \"price\": 657.64, \"mcap\": 88636357264, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-168-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"sui\", \"name\": \"Sui\", \"price\": 1.24, \"mcap\": 5007917817, \"volume\"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-169-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"zec\", \"name\": \"Zcash\", \"price\": 553.38, \"mcap\": 9239952136, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-170-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"usd1\", \"name\": \"USD1\", \"price\": 0.99855, \"mcap\": 4414419149, \"vo",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-171-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ton\", \"name\": \"Toncoin\", \"price\": 2.35, \"mcap\": 6268050506, \"vol",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-172-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"trx\", \"name\": \"TRON\", \"price\": 0.347956, \"mcap\": 32982948676, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-173-1778595352",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.05,
+      "consolidated": true,
+      "associations": [
+        "EP-141-1778595351",
+        "EP-109-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350"
+      ]
+    },
+    {
+      "id": "EP-174-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"quq\", \"name\": \"Quq\", \"price\": 0.00268795, \"mcap\": 2688136, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-175-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ada\", \"name\": \"Cardano\", \"price\": 0.272344, \"mcap\": 10073946735,",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-176-1778595352",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.0,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-145-1778595351",
+        "EP-141-1778595351",
+        "EP-109-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350"
+      ]
+    },
+    {
+      "id": "EP-177-1778595352",
+      "content": "[crypto] PUMP_DUMP_SIGNAL: {\"type\": \"PUMP_DUMP_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.1,
+      "consolidated": true,
+      "associations": [
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-145-1778595351",
+        "EP-141-1778595351",
+        "EP-109-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350"
+      ]
+    },
+    {
+      "id": "EP-178-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"saga\", \"name\": \"Saga\", \"price\": 0.04394514, \"mcap\": 17783963, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-179-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"ltc\", \"name\": \"Litecoin\", \"price\": 57.47, \"mcap\": 4434393398, \"v",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-180-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"link\", \"name\": \"Chainlink\", \"price\": 10.27, \"mcap\": 7467040111, ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-181-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"aave\", \"name\": \"Aave\", \"price\": 96.84, \"mcap\": 1469809360, \"volu",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-182-1778595352",
+      "content": "[crypto] WASH_TRADING_SIGNAL: {\"type\": \"WASH_TRADING_SIGNAL\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 12769",
+      "importance": 0.5249917851468202,
+      "emotion": "insight",
+      "strength": 0.525,
+      "consolidated": true,
+      "associations": [
+        "EP-141-1778595351",
+        "EP-112-1778595350",
+        "EP-109-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-113-1778595350"
+      ]
+    },
+    {
+      "id": "EP-183-1778595352",
+      "content": "[crypto] MARKET_STATE: {\"type\": \"MARKET_STATE\", \"sensor\": \"crypto\", \"symbol\": \"chip\", \"name\": \"USD.AI\", \"price\": 0.063723, \"mcap\": 127692483, \"",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-184-1778595352",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"Variational Inference for L\\u00e9vy Process-Driven SDEs via ",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.5,
+      "consolidated": true,
+      "associations": [
+        "EP-152-1778595351",
+        "EP-121-1778595350",
+        "EP-120-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351"
+      ]
+    },
+    {
+      "id": "EP-185-1778595352",
+      "content": "[arxiv] CROSS_DOMAIN_PAPER: {\"type\": \"CROSS_DOMAIN_PAPER\", \"sensor\": \"arxiv\", \"title\": \"AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs a",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.5,
+      "consolidated": true,
+      "associations": [
+        "EP-152-1778595351",
+        "EP-121-1778595350",
+        "EP-120-1778595350",
+        "EP-154-1778595351",
+        "EP-122-1778595350",
+        "EP-118-1778595350",
+        "EP-141-1778595351",
+        "EP-113-1778595350",
+        "EP-109-1778595350",
+        "EP-112-1778595350"
+      ]
+    },
+    {
+      "id": "EP-186-1778595352",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"151.101.0.0/16\", \"domains\": [\"arxiv.org\", \"arxiv.org\", \"ar",
+      "importance": 1.0,
+      "emotion": "surprise",
+      "strength": 1.5,
+      "consolidated": true,
+      "associations": [
+        "EP-154-1778595351",
+        "EP-122-1778595350",
+        "EP-141-1778595351",
+        "EP-109-1778595350",
+        "EP-113-1778595350",
+        "EP-112-1778595350",
+        "EP-187-1778595352"
+      ]
+    },
+    {
+      "id": "EP-187-1778595352",
+      "content": "[dns] SHARED_INFRASTRUCTURE: {\"type\": \"SHARED_INFRASTRUCTURE\", \"sensor\": \"dns\", \"prefix\": \"104.16.0.0/16\", \"domains\": [\"cloudflare.com\", \"cloudflare.",
+      "importance": 0.5,
+      "emotion": "neutral",
+      "strength": 0.5,
+      "consolidated": true,
+      "associations": [
+        "EP-154-1778595351",
+        "EP-122-1778595350",
+        "EP-186-1778595352",
+        "EP-141-1778595351",
+        "EP-112-1778595350",
+        "EP-109-1778595350"
+      ]
+    },
+    {
+      "id": "EP-188-1778595352",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"express\", \"latest\": \"5.2.1\", \"version_count\": 288, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-189-1778595352",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"react\", \"latest\": \"19.2.6\", \"version_count\": 2804, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-190-1778595352",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"tensorflow\", \"latest\": \"0.7.0\", \"version_count\": 8, \"intensity\": ",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    },
+    {
+      "id": "EP-191-1778595352",
+      "content": "[npm] PACKAGE_STATE: {\"type\": \"PACKAGE_STATE\", \"sensor\": \"npm\", \"package\": \"openai\", \"latest\": \"6.37.0\", \"version_count\": 357, \"intensity\": 0",
+      "importance": 0.1,
+      "emotion": "neutral",
+      "strength": 0.1,
+      "consolidated": false,
+      "associations": []
+    }
+  ],
+  "procedures": {},
+  "lt_concepts": [
+    "\"quq\",",
+    "[crypto]",
+    "wash_trading_signal:",
+    "type",
+    "sensor",
+    "symbol",
+    "name",
+    "price",
+    "mcap",
+    "volume",
+    "vol_mcap_ratio",
+    "plp_verdict",
+    "intensity",
+    "confidence",
+    "real_data",
+    "cycle",
+    "timestamp",
+    "poly_c",
+    "poly_c_computed",
+    "pre_lie_pressure",
+    "shadow_price",
+    "meta_classifications",
+    "meta_cross_refs",
+    "strongest_lens",
+    "strongest_label",
+    "\"saga\",",
+    "pump_dump_signal:",
+    "change_24h",
+    "{\"type\":",
+    "[arxiv]",
+    "cross_domain_paper:",
+    "title",
+    "domains",
+    "abstract",
+    "published",
+    "[dns]",
+    "shared_infrastructure:",
+    "prefix"
+  ]
+}

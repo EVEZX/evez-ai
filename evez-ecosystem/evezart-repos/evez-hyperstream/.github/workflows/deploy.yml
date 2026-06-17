@@ -1,0 +1,32 @@
+name: Deploy HyperStream to Fly.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Create app if not exists
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl apps create evez-hyperstream --org evez 2>/dev/null || true
+
+      - name: Set secrets
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl secrets set \
+            GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" \
+            YOUTUBE_TOKEN="${{ secrets.YOUTUBE_TOKEN }}" \
+            --app evez-hyperstream 2>/dev/null || true
+
+      - name: Deploy
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl deploy --remote-only --wait-timeout 300 --app evez-hyperstream

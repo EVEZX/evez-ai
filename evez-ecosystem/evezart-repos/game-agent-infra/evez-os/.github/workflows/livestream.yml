@@ -1,0 +1,33 @@
+name: EVEZ Intel Livestream → YouTube
+
+on:
+  workflow_dispatch:
+    inputs:
+      stream_key:
+        description: 'YouTube stream key (leave blank to use secret)'
+        required: false
+        default: ''
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core python3-pip --no-install-recommends
+          pip3 install pillow --quiet
+
+      - name: Run livestream
+        timeout-minutes: 355
+        env:
+          YOUTUBE_STREAM_KEY: ${{ inputs.stream_key || secrets.YOUTUBE_STREAM_KEY }}
+          AI_ML_API_KEY: ${{ secrets.AI_ML_API_KEY }}
+          RTMP_URL: rtmp://a.rtmp.youtube.com/live2
+        run: |
+          python3 scripts/livestream_intel.py

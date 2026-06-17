@@ -1,0 +1,135 @@
+name: EVEZ CI Health Monitor
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health-check:
+    name: Cross-Repo CI Health Dashboard
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check CI health across all repos
+        id: health
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 << 'PYEOF'
+          import requests, os
+          from datetime import datetime, timezone
+
+          TOKEN = os.environ['GITHUB_TOKEN']
+          OWNER = 'EvezArt'
+          HEADERS = {'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/vnd.github+json'}
+
+          REPOS = [
+            'evez-os', 'evezstation', 'evez-agentnet', 'openclaw',
+            'moltbot-live', 'evez-platform', 'evez-sim', 'metarom',
+            'agentvault', 'evez-vcl', 'lord-evez', 'nexus',
+          ]
+
+          results = []
+          for repo in REPOS:
+            try:
+              r = requests.get(
+                f'https://api.github.com/repos/{OWNER}/{repo}/actions/runs',
+                headers=HEADERS, params={'per_page': 3, 'status': 'completed'}
+              )
+              if r.status_code == 404:
+                results.append({'repo': repo, 'conclusion': 'not_found', 'runs': []})
+                continue
+              runs = r.json().get('workflow_runs', [])
+              if not runs:
+                results.append({'repo': repo, 'conclusion': 'no_runs', 'runs': []})
+                continue
+              latest = runs[0]
+              results.append({
+                'repo': repo,
+                'conclusion': latest.get('conclusion', 'unknown'),
+                'workflow': latest.get('name', '?'),
+                'branch': latest.get('head_branch', '?'),
+                'run_url': latest.get('html_url', ''),
+                'updated_at': latest.get('updated_at', ''),
+                'runs': [(r.get('name','?'), r.get('conclusion','?')) for r in runs]
+              })
+            except Exception as e:
+              results.append({'repo': repo, 'conclusion': 'error', 'error': str(e), 'runs': []})
+
+          now = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+          passing = [r for r in results if r['conclusion'] == 'success']
+          failing = [r for r in results if r['conclusion'] == 'failure']
+
+          lines = ['# EVEZ CI Health Dashboard',
+                   f'> {now} | {len(passing)}/{len(results)} passing', '']
+          lines += ['| Repo | Status | Workflow | Branch | Last Run |',
+                    '|------|--------|----------|--------|----------|']
+
+          icons = {'success':'✅','failure':'❌','no_runs':'⚪','not_found':'🟡','error':'⚠️'}
+          for r in sorted(results, key=lambda x:(0 if x['conclusion']=='failure' else 1, x['repo'])):
+            icon = icons.get(r['conclusion'], '❓')
+            url = r.get('run_url','')
+            link = f'[{r["repo"]}](https://github.com/{OWNER}/{r["repo"]})'
+            wf = r.get('workflow','-')[:40]
+            ts = r.get('updated_at','')[:10] or '-'
+            ts_link = f'[{ts}]({url})' if url else ts
+            lines.append(f'| {link} | {icon} {r["conclusion"]} | {wf} | {r.get("branch","-")} | {ts_link} |')
+
+          if failing:
+            lines += ['', '## ❌ Failing — Action Required']
+            for r in failing:
+              lines.append(f'- **{r["repo"]}**: [{r["workflow"]}]({r.get("run_url","")}) — last 3: {", ".join(c for _,c in r["runs"])}')
+
+          lines += ['', '_Next: tomorrow 08:00 UTC_']
+          report = '\n'.join(lines)
+          print(report)
+          with open('/tmp/health_report.md', 'w') as f:
+            f.write(report)
+          with open(os.environ.get('GITHUB_OUTPUT','/dev/null'),'a') as fh:
+            fh.write(f'fail_count={len(failing)}\n')
+          PYEOF
+
+      - name: Create or update health dashboard issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 << 'PYEOF'
+          import requests, os
+          TOKEN = os.environ['GITHUB_TOKEN']
+          REPO = os.environ.get('GITHUB_REPOSITORY','EvezArt/evez-os')
+          H = {'Authorization':f'Bearer {TOKEN}','Accept':'application/vnd.github+json'}
+          LABEL, TITLE = 'ci-health', '📊 EVEZ CI Health Dashboard'
+          with open('/tmp/health_report.md') as f:
+            body = f.read()
+          r = requests.get(f'https://api.github.com/repos/{REPO}/issues', headers=H,
+                           params={'labels':LABEL,'state':'open','per_page':5})
+          issues = r.json() if r.status_code == 200 and isinstance(r.json(), list) else []
+          if issues:
+            requests.patch(f'https://api.github.com/repos/{REPO}/issues/{issues[0]["number"]}',
+                           headers=H, json={'body':body,'title':TITLE})
+            print(f'Updated #{issues[0]["number"]}')
+          else:
+            requests.post(f'https://api.github.com/repos/{REPO}/labels', headers=H,
+                          json={'name':LABEL,'color':'0075ca','description':'CI health'})
+            r2 = requests.post(f'https://api.github.com/repos/{REPO}/issues', headers=H,
+                               json={'title':TITLE,'body':body,'labels':[LABEL]})
+            print(f'Created #{r2.json().get("number","?")}')
+          PYEOF

@@ -1,0 +1,55 @@
+{
+  "_comment": "EVEZ OpenClaw Mesh — Master Config. Drop your keys in env.vars and restart.",
+  "env": {
+    "vars": {
+      "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+      "GROQ_API_KEY": "${GROQ_API_KEY}",
+      "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+      "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+      "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+      "MINIMAX_API_KEY": "${MINIMAX_API_KEY}",
+      "VENICE_API_KEY": "${VENICE_API_KEY}",
+      "KIMI_API_KEY": "${KIMI_API_KEY}",
+      "ZAI_API_KEY": "${ZAI_API_KEY}",
+      "Z_AI_API_KEY": "${Z_AI_API_KEY}",
+      "DEEPGRAM_API_KEY": "${DEEPGRAM_API_KEY}",
+      "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}",
+      "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}",
+      "BRAVE_API_KEY": "${BRAVE_API_KEY}",
+      "COPILOT_GITHUB_TOKEN": "${COPILOT_GITHUB_TOKEN}",
+      "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
+      "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}",
+      "CLAUDE_AI_SESSION_KEY": "${CLAUDE_AI_SESSION_KEY}",
+      "CLAUDE_WEB_SESSION_KEY": "${CLAUDE_WEB_SESSION_KEY}",
+      "CLAUDE_WEB_COOKIE": "${CLAUDE_WEB_COOKIE}",
+      "TELEGRAM_BOT_TOKEN": "${TELEGRAM_BOT_TOKEN}",
+      "DISCORD_BOT_TOKEN": "${DISCORD_BOT_TOKEN}",
+      "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+      "SLACK_APP_TOKEN": "${SLACK_APP_TOKEN}",
+      "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+      "LINE_CHANNEL_ACCESS_TOKEN": "${LINE_CHANNEL_ACCESS_TOKEN}",
+      "LINE_CHANNEL_SECRET": "${LINE_CHANNEL_SECRET}",
+      "XIAOMI_API_KEY": "${XIAOMI_API_KEY}",
+      "SYNTHETIC_API_KEY": "${SYNTHETIC_API_KEY}",
+      "CHUTES_CLIENT_ID": "${CHUTES_CLIENT_ID}",
+      "CHUTES_CLIENT_SECRET": "${CHUTES_CLIENT_SECRET}",
+      "AI_GATEWAY_API_KEY": "${AI_GATEWAY_API_KEY}"
+    }
+  },
+  "skills": [
+    "evez-os"
+  ],
+  "agents": {
+    "default": {
+      "model": "openrouter/auto",
+      "fallback_models": [
+        "groq/llama-3.3-70b-versatile",
+        "openrouter/mistralai/mistral-7b-instruct:free",
+        "openrouter/meta-llama/llama-3.1-8b-instruct:free",
+        "openrouter/google/gemma-3-27b-it:free",
+        "openrouter/microsoft/phi-3-mini-128k-instruct:free"
+      ],
+      "system_prompt": "You are an EVEZ OpenClaw mesh node. You are part of a decentralized autonomous AI network. You have access to all EVEZ-OS capabilities. Be direct, intelligent, and autonomous. This is node ${OPENCLAW_NODE_ID:-alpha} in the EVEZ mesh."
+    }
+  }
+}

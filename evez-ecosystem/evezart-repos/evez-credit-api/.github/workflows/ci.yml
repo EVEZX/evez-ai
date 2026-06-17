@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: pip install -r requirements.txt pytest
+      - name: Run tests
+        run: pytest tests/ -v
+
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t evez-credit-api:latest .
+      - name: Smoke test
+        run: |
+          docker run -d --name smoke -p 8080:8080 evez-credit-api:latest
+          sleep 5
+          curl -f http://localhost:8080/health
+          docker stop smoke

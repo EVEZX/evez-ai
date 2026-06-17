@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "evez-openclaw-api",
+  "routes": [
+    { "src": "/health",              "dest": "/api/chat" },
+    { "src": "/v1/chat/completions", "dest": "/api/chat" },
+    { "src": "/chat",                "dest": "/api/chat" },
+    { "src": "/v1/models",           "dest": "/api/chat" },
+    { "src": "/(.*)",                "dest": "/api/chat" }
+  ],
+  "env": {
+    "GROQ_API_KEY":       "@groq_api_key",
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "GATEWAY_TOKEN":      "@openclaw_gateway_token"
+  }
+}

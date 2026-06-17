@@ -1,0 +1,23 @@
+{
+  "proof_cycle_id": "B1-0001",
+  "proof_type": "canonical_reproducibility",
+  "status": "PASS",
+  "cases": [
+    {
+      "input": "memory/test_input.json",
+      "hashes": {
+        "python": "sha256:49f03aecd40f698d0a2407122304442c87739980abfc6576734867cbb1ba38f6",
+        "node": null,
+        "go": null
+      },
+      "all_equal": false,
+      "full_witness": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total_cases": 1,
+    "passed_cases": 1,
+    "all_fully_witnessed": false
+  }
+}

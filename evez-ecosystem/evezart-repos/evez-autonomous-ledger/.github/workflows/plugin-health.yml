@@ -1,0 +1,20 @@
+name: plugin-health
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Probe plugin endpoints
+        run: python scripts/probe_plugin_health.py
+      - name: Validate plugin health artifact
+        run: python scripts/validate_plugin_health.py

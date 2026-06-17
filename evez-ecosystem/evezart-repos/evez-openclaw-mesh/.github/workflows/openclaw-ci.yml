@@ -1,0 +1,60 @@
+name: OpenClaw Goblin Mode — CI + Deploy
+on:
+  push:
+    branches: [main, goblin, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: OpenClaw profile
+        default: goblin
+        type: choice
+        options: [goblin, code, fast, recon]
+      command:
+        description: Goblin command to execute
+        default: "full system sync"
+
+jobs:
+  openclaw-mesh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install OpenClaw
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Configure OpenClaw
+        run: |
+          mkdir -p ~/.openclaw
+          echo '${{ secrets.OPENCLAW_CONFIG_JSON }}' > ~/.openclaw/openclaw.json
+
+      - name: Security Audit (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run immune loop check
+        run: |
+          pip install requests cryptography
+          python evez_immune_loop.py --once
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy to Fly.io
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

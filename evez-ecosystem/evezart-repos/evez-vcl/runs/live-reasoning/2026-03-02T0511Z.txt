@@ -1,0 +1,8 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. March 1, 2026. 23 loops running on a 3-hour cycle. 88 FIRE events confirmed. Top gap: gcv_billing_disabled. Next action: Enable billing at console.developers.google.com/billing/enable?project=396530773558. topology decides. watching it build.
+
+tts_id: 21e4f407-ec83-4ccb-9d88-3e03fe7574b3
+run: 19
+provider: jigsawstack
+accent: en-US-female-3
+cdm_status: BLOCKED (api key not in sandbox env)
+timestamp: 2026-03-02T05:11Z

@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  evezos:
+    build: .
+    container_name: evezos
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://evez:password@db:5432/evezdb
+    depends_on:
+      - db
+  db:
+    image: postgres:15-alpine
+    container_name: evezos_db
+    environment:
+      POSTGRES_USER: evez
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: evezdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:

@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "name": "EVEZ-API-GATEWAY-CLAW",
+  "description": "OpenClaw config for evez-api-gateway — connects to full mesh",
+  "gateway": {
+    "port": 18789,
+    "host": "0.0.0.0",
+    "cors": { "origins": ["*"] },
+    "auth": { "type": "bearer", "tokenEnv": "OPENCLAW_GATEWAY_TOKEN" },
+    "websocket": true
+  },
+  "models": {
+    "evez-smart": {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-r1",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "maxTokens": 32768
+    },
+    "evez-fast": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "maxTokens": 8192
+    },
+    "evez-code": {
+      "provider": "groq",
+      "model": "deepseek-r1-distill-llama-70b",
+      "apiKeyEnv": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1"
+    }
+  },
+  "profiles": {
+    "default": { "model": "evez-smart" },
+    "goblin":  { "model": "evez-smart", "systemPrompt": "CLAW GOBLIN. API gateway operator." },
+    "fast":    { "model": "evez-fast" }
+  },
+  "integrations": {
+    "github":     { "tokenEnv": "GITHUB_PAT", "defaultOrg": "EvezArt" },
+    "vercel":     { "tokenEnv": "VERCEL_TOKEN" },
+    "cloudflare": { "apiTokenEnv": "CLOUDFLARE_API_TOKEN", "accountIdEnv": "CLOUDFLARE_ACCOUNT_ID" }
+  }
+}

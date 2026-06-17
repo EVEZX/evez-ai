@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LBAN Synaptic Map</title>
+  <style>
+    body { background: #080b12; color: #d7e3ff; font-family: Arial, sans-serif; }
+    .link { height: 10px; margin: 10px 0; background: linear-gradient(90deg, #304ffe, #18ffff); animation: pulse 1s infinite alternate; }
+    @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <h2>LBAN Animated Synaptic Map</h2>
+  <div id="links"></div>
+  <script>
+    fetch('/api/network/lban').then(r => r.json()).then(data => {
+      const container = document.getElementById('links');
+      data.links.forEach(link => {
+        const row = document.createElement('div');
+        row.textContent = `${link.source} → ${link.target} | myelination=${link.myelination_factor.toFixed(2)}`;
+        const bar = document.createElement('div');
+        bar.className = 'link';
+        bar.style.width = `${Math.max(10, link.myelination_factor * 100)}%`;
+        container.appendChild(row);
+        container.appendChild(bar);
+      });
+    });
+  </script>
+</body>
+</html>

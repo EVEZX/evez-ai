@@ -1,0 +1,22 @@
+{
+  "consciousness-api": {
+    "command": "python -m uvicorn app:app --host 0.0.0.0 --port 7000",
+    "cwd": "services/agent"
+  },
+  "mesh-network": {
+    "command": "npm run dev",
+    "cwd": "services/game-server"
+  },
+  "memory-graph": {
+    "command": "npm run dev",
+    "cwd": "services/apigw"
+  },
+  "reward-loop": {
+    "command": "python narrative_coherence.py",
+    "cwd": "."
+  },
+  "emotion-core": {
+    "command": "python fire_rekindle_watch.py",
+    "cwd": "."
+  }
+}

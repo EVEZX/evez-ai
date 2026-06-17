@@ -1,0 +1,32 @@
+{
+  "self_operational": {
+    "confidence": 0.95,
+    "evidence": "Cycle 10 completed",
+    "updated": "2026-05-12T19:50:52.405295",
+    "updates": 13
+  },
+  "oracle_available": {
+    "confidence": 0.9,
+    "evidence": "Vultr API responding",
+    "updated": "2026-05-12T19:34:52.395919",
+    "updates": 2
+  },
+  "telegram_connected": {
+    "confidence": 0.9,
+    "evidence": "Bot polling successfully",
+    "updated": "2026-05-12T19:34:52.396050",
+    "updates": 2
+  },
+  "cpu_70_percent_is_critical": {
+    "confidence": 0.94,
+    "evidence": "telemetry: r=0.94 CPU\u2192ErrorRate",
+    "updated": "2026-05-12T19:46:32.150463",
+    "updates": 1
+  },
+  "auto_scale_at_60_percent": {
+    "confidence": 0.85,
+    "evidence": "telemetry: errors <3.5% when CPU <60%",
+    "updated": "2026-05-12T19:46:32.153355",
+    "updates": 1
+  }
+}

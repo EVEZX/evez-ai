@@ -1,0 +1,55 @@
+{
+  "map_id": "player-map-001",
+  "nodes": [
+    {
+      "id": "DNS",
+      "type": "lobby"
+    },
+    {
+      "id": "BGP",
+      "type": "lobby"
+    },
+    {
+      "id": "TLS",
+      "type": "lobby"
+    },
+    {
+      "id": "CDN",
+      "type": "lobby"
+    },
+    {
+      "id": "BACKEND",
+      "type": "lobby"
+    }
+  ],
+  "edges": [
+    {
+      "src": "DNS",
+      "dst": "BGP",
+      "label": "name->route"
+    },
+    {
+      "src": "BGP",
+      "dst": "TLS",
+      "label": "reach->identity"
+    },
+    {
+      "src": "TLS",
+      "dst": "CDN",
+      "label": "identity->edge"
+    },
+    {
+      "src": "CDN",
+      "dst": "BACKEND",
+      "label": "edge->origin"
+    }
+  ],
+  "provenance_refs": [
+    {
+      "spine": "EVENT_SPINE.jsonl",
+      "filter": {
+        "tag": "dns"
+      }
+    }
+  ]
+}

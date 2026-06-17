@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "funding_spine_entry",
+  "type": "object",
+  "required": [
+    "ts",
+    "kind",
+    "truth_plane"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "claim",
+        "metric",
+        "assumption",
+        "correction",
+        "asset",
+        "note"
+      ]
+    },
+    "truth_plane": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "final"
+      ]
+    },
+    "claim_id": {
+      "type": "string"
+    },
+    "replaces_claim_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string"
+    },
+    "value": {},
+    "unit": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "segment": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "falsifier": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

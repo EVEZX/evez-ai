@@ -1,0 +1,7 @@
+{
+  "name": "evez-trunk-automation",
+  "version": "1.0.0",
+  "description": "Autonomous branch decomposition and execution. Decompose any objective into branches (recon, skeptic, architect, executor), run them, and compress results back to trunk.",
+  "author": "EVEZ-ART",
+  "tags": ["agent", "automation", "trunk", "branch", "autonomous"]
+}

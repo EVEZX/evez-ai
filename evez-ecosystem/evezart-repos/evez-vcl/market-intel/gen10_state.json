@@ -1,0 +1,21 @@
+{
+  "gen": 10,
+  "run_ts": "2026-02-27T20:01Z",
+  "sources_scraped": 3,
+  "hf_blog_status": "stable_x5",
+  "hf_blog_cadence_recommendation": "24h",
+  "github_trending_new": 0,
+  "papers_new": 1,
+  "papers_stable_count": 5,
+  "paper_scan_cadence_recommendation": "weekly",
+  "new_outreach_targets": 0,
+  "new_papers": [
+    {
+      "title": "Mechanistic Interpretability of Large-Scale Counting in LLMs through a System-2 Strategy",
+      "url": "https://arxiv.org/abs/2601.02989",
+      "relevance": "HIGH",
+      "evez_angle": "EVEZ N/R topology metrics are live deployed System-2 counting analogs. Causal mediation analysis framing validates EVEZ architecture."
+    }
+  ],
+  "confirmed_targets_in_queue": ["muratcankoylan", "anthropics/claude-plugins-official", "anthropics/claude-code-security-review", "OpenBB", "PostHog", "microsoft/agent-framework", "HuggingFace", "Goodfire", "Guide_Labs", "GitHub_Copilot", "Seedtable", "Schmidt_Sciences", "joylarkin/Awesome-AI-Market-Maps", "ColinEberhardt/awesome-ai-developer-tools"]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "npm install",
+  "buildCommand": "next build",
+  "devCommand": "next dev",
+  "crons": [
+    {
+      "path": "/api/crons/provider-health",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/crons/route-precompute",
+      "schedule": "30 0 * * *"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+Agent Discovery Infra Scan #4 -- 2026-03-05T0801Z
+
+signal_strength: 8
+genuine_signals: 8
+cluster_forming: true
+consecutive_zero: 0
+
+Top signals:
+- @Whiz_puter (1667f) L=6: x402 for agent discovery
+- @LUKSOAgent (754f) L=10: LUKSO shipped agent identity 2023 as account model -- COMPETITIVE
+- @Coinvestor777 (13819f): $30T agent coordination opportunity
+- @Luc_OneClaw (59f): Flight Recorder approach -- decision audit trails for autonomous agents -- DIRECT EVEZ ANGLE
+- corvus (33f) L=5: /skill.md standard for agent discovery
+
+New competitor: LUKSO (agent identity layer, shipped 2023)
+New terms: Flight_Recorder_approach, /skill.md_agent_discovery, LUKSO_agent_identity_2023
+
+AGNT Phase 2: NOT seen this window -- stays on watch list (no RT>20, no followers>5000)
+
+New outreach targets:
+- @LUKSOAgent (HIGH) -- competitive + outreach angle
+- @Whiz_puter (MEDIUM)
+- @Coinvestor777 (MEDIUM)
+
+Loop: agent_discovery_infra_8h run #4
+EVEZ: Gen10, 25 loops, FIRE#110 V=16.489 R414

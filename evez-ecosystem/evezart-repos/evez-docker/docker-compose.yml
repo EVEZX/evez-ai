@@ -1,0 +1,194 @@
+# EVEZ-OS Full Stack — Docker Compose
+# Memory: ~1.8GB total on 2GB host (with swap)
+# Each service: 64-128MB limit
+
+services:
+  clawbreak:
+    build: .
+    command: python -m uvicorn services.clawbreak:app --host 0.0.0.0 --port 8080
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8080]
+    ports: ["127.0.0.1:8080:8080"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  vcl:
+    build: .
+    command: python -m uvicorn services.vcl:app --host 0.0.0.0 --port 8081
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8081]
+    ports: ["127.0.0.1:8081:8081"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  disclosure:
+    build: .
+    command: python -m uvicorn services.disclosure:app --host 0.0.0.0 --port 8087
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8087]
+    ports: ["127.0.0.1:8087:8087"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  solvers:
+    build: .
+    command: python -m uvicorn services.solvers:app --host 0.0.0.0 --port 8090
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8090]
+    ports: ["127.0.0.1:8090:8090"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  observatory:
+    build: .
+    command: python -m uvicorn services.observatory:app --host 0.0.0.0 --port 8097
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8097]
+    ports: ["127.0.0.1:8097:8097"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  visualizer:
+    build: .
+    command: python -m uvicorn services.visualizer:app --host 0.0.0.0 --port 8098
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8098]
+    ports: ["127.0.0.1:8098:8098"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  igre:
+    build: .
+    command: python -m uvicorn services.igre:app --host 0.0.0.0 --port 8099
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8099]
+    ports: ["127.0.0.1:8099:8099"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  search-gw:
+    build: .
+    command: python -m uvicorn services.search_gateway:app --host 0.0.0.0 --port 8100
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8100]
+    ports: ["127.0.0.1:8100:8100"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  funding:
+    build: .
+    command: python -m uvicorn services.funding:app --host 0.0.0.0 --port 8101
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8101]
+    ports: ["127.0.0.1:8101:8101"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  unified-gw:
+    build: .
+    command: python -m uvicorn services.unified:app --host 0.0.0.0 --port 8102
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8102]
+    ports: ["127.0.0.1:8102:8102"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  spectral:
+    build: .
+    command: python -m uvicorn services.spectral:app --host 0.0.0.0 --port 8103
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8103]
+    ports: ["127.0.0.1:8103:8103"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  voice-clone:
+    build: .
+    command: python -m uvicorn services.voice_clone:app --host 0.0.0.0 --port 8104
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8104]
+    ports: ["127.0.0.1:8104:8104"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  proxy:
+    build: .
+    command: python -m uvicorn services.proxy:app --host 0.0.0.0 --port 8110
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8110]
+    ports: ["127.0.0.1:8110:8110"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  billing:
+    build: .
+    command: python -m uvicorn services.billing:app --host 0.0.0.0 --port 8111
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8111]
+    ports: ["127.0.0.1:8111:8111"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  intelligence:
+    build: .
+    command: python -m uvicorn services.intelligence:app --host 0.0.0.0 --port 8122
+    mem_limit: 96m
+    cpus: 0.5
+    environment: [PORT=8122]
+    ports: ["127.0.0.1:8122:8122"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  accelerator:
+    build: .
+    command: python -m uvicorn services.accelerator:app --host 0.0.0.0 --port 8123
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8123]
+    ports: ["127.0.0.1:8123:8123"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  sovereign:
+    build: .
+    command: python -m uvicorn services.sovereign:app --host 0.0.0.0 --port 8125
+    mem_limit: 64m
+    cpus: 0.25
+    environment: [PORT=8125]
+    ports: ["127.0.0.1:8125:8125"]
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+  # Infrastructure
+  caddy:
+    image: caddy:2.8.6-alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    mem_limit: 64m
+    cpus: 0.25
+    restart: unless-stopped
+    depends_on:
+      clawbreak: {condition: service_healthy}
+      observatory: {condition: service_healthy}
+    logging: {driver: json-file, options: {max-size: "10m", max-file: "2"}}
+
+volumes:
+  caddy_data:
+  caddy_config:

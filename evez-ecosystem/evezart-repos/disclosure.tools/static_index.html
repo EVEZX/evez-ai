@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>disclosure.tools — UAP Eigenforensics</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a1a; --bg2: #12122a; --bg3: #1a1a3a;
+  --red: #ff4444; --orange: #ff8800; --green: #44ff44; --blue: #4488ff;
+  --text: #e0e0e0; --dim: #666; --border: #333;
+}
+body { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; min-height: 100vh; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+header { text-align: center; padding: 40px 0; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+header h1 { font-size: 2.5em; color: var(--red); letter-spacing: 2px; }
+header p { color: var(--dim); margin-top: 10px; font-size: 0.9em; }
+header .eta { color: var(--orange); font-size: 1.2em; }
+nav { display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+nav button { background: var(--bg3); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.2s; }
+nav button:hover, nav button.active { border-color: var(--red); color: var(--red); background: rgba(255,68,68,0.1); }
+.panel { display: none; }
+.panel.active { display: block; }
+.card { background: var(--bg2); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; border-radius: 4px; }
+.card h2 { color: var(--red); margin-bottom: 15px; font-size: 1.2em; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; color: var(--dim); margin-bottom: 5px; font-size: 0.85em; }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 10px; font-family: inherit; font-size: 0.9em; border-radius: 2px;
+}
+.form-group textarea { min-height: 120px; resize: vertical; }
+button.submit { background: var(--red); color: white; border: none; padding: 12px 30px; cursor: pointer; font-family: inherit; font-size: 1em; font-weight: bold; border-radius: 2px; }
+button.submit:hover { background: #ff6666; }
+.results { background: var(--bg); border: 1px solid var(--border); padding: 20px; margin-top: 20px; border-radius: 2px; white-space: pre-wrap; font-size: 0.85em; overflow-x: auto; max-height: 600px; overflow-y: auto; }
+.metric { display: inline-block; margin-right: 30px; }
+.metric .label { color: var(--dim); font-size: 0.8em; }
+.metric .value { font-size: 1.5em; font-weight: bold; }
+.metric .value.red { color: var(--red); }
+.metric .value.green { color: var(--green); }
+.metric .value.orange { color: var(--orange); }
+.finding { border-left: 3px solid var(--border); padding: 10px 15px; margin: 10px 0; background: rgba(255,68,68,0.05); }
+.finding.critical { border-left-color: var(--red); }
+.finding.high { border-left-color: var(--orange); }
+.finding.moderate { border-left-color: #ffaa00; }
+.finding.low { border-left-color: #888; }
+.finding .severity { font-weight: bold; text-transform: uppercase; font-size: 0.85em; }
+.finding .category { color: var(--dim); font-size: 0.85em; }
+.meme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+.meme-card { background: var(--bg3); border: 1px solid var(--border); padding: 15px; text-align: center; border-radius: 4px; }
+.meme-card .caption { font-size: 0.85em; margin-bottom: 10px; }
+.meme-card svg { max-width: 100%; height: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--dim); font-size: 0.85em; }
+.leaderboard-row { cursor: default; }
+.leaderboard-row:hover { background: rgba(255,255,255,0.02); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.75em; margin: 2px; }
+.badge.gap_closer { background: #44ff4420; color: #44ff44; }
+.badge.foia_veteran { background: #4488ff20; color: #4488ff; }
+.badge.archivist { background: #ff880020; color: #ff8800; }
+.status-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; font-size: 0.85em; }
+.status-bar .live { color: var(--green); }
+#loading { display: none; text-align: center; padding: 40px; color: var(--dim); }
+.demo-notice { text-align: center; color: var(--orange); padding: 10px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🔍 disclosure.tools</h1>
+    <p class="eta">η* ≈ 0.03 — Universal Incompleteness Constant</p>
+    <p>UAP/FOIA Eigenforensics — Negative eigenvalues = missing records</p>
+  </header>
+
+  <nav>
+    <button class="active" onclick="showPanel('analyze')">Analyze</button>
+    <button onclick="showPanel('upload')">Upload</button>
+    <button onclick="showPanel('graph')">Reference Graph</button>
+    <button onclick="showPanel('memes')">Meme Factory</button>
+    <button onclick="showPanel('leaderboard')">Leaderboard</button>
+  </nav>
+
+  <div class="status-bar">
+    <span id="status">Service: <span class="live">● ONLINE</span></span>
+    <span id="version">v2.0.0</span>
+  </div>
+
+  <!-- Analyze Panel -->
+  <div id="panel-analyze" class="panel active">
+    <div class="card">
+      <h2>📊 Text Analysis</h2>
+      <p class="demo-notice">Enter text directly or use the Upload tab for files</p>
+      <div class="form-group">
+        <label>Document Text</label>
+        <textarea id="analyze-text" placeholder="Paste FOIA/UAP document text here...">UAP incident report redacted Naval aviation encounter classified sighting. Department of Defense statement on UAP classification top secret. FOIA release AARO historical records review partially redacted. National Archives document release partial gaps in records. Pentagon task force historical analysis missing volumes 1-9.</textarea>
+      </div>
+      <div class="form-group">
+        <label>Document Title</label>
+        <input id="analyze-title" value="Test FOIA Corpus" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input id="analyze-date" value="2024-06" />
+      </div>
+      <button class="submit" onclick="analyzeText()">Run Eigenforensics</button>
+    </div>
+    <div id="analyze-results"></div>
+    <div id="loading"><p>⏳ Running spectral decomposition...</p></div>
+  </div>
+
+  <!-- Upload Panel -->
+  <div id="panel-upload" class="panel">
+    <div class="card">
+      <h2>📁 File Upload</h2>
+      <p style="margin-bottom:15px;color:var(--dim);">Upload JSON, PDF, or TXT files for analysis</p>
+      <div class="form-group">
+        <label>File</label>
+        <input type="file" id="upload-file" accept=".json,.pdf,.txt,.md" />
+      </div>
+      <button class="submit" onclick="uploadFile()">Analyze File</button>
+    </div>
+    <div id="upload-results"></div>
+  </div>
+
+  <!-- Graph Panel -->
+  <div id="panel-graph" class="panel">
+    <div class="card">
+      <h2>🔗 Reference Graph</h2>
+      <p style="margin-bottom:15px;color:var(--dim);">Build cross-document reference graphs</p>
+      <div class="form-group">
+        <label>JSON Corpus File</label>
+        <input type="file" id="graph-file" accept=".json" />
+      </div>
+      <button class="submit" onclick="buildGraph()">Build Graph</button>
+    </div>
+    <div id="graph-results"></div>
+  </div>
+
+  <!-- Memes Panel -->
+  <div id="panel-memes" class="panel">
+    <div class="card">
+      <h2>🎭 Meme Factory</h2>
+      <div class="form-group">
+        <label>Caption</label>
+        <input id="meme-caption" value="AARO missing records again" />
+      </div>
+      <div class="form-group">
+        <label>Template</label>
+        <select id="meme-template">
+          <option value="redacted">Heavy Redaction (Impact)</option>
+          <option value="missing_records">Missing Records (Retro)</option>
+          <option value="eigenvalue">Negative Eigenvalue (Modern)</option>
+          <option value="gap_detected">Gap Detected (Impact)</option>
+          <option value="37pct">37% Theorem (Modern)</option>
+          <option value="classification">Classification Shadow (Impact)</option>
+          <option value="phi">Phi Too Low (Modern)</option>
+          <option value="foia">FOIA Response (Retro)</option>
+        </select>
+      </div>
+      <button class="submit" onclick="generateMeme()">Generate Meme</button>
+    </div>
+    <div id="meme-results" class="meme-grid"></div>
+  </div>
+
+  <!-- Leaderboard Panel -->
+  <div id="panel-leaderboard" class="panel">
+    <div class="card">
+      <h2>🏆 FOIA Researcher Leaderboard</h2>
+      <div class="form-group">
+        <label>Register New Researcher</label>
+        <input id="researcher-name" placeholder="Your name" />
+      </div>
+      <button class="submit" onclick="registerResearcher()">Register</button>
+    </div>
+    <div id="leaderboard-results" class="card" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin;
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'leaderboard') loadLeaderboard();
+}
+
+async function analyzeText() {
+  const text = document.getElementById('analyze-text').value;
+  const title = document.getElementById('analyze-title').value;
+  const date = document.getElementById('analyze-date').value;
+  const el = document.getElementById('analyze-results');
+  const loading = document.getElementById('loading');
+  
+  loading.style.display = 'block';
+  el.innerHTML = '';
+  
+  try {
+    const form = new FormData();
+    form.append('text', text);
+    form.append('title', title);
+    form.append('date', date);
+    
+    const resp = await fetch(API + '/api/v1/analyze/text', { method: 'POST', body: form });
+    const data = await resp.json();
+    loading.style.display = 'none';
+    renderAnalysis(data, el);
+  } catch (e) {
+    loading.style.display = 'none';
+    el.innerHTML = '<div class="card"><p style="color:var(--red)">Error: ' + e.message + '</p></div>';
+  }
+}
+
+async function uploadFile() {
+  const file = document.getElementById('upload-file').files[0];
+  if (!file) return alert('Select a file first');
+  
+  const el = document.getElementById('upload-results');
+  el.innerHTML = '<div class="card"><p>⏳ Analyzing...</p></div>';
+  
+  try {
+    const form = new FormData();
+    form.append('file', file);
+    
+    const resp = await fetch(API + '/api/v1/analyze', { method: 'POST', body: form });
+    const data = await resp.json();
+    renderAnalysis(data, el);
+  } catch (e) {
+    el.innerHTML = '<div class="card"><p style="color:var(--red)">Error: ' + e.message + '</p></div>';
+  }
+}
+
+function renderAnalysis(data, el) {
+  const spec = data.spectral || data;
+  const report = data.report || {};
+  const memes = data.memes || [];
+  const findings = report.findings || [];
+  
+  let html = '<div class="card"><h2>📊 Spectral Analysis</h2>';
+  html += '<div class="metric"><div class="label">Φ (Fidelity)</div><div class="value ' + (spec.phi > 0.7 ? 'green' : 'red') + '">' + spec.phi + '</div></div>';
+  html += '<div class="metric"><div class="label">η* (Incompleteness)</div><div class="value ' + (spec.eta_star > 0.3 ? 'red' : 'orange') + '">' + spec.eta_star + '</div></div>';
+  html += '<div class="metric"><div class="label">Negative Eigenvalues</div><div class="value red">' + spec.negative_eigenvalues + '</div></div>';
+  html += '<div class="metric"><div class="label">Dominant Negative</div><div class="value orange">' + spec.dominant_negative + '</div></div>';
+  html += '</div>';
+  
+  if (report.summary) {
+    html += '<div class="card"><h2>📋 Report</h2><p>' + report.summary + '</p></div>';
+  }
+  
+  if (findings.length > 0) {
+    html += '<div class="card"><h2>🔎 Gap Findings (' + findings.length + ')</h2>';
+    findings.forEach(f => {
+      html += '<div class="finding ' + f.severity + '">';
+      html += '<span class="severity">' + f.severity + '</span> ';
+      html += '<span class="category">[' + f.category + ']</span> ';
+      html += f.location + ' — λ = ' + f.eigenvalue + ' (confidence: ' + (f.confidence * 100).toFixed(0) + '%)';
+      if (f.meme_caption) html += '<br><em style="color:var(--dim)">🎭 ' + f.meme_caption + '</em>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  
+  if (data.report_text) {
+    html += '<div class="card"><h2>📝 Full Report</h2><div class="results">' + data.report_text + '</div></div>';
+  }
+  
+  if (memes.length > 0) {
+    html += '<div class="card"><h2>🎭 Auto-Generated Memes</h2>';
+    memes.forEach(m => {
+      html += '<p style="margin:5px 0">💀 ' + m.caption + '</p>';
+    });
+    html += '</div>';
+  }
+  
+  el.innerHTML = html;
+}
+
+async function buildGraph() {
+  const file = document.getElementById('graph-file').files[0];
+  if (!file) return alert('Select a file');
+  const el = document.getElementById('graph-results');
+  el.innerHTML = '<div class="card"><p>⏳ Building graph...</p></div>';
+  
+  try {
+    const form = new FormData();
+    form.append('file', file);
+    const resp = await fetch(API + '/api/v1/graph', { method: 'POST', body: form });
+    const data = await resp.json();
+    
+    let html = '<div class="card"><h2>🔗 Reference Graph</h2>';
+    html += '<div class="metric"><div class="label">Document Nodes</div><div class="value">' + (data.document_graph?.n_nodes || 0) + '</div></div>';
+    html += '<div class="metric"><div class="label">Section Nodes</div><div class="value">' + (data.section_graph?.n_nodes || 0) + '</div></div>';
+    html += '<div class="metric"><div class="label">Orphan Nodes</div><div class="value orange">' + (data.orphan_nodes?.length || 0) + '</div></div>';
+    html += '<div class="metric"><div class="label">Dangling Refs</div><div class="value red">' + (data.dangling_refs?.length || 0) + '</div></div>';
+    html += '</div>';
+    if (data.eigenvalues) {
+      html += '<div class="card"><h2>📊 Eigenvalues</h2><div class="results">' + JSON.stringify(data.eigenvalues, null, 2) + '</div></div>';
+    }
+    el.innerHTML = html;
+  } catch (e) {
+    el.innerHTML = '<div class="card"><p style="color:var(--red)">Error: ' + e.message + '</p></div>';
+  }
+}
+
+async function generateMeme() {
+  const caption = document.getElementById('meme-caption').value;
+  const template = document.getElementById('meme-template').value;
+  const el = document.getElementById('meme-results');
+  
+  try {
+    const form = new FormData();
+    form.append('caption', caption);
+    form.append('template_id', template);
+    const resp = await fetch(API + '/api/v1/memes/generate', { method: 'POST', body: form });
+    const data = await resp.json();
+    
+    const card = document.createElement('div');
+    card.className = 'meme-card';
+    card.innerHTML = '<div class="caption">' + data.caption + '</div>' +
+      '<p style="font-size:0.8em;color:var(--dim)">ID: ' + data.meme_id + ' | Template: ' + data.template_id + '</p>';
+    el.prepend(card);
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+async function loadLeaderboard() {
+  try {
+    const resp = await fetch(API + '/api/v1/leaderboard');
+    const data = await resp.json();
+    const el = document.getElementById('leaderboard-results');
+    el.style.display = 'block';
+    
+    let html = '<h2>🏆 Rankings</h2>';
+    if (data.leaderboard.length === 0) {
+      html += '<p style="color:var(--dim)">No researchers yet. Register above!</p>';
+    } else {
+      html += '<table><tr><th>#</th><th>Name</th><th>Score</th><th>Gaps Closed</th><th>FOIA Requests</th><th>Badges</th></tr>';
+      data.leaderboard.forEach(r => {
+        const medals = ['🥇','🥈','🥉'];
+        const rank = r.rank <= 3 ? medals[r.rank-1] : '#' + r.rank;
+        html += '<tr class="leaderboard-row"><td>' + rank + '</td><td>' + r.name + '</td><td>' + r.score + '</td><td>' + r.gaps_closed + '</td><td>' + r.foia_requests + '</td><td>' + r.badges.map(b => '<span class="badge ' + b + '">' + b + '</span>').join('') + '</td></tr>';
+      });
+      html += '</table>';
+    }
+    
+    const stats = data.stats || {};
+    html += '<p style="margin-top:15px;color:var(--dim);font-size:0.85em">Total researchers: ' + stats.total_researchers + ' | Gaps closed: ' + stats.total_gaps_closed + ' | FOIA requests: ' + stats.total_requests + '</p>';
+    el.innerHTML = html;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function registerResearcher() {
+  const name = document.getElementById('researcher-name').value;
+  if (!name) return alert('Enter a name');
+  
+  try {
+    const resp = await fetch(API + '/api/v1/leaderboard/register?name=' + encodeURIComponent(name), { method: 'POST' });
+    const data = await resp.json();
+    alert('Registered! ID: ' + data.id);
+    document.getElementById('researcher-name').value = '';
+    loadLeaderboard();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+// Check health on load
+fetch(API + '/health').then(r => r.json()).then(d => {
+  document.getElementById('status').innerHTML = 'Service: <span class="live">● ONLINE</span> — ' + d.service + ' v' + d.version;
+  document.getElementById('version').textContent = 'v' + d.version;
+}).catch(() => {
+  document.getElementById('status').innerHTML = 'Service: <span style="color:var(--red)">● OFFLINE</span>';
+});
+</script>
+</body>
+</html>

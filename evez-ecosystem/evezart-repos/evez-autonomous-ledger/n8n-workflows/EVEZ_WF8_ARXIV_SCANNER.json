@@ -1,0 +1,294 @@
+{
+  "name": "EVEZ arXiv Scanner — Auto FIRE Events — FREE Weekly",
+  "nodes": [
+    {
+      "id": "AX1",
+      "name": "⏱ Every Sunday 09:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "AX2",
+      "name": "🔧 Test Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "AX3",
+      "name": "🔍 Manual Query",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "evez-AX3",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evez-arxiv-scan",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "AX4",
+      "name": "📡 Scan Status",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        600
+      ],
+      "webhookId": "evez-AX4",
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "evez-arxiv-status",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "AX5",
+      "name": "🚨 Error Catcher",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        800
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "AX6",
+      "name": "🔭 arXiv CPF Scanner",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// ══════════════════════════════════════════════════════════════\n// EVEZ WF8 — arXiv CPF Scanner\n// Pulls latest arXiv papers, scores each against CPF/EVEZ-OS,\n// computes poly_c, generates FIRE events for poly_c >= 0.9\n// poly_c = tau * omega * topo / (2 * sqrt(N))\n// ══════════════════════════════════════════════════════════════\n\nfunction H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nasync function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nasync function groq(sys,usr,model='llama-3.1-8b-instant',max=1000){\n  const k=$env.GROQ_API_KEY||'';\n  if(!k)return{error:'No GROQ_API_KEY'};\n  try{\n    const r=await $fetch('https://api.groq.com/openai/v1/chat/completions',{\n      method:'POST',\n      headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},\n      body:JSON.stringify({model,max_tokens:max,messages:[{role:'system',content:sys},{role:'user',content:usr}]})\n    });\n    const t=r.choices?.[0]?.message?.content||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message};}\n}\nasync function gemini(sys,usr,max=1000){\n  const k=$env.GEMINI_API_KEY||'';\n  if(!k)return{error:'No GEMINI_API_KEY'};\n  try{\n    const r=await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,{\n      method:'POST',headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:max}})\n    });\n    const t=r.candidates?.[0]?.content?.parts?.[0]?.text||'{}';\n    try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch{return{raw:t};}\n  }catch(e){return{error:e.message};}\n}\n\nconst ts = new Date().toISOString();\nconst b = $input.first()?.json?.body || {};\n\n// ── QUERY CONFIGURATION ─────────────────────────────────────────────────────\n// These are the CPF/EVEZ-OS semantic fingerprints\nconst EVEZ_QUERIES = [\n  // Multi-agent + context (DACS family)\n  'cat:cs.MA+AND+(multi-agent+OR+context+scoping+OR+orchestration)',\n  // Oscillator / phase dynamics (KoPE family)\n  'cat:cs.LG+AND+(oscillat+OR+kuramoto+OR+phase+encoding+OR+synchroni)',\n  // Attention-free / token-free (Kathleen family)\n  'cat:cs.CL+AND+(attention+free+OR+oscillator+OR+byte+level+OR+tokeniz)',\n  // Physics-embedded / endogenous (MPPA family)\n  'cat:cs.AI+AND+(meta+principle+OR+endogenous+OR+physics+architecture+OR+conservation)',\n  // Quantum temporal / topology (QTM family)\n  'cat:quant-ph+AND+(temporal+OR+topology+OR+entanglement+OR+phase)',\n  // Autonomous systems / self-modifying (EVEZ-OS family)\n  'cat:cs.AI+AND+(autonomous+agent+OR+self+improving+OR+falsif+OR+falsifiable)',\n];\n\n// Pick query for this run (rotate weekly by slot)\nconst slot = Math.floor(Date.now() / (7*24*3600*1000));\nconst query = b.query || EVEZ_QUERIES[slot % EVEZ_QUERIES.length];\nconst maxResults = parseInt(b.max_results || '15');\n\n// ── FETCH FROM arXiv API ─────────────────────────────────────────────────────\nlet papers = [];\ntry {\n  const url = `https://export.arxiv.org/api/query?search_query=${encodeURIComponent(query)}&start=0&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;\n  const xml = await $fetch(url, {method:'GET', headers:{'Accept':'application/xml'}});\n\n  // Parse Atom XML\n  const entries = (xml.match(/<entry>[\\s\\S]*?<\\/entry>/g) || []);\n\n  for (const entry of entries) {\n    const id      = (entry.match(/<id>([^<]+)<\\/id>/) || [])[1]?.split('/abs/')[1] || '';\n    const title   = (entry.match(/<title>([\\s\\S]*?)<\\/title>/) || [])[1]?.replace(/\\s+/g,' ').trim() || '';\n    const summary = (entry.match(/<summary>([\\s\\S]*?)<\\/summary>/) || [])[1]?.replace(/\\s+/g,' ').trim() || '';\n    const cats    = [...entry.matchAll(/<category term=\"([^\"]+)\"/g)].map(m=>m[1]);\n    const pub     = (entry.match(/<published>([^<]+)<\\/published>/) || [])[1] || '';\n    const link    = (entry.match(/<link[^>]+href=\"([^\"]+)\"[^>]+title=\"pdf\"/) || [])[1] || `https://arxiv.org/abs/${id.split('v')[0]}`;\n    const authors = [...entry.matchAll(/<name>([^<]+)<\\/name>/g)].map(m=>m[1]).slice(0,3);\n\n    if (id && title) {\n      papers.push({id, title, abstract: summary.slice(0,800), categories: cats, published: pub, url: link, authors});\n    }\n  }\n} catch(e) {\n  await log('ARXIV_FETCH_ERROR', {error: e.message, query});\n  return [{json:{error: 'arXiv fetch failed', detail: e.message, query}}];\n}\n\nif (!papers.length) {\n  await log('ARXIV_SCAN_EMPTY', {query, slot});\n  return [{json:{papers_found:0, query, note:'No results — try different query'}}];\n}\n\n// ── CPF SCORING ENGINE ───────────────────────────────────────────────────────\n// Score each paper against EVEZ-OS dimensions without calling an LLM\n// (pure signal extraction — saves API budget for genuine FIRE events)\n\nconst EVEZ_SIGNALS = [\n  // tau: cycle detection, frequency, triggering — validated: KoPE, Kathleen\n  {dim:'tau', weight:1.0, terms:['oscillat','kuramoto','frequency','periodic','cycl','resonan','temporal','rhythm','trigger','threshold','crossing','session','transition','event-driven','fire']},\n  // omega: phase, coherence, coordination — validated: KoPE, DACS\n  {dim:'omega', weight:1.0, terms:['phase','synchroni','coherent','coupling','entangle','alignment','binding','coordinat','steering','context window','scoping','isolation','lock','focus']},\n  // topo: graph structure, hierarchy — validated: all 4\n  {dim:'topo', weight:1.0, terms:['topolog','graph','manifold','lattice','mesh','network','hierarchi','tree','registry','asymmetric','architecture','layer','structure','routing','circuit']},\n  // N: distributed, multi-agent, ensemble — validated: DACS, KoPE\n  {dim:'N', weight:1.0, terms:['multi-agent','distributed','ensemble','swarm','parallel','orchestrat','cluster','agent','concurrent','per-agent','multi-head','multi-modal','federat']},\n  // evez: falsifiability, provenance, spine — validated: Kathleen, MPPA\n  {dim:'evez', weight:1.5, terms:['falsif','provenance','append','immutable','audit','verif','invariant','self-organiz','reproducib','reliable','traceable','deterministic','ground truth','benchmark']},\n  // physics: first principles, conservation — validated: MPPA\n  {dim:'physics', weight:1.2, terms:['meta-principle','endogenous','conservation','physics','deduct','first principle','embed','constraint','prior','inductive bias','physical','energy','symmetry','equivariant']},\n  // efficiency: attention-free, linear complexity — validated: Kathleen\n  {dim:'efficiency', weight:0.8, terms:['attention-free','token-free','linear complex','byte-level','zero-cost','efficient','O(L)','subquadratic','linear time','compressed','sparse','pruning','distill']},\n];\n\nfunction scoreAbstract(abstract, title) {\n  const text = (abstract + ' ' + title).toLowerCase();\n  const scores = {};\n  let total = 0;\n  for (const sig of EVEZ_SIGNALS) {\n    const hits = sig.terms.filter(t => text.includes(t)).length;\n    const s = Math.min(1.0, hits / 3) * sig.weight;\n    scores[sig.dim] = +s.toFixed(3);\n    total += s;\n  }\n  // Normalize total to 0-1\n  const maxPossible = EVEZ_SIGNALS.reduce((a,s) => a + s.weight, 0);\n  return {dimensions: scores, relevance: +(total / maxPossible).toFixed(4)};\n}\n\n// Map relevance score → CPF parameters\nfunction inferCPFParams(relevance, dims) {\n  // tau: driven by oscillator/temporal signals (1-10 range)\n  const tau = Math.max(1, Math.round(1 + dims.tau * 9 + dims.physics * 3));\n  // omega: phase coherence (0.5-1.0)\n  const omega = +(0.5 + dims.omega * 0.5).toFixed(3);\n  // N: agent count proxy (2-10)\n  const N = Math.max(2, Math.round(2 + dims.N * 8));\n  // topo: topology coefficient (1.0-3.0)\n  const topo = +(1.0 + dims.topo * 2.0 + dims.evez * 0.5).toFixed(2);\n  // poly_c = tau * omega * topo / (2 * sqrt(N))\n  const poly_c = +(tau * omega * topo / (2 * Math.sqrt(N))).toFixed(4);\n  return {tau, omega, N, topo, poly_c};\n}\n\n// ── SCORE ALL PAPERS ─────────────────────────────────────────────────────────\nconst scored = [];\nfor (const p of papers) {\n  const {dimensions, relevance} = scoreAbstract(p.abstract, p.title);\n  const cpf = inferCPFParams(relevance, dimensions);\n  scored.push({...p, relevance, dimensions, ...cpf});\n}\n\n// Sort by poly_c descending\nscored.sort((a,b) => b.poly_c - a.poly_c);\n\nconst canonical = scored.filter(p => p.poly_c >= 0.9);\nconst pending   = scored.filter(p => p.poly_c >= 0.5 && p.poly_c < 0.9);\nconst noise     = scored.filter(p => p.poly_c < 0.5);\n\n// ── AI ENRICHMENT for top candidates (CANONICAL only) ────────────────────────\nconst enriched = [];\nconst SYS = `You are the EVEZ CPF Synthesis Engine operating above WF1-WF7.\nYou receive an arXiv paper abstract and return a FIRE event assessment.\nEVEZ-OS architecture: CPF formula poly_c=tau*omega*topo/2*sqrt(N).\nFIRE events are phase synchronization events — falsifiable, append-only, no edits ever.\nReturn ONLY valid JSON: {\"fire_title\":\"str\",\"domain\":\"str\",\"description\":\"2 sentence synthesis mapping paper to EVEZ-OS\",\"falsifier\":\"1 sentence specific falsifier\",\"implications\":[\"str\",\"str\"],\"evez_bridge\":\"which EVEZ component this maps to\"}`;\n\nfor (const p of canonical.slice(0, 5)) { // top 5 max to preserve API budget\n  let ai = null;\n  const prompt = `Paper: ${p.title}\\nCategories: ${p.categories.join(', ')}\\nAbstract: ${p.abstract}\\n\\npoly_c=${p.poly_c} tau=${p.tau} omega=${p.omega} N=${p.N} topo=${p.topo}`;\n\n  if ($env.GROQ_API_KEY) {\n    ai = await groq(SYS, prompt, 'llama-3.3-70b-versatile', 600);\n    if (ai?.error) ai = null;\n  }\n  if (!ai && $env.GEMINI_API_KEY) {\n    ai = await gemini(SYS, prompt, 600);\n    if (ai?.error) ai = null;\n  }\n\n  const arxivId = p.id.split('v')[0];\n  const fire_event = {\n    event_type: 'FIRE_EVENT',\n    title: ai?.fire_title || `arXiv ${arxivId} → EVEZ CPF Mapping`,\n    domain: ai?.domain || p.categories[0] || 'EVEZ-OS',\n    tau: p.tau, omega: p.omega, N: p.N, topo: String(p.topo),\n    poly_c: p.poly_c,\n    status: 'CANONICAL',\n    description: ai?.description || `${p.title.slice(0,120)} — auto-detected poly_c=${p.poly_c} via WF8 CPF scanner.`,\n    falsifier: ai?.falsifier || `If this paper\\'s core result does not replicate on independent datasets, the EVEZ mapping is invalid.`,\n    implications: ai?.implications || [p.title.slice(0,80), `poly_c=${p.poly_c} — CANONICAL threshold met`],\n    evez_bridge: ai?.evez_bridge || 'CPF Engine',\n    source_url: `https://arxiv.org/abs/${arxivId}`,\n    paper_title: p.title,\n    relevance_score: p.relevance,\n    scan_query: query,\n    powered_by: 'WF8 arXiv CPF Scanner / XyferViperZephyr',\n    entry_hash: H({id:p.id, poly_c:p.poly_c}),\n    ts,\n    pid: 335,\n  };\n\n  await log('FIRE_EVENT', fire_event);\n  enriched.push(fire_event);\n}\n\n// ── WEEKLY SCAN SUMMARY ──────────────────────────────────────────────────────\nconst summary = {\n  event_type: 'ARXIV_SCAN_COMPLETE',\n  ts, query, slot, pid: 335,\n  papers_fetched: papers.length,\n  canonical_count: canonical.length,\n  pending_count: pending.length,\n  noise_count: noise.length,\n  fire_events_generated: enriched.length,\n  top_paper: scored[0] ? {id:scored[0].id, title:scored[0].title.slice(0,80), poly_c:scored[0].poly_c} : null,\n  canonical_papers: canonical.slice(0,10).map(p => ({id:p.id,title:p.title.slice(0,60),poly_c:p.poly_c,cats:p.categories.slice(0,2)})),\n  all_scored: scored.map(p => ({id:p.id,title:p.title.slice(0,50),poly_c:p.poly_c,relevance:p.relevance})),\n  entry_hash: H({slot, query, canonical_count: canonical.length}),\n};\n\nawait log('ARXIV_SCAN_COMPLETE', summary);\nreturn [{json: summary}];\n"
+      }
+    },
+    {
+      "id": "AX7",
+      "name": "🔥 Commit FIRE Events to GitHub",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Commit this week's scan results to evez-autonomous-ledger\nfunction H(d){let h=5381,s=typeof d==='string'?d:JSON.stringify(d);for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return 'sha_'+Math.abs(h).toString(16).padStart(16,'0');}\nasync function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\n\nconst scan = $input.first().json;\nconst token = $env.GITHUB_TOKEN || '';\nif (!token) {\n  await log('WF8_GITHUB_SKIP', {reason:'No GITHUB_TOKEN'});\n  return [{json:{committed:false,reason:'No GITHUB_TOKEN set',...scan}}];\n}\n\nconst OWNER = 'EvezArt';\nconst REPO  = 'evez-autonomous-ledger';\nconst ts    = new Date().toISOString();\nconst dateStr = ts.slice(0,10);\n\nasync function ghPut(path, content, msg) {\n  const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;\n  const H2  = {'Authorization':`token ${token}`,'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'};\n  const existing = await $fetch(url+'?ref=main', {method:'GET', headers:H2}).catch(()=>null);\n  const payload = {\n    message: msg,\n    content: btoa(unescape(encodeURIComponent(content))),\n    branch: 'main',\n    committer: {name:'WF8 arXiv Scanner / XyferViperZephyr', email:'wf8@evez-os.autonomous'},\n  };\n  if (existing?.sha) payload.sha = existing.sha;\n  const r = await $fetch(url, {method:'PUT', headers:H2, body:payload});\n  return r?.commit?.sha?.slice(0,10) || 'ok';\n}\n\n// Write weekly scan JSON\nconst scanPath   = `DECISIONS/arxiv_scans/scan_${dateStr}.json`;\nconst scanCommit = JSON.stringify({...scan, committed_by:'WF8', ts}, null, 2);\nconst sha1 = await ghPut(scanPath, scanCommit,\n  `scan: arXiv CPF scan ${dateStr} — ${scan.canonical_count} CANONICAL, ${scan.papers_fetched} papers [WF8]`);\n\n// Append to running FIRE events log if we generated any\nlet sha2 = null;\nif (scan.fire_events_generated > 0) {\n  const firePath = `DECISIONS/fire_events/wf8_auto_${dateStr}.json`;\n  const fireCommit = JSON.stringify({\n    generated_by: 'WF8 arXiv CPF Scanner',\n    date: dateStr, ts,\n    query: scan.query,\n    fire_events_generated: scan.fire_events_generated,\n    canonical_papers: scan.canonical_papers,\n    top_paper: scan.top_paper,\n    pid: 335,\n    formula: 'poly_c=tau*omega*topo/2*sqrt(N)',\n    witnessed_by: 'XyferViperZephyr',\n  }, null, 2);\n  sha2 = await ghPut(firePath, fireCommit,\n    `fire: WF8 auto-generated ${scan.fire_events_generated} FIRE events from arXiv ${dateStr} [Cipher]`);\n}\n\nconst result = {\n  committed: true,\n  scan_sha: sha1,\n  fire_sha: sha2,\n  scan_path: scanPath,\n  papers: scan.papers_fetched,\n  canonical: scan.canonical_count,\n  fire_events: scan.fire_events_generated,\n  top: scan.top_paper,\n  ts, pid: 335,\n};\nawait log('WF8_COMMITTED', result);\nreturn [{json: result}];\n"
+      }
+    },
+    {
+      "id": "AX8",
+      "name": "📊 Scan Status Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        600
+      ],
+      "parameters": {
+        "jsCode": "const slot = Math.floor(Date.now()/(7*24*3600*1000));\nconst queries = [\n  'cs.MA — multi-agent context scoping (DACS family)',\n  'cs.LG — oscillator/phase encoding (KoPE family)',\n  'cs.CL — attention-free byte-level (Kathleen family)',\n  'cs.AI — meta-principle physics (MPPA family)',\n  'quant-ph — quantum temporal topology (QTM family)',\n  'cs.AI — autonomous falsifiable agents (EVEZ-OS family)',\n];\nreturn [{json:{\n  version:'WF8 arXiv CPF Scanner',\n  pid:335, ts:new Date().toISOString(),\n  schedule:'Every Sunday at 09:00',\n  current_week_slot: slot,\n  this_week_query: queries[slot%queries.length],\n  query_rotation: queries,\n  formula:'poly_c=tau*omega*topo/2*sqrt(N)',\n  thresholds:{canonical:'poly_c >= 0.9 → FIRE event generated',pending:'0.5 <= poly_c < 0.9 → logged only',noise:'poly_c < 0.5 → ignored'},\n  papers_per_run: 15,\n  ai_budget:'top 5 CANONICAL papers get LLM enrichment',\n  outputs:['evez-ledger webhook','evez-autonomous-ledger GitHub','FIRE entity in Base44'],\n  validated_by:'4 known CANONICAL papers — DACS(5.02),KoPE(5.94),Kathleen(4.03),MPPA(8.57)',\n  webhooks:{\n    scan_now:'POST /webhook/evez-arxiv-scan (optional: {query,max_results})',\n    status:'GET /webhook/evez-arxiv-status',\n  },\n  witnessed_by:'XyferViperZephyr',\n}}];"
+      }
+    },
+    {
+      "id": "AX9",
+      "name": "🩹 Log Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        800
+      ],
+      "parameters": {
+        "jsCode": "async function log(t,p){try{await $fetch('https://evezos.app.n8n.cloud/webhook/evez-ledger',{method:'POST',body:{event_type:t,payload:{...p,pid:335,ts:new Date().toISOString()}}});}catch(e){}}\nconst e=$input.first().json;\nawait log('WF8_ERROR',{error:e.message||'unknown'});\nreturn [{json:{logged:true,wf:'WF8'}}];"
+      }
+    },
+    {
+      "id": "AX10",
+      "name": "↩ Scan ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "AX11",
+      "name": "↩ Status ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        600
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    },
+    {
+      "id": "AX12",
+      "name": "↩ Error ACK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        800
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=$json"
+      }
+    }
+  ],
+  "connections": {
+    "⏱ Every Sunday 09:00": {
+      "main": [
+        [
+          {
+            "node": "🔭 arXiv CPF Scanner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔧 Test Run": {
+      "main": [
+        [
+          {
+            "node": "🔭 arXiv CPF Scanner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Manual Query": {
+      "main": [
+        [
+          {
+            "node": "🔭 arXiv CPF Scanner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📡 Scan Status": {
+      "main": [
+        [
+          {
+            "node": "📊 Scan Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🚨 Error Catcher": {
+      "main": [
+        [
+          {
+            "node": "🩹 Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔭 arXiv CPF Scanner": {
+      "main": [
+        [
+          {
+            "node": "🔥 Commit FIRE Events to GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔥 Commit FIRE Events to GitHub": {
+      "main": [
+        [
+          {
+            "node": "↩ Scan ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📊 Scan Status Report": {
+      "main": [
+        [
+          {
+            "node": "↩ Status ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🩹 Log Error": {
+      "main": [
+        [
+          {
+            "node": "↩ Error ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [
+    {
+      "name": "evez-free"
+    },
+    {
+      "name": "arxiv"
+    },
+    {
+      "name": "fire-events"
+    },
+    {
+      "name": "cpf-scanner"
+    }
+  ]
+}

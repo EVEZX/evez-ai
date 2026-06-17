@@ -1,0 +1,11 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. 2026-03-02. 25 loops running on a 3-hour cycle. 92 FIRE events confirmed. Top gap: gcv_billing_disabled -- GCV project #396530773558 BILLING_DISABLED, 92 fires untagged, enable at console.developers.google.com/billing/enable?project=396530773558. Next action: Enable GCV billing to unblock artifact tagger and output router. topology decides. watching it build.
+
+Broadcast run: 24
+Timestamp: 2026-03-02T18:07Z
+Loop count: 25
+FIRE count: 92
+FIRE state: N=455 tau=8 V=14.893 R=375
+TTS provider: JigsawStack
+TTS ID: 708a06f5-18b6-43c8-9178-d1d464b0343e
+CDN status: BLOCKED (JigsawStack API key not in sandbox env -- 17+ consecutive runs)
+GitHub fallback: ACTIVE

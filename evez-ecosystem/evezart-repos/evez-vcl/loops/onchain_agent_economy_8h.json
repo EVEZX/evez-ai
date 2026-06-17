@@ -1,0 +1,14 @@
+{
+  "loop_id": "onchain_agent_economy_8h",
+  "title": "Onchain Agent Economy Monitor — AION/ERC-8004/AI-pays-AI cluster",
+  "trigger": "cron: every 8h (0 */8 * * *), America/Los_Angeles",
+  "action_summary": "Twitter scan AION/ERC-8004 discourse, Groq synthesis, update TWITTER_SIGNALS.md + OUTREACH_QUEUE.md + COMPETITIVE_INTEL.md, patch gist",
+  "spawned_at": "2026-02-24T00:00Z",
+  "spawn_reason": "ERC-8004 agent identity standard emerging as infrastructure layer; AION Solana agent economy gaining traction",
+  "last_run": "2026-03-03T16:03Z",
+  "scan_count": 11,
+  "status": "active",
+  "new_terms_this_run": ["Accountable_Custody", "agent_passports", "agent-rank", "x402sday", "multi-chain_ERC-8004", "usehiremind_HR_agent"],
+  "top_signals_this_run": ["@BITCOINTRAPPER 173k L=97", "@Hercules_Defi 46k L=55", "@LyvoCrypto 47k L=51 BST ERC-8004 LAUNCH"],
+  "evez_positioning": "Accountable Custody = what EVEZ 414-round behavioral record already proves. agent passports = EVEZ rounds are the pages."
+}

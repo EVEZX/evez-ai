@@ -1,0 +1,17 @@
+name = "evez-os-autonomizer"
+main = "src/worker.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[durable_objects.bindings]]
+name = "EVEZ_AGENT"
+class_name = "EvezAutonomizerAgent"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["EvezAutonomizerAgent"]
+
+[vars]
+EVEZ_VERSION = "1.1.0"
+CANONICAL_TRUTH_PLANE = "CANONICAL"
+REPO = "https://github.com/EvezArt/evez-os"

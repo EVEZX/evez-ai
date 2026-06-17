@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  jubilee:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jubilee-service
+    ports:
+      - "8000:8000"
+    environment:
+      - JUBILEE_MODE=${JUBILEE_MODE:-qsvc-ibm}
+      - JUBILEE_TOUCH_ID=${JUBILEE_TOUCH_ID:-8e5526c72cebad3c09e4158399eaab06}
+      - JUBILEE_HMAC_SECRET=${JUBILEE_HMAC_SECRET}
+      - QISKIT_IBM_TOKEN=${QISKIT_IBM_TOKEN:-}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - jubilee-network
+
+networks:
+  jubilee-network:
+    driver: bridge
+
+volumes:
+  jubilee-data:
+  jubilee-logs:

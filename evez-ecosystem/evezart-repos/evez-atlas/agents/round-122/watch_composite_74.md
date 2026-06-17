@@ -1,0 +1,1 @@
+R122 CANONICAL | truth_plane=CANONICAL | module=watch_composite_74.py | N=74=2x37 tau=2 poly_c=0.353372 NO FIRE V_global=3.176001 CEILING x40

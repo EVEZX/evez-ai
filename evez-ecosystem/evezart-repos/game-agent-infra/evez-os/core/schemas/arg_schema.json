@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ARGSpineEntry",
+  "type": "object",
+  "required": [
+    "ts",
+    "kind",
+    "lobby",
+    "severity",
+    "tag",
+    "msg",
+    "truth_plane"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "drop",
+        "broadcast",
+        "artifact",
+        "puzzle",
+        "verdict"
+      ]
+    },
+    "lobby": {
+      "type": "string",
+      "enum": [
+        "DNS",
+        "BGP",
+        "TLS",
+        "CDN",
+        "BACKEND",
+        "MIXED",
+        "QUANTUM",
+        "FSC",
+        "SELF"
+      ]
+    },
+    "severity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "tag": {
+      "type": "string"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "truth_plane": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "final"
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

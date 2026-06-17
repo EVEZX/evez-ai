@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAES — Agent Ecology | LORD Dashboard</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --panel: #111118;
+      --border: #1e1e2e;
+      --accent: #7c3aed;
+      --fire: #f97316;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; min-height: 100vh; }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 1rem; color: var(--accent); letter-spacing: 2px; }
+    header span { font-size: 0.7rem; color: var(--muted); }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.75rem; margin-left: 16px; }
+    nav a:hover { color: var(--text); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 20px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card h2 { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .stat { font-size: 1.6rem; font-weight: bold; }
+    .stat.green { color: var(--green); }
+    .stat.fire  { color: var(--fire); }
+    .stat.accent { color: var(--accent); }
+    .badge {
+      display: inline-block; font-size: 0.65rem; padding: 2px 8px;
+      border-radius: 12px; margin-left: 6px;
+    }
+    .badge.player { background: #14532d; color: var(--green); }
+    .badge.ai     { background: #1e1b4b; color: #818cf8; }
+    .badge.npc    { background: #1c1917; color: var(--muted); }
+    .agent-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.75rem;
+    }
+    .agent-row:last-child { border-bottom: none; }
+    .bar-wrap { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 3px; transition: width 0.5s; }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    #log {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 0 20px 20px;
+      padding: 12px;
+      height: 180px;
+      overflow-y: auto;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    #log .entry { padding: 2px 0; }
+    #log .entry .ts { color: var(--accent); margin-right: 6px; }
+    #log .entry .fire-tag { color: var(--fire); }
+    #log .entry .agent-tag { color: #818cf8; }
+    .controls { padding: 0 20px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      background: var(--accent); color: white; border: none;
+      padding: 8px 16px; border-radius: 6px; font-family: monospace;
+      font-size: 0.75rem; cursor: pointer;
+    }
+    button:hover { opacity: 0.85; }
+    button.danger { background: var(--red); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="pulse"></div>
+  <h1>MAES — AGENT ECOLOGY</h1>
+  <span id="last-update">syncing...</span>
+  <nav>
+    <a href="index.html">← LORD</a>
+    <a href="live.html">LIVE</a>
+  </nav>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <h2>Total Agents</h2>
+    <div class="stat accent" id="total-agents">—</div>
+  </div>
+  <div class="card">
+    <h2>Verified Players</h2>
+    <div class="stat green" id="player-count">—</div>
+  </div>
+  <div class="card">
+    <h2>FIRE Events (session)</h2>
+    <div class="stat fire" id="fire-count">—</div>
+  </div>
+  <div class="card">
+    <h2>MAES Status</h2>
+    <div class="stat" id="maes-status" style="font-size:0.9rem;color:var(--muted)">connecting...</div>
+  </div>
+</div>
+
+<div class="card" style="margin:0 20px 16px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px;">
+  <h2 style="font-size:0.7rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Live Agent Roster</h2>
+  <div id="agent-list"><div style="color:var(--muted);font-size:0.75rem;">No agents yet.</div></div>
+</div>
+
+<div id="log"><div class="entry"><span class="ts">[boot]</span> MAES dashboard initialised</div></div>
+
+<div class="controls">
+  <button onclick="spawnAgent('npc')">+ Spawn NPC</button>
+  <button onclick="spawnAgent('ai')">+ Spawn AI Agent</button>
+  <button onclick="refreshAll()">↺ Refresh</button>
+</div>
+
+<script>
+const MAES = window.MAES_URL || 'https://maes.railway.app';
+let fireCount = 0;
+let lastEventPos = 0;
+
+function log(msg, cls = '') {
+  const el = document.getElementById('log');
+  const d = document.createElement('div');
+  d.className = 'entry';
+  d.innerHTML = `<span class="ts">[${new Date().toLocaleTimeString()}]</span>${cls ? `<span class="${cls}">${msg}</span>` : msg}`;
+  el.prepend(d);
+  if (el.children.length > 200) el.lastChild.remove();
+}
+
+async function api(path, opts = {}) {
+  try {
+    const r = await fetch(MAES + path, { headers: {'Content-Type':'application/json'}, ...opts });
+    return r.ok ? r.json() : null;
+  } catch { return null; }
+}
+
+async function refreshAll() {
+  const health = await api('/health');
+  document.getElementById('maes-status').textContent = health ? '🟢 ONLINE' : '🔴 OFFLINE';
+  document.getElementById('maes-status').style.color = health ? 'var(--green)' : 'var(--red)';
+
+  const data = await api('/agents');
+  if (!data) return;
+
+  document.getElementById('total-agents').textContent = data.count;
+  const players = data.agents.filter(a => a.playerStatus?.isPlayer).length;
+  document.getElementById('player-count').textContent = players;
+
+  const list = document.getElementById('agent-list');
+  if (!data.agents.length) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:0.75rem;">No agents yet.</div>';
+    return;
+  }
+  list.innerHTML = data.agents.map(a => {
+    const s = a.playerStatus;
+    const conf = s ? Math.round(s.confidence * 100) : 0;
+    const badge = s?.isPlayer ? 'player' : (a.type === 'ai' ? 'ai' : 'npc');
+    const label = s?.isPlayer ? 'PLAYER' : a.type.toUpperCase();
+    const color = s?.isPlayer ? 'var(--green)' : (a.type === 'ai' ? '#818cf8' : 'var(--muted)');
+    return `<div class="agent-row">
+      <span style="color:${color}">${a.id.slice(0,8)}…</span>
+      <span class="badge ${badge}">${label}</span>
+      <span style="color:var(--muted)">${a.eventCount} ev</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${conf}%;background:${color}"></div></div>
+      <span style="color:var(--muted);font-size:0.65rem">${conf}%</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('last-update').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+
+async function pollEvents() {
+  const data = await api(`/events?from=${lastEventPos}`);
+  if (!data?.events?.length) return;
+  lastEventPos = data.events[data.events.length - 1].position + 1;
+  for (const ev of data.events) {
+    fireCount++;
+    document.getElementById('fire-count').textContent = fireCount;
+    log(` ${ev.streamId} → <b>${ev.eventType}</b>`, ev.eventType.startsWith('fire.') ? 'fire-tag' : 'agent-tag');
+  }
+}
+
+async function spawnAgent(type) {
+  const r = await api('/agents/spawn', { method: 'POST', body: JSON.stringify({ type }) });
+  if (r) { log(` spawned ${type} agent ${r.agentId.slice(0,8)}…`); refreshAll(); }
+}
+
+refreshAll();
+setInterval(refreshAll, 6000);
+setInterval(pollEvents, 3000);
+</script>
+</body>
+</html>

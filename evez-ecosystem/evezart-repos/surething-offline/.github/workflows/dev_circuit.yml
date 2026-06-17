@@ -1,0 +1,67 @@
+name: EVEZ Development Circuit
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: 'Task ID (DCT-001 to DCT-005) or all'
+        required: true
+        default: 'DCT-001'
+      model_override:
+        description: 'groq | openai | groq/compound'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (no execute)'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: '0 */2 * * *'
+
+jobs:
+  circuit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Run circuit
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+          AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+          EVEZ_SPINE_URL: https://evez-operator.vercel.app
+        run: |
+          cd dev_circuit
+          TASK="${{ github.event.inputs.task_id || 'all' }}"
+          DRY="${{ github.event.inputs.dry_run || 'false' }}"
+          if [ "$TASK" = "all" ]; then
+            python circuit_runner.py --all $([ "$DRY" = "true" ] && echo --dry-run)
+          else
+            python circuit_runner.py --task "$TASK" $([ "$DRY" = "true" ] && echo --dry-run)
+          fi
+      - name: Spine witness
+        if: always()
+        run: |
+          curl -sf -X POST https://evez-operator.vercel.app/spine/event \
+            -H 'Content-Type: application/json' \
+            -d '{"event_type":"transformation","lane":"empirical","payload":{"station":"circuit_complete","workflow_run":"${{ github.run_id }}","task_id":"${{ github.event.inputs.task_id }}"}}' || true
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: circuit-${{ github.run_id }}
+          path: /tmp/circuit_result.json
+          if-no-files-found: ignore
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'circuit: auto-generated from run ${{ github.run_id }}'
+          skip_dirty_check: false

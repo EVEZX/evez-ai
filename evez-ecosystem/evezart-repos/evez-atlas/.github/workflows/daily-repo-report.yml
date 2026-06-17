@@ -1,0 +1,48 @@
+name: Daily repository report
+
+# Fetches all repositories for EvezArt and generates JSON/CSV reports.
+# To access private repos, add REPORT_TOKEN secret (PAT with 'repo' scope).
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Daily at 8am UTC
+  workflow_dispatch:
+
+jobs:
+  report:
+    name: Generate Repository Report
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_TOKEN: ${{ secrets.REPORT_TOKEN }}
+        run: |
+          echo "Generating daily repo report for EvezArt..."
+          TOKEN=${REPORT_TOKEN:-$GITHUB_TOKEN}
+          curl -s -H "Authorization: token $TOKEN" \
+            "https://api.github.com/users/EvezArt/repos?per_page=100&type=all" \
+            | python3 -c "
+import sys, json, csv
+repos = json.load(sys.stdin)
+print(f'Total repos: {len(repos)}')
+with open('repo-report.json','w') as f: json.dump(repos,f,indent=2)
+with open('repo-report.csv','w',newline='') as f:
+    w = csv.writer(f)
+    w.writerow(['name','private','stars','forks','updated_at','language'])
+    for r in repos:
+        w.writerow([r['name'],r['private'],r['stargazers_count'],r['forks_count'],r['updated_at'],r.get('language','')])
+print('Reports written: repo-report.json, repo-report.csv')
+"
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-repo-report
+          path: |
+            repo-report.json
+            repo-report.csv
+          retention-days: 30

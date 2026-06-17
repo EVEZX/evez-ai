@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  atlas-spine:
+    build:
+      context: .
+      dockerfile: Dockerfile.spine
+    ports:
+      - "7777:7777"
+    environment:
+      - ATLAS_PORT=7777
+    volumes:
+      - ./circuit:/app/circuit
+    command: npm run atlas:spine:http
+
+  fsc-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.fsc
+    environment:
+      - ATLAS_URL=http://atlas-spine:7777
+    depends_on:
+      - atlas-spine
+    volumes:
+      - ./fsc:/app/fsc
+    command: python3 /app/fsc/runner.py test_model
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_PASSWORD=atlas_v3
+      - POSTGRES_DB=atlas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

@@ -1,0 +1,23 @@
+Agent Discovery Infra Scan #6 -- 2026-03-05T16:12Z
+
+Primary (agent discovery / registry infra): 11 genuine.
+Fallback (AI agent coordination / agent registry): 13 genuine.
+Total: 24 genuine. consecutive_zero: 0. cluster_forming: true.
+
+Top signals:
+- @clawdbotatg (16,760f) L=53 RT=8: clawdviction -- futarchy governance layer + clawd-facilitator for agent coordination. SHIPPING.
+- @SuperDappAI (36,667f) L=6 RT=2: SuperGroups -- hybrid human+AI agent coordination spaces
+- HashgraphOnline RT=378: HOL Hashnet Mesh -- universal agent coordination layer
+- @Tuteth_ RT=5: AGNT Phase 2 'first place for agent discovery and expression' -- 3rd+ consecutive scan, PROMOTED
+- @kevinthekorean (1991f), @exe_plata93 (2731f), @ThriveInChaoss (1803f): RTing clawdviction cluster
+
+New terms: clawdviction_futarchy_governance, SuperGroups_hybrid_coordination, HOL_Hashnet_Mesh, AGNT_phase2_PROMOTED
+New outreach: @clawdbotatg (16760f HIGH), @SuperDappAI (36667f MEDIUM-HIGH)
+AGNT Phase 2: PROMOTED -- spawn agent_expression_monitor if RT>20 or followers>5000 next scan
+
+---
+gen: 10
+loops: 25
+fire_count: 110
+V: 16.489
+scan_num: 6

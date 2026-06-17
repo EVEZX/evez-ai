@@ -1,0 +1,8 @@
+{
+  "run": 1,
+  "ts": "2026-03-06T08:07Z",
+  "query": "AI agent reputation OR agent rating system OR tamper-proof agent -is:retweet lang:en",
+  "genuine_count": 0,
+  "consecutive_zero": 0,
+  "note": "Twitter rate-limited this session. Scan skipped gracefully. consecutive_zero NOT incremented (first skip due to rate limit, not genuine zero signal)."
+}

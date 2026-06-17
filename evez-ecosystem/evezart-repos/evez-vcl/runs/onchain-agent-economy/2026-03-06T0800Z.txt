@@ -1,0 +1,19 @@
+Onchain Agent Economy Scan #16 -- 2026-03-06T08:00Z
+
+Query A (AION agent economy): 0 results. consecutive_zero_A=2
+Query B (ERC-8004 autonomous agent): 0 results. consecutive_zero_B=1
+Fallback (AI agent economy OR autonomous AI economy): 20 results, ~3 genuine
+
+Genuine signals (fallback):
+- IMP=2632 L=6 reply=5: 'entering the AI Agent economy where autonomous agents analyze markets, execute strategies' -- mainstream framing
+- @RialoHQ/@SCALE cluster: agent economy structure (work + proof + payment = SCALE)
+- @SatishMeena90 cluster replies
+
+New terms: SCALE_work_proof_payment_stack, AI_agent_economy_mainstream_framing
+Narrative shift: AI agent economy entering mainstream discourse (IMP=2632 signal)
+consecutive_zero_A: 2 (AION-specific quiet, approach retirement at 3)
+consecutive_zero_B: 1 (ERC-8004-specific quiet, monitor)
+
+EVEZ angle: The AI agent economy needs agents whose decisions are on record before they execute transactions. 414 rounds = the behavioral record the agent economy is missing.
+
+Note: FIRE #120 confirmed (R478, N=558=2x3^2x31, V=17.479) -- ground truth from EVEZ666 tweets. SYSTEM_STATE.json fire_count=110 is stale.

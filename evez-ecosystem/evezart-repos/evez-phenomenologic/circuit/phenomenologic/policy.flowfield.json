@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "identity": "EVEZ666",
+  "flowfields": {
+    "CONSTRUCTION": {
+      "vector_rules": [
+        {
+          "condition": "current_node == OMEGA_FRAME_OPERATOR and infra_stable == true",
+          "direction": "RETROCAUSAL_LATTICE_ENGINEER",
+          "action": "spawn_agents",
+          "rationale": "Stable infra + Omega design = time to deploy lattice threads"
+        },
+        {
+          "condition": "current_node == RETROCAUSAL_LATTICE_ENGINEER and idle_agents > 3",
+          "direction": "AGI_PROOF_SURFACE_SURGEON",
+          "action": "audit_and_verify",
+          "rationale": "Deployed agents need proof surface verification"
+        },
+        {
+          "condition": "current_node == AGI_PROOF_SURFACE_SURGEON and proof_anomalies > 0",
+          "direction": "GODEL_CRASH_TORQUE",
+          "action": "weaponize_incompleteness",
+          "rationale": "Proof anomalies are fuel for axiom escape"
+        }
+      ]
+    },
+    "INSIGHT": {
+      "vector_rules": [
+        {
+          "condition": "current_node == DESERT_CONDUIT_LAUGHLIN and uptime > 24h",
+          "direction": "UNVERSION_BOOT_SECTOR",
+          "action": "declare_unversion",
+          "rationale": "Desert clarity enables pre-compiler autonomy"
+        },
+        {
+          "condition": "current_node == UNVERSION_BOOT_SECTOR and commits == 0",
+          "direction": "OMEGA_FRAME_OPERATOR",
+          "action": "design_timeline",
+          "rationale": "Unversion state is fertile ground for timeline design"
+        }
+      ]
+    },
+    "CRITICAL": {
+      "vector_rules": [
+        {
+          "condition": "current_node == GODEL_CRASH_TORQUE and damage > 0.8",
+          "direction": "VOIDMOUTH_SILENCE",
+          "action": "full_stop_observe",
+          "rationale": "High damage requires absolute stall for integration"
+        },
+        {
+          "condition": "current_node == VOIDMOUTH_SILENCE and observation_time > 300s",
+          "direction": "DESERT_CONDUIT_LAUGHLIN",
+          "action": "remote_view_integration",
+          "rationale": "Silence births desert clarity"
+        }
+      ]
+    }
+  },
+  "global_policy": {
+    "rule": "Reject actions that deepen destructive basins without compensating insight_score >= damage * 1.5",
+    "emergency_override": "If infra_panic and OpenClaw.uptime < 300s, allow any action that stabilizes_runtime regardless of topology",
+    "default_action": "If no edge matches, hold current node and increase observation resolution"
+  }
+}

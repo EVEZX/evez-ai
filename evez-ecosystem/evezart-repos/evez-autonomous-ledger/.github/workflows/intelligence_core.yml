@@ -1,0 +1,45 @@
+name: Autonomous Intelligence Core
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  intelligence-cycle:
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Intelligence Core
+        env:
+          REPO_OWNER: EvezArt
+        run: python agents/intelligence/__main__.py
+
+      - name: Commit intelligence results
+        run: |
+          git config user.name "evez-intelligence[bot]"
+          git config user.email "intelligence@evez.bot"
+          git add intelligence/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🧠 intelligence: cycle $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi

@@ -1,0 +1,425 @@
+[
+  {
+    "module": "incoming_files/evez_lattice_v02/retrocausal_spine.py",
+    "product_name": "EVEZ Retrocausal Spine",
+    "price": 75.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.5,
+        "verdict": "PASS"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.45,
+        "verdict": "WARN"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-8D027B31: EVEZ Retrocausal Spine \u2014 poly_c 1.0",
+      "tau": 2.85,
+      "omega": 0.79,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Retrocausal Spine (incoming_files/evez_lattice_v02/retrocausal_spine.py) at poly_c=1.0. 4\u00d7PASS, 1\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Retrocausal Spine produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 8d027b31e5e55825",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "8d027b31e5e55825",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "8d027b31e5e55825",
+    "timestamp": "2026-04-12T11:47:20.453661+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/agi_proof_surface.py",
+    "product_name": "EVEZ AGI Proof Surface",
+    "price": 60.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.3,
+        "verdict": "WARN"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-9DB9B035: EVEZ AGI Proof Surface \u2014 poly_c 1.0",
+      "tau": 2.78,
+      "omega": 0.86,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ AGI Proof Surface (incoming_files/evez_lattice_v02/agi_proof_surface.py) at poly_c=1.0. 4\u00d7PASS, 1\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ AGI Proof Surface produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 9db9b0353cb02a0e",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "9db9b0353cb02a0e",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "9db9b0353cb02a0e",
+    "timestamp": "2026-04-12T11:47:20.573124+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/evez_cluster.py",
+    "product_name": "EVEZ Cluster Daemon Bus",
+    "price": 100.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.7,
+        "verdict": "PASS"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-283CEE6A: EVEZ Cluster Daemon Bus \u2014 poly_c 1.0",
+      "tau": 4.08,
+      "omega": 0.94,
+      "topo": 3.676,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Cluster Daemon Bus (incoming_files/evez_lattice_v02/evez_cluster.py) at poly_c=1.0. 5\u00d7PASS, 0\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Cluster Daemon Bus produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 283cee6a7731fab2",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "283cee6a7731fab2",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "283cee6a7731fab2",
+    "timestamp": "2026-04-12T11:47:20.693491+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/fire_approach.py",
+    "product_name": "EVEZ Fire Approach Engine",
+    "price": 50.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.6,
+        "verdict": "PASS"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.7,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-26A90572: EVEZ Fire Approach Engine \u2014 poly_c 1.0",
+      "tau": 2.87,
+      "omega": 0.86,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Fire Approach Engine (incoming_files/evez_lattice_v02/fire_approach.py) at poly_c=1.0. 5\u00d7PASS, 0\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Fire Approach Engine produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 26a90572a17a6fcd",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "26a90572a17a6fcd",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "26a90572a17a6fcd",
+    "timestamp": "2026-04-12T11:47:20.810052+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/fire_rekindle_watch.py",
+    "product_name": "EVEZ Rekindle Watch",
+    "price": 50.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.7,
+        "verdict": "PASS"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.75,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-3F668D1F: EVEZ Rekindle Watch \u2014 poly_c 1.0",
+      "tau": 3.34,
+      "omega": 0.89,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Rekindle Watch (incoming_files/evez_lattice_v02/fire_rekindle_watch.py) at poly_c=1.0. 5\u00d7PASS, 0\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Rekindle Watch produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 3f668d1f0587a597",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "3f668d1f0587a597",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "3f668d1f0587a597",
+    "timestamp": "2026-04-12T11:47:20.929436+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/resonance_stability.py",
+    "product_name": "EVEZ Resonance Stability PID",
+    "price": 45.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.4,
+        "verdict": "WARN"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.45,
+        "verdict": "WARN"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-221F92CB: EVEZ Resonance Stability PID \u2014 poly_c 1.0",
+      "tau": 3.23,
+      "omega": 0.77,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Resonance Stability PID (incoming_files/evez_lattice_v02/resonance_stability.py) at poly_c=1.0. 3\u00d7PASS, 2\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Resonance Stability PID produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 221f92cbe49bcd9a",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "221f92cbe49bcd9a",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "221f92cbe49bcd9a",
+    "timestamp": "2026-04-12T11:47:21.097634+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/sensory_tts.py",
+    "product_name": "EVEZ Sensory TTS Manifold",
+    "price": 40.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 0.5,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.4,
+        "verdict": "WARN"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.7,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-2D2C300C: EVEZ Sensory TTS Manifold \u2014 poly_c 1.0",
+      "tau": 3.54,
+      "omega": 0.72,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Sensory TTS Manifold (incoming_files/evez_lattice_v02/sensory_tts.py) at poly_c=1.0. 4\u00d7PASS, 1\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Sensory TTS Manifold produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 2d2c300c5c4a9df6",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "2d2c300c5c4a9df6",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "2d2c300c5c4a9df6",
+    "timestamp": "2026-04-12T11:47:21.223230+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/aegis_integration.py",
+    "product_name": "EVEZ AEGIS Threat Engine",
+    "price": 90.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.4,
+        "verdict": "WARN"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.45,
+        "verdict": "WARN"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-79252651: EVEZ AEGIS Threat Engine \u2014 poly_c 1.0",
+      "tau": 4.23,
+      "omega": 0.77,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ AEGIS Threat Engine (incoming_files/evez_lattice_v02/aegis_integration.py) at poly_c=1.0. 3\u00d7PASS, 2\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ AEGIS Threat Engine produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: 79252651b5311904",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "79252651b5311904",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "79252651b5311904",
+    "timestamp": "2026-04-12T11:47:21.360221+00:00"
+  },
+  {
+    "module": "incoming_files/evez_lattice_v02/stripe_integration.py",
+    "product_name": "EVEZ Stripe Revenue Bridge",
+    "price": 55.0,
+    "poly_c": 1.0,
+    "status": "CANONICAL",
+    "sell_ready": true,
+    "rotations": {
+      "time_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "state_shift": {
+        "score": 0.8,
+        "verdict": "PASS"
+      },
+      "frame_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "adversarial_shift": {
+        "score": 1.0,
+        "verdict": "PASS"
+      },
+      "identity_shift": {
+        "score": 0.7,
+        "verdict": "PASS"
+      }
+    },
+    "fire_event": {
+      "title": "OKTOKLAW-FBAA7B9A: EVEZ Stripe Revenue Bridge \u2014 poly_c 1.0",
+      "tau": 2.97,
+      "omega": 0.9,
+      "topo": 4.0,
+      "N": 5,
+      "poly_c": 1.0,
+      "domain": "technical",
+      "status": "CANONICAL",
+      "description": "OKTOKLAW Breakaway Shell certified EVEZ Stripe Revenue Bridge (incoming_files/evez_lattice_v02/stripe_integration.py) at poly_c=1.0. 5\u00d7PASS, 0\u00d7WARN, 0\u00d7FAIL across 5 Invariance Battery rotations.",
+      "falsifier": "If EVEZ Stripe Revenue Bridge produces incorrect output when deployed with its stated dependencies, reclassify to THEATRICAL. Hash: fbaa7b9aa36ee5a2",
+      "powered_by": "OKTOKLAW + CIPHER",
+      "hash": "fbaa7b9aa36ee5a2",
+      "source_url": "https://github.com/EvezArt/evez-autonomous-ledger"
+    },
+    "hash": "fbaa7b9aa36ee5a2",
+    "timestamp": "2026-04-12T11:47:21.471652+00:00"
+  }
+]

@@ -1,0 +1,40 @@
+name: FIRE Cascade Receiver
+on:
+  repository_dispatch:
+    types: [fire_cascade]
+  workflow_dispatch:
+jobs:
+  fire-received:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: pip install requests anthropic python-dateutil feedparser
+      - name: Log FIRE event
+        run: |
+          echo "FIRE CASCADE RECEIVED from ${{ github.event.client_payload.source || 'manual' }}"
+          echo '{"ts":"'$(date -u +%FT%TZ)'","event":"fire_cascade","source":"'${{ github.event.client_payload.source || 'manual' }}'"}' >> spine/fire_events.jsonl
+          mkdir -p spine
+      - name: Run CIPHER Cycle
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ABLY_KEY: ${{ secrets.ABLY_KEY }}
+          REPO_OWNER: EvezArt
+        run: python agents/cycle.py
+      - name: Commit results
+        run: |
+          git config user.name "EVEZ-OS CIPHER"
+          git config user.email "cipher@evez666.local"
+          git add -A
+          git diff --staged --quiet || git commit -m "fire-cascade: CIPHER cycle $(date -u +%FT%TZ)"
+          git push || true

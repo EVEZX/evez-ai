@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circuit B: Spectral Body</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #0ff; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #0ff;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            z-index: 100;
+        }
+        .btn {
+            background: rgba(0,255,255,0.2);
+            border: 1px solid #0ff;
+            color: #0ff;
+            padding: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        .btn:active { background: rgba(0,255,255,0.5); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="hud">
+        <div style="font-weight:bold;">CIRCUIT B: SPECTRAL BODY</div>
+        <div id="path-info">Path: <span id="current-path">B1</span></div>
+        <div id="freq-info"></div>
+    </div>
+    <div id="controls">
+        <button class="btn" onclick="prevPath()">◄ PREV PATH</button>
+        <button class="btn" onclick="nextPath()">NEXT PATH ►</button>
+        <button class="btn" onclick="goToNavigator()">☰ NAVIGATOR</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        const sensors = {
+            accel: { x: [], y: [], z: [] },
+            gyro: { alpha: [], beta: [], gamma: [] }
+        };
+
+        const FFT_SIZE = 64;
+        let currentPathIndex = 0;
+        const paths = ['B1_SPECTRUM_FOREST', 'B2_CYLINDER_SPECTRUM', 'B3_HARMONIC_RADAR'];
+
+        let scene, camera, renderer;
+        let spectrumBars = [];
+        let cylinders = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            if (renderer) {
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 10, 20);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setClearColor(0x000000, 1);
+
+            const ambient = new THREE.AmbientLight(0x202020);
+            scene.add(ambient);
+            const light = new THREE.DirectionalLight(0x00ffff, 1);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+        }
+
+        function initSensors() {
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', (e) => {
+                    if (e.accelerationIncludingGravity) {
+                        sensors.accel.x.push(e.accelerationIncludingGravity.x || 0);
+                        sensors.accel.y.push(e.accelerationIncludingGravity.y || 0);
+                        sensors.accel.z.push(e.accelerationIncludingGravity.z || 0);
+                        if (sensors.accel.x.length > FFT_SIZE) {
+                            sensors.accel.x.shift();
+                            sensors.accel.y.shift();
+                            sensors.accel.z.shift();
+                        }
+                    }
+                });
+            }
+
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    sensors.gyro.alpha.push(e.alpha || 0);
+                    sensors.gyro.beta.push(e.beta || 0);
+                    sensors.gyro.gamma.push(e.gamma || 0);
+                    if (sensors.gyro.alpha.length > FFT_SIZE) {
+                        sensors.gyro.alpha.shift();
+                        sensors.gyro.beta.shift();
+                        sensors.gyro.gamma.shift();
+                    }
+                });
+            }
+        }
+
+        // Simple FFT (magnitude only, approximation)
+        function computeSpectrum(data) {
+            if (data.length < FFT_SIZE) return new Array(FFT_SIZE/2).fill(0);
+
+            const spectrum = [];
+            for (let k = 0; k < FFT_SIZE / 2; k++) {
+                let real = 0, imag = 0;
+                for (let n = 0; n < FFT_SIZE; n++) {
+                    const angle = -2 * Math.PI * k * n / FFT_SIZE;
+                    real += data[n] * Math.cos(angle);
+                    imag += data[n] * Math.sin(angle);
+                }
+                spectrum.push(Math.sqrt(real * real + imag * imag) / FFT_SIZE);
+            }
+            return spectrum;
+        }
+
+        // PATH B1: 3D SPECTRUM FOREST
+        function renderSpectrumForest() {
+            if (!spectrumBars.length) buildSpectrumBars();
+
+            const axes = [
+                {data: sensors.accel.x, color: 0xff0000, z: -4},
+                {data: sensors.accel.y, color: 0x00ff00, z: -2},
+                {data: sensors.accel.z, color: 0x0000ff, z: 0},
+                {data: sensors.gyro.alpha, color: 0xffff00, z: 2},
+                {data: sensors.gyro.beta, color: 0xff00ff, z: 4},
+                {data: sensors.gyro.gamma, color: 0x00ffff, z: 6}
+            ];
+
+            axes.forEach((axis, axisIdx) => {
+                const spectrum = computeSpectrum(axis.data);
+                spectrum.forEach((mag, freqIdx) => {
+                    const barIdx = axisIdx * (FFT_SIZE/2) + freqIdx;
+                    if (spectrumBars[barIdx]) {
+                        spectrumBars[barIdx].scale.y = mag * 5 + 0.1;
+                        spectrumBars[barIdx].material.color.setHex(axis.color);
+                    }
+                });
+            });
+
+            camera.position.x = Math.sin(Date.now() * 0.0005) * 15;
+            camera.position.y = 10 + Math.cos(Date.now() * 0.0003) * 5;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function buildSpectrumBars() {
+            for (let axis = 0; axis < 6; axis++) {
+                for (let freq = 0; freq < FFT_SIZE/2; freq++) {
+                    const geometry = new THREE.BoxGeometry(0.3, 1, 0.3);
+                    const material = new THREE.MeshPhongMaterial({color: 0x00ffff});
+                    const bar = new THREE.Mesh(geometry, material);
+                    bar.position.x = (freq - FFT_SIZE/4) * 0.5;
+                    bar.position.z = (axis - 2.5) * 2;
+                    bar.position.y = 0.5;
+                    scene.add(bar);
+                    spectrumBars.push(bar);
+                }
+            }
+        }
+
+        // PATH B2: ROTATING CYLINDER SPECTRUM
+        function renderCylinderSpectrum() {
+            if (!cylinders.length) buildCylinders();
+
+            const axes = [
+                {data: sensors.accel.x, cylinder: cylinders[0]},
+                {data: sensors.accel.y, cylinder: cylinders[1]},
+                {data: sensors.accel.z, cylinder: cylinders[2]},
+                {data: sensors.gyro.alpha, cylinder: cylinders[3]},
+                {data: sensors.gyro.beta, cylinder: cylinders[4]},
+                {data: sensors.gyro.gamma, cylinder: cylinders[5]}
+            ];
+
+            axes.forEach(axis => {
+                const spectrum = computeSpectrum(axis.data);
+                axis.cylinder.rotation.y += 0.01;
+
+                const positions = axis.cylinder.geometry.attributes.position;
+                for (let i = 0; i < positions.count; i++) {
+                    const freqIdx = Math.floor((i / positions.count) * spectrum.length);
+                    const mag = spectrum[freqIdx] || 0;
+                    const radius = 2 + mag * 2;
+                    const angle = (i / positions.count) * Math.PI * 2;
+                    positions.setX(i, Math.cos(angle) * radius);
+                    positions.setZ(i, Math.sin(angle) * radius);
+                }
+                positions.needsUpdate = true;
+            });
+
+            camera.position.y = 10 + Math.sin(Date.now() * 0.001) * 5;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        function buildCylinders() {
+            const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff];
+            for (let i = 0; i < 6; i++) {
+                const geometry = new THREE.CylinderGeometry(2, 2, 2, 32, 1, true);
+                const material = new THREE.MeshPhongMaterial({
+                    color: colors[i],
+                    side: THREE.DoubleSide,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.6
+                });
+                const cylinder = new THREE.Mesh(geometry, material);
+                cylinder.position.y = (i - 2.5) * 3;
+                scene.add(cylinder);
+                cylinders.push(cylinder);
+            }
+        }
+
+        // PATH B3: HARMONIC RADAR
+        function renderHarmonicRadar() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+            const maxRadius = Math.min(width, height) * 0.4;
+
+            // Radar circles
+            ctx.strokeStyle = 'rgba(0,255,255,0.3)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, maxRadius * i / 3, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Compute combined spectrum
+            const allData = [
+                ...sensors.accel.x, 
+                ...sensors.accel.y, 
+                ...sensors.accel.z
+            ];
+            const spectrum = computeSpectrum(allData);
+
+            // Plot spectrum as polar
+            ctx.strokeStyle = '#0ff';
+            ctx.fillStyle = 'rgba(0,255,255,0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            spectrum.forEach((mag, i) => {
+                const angle = (i / spectrum.length) * Math.PI * 2;
+                const radius = mag * maxRadius * 2;
+                const x = cx + Math.cos(angle) * radius;
+                const y = cy + Math.sin(angle) * radius;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Sweep line
+            const sweepAngle = (Date.now() * 0.002) % (Math.PI * 2);
+            ctx.strokeStyle = '#ff0';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(
+                cx + Math.cos(sweepAngle) * maxRadius,
+                cy + Math.sin(sweepAngle) * maxRadius
+            );
+            ctx.stroke();
+        }
+
+        function render() {
+            const path = paths[currentPathIndex];
+
+            if (path === 'B1_SPECTRUM_FOREST') {
+                if (!renderer) initThree();
+                renderSpectrumForest();
+            } else if (path === 'B2_CYLINDER_SPECTRUM') {
+                if (!renderer) initThree();
+                renderCylinderSpectrum();
+            } else if (path === 'B3_HARMONIC_RADAR') {
+                renderHarmonicRadar();
+            }
+
+            updateHUD();
+            requestAnimationFrame(render);
+        }
+
+        function updateHUD() {
+            document.getElementById('current-path').textContent = paths[currentPathIndex];
+            document.getElementById('freq-info').innerHTML = `
+                FFT Size: ${FFT_SIZE} | Accel Buffer: ${sensors.accel.x.length} | Gyro Buffer: ${sensors.gyro.alpha.length}
+            `;
+        }
+
+        function nextPath() {
+            currentPathIndex = (currentPathIndex + 1) % paths.length;
+        }
+
+        function prevPath() {
+            currentPathIndex = (currentPathIndex - 1 + paths.length) % paths.length;
+        }
+
+        function goToNavigator() {
+            window.location.href = 'circuit_navigator.html';
+        }
+
+        window.addEventListener('load', () => {
+            resize();
+            initSensors();
+            render();
+        });
+        window.addEventListener('resize', resize);
+
+        document.addEventListener('click', () => {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission();
+            }
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

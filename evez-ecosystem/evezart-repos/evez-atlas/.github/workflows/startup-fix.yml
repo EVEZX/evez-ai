@@ -1,0 +1,22 @@
+name: Startup Fix
+# Replaces broken empty-name workflow causing 350 startup failures.
+# Root cause: workflow with empty name and no valid jobs block.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: Evez666 Health Check
+    runs-on: ${{ vars.RUNNER_LABEL || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Status
+        run: |
+          echo "Evez666 health check: OK"
+          echo "Commit: ${{ github.sha }}"
+          echo "Triggered by: ${{ github.event_name }}"

@@ -1,0 +1,16 @@
+GCV Output Router Run -- 2026-03-05T0801Z
+
+Status: GRACEFUL SKIP
+Reason: GCV billing disabled (project #396530773558). No gcv-tags/ output to route.
+Consecutive skips: 12
+
+Step 1 (FETCH): No GCV tag files found in artifacts/gcv-tags/
+Step 2 (BACKENDLESS): SKIP -- no input
+Step 3 (GITHUB): SKIP -- no input
+Step 4 (ENRICH): SKIP -- no input
+
+Blocker: GCV billing disabled. Enable at:
+https://console.developers.google.com/billing/enable?project=396530773558
+
+88+ FIRE events untagged (FIRE #23 through #110).
+Next run: 2026-03-05T2001Z (12h offset from gcv_artifact_tagger noon run)

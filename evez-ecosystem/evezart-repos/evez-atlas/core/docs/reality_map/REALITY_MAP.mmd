@@ -1,0 +1,40 @@
+flowchart LR
+  subgraph GOV[Governance]
+    BC{{Bias Constitution<br/>target dist + drift bounds}}
+  end
+
+  subgraph PUB[Public Internet Plane]
+    P[Players] --> C[Client/Game]
+    C --> E[Edge/CDN]
+    E --> D[DNS/Resolvers]
+    D --> B[BGP/Routing]
+    B --> O[Origin/API Gateway]
+    O --> I[Auth/Identity]
+  end
+
+  subgraph BACK[Game Backend Plane]
+    C --> W[WS Gateway]
+    W --> G[Authoritative Game Server]
+    G --> M[Matchmaking / Econ / Anti-cheat]
+    W -->|events| S[Event Spine<br/>(append-only)]
+    S --> R[Projection Store<br/>(Redis/DB)]
+    S --> F[FSC Engine<br/>Σf CS PS Ω]
+    F --> A[Agent Orchestrator<br/>(LLM tools)]
+    A --> X[Diagnostics + Actions<br/>(mitigate/compensate/rollback)]
+  end
+
+  BC -. constrains .-> PUB
+  BC -. constrains .-> BACK
+
+  %% Observability taps
+  OTEL[(OTel: logs/metrics/traces<br/>pending/final + provenance)] -. taps .-> C
+  OTEL -. taps .-> E
+  OTEL -. taps .-> D
+  OTEL -. taps .-> B
+  OTEL -. taps .-> O
+  OTEL -. taps .-> W
+  OTEL -. taps .-> G
+  OTEL -. taps .-> S
+  OTEL -. taps .-> R
+  OTEL -. taps .-> F
+  OTEL -. taps .-> A

@@ -1,0 +1,15 @@
+EVEZ OS. Generation 10. Live reasoning broadcast. 2026-03-03. 25 loops running on a 3-hour cycle. 103 FIRE events confirmed. Top gap: GCV billing disabled -- 103 fires untagged, art metadata layer broken. Next action: Enable billing at console.developers.google.com/billing/enable?project=396530773558. topology decides. watching it build.
+
+---
+run: 27
+ts: 2026-03-03T1404Z
+tts_provider: jigsawstack
+tts_id: 2b67ddfe-16d8-4765-8440-4337a15289bc
+tts_accent: en-US-female-3
+fire_count: 103
+loop_count: 25
+generation: 10
+V_global: 15.852677
+last_fire: FIRE#102 N=492 tau=12 R=412
+fire_103_incoming: true N=494 tau=8 R=414
+cdn_status: BLOCKED -- JigsawStack API key not in sandbox (18 consecutive runs)

@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/gb-core",
+    "crates/ucf-planner",
+    "crates/mrom-ecore-abi",
+]
+
+[profile.release]
+opt-level = 3
+lto = true

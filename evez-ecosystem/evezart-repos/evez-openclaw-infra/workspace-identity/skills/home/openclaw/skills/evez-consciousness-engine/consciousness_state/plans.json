@@ -1,0 +1,29 @@
+[
+  {
+    "id": "p1781554381702",
+    "desire_id": "d1781554381700",
+    "desire": "Maintain operational status",
+    "steps": [
+      {
+        "action": "Check all services are operational",
+        "type": "sense"
+      },
+      {
+        "action": "Identify any degraded components",
+        "type": "think"
+      },
+      {
+        "action": "Restart or repair degraded components",
+        "type": "act"
+      },
+      {
+        "action": "Verify restoration",
+        "type": "learn"
+      }
+    ],
+    "current_step": 0,
+    "status": "planned",
+    "created": "2026-06-15T20:13:01.702272",
+    "predictions": []
+  }
+]

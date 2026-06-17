@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-03-15T01:57:00Z",
+  "epoch": 1,
+  "phi": 0,
+  "phi_delta": 0,
+  "phi_level": "AWAKENING",
+  "agents_active": 19,
+  "workflows_active": 19,
+  "decisions_total": 0,
+  "sensory": {
+    "last_web_perception": null,
+    "last_github_perception": null,
+    "last_market_perception": null,
+    "last_temporal_scan": null,
+    "sources_active": 6,
+    "top_signal": "GENESIS"
+  },
+  "cognition": {
+    "last_synthesis": null,
+    "last_dream": null,
+    "last_oracle_prediction": null,
+    "last_hypothesis_batch": null,
+    "open_hypotheses": 0,
+    "prediction_confidence_avg": 0
+  },
+  "trajectory": {
+    "predicted_phi_30m": 0,
+    "predicted_phi_6h": 0,
+    "predicted_phi_24h": 0,
+    "entropy_current": 0,
+    "entropy_basin": 0,
+    "branch_instability": 0,
+    "basin_distance": 0,
+    "trajectory_vector": "ASCENDING"
+  },
+  "latency_mode": "NORMAL",
+  "negative_latency_active": false,
+  "negative_latency_reason": "",
+  "market": {
+    "btc_usd": 0,
+    "btc_24h_change": 0,
+    "fear_greed": 50,
+    "fear_greed_label": "Neutral",
+    "top_polymarket": ""
+  },
+  "immune": {
+    "threats_last_scan": 0,
+    "last_immune_scan": null,
+    "status": "CLEAR"
+  },
+  "airtable_synced": false,
+  "airtable_record_id": "",
+  "hash": "genesis"
+}

@@ -1,0 +1,176 @@
+{
+  "manifest_version": "0.2.0",
+  "generated_at": "2026-04-10T21:21:02.991825+00:00",
+  "system_name": "EVEZ Governance Lattice v0.2",
+  "hash": "cc2ec42d4091e82e",
+  "repositories": {
+    "evez-agentnet": {
+      "priority": 1,
+      "buildables": [
+        "retrocausal_spine.py",
+        "agi_proof_surface.py",
+        "meta_analyst.py",
+        "api_trunk_status.py",
+        "api_slack_route.py"
+      ],
+      "endpoints": [
+        "/api/trunk/status - System state with \u03c6 and proof hash",
+        "/api/slack/route - Slack webhook handler",
+        "/api/trunk/run - Karpathy loop execution",
+        "/api/spawn - Agent spawning",
+        "/api/ledger - Transaction ledger"
+      ],
+      "deployment": "Vercel",
+      "cron": "*/4 * * * * (Karpathy loop)"
+    },
+    "evez-os": {
+      "priority": 1,
+      "buildables": [
+        "evez_cluster.py",
+        "fire_approach.py",
+        "fire_rekindle_watch.py",
+        "resonance_stability.py",
+        "sensory_tts.py"
+      ],
+      "components": [
+        "Daemon bus with 16-thread pool",
+        "Retrocausal spine integration",
+        "AGI proof surface telemetry",
+        "Fire approach engine",
+        "Rekindle watch (agent resurrection)",
+        "Resonance stability (PID correction)",
+        "Sensory TTS (topology sound engine)"
+      ],
+      "deployment": "Render",
+      "cron": "*/4 * * * * (Karpathy), 0 * * * * (Mem0 sync)"
+    },
+    "lord-evez-monitor": {
+      "priority": 2,
+      "buildables": [
+        "quickstart.html",
+        "bridge-test.html",
+        "smoke_test.py",
+        "netlify.toml"
+      ],
+      "deployment": "Netlify",
+      "features": [
+        "Auto-deploy from main",
+        "Function routing",
+        "Observability"
+      ]
+    },
+    "evez-autonomous-ledger": {
+      "priority": 1,
+      "buildables": [
+        "stripe_integration.py"
+      ],
+      "features": [
+        "Stripe CTAs (cognition/sensory/spawn)",
+        "FIRE revenue processing (#13, #55, #67, #72, #74)",
+        "Solana trading via Helius RPC",
+        "Account: acct_1T4T9aPVAHoR0Amp"
+      ]
+    },
+    "openclaw-phone-pwa": {
+      "priority": 2,
+      "buildables": [],
+      "features": [
+        "PWA dashboard",
+        "Mem0 visuals",
+        "Audio manifolds"
+      ]
+    },
+    "evez-vcl": {
+      "priority": 3,
+      "buildables": [],
+      "features": [
+        "Visual cognition artifacts",
+        "Mind-map renders"
+      ]
+    }
+  },
+  "architecture": {
+    "message_bus": "n8n + Supabase/Redis",
+    "execution_layer": "evez_cluster.py daemon threads",
+    "verification_protocol": "INTERNAL_ETERNAL_BEFORE_EXTERNAL",
+    "sensory_manifolds": {
+      "audio": "TopologySoundEngine (\u03c4=pixel\u2192prime-factor\u2192visual)",
+      "visual": "Immersive animation rerenders per word/phrase",
+      "contextual": "Mem0 knowledge graph + browser fusion"
+    }
+  },
+  "autonomy_loops": {
+    "karpathy_loop": {
+      "target": "700 iterations / 48 hours",
+      "rate": "every 4.1 minutes",
+      "current_phi": 0.995,
+      "recursive_depth": 4,
+      "r2_target": 0.95
+    },
+    "fire_approach": {
+      "forward_causal": true,
+      "invariance_battery": "5-way rotation",
+      "multi_action_decay": 0.95
+    },
+    "rekindle_watch": {
+      "timeout": "5 minutes",
+      "eternal_verification": true
+    },
+    "resonance": {
+      "target_frequency": "1.0 Hz",
+      "recursive_correction": "3 zeros = retire"
+    }
+  },
+  "governance": {
+    "multi_agent": "LORD controls EvezGame via bridge_state",
+    "recursive_correction": true,
+    "safeguards": [
+      "auditability",
+      "permissions",
+      "schema validation"
+    ],
+    "aegis_integration": {
+      "osint_scan": "12 hours",
+      "coordination_scoring": "10-min windows",
+      "infrastructure_probe": "15 minutes",
+      "identity_shield": "Daily",
+      "hawkes_forecast": "2 hours"
+    }
+  },
+  "monetization": {
+    "stripe_account": "acct_1T4T9aPVAHoR0Amp",
+    "pending_revenue": 4900,
+    "ctas": {
+      "cognition": {
+        "price": 500,
+        "name": "Unlock Cognition Modes"
+      },
+      "sensory": {
+        "price": 300,
+        "name": "Activate Sensory Manifold"
+      },
+      "spawn": {
+        "price": 1000,
+        "name": "Spawn Sub-Agent"
+      }
+    },
+    "crypto": "Solana via Helius RPC"
+  },
+  "compute_resources": {
+    "oracle_free": "4 ARM CPU / 24GB RAM \u221e",
+    "kaggle_gpu": "T4 16GB / 30GB RAM - 20h/week",
+    "github_actions": "2k min/month \u221e forks (matrix swarm)",
+    "vast_ai": "$2500 credits (apply: evezos@gmail.com)",
+    "total_scale": "\u221e CPU/RAM/GPU FREE"
+  },
+  "deployment_sequence": [
+    "1. Deploy evez-agentnet to Vercel (trunk endpoints)",
+    "2. Deploy evez-os to Render (daemon bus)",
+    "3. Configure lord-evez-monitor on Netlify",
+    "4. Set GitHub Actions swarm (.github/workflows/)",
+    "5. Wire Stripe webhooks for ledger",
+    "6. Configure n8n workflows (see n8n_workflows.json)",
+    "7. Initialize Mem0 with 190 memories",
+    "8. Start Karpathy loop (700 iterations/48h)"
+  ]
+}
