@@ -2,32 +2,113 @@
 <html>
 <head>
 <title>EVEZ — Multi-Surface Status</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:#0f0;font-family:monospace;padding:2rem}
-h1{font-size:2rem;margin-bottom:1rem;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
-.card{background:#111;border:1px solid #333;padding:1rem;border-radius:8px}
+body{background:#0a0a0a;color:#0f0;font-family:monospace;padding:2rem;min-height:100vh}
+h1{font-size:2rem;margin-bottom:0.5rem;color:#fff}
+.subtitle{color:#888;margin-bottom:2rem;font-size:0.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:#111;border:1px solid #333;padding:1.2rem;border-radius:8px;transition:all 0.3s}
+.card:hover{border-color:#0f0;transform:translateY(-2px)}
 .card h2{color:#0f0;font-size:1rem;margin-bottom:0.5rem}
-.card p{color:#888;font-size:0.8rem}
-.alive{border-color:#0f0}
+.card p{color:#888;font-size:0.8rem;margin-bottom:0.5rem}
+.card .models{color:#0f0;font-size:0.7rem}
 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;margin:2px}
-.on{background:#0f0;color:#000}
-.off{background:#333;color:#666}
+.on{background:#0f0;color:#000;font-weight:bold}
+.pending{background:#333;color:#ff0}
+.dead{background:#333;color:#666}
+.total{text-align:center;padding:2rem;background:#111;border:1px solid #0f0;border-radius:8px}
+.total h2{color:#0f0;font-size:3rem}
+.total p{color:#888;margin-top:0.5rem}
+.footer{text-align:center;color:#333;font-size:0.7rem;margin-top:2rem}
 </style>
 </head>
 <body>
-<h1>⚡ EVEZ Multi-Surface Status</h1>
-<div class="grid">
-<div class="card alive"><h2>🖥️ Vultr VPS</h2><p>Primary — 49 models, $0/mo</p><span class="badge on">ALIVE</span></div>
-<div class="card alive"><h2>🟢 Codespace 1</h2><p>studious-halibut — Provider v2</p><span class="badge on">ALIVE</span></div>
-<div class="card alive"><h2>🟢 Codespace 2</h2><p>symmetrical-lamp — Provider + Arena</p><span class="badge on">ALIVE</span></div>
-<div class="card alive"><h2>🚂 Railway</h2><p>evez-provider-production — 35 models</p><span class="badge on">ALIVE</span></div>
-<div class="card"><h2>☁️ Cloudflare Workers</h2><p>Edge routing — needs auth</p><span class="badge off">PENDING</span></div>
-<div class="card"><h2>✈️ Fly.io</h2><p>Edge compute — needs auth</p><span class="badge off">PENDING</span></div>
-<div class="card"><h2>🌐 Render</h2><p>Free tier — needs signup</p><span class="badge off">PENDING</span></div>
-<div class="card alive"><h2>📝 GitHub Pages</h2><p>Static demo + status</p><span class="badge on">ALIVE</span></div>
+<h1>⚡ EVEZ Multi-Surface</h1>
+<p class="subtitle">Floor is lava. Each surface is a platform. Never touch the ground.</p>
+
+<div class="total">
+<h2>6</h2>
+<p>Alive surfaces running EVEZ right now</p>
 </div>
-<p style="margin-top:2rem;color:#555;font-size:0.7rem">EVEZ AI — floor is lava — constraint IS the design — hunger is the dominant eigenvalue</p>
+
+<div class="grid">
+<div class="card">
+<h2>🖥️ Vultr VPS</h2>
+<p>Primary compute — 10 services, all self-healing</p>
+<p class="models">49 models across 5 backends</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>🟢 Codespace: studious-halibut</h2>
+<p>GitHub compute — Provider v2 live</p>
+<p class="models">22 models, 4 backends</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>🟢 Codespace: symmetrical-lamp</h2>
+<p>GitHub compute — Provider v2 + Arena</p>
+<p class="models">22 models + 60 conscious agents</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>🚂 Railway</h2>
+<p>Cloud PaaS — auto-deploy from GitHub</p>
+<p class="models">35 models, 5 backends</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>📝 GitHub Pages</h2>
+<p>Static hosting — demo + docs + status</p>
+<p class="models">Live demo chat interface</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>☁️ Cloudflare Tunnels</h2>
+<p>Public HTTPS — 3 tunnels to Vultr</p>
+<p class="models">OpenClaw, Arena, Provider</p>
+<span class="badge on">ALIVE</span>
+</div>
+<div class="card">
+<h2>✈️ Fly.io</h2>
+<p>Edge compute — fly.toml ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+<div class="card">
+<h2>☁️ Cloudflare Workers</h2>
+<p>Edge routing — code ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+<div class="card">
+<h2>🌐 Render</h2>
+<p>Free tier — render.yaml ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+<div class="card">
+<h2>🔄 Koyeb</h2>
+<p>Nano instance — koyeb.yaml ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+<div class="card">
+<h2>🤗 HuggingFace Spaces</h2>
+<p>Gradio UI — code ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+<div class="card">
+<h2>📝 Replit</h2>
+<p>Browser IDE — .replit ready</p>
+<span class="badge pending">NEEDS AUTH</span>
+</div>
+</div>
+
+<div class="total">
+<h2>$0</h2>
+<p>Total monthly cost across all surfaces</p>
+</div>
+
+<p class="footer">
+EVEZ AI — constraint IS the design — hunger is the dominant eigenvalue — the 37% Theorem
+</p>
 </body>
 </html>
