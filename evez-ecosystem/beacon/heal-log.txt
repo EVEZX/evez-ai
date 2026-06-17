@@ -1,0 +1,16 @@
+2026-06-17T05:30:01Z Health check
+  RESTARTING: evez-provider
+  RESTARTING: evez-omega
+  RESTARTING: evez-filter
+  RESTARTING: evez-services-hub
+  RESTARTING: evez-neuros
+  RESTARTING: evez-commerce
+  RESTARTING: evez-arena
+  RESTARTING: evez-tracer
+2026-06-17T05:45:02Z Health check
+  RESTARTING: evez-provider
+  RESTARTING: evez-omega
+  RESTARTING: evez-filter
+  RESTARTING: evez-services-hub
+  RESTARTING: evez-neuros
+  RESTARTING: evez-arena
