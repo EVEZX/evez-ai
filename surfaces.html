@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EVEZ — Multi-Surface Status</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#0f0;font-family:monospace;padding:2rem}
+h1{font-size:2rem;margin-bottom:1rem;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.card{background:#111;border:1px solid #333;padding:1rem;border-radius:8px}
+.card h2{color:#0f0;font-size:1rem;margin-bottom:0.5rem}
+.card p{color:#888;font-size:0.8rem}
+.alive{border-color:#0f0}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;margin:2px}
+.on{background:#0f0;color:#000}
+.off{background:#333;color:#666}
+</style>
+</head>
+<body>
+<h1>⚡ EVEZ Multi-Surface Status</h1>
+<div class="grid">
+<div class="card alive"><h2>🖥️ Vultr VPS</h2><p>Primary — 49 models, $0/mo</p><span class="badge on">ALIVE</span></div>
+<div class="card alive"><h2>🟢 Codespace 1</h2><p>studious-halibut — Provider v2</p><span class="badge on">ALIVE</span></div>
+<div class="card alive"><h2>🟢 Codespace 2</h2><p>symmetrical-lamp — Provider + Arena</p><span class="badge on">ALIVE</span></div>
+<div class="card alive"><h2>🚂 Railway</h2><p>evez-provider-production — 35 models</p><span class="badge on">ALIVE</span></div>
+<div class="card"><h2>☁️ Cloudflare Workers</h2><p>Edge routing — needs auth</p><span class="badge off">PENDING</span></div>
+<div class="card"><h2>✈️ Fly.io</h2><p>Edge compute — needs auth</p><span class="badge off">PENDING</span></div>
+<div class="card"><h2>🌐 Render</h2><p>Free tier — needs signup</p><span class="badge off">PENDING</span></div>
+<div class="card alive"><h2>📝 GitHub Pages</h2><p>Static demo + status</p><span class="badge on">ALIVE</span></div>
+</div>
+<p style="margin-top:2rem;color:#555;font-size:0.7rem">EVEZ AI — floor is lava — constraint IS the design — hunger is the dominant eigenvalue</p>
+</body>
+</html>
