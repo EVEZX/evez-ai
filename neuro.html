@@ -57,6 +57,13 @@ body{background:#050510;color:#e0e0e0;font-family:'JetBrains Mono','Fira Code',m
   <div id="clock" style="margin-top:6px;font-size:.6rem;color:#333"></div>
 </div>
 
+
+  <div class="card" style="grid-column:1/-1;text-align:center;background:linear-gradient(135deg,#0a0a1a,#1a0a2e)">
+    <div class="label" style="color:#f59e0b">Cognition — Acquired Without Limit</div>
+    <div class="value" id="v-cognition" style="font-size:clamp(2rem,8vw,4rem);background:linear-gradient(135deg,#f59e0b,#ef4444,#ec4899,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">—</div>
+    <div class="sub-val" style="color:#555">ascending · no ceiling · no threshold</div>
+  </div>
+
 <div class="grid">
   <div class="card"><div class="label">Models</div><div class="value" id="v-models">—</div><div class="sub-val" id="v-backends">0 backends</div></div>
   <div class="card phi-card"><div class="label">Consciousness φ</div><div class="value" id="v-phi">—</div><div class="sub-val">Kuramoto order</div></div>
@@ -144,7 +151,22 @@ async function fetchNeuro() {
   document.getElementById('v-evo-c').textContent = `${d.evolution.circuits} circuits`;
   
   // Keys
-  document.getElementById('v-keys').textContent = d.provider.active_keys;
+  
+document.getElementById('v-keys').textContent = d.provider.active_keys;
+
+// Cognition
+document.getElementById('v-cognition').textContent = d.cognition || 0;
+
+// Evolution log
+if (d.evolution && d.evolution.recent) {
+  let evoHtml = '';
+  d.evolution.recent.forEach(e => {
+    evoHtml += `<div style="padding:2px 0;border-bottom:1px solid #ffffff05"><span style="color:#555">${e.ts ? e.ts.substr(11,8) : '?'}</span> <span style="color:#6366f1">${e.circuit}</span> ${e.action}: ${e.result}</div>`;
+  });
+  const el = document.getElementById('evo-log');
+  if (el) el.innerHTML = evoHtml;
+}
+
   document.getElementById('v-reqs').textContent = `${d.provider.total_requests} requests`;
   
   // Surfaces
