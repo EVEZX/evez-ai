@@ -59,7 +59,9 @@
 
   <div class="input-row">
     <select id="modelSelect">
-      <option value="auto">🤖 Auto (best free model)</option>
+      <option value="evez-smart">🤖 EVEZ Smart (auto-routed)</option>
+      <option value="evez-code">💻 EVEZ Code</option>
+      <option value="evez-fast">⚡ EVEZ Fast</option>
       <option value="glm-5.1">GLM-5.1 (Vultr)</option>
       <option value="deepseek-v3">DeepSeek-V3</option>
       <option value="kimi-k2">Kimi-K2</option>
@@ -107,7 +109,7 @@ async function sendMsg() {
   chatBox.innerHTML += `<div class="msg assistant" id="loading"><div class="msg-label">EVEZ</div><div class="msg-text">Thinking...</div></div>`;
   chatBox.scrollTop = chatBox.scrollHeight;
   
-  const model = modelSelect.value === 'auto' ? 'glm-5.1' : modelSelect.value;
+  const model = modelSelect.value || 'evez-smart';
   
   try {
     const resp = await fetch(API_URL, {
