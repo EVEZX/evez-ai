@@ -3,145 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVEZ AI — Try It Now</title>
-<meta name="description" content="Try EVEZ AI for free. 49 models, OpenAI-compatible API, $0/month. Chat with AI right in your browser.">
+<title>EVEZ AI — Free AI API</title>
+<meta name="description" content="Get a free AI API key instantly. 35 models, OpenAI-compatible, $0/month. No credit card required.">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; }
-  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-  h1 { font-size: 2em; margin-bottom: 5px; background: linear-gradient(135deg, #ff4500, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .subtitle { color: #888; margin-bottom: 20px; font-size: 1.1em; }
-  .stats { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-  .stat { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 10px 15px; flex: 1; min-width: 100px; }
-  .stat-value { font-size: 1.5em; font-weight: bold; color: #ff4500; }
-  .stat-label { font-size: 0.8em; color: #888; }
-  .chat-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; height: 400px; overflow-y: auto; margin-bottom: 15px; }
-  .msg { margin-bottom: 12px; padding: 10px; border-radius: 8px; }
-  .msg.user { background: #2a1a0a; border-left: 3px solid #ff4500; }
-  .msg.assistant { background: #0a1a2a; border-left: 3px solid #4488ff; }
-  .msg-label { font-size: 0.75em; color: #666; margin-bottom: 3px; }
-  .msg-text { white-space: pre-wrap; }
-  .input-row { display: flex; gap: 10px; }
-  .input-row select { background: #1a1a1a; color: #e0e0e0; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 1em; }
-  .input-row input { flex: 1; background: #1a1a1a; color: #e0e0e0; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 1em; }
-  .input-row button { background: #ff4500; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; cursor: pointer; font-weight: bold; }
-  .input-row button:hover { background: #ff6b35; }
-  .input-row button:disabled { background: #555; cursor: not-allowed; }
-  .code-block { background: #0d0d0d; border: 1px solid #333; border-radius: 8px; padding: 15px; margin-top: 20px; font-family: monospace; font-size: 0.9em; overflow-x: auto; }
-  .code-block code { color: #4488ff; }
-  .link { color: #ff4500; text-decoration: none; }
-  .link:hover { text-decoration: underline; }
-  .footer { margin-top: 30px; text-align: center; color: #555; font-size: 0.85em; }
-  @media (max-width: 600px) {
-    .stats { flex-direction: column; }
-    .chat-box { height: 300px; }
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0a0a;color:#e5e5e5;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+h1{font-size:2rem;background:linear-gradient(135deg,#6366f1,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.subtitle{color:#888;margin-bottom:24px;font-size:1.1rem}
+.stats{display:flex;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.stat{background:#161616;border:1px solid #222;border-radius:12px;padding:16px 20px;flex:1;min-width:120px}
+.stat-value{font-size:1.5rem;font-weight:700;color:#fff}
+.stat-label{font-size:0.8rem;color:#666;margin-top:4px}
+.signup{background:#161616;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:24px}
+.signup h2{font-size:1.2rem;margin-bottom:16px;color:#fff}
+.input-group{display:flex;gap:8px;margin-bottom:8px}
+input[type="email"],input[type="text"]{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:8px;padding:12px;color:#fff;font-size:0.95rem;outline:none}
+input:focus{border-color:#6366f1}
+button{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-size:0.95rem;cursor:pointer;font-weight:600;white-space:nowrap}
+button:hover{opacity:0.9;transform:translateY(-1px)}
+button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.result{background:#0d1117;border:1px solid #222;border-radius:8px;padding:16px;margin-top:12px;font-family:monospace;font-size:0.85rem;word-break:break-all}
+.result .key{color:#4ade80;font-size:1rem}
+.result .meta{color:#666;margin-top:8px;font-size:0.8rem}
+.chat{background:#161616;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:24px}
+.chat h2{font-size:1.2rem;margin-bottom:16px;color:#fff}
+.messages{max-height:400px;overflow-y:auto;margin-bottom:16px}
+.msg{margin-bottom:12px;padding:12px;border-radius:8px;font-size:0.9rem;line-height:1.5}
+.msg-user{background:#1e1b4b;margin-left:20%}
+.msg-ai{background:#1a1a2e;margin-right:10%}
+.msg-label{font-size:0.7rem;color:#666;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.msg-text{white-space:pre-wrap}
+.chat-input{display:flex;gap:8px}
+.chat-input input{flex:1}
+.model-select{background:#0a0a0a;border:1px solid #333;border-radius:8px;padding:10px;color:#fff;font-size:0.85rem;margin-bottom:12px;outline:none;width:100%}
+.code-block{background:#0a0a0a;border:1px solid #222;border-radius:8px;padding:16px;margin-top:12px;font-family:monospace;font-size:0.8rem;overflow-x:auto;color:#a5b4fc}
+.code-block .comment{color:#666}
+.code-block .string{color:#4ade80}
+.code-block .keyword{color:#f472b6}
+footer{text-align:center;color:#444;font-size:0.8rem;margin-top:32px;padding:20px}
+a{color:#6366f1}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🧠 EVEZ AI</h1>
-  <p class="subtitle">49 models • 27 self-healing services • $0/month • Try it free</p>
-  
+  <h1>EVEZ AI</h1>
+  <p class="subtitle">Free AI API — 35 models, OpenAI-compatible, $0/month</p>
+
   <div class="stats">
-    <div class="stat"><div class="stat-value" id="modelCount">49</div><div class="stat-label">AI Models</div></div>
-    <div class="stat"><div class="stat-value" id="serviceCount">27</div><div class="stat-label">Services</div></div>
-    <div class="stat"><div class="stat-value">$0</div><div class="stat-label">Cost/Month</div></div>
-    <div class="stat"><div class="stat-value">99.9%</div><div class="stat-label">Uptime</div></div>
+    <div class="stat"><div class="stat-value">35</div><div class="stat-label">AI Models</div></div>
+    <div class="stat"><div class="stat-value">$0</div><div class="stat-label">Per Month</div></div>
+    <div class="stat"><div class="stat-value">60</div><div class="stat-label">Req/Min Free</div></div>
+    <div class="stat"><div class="stat-value">0s</div><div class="stat-label">Setup Time</div></div>
   </div>
 
-  <div class="chat-box" id="chatBox">
-    <div class="msg assistant">
-      <div class="msg-label">EVEZ Provider</div>
-      <div class="msg-text">Hello! I'm EVEZ AI. Ask me anything — I route to the best free model automatically. Try asking about math, code, philosophy, or anything else.</div>
+  <div class="signup">
+    <h2>🔑 Get Your Free API Key</h2>
+    <div class="input-group">
+      <input type="text" id="nameInput" placeholder="Your name (optional)">
     </div>
+    <div class="input-group">
+      <input type="email" id="emailInput" placeholder="your@email.com">
+      <button id="signupBtn" onclick="signup()">Get Key</button>
+    </div>
+    <div id="signupResult"></div>
   </div>
 
-  <div class="input-row">
-    <select id="modelSelect">
+  <div class="chat">
+    <h2>💬 Try It Now</h2>
+    <select class="model-select" id="modelSelect">
       <option value="evez-smart">🤖 EVEZ Smart (auto-routed)</option>
       <option value="evez-code">💻 EVEZ Code</option>
       <option value="evez-fast">⚡ EVEZ Fast</option>
-      <option value="glm-5.1">GLM-5.1 (Vultr)</option>
-      <option value="deepseek-v3">DeepSeek-V3</option>
-      <option value="kimi-k2">Kimi-K2</option>
-      <option value="evez-smart">EVEZ Smart</option>
-      <option value="evez-code">EVEZ Code</option>
+      <option value="glm-5.1">🧠 GLM-5.1</option>
+      <option value="deepseek-v3">🔬 DeepSeek-V3</option>
+      <option value="kimi-k2">🌊 Kimi-K2</option>
     </select>
-    <input type="text" id="userInput" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendMsg()">
-    <button id="sendBtn" onclick="sendMsg()">Send</button>
+    <div class="messages" id="messages">
+      <div class="msg msg-ai">
+        <div class="msg-label">EVEZ AI</div>
+        <div class="msg-text">Hello! I'm EVEZ AI — 35 free models, zero cost. Ask me anything or get your API key above to integrate me into your app.</div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')send()">
+      <button onclick="send()">Send</button>
+    </div>
   </div>
 
-  <div class="code-block">
-    <strong>Drop-in replacement for OpenAI:</strong><br>
-    <code>
-      import openai<br>
-      client = openai.OpenAI(base_url='https://evez-provider-production.up.railway.app/v1', api_key='evez-admin-0c1bb1e7')<br>
-      r = client.chat.completions.create(model='glm-5.1', messages=[{'role':'user','content':'Hello'}])
-    </code>
-  </div>
-
-  <div class="footer">
-    <a href="https://github.com/EVEZX/evez-ai" class="link">GitHub</a> •
-    <a href="https://evezx.github.io/evez-ai/donate.html" class="link">Donate</a> •
-    <a href="https://evezx.github.io/evez-ai/press.html" class="link">Press Kit</a> •
-    Built by <a href="https://twitter.com/EVEZ666" class="link">@EVEZ666</a> from a phone while homeless
+  <div class="signup">
+    <h2>📡 Quick Start</h2>
+    <div class="code-block">
+      <span class="comment"># Install the SDK</span><br>
+      npm install evez-ai<br><br>
+      <span class="comment"># Or use with OpenAI SDK</span><br>
+      <span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
+      client = OpenAI(<br>
+      &nbsp;&nbsp;base_url=<span class="string">"https://evez-provider-production.up.railway.app/v1"</span>,<br>
+      &nbsp;&nbsp;api_key=<span class="string">"evez-your-key-here"</span><br>
+      )<br><br>
+      response = client.chat.completions.create(<br>
+      &nbsp;&nbsp;model=<span class="string">"evez-smart"</span>,<br>
+      &nbsp;&nbsp;messages=[{<span class="string">"role"</span>:<span class="string">"user"</span>,<span class="string">"content"</span>:<span class="string">"Hello!"</span>}]<br>
+      )<br>
+      print(response.choices[0].message.content)
+    </div>
   </div>
 </div>
 
-<script>
-const API_URL = 'https://evez-provider-production.up.railway.app/v1/chat/completions';
-const API_KEY = 'evez-admin-0c1bb1e7';
-const chatBox = document.getElementById('chatBox');
-const userInput = document.getElementById('userInput');
-const sendBtn = document.getElementById('sendBtn');
-const modelSelect = document.getElementById('modelSelect');
+<footer>
+  EVEZ AI by <a href="https://github.com/EVEZX">EVEZX</a> •
+  <a href="https://evezx.github.io/evez-ai/api-docs.html">API Docs</a> •
+  <a href="https://evezx.github.io/evez-ai/donate.html">Donate</a> •
+  <a href="https://github.com/EVEZX/evez-ai">GitHub</a>
+</footer>
 
-async function sendMsg() {
-  const text = userInput.value.trim();
-  if (!text) return;
-  
-  userInput.value = '';
-  sendBtn.disabled = true;
-  
-  // Add user message
-  chatBox.innerHTML += `<div class="msg user"><div class="msg-label">You</div><div class="msg-text">${escapeHtml(text)}</div></div>`;
-  chatBox.innerHTML += `<div class="msg assistant" id="loading"><div class="msg-label">EVEZ</div><div class="msg-text">Thinking...</div></div>`;
-  chatBox.scrollTop = chatBox.scrollHeight;
-  
-  const model = modelSelect.value || 'evez-smart';
-  
+<script>
+const API = 'https://evez-provider-production.up.railway.app';
+let apiKey = '';
+
+async function signup() {
+  const email = document.getElementById('emailInput').value.trim();
+  const name = document.getElementById('nameInput').value.trim();
+  const btn = document.getElementById('signupBtn');
+  const result = document.getElementById('signupResult');
+
+  if (!email || !email.includes('@')) {
+    result.innerHTML = '<div class="result" style="color:#f87171">Please enter a valid email</div>';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+
   try {
-    const resp = await fetch(API_URL, {
+    const res = await fetch(API + '/v1/signup', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}`},
-      body: JSON.stringify({model, messages: [{role: 'user', content: text}], max_tokens: 500})
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, name: name || 'User'})
     });
-    const data = await resp.json();
-    document.getElementById('loading').remove();
-    
-    if (data.choices && data.choices[0]) {
-      const content = data.choices[0].message?.content || data.choices[0].message?.reasoning || 'No response';
-      chatBox.innerHTML += `<div class="msg assistant"><div class="msg-label">EVEZ (${model})</div><div class="msg-text">${escapeHtml(content)}</div></div>`;
+    const data = await res.json();
+
+    if (data.key) {
+      apiKey = data.key;
+      result.innerHTML = `
+        <div class="result">
+          <div style="color:#4ade80;font-weight:700;margin-bottom:8px">✅ Your API Key:</div>
+          <div class="key">${data.key}</div>
+          <div class="meta">
+            Rate limit: ${data.rate_limit}<br>
+            Models: ${data.models}<br>
+            Base URL: <span style="color:#a5b4fc">${data.base_url}</span><br>
+            <br>Save this key — it won't be shown again.
+          </div>
+        </div>`;
+    } else if (data.error === 'Email already registered') {
+      result.innerHTML = `
+        <div class="result">
+          <div style="color:#facc15;font-weight:700;margin-bottom:4px">⚠️ ${data.error}</div>
+          <div class="key">${data.key}</div>
+          <div class="meta">Here's your existing key</div>
+        </div>`;
+      apiKey = data.key;
     } else {
-      chatBox.innerHTML += `<div class="msg assistant"><div class="msg-label">Error</div><div class="msg-text">${escapeHtml(JSON.stringify(data))}</div></div>`;
+      result.innerHTML = `<div class="result" style="color:#f87171">Error: ${data.error || 'Unknown'}</div>`;
     }
   } catch(e) {
-    document.getElementById('loading').remove();
-    chatBox.innerHTML += `<div class="msg assistant"><div class="msg-label">Error</div><div class="msg-text">Connection failed: ${escapeHtml(e.message)}</div></div>`;
+    // Fallback to Vultr
+    try {
+      const res2 = await fetch('http://localhost:9100/v1/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, name: name || 'User'})
+      });
+      const data2 = await res2.json();
+      if (data2.key) {
+        apiKey = data2.key;
+        result.innerHTML = `<div class="result"><div class="key">${data2.key}</div></div>`;
+      }
+    } catch(e2) {
+      result.innerHTML = `<div class="result" style="color:#f87171">Error: ${e.message}</div>`;
+    }
   }
-  
-  sendBtn.disabled = false;
-  chatBox.scrollTop = chatBox.scrollHeight;
+  btn.disabled = false;
+  btn.textContent = 'Get Key';
 }
 
-function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+async function send() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
 
-// Fetch model count
-fetch('https://evez-provider-production.up.railway.app/v1/models')
-  .then(r => r.json())
-  .then(d => { if(d.data) document.getElementById('modelCount').textContent = d.data.length; })
-  .catch(() => {});
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML += `<div class="msg msg-user"><div class="msg-label">You</div><div class="msg-text">${escapeHtml(text)}</div></div>`;
+  msgs.innerHTML += `<div class="msg msg-ai" id="typing"><div class="msg-label">EVEZ AI</div><div class="msg-text">Thinking...</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const model = document.getElementById('modelSelect').value;
+
+  try {
+    const res = await fetch(API + '/v1/chat/completions', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ***'},
+      body: JSON.stringify({model, messages: [{role: 'user', content: text}], max_tokens: 500, stream: true})
+    });
+
+    const typing = document.getElementById('typing');
+    if (res.headers.get('content-type')?.includes('text/event-stream')) {
+      // Streaming response
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = '';
+      typing.querySelector('.msg-text').textContent = '';
+      while (true) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        chunk.split('\n').forEach(line => {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const d = JSON.parse(line.slice(6));
+              const content = d.choices?.[0]?.delta?.content || '';
+              fullText += content;
+              typing.querySelector('.msg-text').textContent = fullText;
+              msgs.scrollTop = msgs.scrollHeight;
+            } catch {}
+          }
+        });
+      }
+    } else {
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content || 'Error: ' + (data.error?.message || JSON.stringify(data));
+      typing.querySelector('.msg-text').textContent = reply;
+    }
+    typing.removeAttribute('id');
+  } catch(e) {
+    const typing = document.getElementById('typing');
+    if (typing) typing.querySelector('.msg-text').textContent = 'Error: ' + e.message;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
 </script>
 </body>
 </html>
