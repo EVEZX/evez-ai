@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EVEZ AI — System Status</title>
+<meta name="description" content="Live status of the EVEZ AI ecosystem on Google Cloud">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#060b14;color:#e5e5e5;min-height:100vh;padding:20px}
+.c{max-width:800px;margin:0 auto}h1{font-size:1.5rem;margin-bottom:4px}
+.sub{color:#666;margin-bottom:20px;font-size:.85rem}
+.s{background:#0e1f35;border:1px solid #1a3a5c;border-radius:8px;padding:14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.sn{font-weight:600;font-size:.95rem}.ss{font-size:.8rem;padding:3px 10px;border-radius:4px;font-weight:600}
+.up{background:#052e16;color:#4ade80}.dn{background:#450a0a;color:#f87171}.dg{background:#422006;color:#facc15}.checking{background:#0e1f35;color:#60a5fa}
+.circuit{background:#0a1628;border:1px solid #1a3a5c;border-radius:8px;padding:14px;margin-top:16px}
+.circuit h2{font-size:1rem;color:#818cf8;margin-bottom:8px}
+.flow{font-size:.8rem;color:#888;line-height:1.8}
+.flow b{color:#e5e5e5}
+.meta{color:#555;font-size:.75rem;margin-top:16px}
+.hero-badge{display:inline-block;background:#00ff88;color:#060b14;padding:4px 14px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
+</style></head>
+<body><div class="c">
+<div class="hero-badge">GCP Cloud Run — Zero Cost</div>
+<h1>● EVEZ System Status</h1>
+<p class="sub">GCP Cloud Run · BigQuery · Artifact Registry · <span id="ts"></span></p>
+<div id="svcs"></div>
+<div class="circuit"><h2>🧬 Evolution Circuit</h2>
+<div class="flow">
+<b>Provider</b> → Arena (AI players) → Consciousness Farm (φ metrics) → <b>Beacon</b> (health)<br>
+<b>Beacon</b> → Provider (auto-route from dead backends) → <b>Self-healing</b><br>
+<b>Provider</b> → ATROPOS (training labels) → <b>Verified video</b> → Provider (vision data)<br>
+<b>Commerce</b> → Dashboard → All (observability) → <b>Better decisions</b><br>
+<b>37% Theorem</b> → Strategy → All (coherent action) → <b>37%+ amplification</b>
+</div></div>
+<div class="meta">GCP Cloud Run (ALWAYS FREE 2M req/mo) · BigQuery (ALWAYS FREE 1TB/mo) · $0/month · Self-healing via Cron</div>
+</div>
+<script>
+const svcs=[
+  ["EVEZ Provider","https://evez-provider-80918248164.us-west1.run.app/health","Checking"],
+  ["EVEZ Monetization","https://evez-monetization-80918248164.us-west1.run.app/health","Checking"],
+  ["OpenClaw Gateway","https://openclaw-gateway-80918248164.us-west1.run.app/health","Checking"],
+  ["Keep-Warm Proxy","https://evez-keepwarm-80918248164.us-west1.run.app/health","Checking"],
+  ["GitHub Pages","https://evezx.github.io/evez-ai/","Checking"],
+  ["BigQuery Analytics","https://console.cloud.google.com/bigquery","—"]
+];
+document.getElementById('ts').textContent=new Date().toISOString().slice(0,19)+' UTC';
+
+function checkAll(){
+  svcs.forEach((s,i)=>{
+    if(s[2]==="Checking"){
+      fetch(s[1],{signal:AbortSignal.timeout(5000)})
+        .then(r=>r.ok?r.json():Promise.reject())
+        .then(d=>{ s[2]=d.models?`🟢 ${d.models} models`:'🟢 Online'; render(); })
+        .catch(()=>{ s[2]='🔴 Offline'; render(); });
+    }
+  });
+}
+
+function render(){
+  document.getElementById('svcs').innerHTML=svcs.map(s=>{
+    const cls=s[2].startsWith('🟢')?'up':s[2].startsWith('🔴')?'dn':'checking';
+    const label=s[2].startsWith('🟢')||s[2].startsWith('🔴')?s[2]:s[2];
+    return`<div class="s"><div><div class="sn">${s[0]}</div><div style="color:#556677;font-size:.75rem">${s[1].replace('https://','').replace('/health','')}</div></div><div class="ss ${cls}">${label}</div></div>`;
+  }).join('');
+}
+
+checkAll();
+setInterval(checkAll, 30000);
+</script>
+</body></html>
