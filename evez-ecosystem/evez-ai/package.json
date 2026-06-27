@@ -7,6 +7,6 @@
   "keywords": ["openai", "ai", "llm", "api", "evez", "cheap", "free", "chatgpt", "sdk", "streaming"],
   "author": "EvezArt",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/EvezArt/evez-ai" },
-  "homepage": "https://evez-api2.fly.dev"
+  "repository": { "type": "git", "url": "https://github.com/EVEZX/evez-ai" },
+  "homepage": "https://github.com/EVEZX/evez-ai"
 }

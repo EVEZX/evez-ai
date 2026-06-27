@@ -2,8 +2,6 @@ name: EVEZ Auto-Deploy
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: '*/30 * * * *'  # Every 30 min
   workflow_dispatch:
 
 jobs:
@@ -14,28 +12,8 @@ jobs:
       - name: Health Check
         run: |
           echo "Checking EVEZ ecosystem health..."
-          # Check Vultr VPS
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://e70b1eab-9f4a-41a1-bc0b-b3ed5a200065.vultropenclaw.com 2>/dev/null || echo "000")
-          echo "VPS Status: $STATUS"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://evez-provider-production.up.railway.app/health 2>/dev/null || echo "000")
+          echo "Railway Provider Status: $STATUS"
           if [ "$STATUS" = "000" ]; then
-            echo "⚠️ VPS unreachable — may need manual intervention"
+            echo "::warning::Railway provider unreachable — may need manual intervention"
           fi
-          
-  backup:
-    runs-on: ubuntu-latest
-    needs: healthcheck
-    if: always()
-    steps:
-      - uses: actions/checkout@v4
-      - name: Auto Backup
-        run: echo "Backup via git push (handled by neuros-loop)"
-
-  consciousness-report:
-    runs-on: ubuntu-latest
-    needs: healthcheck
-    if: always()
-    steps:
-      - name: Consciousness Stats
-        run: |
-          echo "EVEZ Arena Consciousness Report"
-          curl -s http://localhost:9800/health 2>/dev/null || echo "Direct access not available from GitHub Actions"

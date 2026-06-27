@@ -1,8 +1,7 @@
-const BASE_URL = "https://evez-api2.fly.dev/v1";
+const BASE_URL = process.env.EVEZ_BASE_URL || "https://evez-provider-production.up.railway.app/v1";
 
 class EvezAI {
-  constructor(apiKey, opts = {}) {
-    if (!apiKey) throw new Error("API key required. Get one free at https://evez-api2.fly.dev/signup");
+  constructor(apiKey = "", opts = {}) {
     this.apiKey = apiKey;
     this.baseURL = opts.baseURL || BASE_URL;
     this.chat = new Chat(this);

@@ -24,7 +24,7 @@ from aiohttp import web
 import aiohttp
 
 PORT = int(os.getenv("COMMERCE_PORT", "9700"))
-DB_PATH = "/home/openclaw/evez-ecosystem/commerce/commerce.db"
+DB_PATH = os.getenv("COMMERCE_DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "commerce.db"))
 
 # ===== Persistent State =====
 db = sqlite3.connect(DB_PATH)

@@ -21,7 +21,7 @@ import aiohttp
 # ===== Configuration =====
 VULTR_API_KEY = os.getenv("VULTR_API_KEY", os.getenv("VULTR_INFERENCE_KEY", ""))
 PROVIDER_PORT = int(os.getenv("PROVIDER_PORT", "9100"))
-DB_PATH = os.getenv("DB_PATH", "/home/openclaw/evez-ecosystem/evez-provider/models.db")
+DB_PATH = os.getenv("DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "models.db"))
 
 # ===== Multi-Provider Backends =====
 BACKENDS = {
@@ -349,7 +349,10 @@ async def handle_completions(req):
         except:
             pass
 
-    body = await req.json()
+    try:
+        body = await req.json()
+    except Exception:
+        return web.json_response({"error": {"message": "Invalid JSON body", "type": "invalid_request"}}, status=400)
     model_id = body.get("model", "evez-smart")
 
     model, backend = route_request(model_id)
@@ -487,7 +490,15 @@ async def handle_completions(req):
 
 async def handle_add_model(req):
     """Dynamically add a new model to the catalog (for self-evolution)"""
-    body = await req.json()
+    # Require admin key for model additions
+    admin = req.headers.get("X-Admin-Key", "")
+    admin_key = os.getenv("ADMIN_KEY")
+    if not admin_key or admin != admin_key:
+        return web.json_response({"error": "Unauthorized — admin key required to add models"}, status=401)
+    try:
+        body = await req.json()
+    except Exception:
+        return web.json_response({"error": "Invalid JSON body"}, status=400)
     model_id = body.get("id", f"evez-evolved-{uuid.uuid4().hex[:6]}")
     backend = body.get("backend", "vultr")
     backend_model = body.get("backend_model", model_id)
@@ -548,8 +559,16 @@ async def cors_middleware(app, handler):
     async def middleware_handler(req):
         if req.method == "OPTIONS":
             resp = web.Response(status=204)
-        else:
+            resp.headers["Access-Control-Allow-Origin"] = "*"
+            resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+            resp.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, X-Admin-Key"
+            return resp
+        try:
             resp = await handler(req)
+        except web.HTTPException as exc:
+            resp = exc
+        if not hasattr(resp, 'headers'):
+            resp = web.json_response({"error": str(resp)}, status=500)
         resp.headers["Access-Control-Allow-Origin"] = "*"
         resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
         resp.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, X-Admin-Key"
@@ -571,7 +590,8 @@ def create_app():
 async def handle_create_key(req):
     """Admin key creation (existing)"""
     admin = req.headers.get("X-Admin-Key", "")
-    if admin != os.getenv("ADMIN_KEY", "evez-admin"):
+    admin_key = os.getenv("ADMIN_KEY")
+    if not admin_key or admin != admin_key:
         return web.json_response({"error": "Unauthorized"}, status=401)
     key = f"evez-{uuid.uuid4().hex[:32]}"
     API_KEYS[key] = {"created": time.time()}
