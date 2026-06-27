@@ -4,7 +4,7 @@ services:
     runtime: python
     repo: https://github.com/EVEZX/evez-ai
     branch: main
-    buildCommand: pip install aiohttp
+    buildCommand: pip install -r requirements.txt
     startCommand: python3 provider/gateway-v2.py
     plan: free
     region: oregon
@@ -17,13 +17,20 @@ services:
         sync: false
       - key: PROVIDER_PORT
         value: "10000"
+      - key: DB_PATH
+        value: "/data/models.db"
+      - key: PYTHON_VERSION
+        value: "3.12"
     
   - type: web
     name: evez-arena
     runtime: python
     repo: https://github.com/EVEZX/evez-ai
     branch: main
-    buildCommand: pip install aiohttp
+    buildCommand: pip install -r requirements.txt
     startCommand: python3 arena/arena.py
     plan: free
     region: oregon
+    envVars:
+      - key: ARENA_DB_PATH
+        value: "/data/arena.db"

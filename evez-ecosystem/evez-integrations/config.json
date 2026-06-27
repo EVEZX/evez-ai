@@ -1,9 +1,5 @@
 {
-  "composio_api_key": "",
-  "pipedream_api_key": "",
-  "gcp_project": "evez666",
-  "gcp_creds": "/home/openclaw/evez-colab-key.json",
-  "openclaw_url": "https://e70b1eab-9f4a-41a1-bc0b-b3ed5a200065.vultropenclaw.com",
+  "gcp_project": "your-gcp-project",
   "provider_url": "http://localhost:9100",
   "neuros_url": "http://localhost:9600",
   "arena_url": "http://localhost:9800"

@@ -73,7 +73,7 @@ Both run EVEZ Provider v2 with 5 backends:
 
 ## SDKs
 
-**Python** (zero dependencies):
+**Python** (zero dependencies beyond aiohttp):
 ```bash
 pip install evez-ai
 ```
@@ -88,8 +88,40 @@ print(client.chat("Hello!"))
 npm install evez-ai
 ```
 ```javascript
-const evez = require('evez-ai')('');
-const r = await evez.chat('Hello!');
+const EvezAI = require('evez-ai');
+const evez = new EvezAI(); // Free tier — no key needed
+const r = await evez.chat.completions.create({
+  model: 'evez-smart',
+  messages: [{role: 'user', content: 'Hello!'}]
+});
+console.log(r.choices[0].message.content);
+```
+
+**curl** (no install needed):
+```bash
+curl https://evez-provider-production.up.railway.app/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"deepseek-v3","messages":[{"role":"user","content":"Hello!"}]}'
+```
+
+## Self-Host
+
+```bash
+git clone https://github.com/EVEZX/evez-ai.git
+cd evez-ai
+cp .env.example .env
+# Edit .env — add at least one API key (VULTR_API_KEY recommended)
+pip install -r requirements.txt
+python3 provider/gateway-v2.py
+# Provider runs on http://localhost:9100
+```
+
+**Docker**:
+```bash
+docker compose up
+# Provider: http://localhost:9100
+# Arena: http://localhost:9800
+# Commerce: http://localhost:9700
 ```
 
 

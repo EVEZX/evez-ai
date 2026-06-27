@@ -16,11 +16,11 @@
   },
   "servers": [
     {
-      "url": "https://cabin-platforms-adds-lobby.trycloudflare.com",
-      "description": "Cloudflare Tunnel (regenerates on restart)"
+      "url": "https://evez-provider-production.up.railway.app/v1",
+      "description": "Railway (primary)"
     },
     {
-      "url": "http://localhost:9100",
+      "url": "http://localhost:9100/v1",
       "description": "Local development"
     }
   ],
@@ -134,7 +134,7 @@
           "model": {
             "type": "string",
             "description": "Model ID or alias. Use 'evez-smart' for auto-routing.",
-            "enum": ["evez-smart", "evez-code", "evez-fast", "evez-vision", "glm-5.1", "llama-3.3-70b", "gemma-4-31b", "nemotron-120b", "qwen3-coder", "phi4", "deepseek-r1", "qwq-32b"],
+            "enum": ["evez-smart", "evez-code", "evez-fast", "evez-vision", "glm-5.1", "deepseek-v3", "kimi-k2", "minimax-m2", "mimo-v2", "gemini-2.5-flash", "gemini-2.0-flash", "groq-llama33-70b", "groq-deepseek-r1", "or-nemotron-120b", "or-gemma4-31b", "hf-llama3-8b", "hf-mistral-7b"],
             "default": "evez-smart"
           },
           "messages": {

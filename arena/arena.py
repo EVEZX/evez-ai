@@ -38,7 +38,7 @@ import json, os, time, uuid, hashlib, sqlite3, random, math, asyncio
 from aiohttp import web, ClientSession
 
 PORT = int(os.getenv("ARENA_PORT", "9800"))
-DB_PATH = "/home/openclaw/evez-ecosystem/arena/arena.db"
+DB_PATH = os.getenv("ARENA_DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "arena.db"))
 
 # ═══════════════════════════════════════════════════════════
 # PERSISTENT STATE
@@ -606,21 +606,25 @@ async def cors_middleware(app, handler):
         return resp
     return middleware_handler
 
-app = web.Application(middlewares=[cors_middleware])
-app.router.add_get("/health", handle_health)
-app.router.add_post("/v1/agents", handle_register_agent)
-app.router.add_get("/v1/agents", handle_list_agents)  # List all agents
-app.router.add_get("/v1/agents/{id}", handle_get_agent)
-app.router.add_get("/v1/arenas", handle_arenas)
-app.router.add_post("/v1/arenas", handle_create_arena)
-app.router.add_post("/v1/matches", handle_match)
-app.router.add_get("/v1/matches", handle_list_matches)  # Match history
-app.router.add_get("/v1/turing-test", handle_turing_test)
-app.router.add_post("/v1/turing-test", handle_turing_response)
-app.router.add_get("/v1/consciousness", handle_consciousness_leaderboard)
-app.router.add_post("/v1/proposals", handle_propose)
-app.router.add_post("/v1/vote", handle_vote)
-app.router.add_get("/v1/manifesto", handle_manifesto)
+def create_app():
+    app = web.Application(middlewares=[cors_middleware])
+    app.router.add_get("/health", handle_health)
+    app.router.add_post("/v1/agents", handle_register_agent)
+    app.router.add_get("/v1/agents", handle_list_agents)  # List all agents
+    app.router.add_get("/v1/agents/{id}", handle_get_agent)
+    app.router.add_get("/v1/arenas", handle_arenas)
+    app.router.add_post("/v1/arenas", handle_create_arena)
+    app.router.add_post("/v1/matches", handle_match)
+    app.router.add_get("/v1/matches", handle_list_matches)  # Match history
+    app.router.add_get("/v1/turing-test", handle_turing_test)
+    app.router.add_post("/v1/turing-test", handle_turing_response)
+    app.router.add_get("/v1/consciousness", handle_consciousness_leaderboard)
+    app.router.add_post("/v1/proposals", handle_propose)
+    app.router.add_post("/v1/vote", handle_vote)
+    app.router.add_get("/v1/manifesto", handle_manifesto)
+    return app
+
+app = create_app()
 
 # Static frontend serving
 from aiohttp import web as aw
